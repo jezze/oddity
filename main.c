@@ -7,16 +7,19 @@ struct menuitem
 {
 
     char *name;
-    void (*callback)();
+    unsigned int id;
+    void (*callback)(unsigned int id);
 
 };
 
 struct menu
 {
 
+    char *name;
+    unsigned int parentmenu;
     struct menuitem *items;
     unsigned int total;
-    unsigned int current;
+    unsigned int currentitem;
     unsigned int x;
     unsigned int y;
 
@@ -26,41 +29,75 @@ SDL_Surface *display;
 SDL_Surface *background;
 SDL_Surface *blur;
 TTF_Font *font;
-unsigned int running = 1;
+unsigned int currentstate = 1;
 unsigned int frame;
-unsigned int animating = 0;
+unsigned int animating;
+unsigned int currentmenu;
 
-void quit()
+void changestate(unsigned int state)
 {
 
-    running = 0;
+    currentstate = state;
+
+}
+
+void menuchange(unsigned int id)
+{
+
+    currentmenu = id;
+
+}
+
+void menuexit(unsigned int id)
+{
+
+    changestate(0);
 
 }
 
 struct menuitem mainmenuitems[3] = {
-    {"Applications", 0},
-    {"Games", 0},
-    {"Exit", quit}
+    {"Applications", 1, menuchange},
+    {"Games", 2, menuchange},
+    {"Exit", 0, menuexit}
 };
 
-struct menu mainmenu = {mainmenuitems, 3, 0, 40, 40};
+struct menuitem applicationsitems[2] = {
+    {"Deluxe Paint", 0, 0},
+    {"Photoshop", 0, 0}
+};
 
-void render()
+struct menuitem gamesitems[1] = {
+    {"DOOM", 0, 0}
+};
+
+struct menu menus[3] = {
+    {"Main Menu", 0, mainmenuitems, 3, 0, 40, 40},
+    {"Applications", 0, applicationsitems, 2, 0, 40, 40},
+    {"Games", 0, gamesitems, 1, 0, 40, 40}
+};
+
+void renderbackground()
 {
-
-    SDL_Surface *text;
-    unsigned int i;
 
     SDL_BlitSurface(background, NULL, display, NULL);
     SDL_BlitSurface(blur, NULL, display, NULL);
 
-    for (i = 0; i < mainmenu.total; i++)
+}
+
+void rendermenu()
+{
+
+    struct menu *menu = &menus[currentmenu];
+    unsigned int i;
+
+    for (i = 0; i < menu->total; i++)
     {
 
+        SDL_Surface *text;
         SDL_Color color;
         SDL_Rect rect;
 
-        if (i == mainmenu.current)
+        if (i == menu->currentitem)
         {
 
             color.r = 240;
@@ -78,18 +115,25 @@ void render()
 
         }
 
-        rect.x = mainmenu.x;
-        rect.y = mainmenu.y + i * 20;
+        rect.x = menu->x;
+        rect.y = menu->y + i * 20;
         rect.w = 100;
         rect.h = 100;
 
-        text = TTF_RenderText_Solid(font, mainmenu.items[i].name, color);
+        text = TTF_RenderText_Solid(font, menu->items[i].name, color);
 
         SDL_BlitSurface(text, NULL, display, &rect);
         SDL_FreeSurface(text);
 
     }
 
+}
+
+void render()
+{
+
+    renderbackground();
+    rendermenu();
     SDL_Flip(display);
 
     frame++;
@@ -99,27 +143,29 @@ void render()
 void handlekeydown(SDL_Event *event)
 {
 
+    struct menu *menu = &menus[currentmenu];
+
     switch (event->key.keysym.sym)
     {
 
     case SDLK_ESCAPE:
+        currentmenu = menu->parentmenu;
+
         break;
 
     case SDLK_UP:
-        if (mainmenu.current > 0)
-            mainmenu.current--;
+        menu->currentitem = (menu->currentitem > 0) ? menu->currentitem - 1 : menu->total - 1;
 
         break;
 
     case SDLK_DOWN:
-        if (mainmenu.current < mainmenu.total - 1)
-            mainmenu.current++;
+        menu->currentitem = (menu->currentitem < menu->total - 1) ? menu->currentitem + 1 : 0;
 
         break;
 
     case SDLK_RETURN:
-        if (mainmenu.items[mainmenu.current].callback)
-            mainmenu.items[mainmenu.current].callback();
+        if (menu->items[menu->currentitem].callback)
+            menu->items[menu->currentitem].callback(menu->items[menu->currentitem].id);
 
         break;
 
@@ -162,7 +208,7 @@ int main(int argc, char **argv)
 
     render();
 
-    while (running)
+    while (currentstate)
     {
 
         SDL_Event event;
@@ -181,7 +227,7 @@ int main(int argc, char **argv)
                 break;
 
             case SDL_QUIT:
-                quit();
+                changestate(0);
 
             break;
 
