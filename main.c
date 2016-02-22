@@ -28,6 +28,7 @@ SDL_Surface *blur;
 TTF_Font *font;
 unsigned int running = 1;
 unsigned int frame;
+unsigned int animating = 0;
 
 void quit()
 {
@@ -95,6 +96,37 @@ void render()
 
 }
 
+void handlekeydown(SDL_Event *event)
+{
+
+    switch (event->key.keysym.sym)
+    {
+
+    case SDLK_ESCAPE:
+        break;
+
+    case SDLK_UP:
+        if (mainmenu.current > 0)
+            mainmenu.current--;
+
+        break;
+
+    case SDLK_DOWN:
+        if (mainmenu.current < mainmenu.total - 1)
+            mainmenu.current++;
+
+        break;
+
+    case SDLK_RETURN:
+        if (mainmenu.items[mainmenu.current].callback)
+            mainmenu.items[mainmenu.current].callback();
+
+        break;
+
+    }
+
+}
+
 int main(int argc, char **argv)
 {
 
@@ -104,7 +136,7 @@ int main(int argc, char **argv)
     if (TTF_Init() < 0)
         return 1;
 
-    display = SDL_SetVideoMode(320, 240, 32, SDL_SWSURFACE | SDL_DOUBLEBUF);
+    display = SDL_SetVideoMode(320, 240, 24, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
     if (!display)
         return 1;
@@ -128,55 +160,33 @@ int main(int argc, char **argv)
     if (!font)
         return 1;
 
+    render();
+
     while (running)
     {
 
         SDL_Event event;
 
-        while (SDL_PollEvent(&event))
+        if (!animating)
+            SDL_WaitEvent(&event);
+        else if (!SDL_PollEvent(&event))
+            continue;
+
+        switch (event.type)
         {
 
-            switch (event.type)
-            {
-
             case SDL_KEYDOWN:
-                switch (event.key.keysym.sym)
-                {
-
-                case SDLK_ESCAPE:
-                    break;
-
-                case SDLK_UP:
-                    if (mainmenu.current > 0)
-                        mainmenu.current--;
-
-                    break;
-
-                case SDLK_DOWN:
-                    if (mainmenu.current < mainmenu.total - 1)
-                        mainmenu.current++;
-
-                    break;
-
-                case SDLK_RETURN:
-                    if (mainmenu.items[mainmenu.current].callback)
-                        mainmenu.items[mainmenu.current].callback();
-
-                    break;
-
-                }
+                handlekeydown(&event);
 
                 break;
 
             case SDL_QUIT:
                 quit();
 
-                break;
-
-            }
+            break;
 
         }
- 
+
         render();
 
     }
