@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Ztore
+Comment=Marketplace
+Exec=ztore
+Terminal=false
+Type=Application
+StartupNotify=true
+Icon=icon
+Categories=applications;
