@@ -135,32 +135,35 @@ void rendermenu()
 {
 
     struct menu *menu = &menus[currentmenu];
-    unsigned int i;
-    unsigned int start = (menu->currentitem / MENU_ROWS) * MENU_ROWS;
-    unsigned int end = (start + MENU_ROWS) > menu->total ? menu->total : start + MENU_ROWS;
+    unsigned int rowstart = (menu->currentitem / MENU_ROWS) * MENU_ROWS;
+    unsigned int rowend = (rowstart + MENU_ROWS) > menu->total ? menu->total : rowstart + MENU_ROWS;
+    unsigned int row;
     SDL_Color color;
 
     color.r = 240;
     color.g = 240;
     color.b = 240;
 
-    for (i = start; i < end; i++)
+    for (row = rowstart; row < rowend; row++)
     {
 
         SDL_Surface *text;
         SDL_Rect rect;
-        unsigned int offx = menu->x;
-        unsigned int offy = menu->y + (i - start) * MENU_ROWHEIGHT;
 
-        if (i == menu->currentitem)
-            rectangleRGBA(display, offx + MENU_PADDING, offy + MENU_PADDING, offx + menu->w - MENU_PADDING - 1, offy + MENU_PADDING + MENU_ROWHEIGHT - 1, 0x60, 0xC0, 0xC0, 0xFF);
+        rect.x = menu->x + MENU_PADDING;
+        rect.y = menu->y + MENU_PADDING + (row - rowstart) * MENU_ROWHEIGHT;
+        rect.w = menu->w - 2 * MENU_PADDING;
+        rect.h = MENU_ROWHEIGHT;
 
-        rect.x = offx + MENU_PADDING + TEXT_XPADDING;
-        rect.y = offy + MENU_PADDING + TEXT_YPADDING;
-        rect.w = offx + menu->w - MENU_PADDING - 1 - TEXT_XPADDING;
-        rect.h = offy + MENU_PADDING + MENU_ROWHEIGHT - 1 - TEXT_YPADDING;
+        if (row == menu->currentitem)
+            rectangleRGBA(display, rect.x, rect.y, rect.x + rect.w - 1, rect.y + rect.h - 1, 0x60, 0xC0, 0xC0, 0xFF);
 
-        text = TTF_RenderText_Solid(font, menu->items[i].name, color);
+        rect.x = rect.x + TEXT_XPADDING;
+        rect.y = rect.y + TEXT_YPADDING;
+        rect.w = rect.w - TEXT_XPADDING;
+        rect.h = rect.h - TEXT_YPADDING;
+
+        text = TTF_RenderText_Solid(font, menu->items[row].name, color);
 
         SDL_BlitSurface(text, NULL, display, &rect);
         SDL_FreeSurface(text);
