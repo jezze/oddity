@@ -2,6 +2,26 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
+#include <SDL/SDL_gfxPrimitives.h>
+
+#define SCREEN_HEIGHT                   240
+#define SCREEN_WIDTH                    320
+#define SCREEN_BPP                      24
+
+#define MENU_PADDING                    16
+
+struct app
+{
+
+    char *name;
+
+};
+
+struct app apps[3] = {
+    {"Deluxe Paint"},
+    {"Photoshop"},
+    {"DOOM"}
+};
 
 struct menuitem
 {
@@ -33,6 +53,8 @@ unsigned int currentstate = 1;
 unsigned int frame;
 unsigned int animating;
 unsigned int currentmenu;
+unsigned int currentoverlay;
+unsigned int currentapp;
 
 void changestate(unsigned int state)
 {
@@ -48,6 +70,14 @@ void menuchange(unsigned int id)
 
 }
 
+void menuapp(unsigned int id)
+{
+
+    currentoverlay = 1;
+    currentapp = id;
+
+}
+
 void menuexit(unsigned int id)
 {
 
@@ -55,25 +85,28 @@ void menuexit(unsigned int id)
 
 }
 
-struct menuitem mainmenuitems[3] = {
-    {"Applications", 1, menuchange},
-    {"Games", 2, menuchange},
+struct menuitem mainmenuitems[32] = {
+    {"Apps", 1, menuchange},
+    {"Store", 2, menuchange},
     {"Exit", 0, menuexit}
 };
 
-struct menuitem applicationsitems[2] = {
-    {"Deluxe Paint", 0, 0},
-    {"Photoshop", 0, 0}
+struct menuitem appsitems[32] = {
+    {"Deluxe paint", 0, menuapp},
+    {"Photoshop", 1, menuapp},
+    {"DOOM", 2, menuapp}
 };
 
-struct menuitem gamesitems[1] = {
-    {"DOOM", 0, 0}
+struct menuitem storeitems[32] = {
+    {"Deluxe paint", 0, 0},
+    {"Photoshop", 1, 0},
+    {"DOOM", 2, 0}
 };
 
-struct menu menus[3] = {
-    {"Main Menu", 0, mainmenuitems, 3, 0, 40, 40},
-    {"Applications", 0, applicationsitems, 2, 0, 40, 40},
-    {"Games", 0, gamesitems, 1, 0, 40, 40}
+struct menu menus[32] = {
+    {"Main Menu", 0, mainmenuitems, 3, 0, 32, 32},
+    {"Apps", 0, appsitems, 3, 0, 32, 32},
+    {"Store", 0, storeitems, 3, 0, 32, 32}
 };
 
 void renderbackground()
@@ -89,8 +122,10 @@ void rendermenu()
 
     struct menu *menu = &menus[currentmenu];
     unsigned int i;
+    unsigned int start = (menu->currentitem / 6) * 6;
+    unsigned int end = (start + 6) > menu->total ? menu->total : start + 6;
 
-    for (i = 0; i < menu->total; i++)
+    for (i = start; i < end; i++)
     {
 
         SDL_Surface *text;
@@ -104,6 +139,8 @@ void rendermenu()
             color.g = 240;
             color.b = 240;
 
+            rectangleRGBA(display, MENU_PADDING, menu->y + (i - start) * 32 - 16 + 8, SCREEN_WIDTH - MENU_PADDING, menu->y + (i - start) * 32 + 32 - 8, 0x60, 0xC0, 0xC0, 0xFF);
+
         }
 
         else
@@ -116,7 +153,7 @@ void rendermenu()
         }
 
         rect.x = menu->x;
-        rect.y = menu->y + i * 20;
+        rect.y = menu->y + (i - start) * 32;
         rect.w = 100;
         rect.h = 100;
 
@@ -182,7 +219,7 @@ int main(int argc, char **argv)
     if (TTF_Init() < 0)
         return 1;
 
-    display = SDL_SetVideoMode(320, 240, 24, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    display = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
     if (!display)
         return 1;
@@ -194,12 +231,12 @@ int main(int argc, char **argv)
     if (!background)
         return 1;
 
-    blur = SDL_CreateRGBSurface(0, 320, 240, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+    blur = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
 
     if (!blur)
         return 1;
 
-    SDL_FillRect(blur, NULL, 0xC0000000);
+    SDL_FillRect(blur, NULL, SDL_MapRGBA(blur->format, 0x00, 0x00, 0x00, 0xE0));
 
     font = TTF_OpenFont("habbo.ttf", 16);
 
