@@ -7,8 +7,11 @@
 #define SCREEN_HEIGHT                   240
 #define SCREEN_WIDTH                    320
 #define SCREEN_BPP                      24
-
-#define MENU_PADDING                    16
+#define MENU_PADDING                    24
+#define MENU_ROWS                       8
+#define MENU_ROWHEIGHT                  24
+#define TEXT_XPADDING                   16
+#define TEXT_YPADDING                   4
 
 struct app
 {
@@ -42,6 +45,8 @@ struct menu
     unsigned int currentitem;
     unsigned int x;
     unsigned int y;
+    unsigned int w;
+    unsigned int h;
 
 };
 
@@ -100,13 +105,22 @@ struct menuitem appsitems[32] = {
 struct menuitem storeitems[32] = {
     {"Deluxe paint", 0, 0},
     {"Photoshop", 1, 0},
+    {"Deluxe paint", 0, 0},
+    {"Photoshop", 1, 0},
+    {"Deluxe paint", 0, 0},
+    {"Photoshop", 1, 0},
+    {"Deluxe paint", 0, 0},
+    {"Photoshop", 1, 0},
+    {"Deluxe paint", 0, 0},
+    {"Photoshop", 1, 0},
+    {"Deluxe paint", 0, 0},
     {"DOOM", 2, 0}
 };
 
 struct menu menus[32] = {
-    {"Main Menu", 0, mainmenuitems, 3, 0, 32, 32},
-    {"Apps", 0, appsitems, 3, 0, 32, 32},
-    {"Store", 0, storeitems, 3, 0, 32, 32}
+    {"Main Menu", 0, mainmenuitems, 3, 0, 0, 112, 320, 128},
+    {"Apps", 0, appsitems, 3, 0, 0, 0, 320, 240},
+    {"Store", 0, storeitems, 12, 0, 0, 0, 320, 240}
 };
 
 void renderbackground()
@@ -122,40 +136,29 @@ void rendermenu()
 
     struct menu *menu = &menus[currentmenu];
     unsigned int i;
-    unsigned int start = (menu->currentitem / 6) * 6;
-    unsigned int end = (start + 6) > menu->total ? menu->total : start + 6;
+    unsigned int start = (menu->currentitem / MENU_ROWS) * MENU_ROWS;
+    unsigned int end = (start + MENU_ROWS) > menu->total ? menu->total : start + MENU_ROWS;
+    SDL_Color color;
+
+    color.r = 240;
+    color.g = 240;
+    color.b = 240;
 
     for (i = start; i < end; i++)
     {
 
         SDL_Surface *text;
-        SDL_Color color;
         SDL_Rect rect;
+        unsigned int offx = menu->x;
+        unsigned int offy = menu->y + (i - start) * MENU_ROWHEIGHT;
 
         if (i == menu->currentitem)
-        {
+            rectangleRGBA(display, offx + MENU_PADDING, offy + MENU_PADDING, offx + menu->w - MENU_PADDING - 1, offy + MENU_PADDING + MENU_ROWHEIGHT - 1, 0x60, 0xC0, 0xC0, 0xFF);
 
-            color.r = 240;
-            color.g = 240;
-            color.b = 240;
-
-            rectangleRGBA(display, MENU_PADDING, menu->y + (i - start) * 32 - 16 + 8, SCREEN_WIDTH - MENU_PADDING, menu->y + (i - start) * 32 + 32 - 8, 0x60, 0xC0, 0xC0, 0xFF);
-
-        }
-
-        else
-        {
-
-            color.r = 160;
-            color.g = 160;
-            color.b = 160;
-
-        }
-
-        rect.x = menu->x;
-        rect.y = menu->y + (i - start) * 32;
-        rect.w = 100;
-        rect.h = 100;
+        rect.x = offx + MENU_PADDING + TEXT_XPADDING;
+        rect.y = offy + MENU_PADDING + TEXT_YPADDING;
+        rect.w = offx + menu->w - MENU_PADDING - 1 - TEXT_XPADDING;
+        rect.h = offy + MENU_PADDING + MENU_ROWHEIGHT - 1 - TEXT_YPADDING;
 
         text = TTF_RenderText_Solid(font, menu->items[i].name, color);
 
