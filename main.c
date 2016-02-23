@@ -147,7 +147,7 @@ void rendermenu()
     for (row = rowstart; row < rowend; row++)
     {
 
-        SDL_Surface *text;
+        SDL_Surface *text = TTF_RenderText_Solid(font, menu->items[row].name, color);
         SDL_Rect rect;
 
         rect.x = menu->x + MENU_PADDING;
@@ -162,8 +162,6 @@ void rendermenu()
         rect.y = rect.y + TEXT_YPADDING;
         rect.w = rect.w - TEXT_XPADDING;
         rect.h = rect.h - TEXT_YPADDING;
-
-        text = TTF_RenderText_Solid(font, menu->items[row].name, color);
 
         SDL_BlitSurface(text, NULL, display, &rect);
         SDL_FreeSurface(text);
