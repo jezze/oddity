@@ -118,7 +118,7 @@ struct menuitem storeitems[32] = {
 };
 
 struct menu menus[32] = {
-    {"Main Menu", 0, mainmenuitems, 3, 0, 0, 112, 320, 128},
+    {"Main Menu", 0, mainmenuitems, 3, 0, 0, 120, 320, 120},
     {"Apps", 0, appsitems, 3, 0, 0, 0, 320, 240},
     {"Store", 0, storeitems, 12, 0, 0, 0, 320, 240}
 };
