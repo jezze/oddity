@@ -214,34 +214,34 @@ int main(int argc, char **argv)
 {
 
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-        return 1;
+        exit(EXIT_FAILURE);
 
     if (TTF_Init() < 0)
-        return 1;
+        exit(EXIT_FAILURE);
 
     display = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
     if (!display)
-        return 1;
+        exit(EXIT_FAILURE);
 
     SDL_ShowCursor(0);
 
     background = IMG_Load("back.png");
 
     if (!background)
-        return 1;
+        exit(EXIT_FAILURE);
 
     blur = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
 
     if (!blur)
-        return 1;
+        exit(EXIT_FAILURE);
 
     SDL_FillRect(blur, NULL, SDL_MapRGBA(blur->format, 0x00, 0x00, 0x00, 0xE0));
 
     font = TTF_OpenFont("habbo.ttf", 16);
 
     if (!font)
-        return 1;
+        exit(EXIT_FAILURE);
 
     render();
 
@@ -255,13 +255,13 @@ int main(int argc, char **argv)
         switch (event.type)
         {
 
-            case SDL_KEYDOWN:
-                handlekeydown(&event);
+        case SDL_KEYDOWN:
+            handlekeydown(&event);
 
-                break;
+            break;
 
-            case SDL_QUIT:
-                changestate(0);
+        case SDL_QUIT:
+            changestate(0);
 
             break;
 
