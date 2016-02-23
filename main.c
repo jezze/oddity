@@ -55,8 +55,6 @@ SDL_Surface *background;
 SDL_Surface *blur;
 TTF_Font *font;
 unsigned int currentstate = 1;
-unsigned int frame;
-unsigned int animating;
 unsigned int currentmenu;
 unsigned int currentoverlay;
 unsigned int currentapp;
@@ -177,8 +175,6 @@ void render()
     rendermenu();
     SDL_Flip(display);
 
-    frame++;
-
 }
 
 void handlekeydown(SDL_Event *event)
@@ -254,10 +250,7 @@ int main(int argc, char **argv)
 
         SDL_Event event;
 
-        if (!animating)
-            SDL_WaitEvent(&event);
-        else if (!SDL_PollEvent(&event))
-            continue;
+        SDL_WaitEvent(&event);
 
         switch (event.type)
         {
