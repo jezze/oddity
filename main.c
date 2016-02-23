@@ -10,7 +10,7 @@
 #define MENU_PADDING                    24
 #define MENU_ROWS                       8
 #define MENU_ROWHEIGHT                  24
-#define TEXT_XPADDING                   16
+#define TEXT_XPADDING                   12
 #define TEXT_YPADDING                   4
 
 struct app
