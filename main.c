@@ -133,7 +133,8 @@ void rendermenu()
 {
 
     struct menu *menu = &menus[currentmenu];
-    unsigned int rowstart = (menu->currentitem / MENU_ROWS) * MENU_ROWS;
+    unsigned int rowpage = (menu->currentitem / MENU_ROWS);
+    unsigned int rowstart = rowpage * MENU_ROWS;
     unsigned int rowend = (rowstart + MENU_ROWS) > menu->total ? menu->total : rowstart + MENU_ROWS;
     unsigned int row;
     SDL_Color color;
@@ -181,10 +182,11 @@ void handlekeydown(SDL_Event *event)
 {
 
     struct menu *menu = &menus[currentmenu];
-    unsigned int rowstart = (menu->currentitem / MENU_ROWS) * MENU_ROWS;
-    unsigned int rowend = (rowstart + MENU_ROWS) > menu->total ? menu->total : rowstart + MENU_ROWS;
-    unsigned int rowtotal = rowend - rowstart;
+    unsigned int rowpage = (menu->currentitem / MENU_ROWS);
+    unsigned int rowpagetotal = (menu->total / MENU_ROWS) + 1;
+    unsigned int rowstart = rowpage * MENU_ROWS;
     unsigned int rowoffset = menu->currentitem - rowstart;
+    unsigned int rowtotal;
 
     switch (event->key.keysym.sym)
     {
@@ -205,17 +207,17 @@ void handlekeydown(SDL_Event *event)
         break;
 
     case SDLK_LEFT:
-        rowstart = ((((menu->total + rowstart - 1) % menu->total)) / MENU_ROWS) * MENU_ROWS;
-        rowend = (rowstart + MENU_ROWS) > menu->total ? menu->total : rowstart + MENU_ROWS;
-        rowtotal = rowend - rowstart;
+        rowpage = (rowpagetotal + rowpage - 1) % rowpagetotal;
+        rowstart = rowpage * MENU_ROWS;
+        rowtotal = (menu->total - rowstart) % MENU_ROWS;
         menu->currentitem = rowstart + ((rowoffset >= rowtotal) ? rowtotal - 1 : rowoffset);
 
         break;
 
     case SDLK_RIGHT:
-        rowstart = ((((menu->total + rowstart + rowtotal) % menu->total)) / MENU_ROWS) * MENU_ROWS;
-        rowend = (rowstart + MENU_ROWS) > menu->total ? menu->total : rowstart + MENU_ROWS;
-        rowtotal = rowend - rowstart;
+        rowpage = (rowpagetotal + rowpage + 1) % rowpagetotal;
+        rowstart = rowpage * MENU_ROWS;
+        rowtotal = (menu->total - rowstart) % MENU_ROWS;
         menu->currentitem = rowstart + ((rowoffset >= rowtotal) ? rowtotal - 1 : rowoffset);
 
         break;
