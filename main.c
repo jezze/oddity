@@ -195,8 +195,18 @@ void handlekeydown(SDL_Event *event)
 
         break;
 
+    case SDLK_LEFT:
+        menu->currentitem = (menu->currentitem > 7) ? menu->currentitem - 8 : 0;
+
+        break;
+
     case SDLK_DOWN:
         menu->currentitem = (menu->currentitem < menu->total - 1) ? menu->currentitem + 1 : 0;
+
+        break;
+
+    case SDLK_RIGHT:
+        menu->currentitem = (menu->currentitem + 8 < menu->total - 1) ? menu->currentitem + 8 : menu->total - 1;
 
         break;
 
