@@ -40,7 +40,6 @@ struct menuitem
 struct menu
 {
 
-    char *name;
     unsigned int parentmenu;
     struct menuitem *items;
     unsigned int total;
@@ -79,15 +78,15 @@ void menuexit(unsigned int id)
 
 struct menuitem mainmenuitems[32] = {
     {"Apps", 1, MENUITEM_TYPE_NORMAL, menuchange},
-    {"Market", 2, MENUITEM_TYPE_NORMAL, menuchange},
+    {"Browse", 2, MENUITEM_TYPE_NORMAL, menuchange},
     {"Downloads", 0, MENUITEM_TYPE_BLOCKED, menuchange},
     {"Exit", 0, MENUITEM_TYPE_NORMAL, menuexit}
 };
 
 struct menu menus[32] = {
-    {"Main Menu", 0, mainmenuitems, 4, 0, {0, 96, 320, 144}},
-    {"Apps", 0, 0, 0, 0, {0, 0, 320, 240}},
-    {"Market", 0, 0, 0, 0, {0, 0, 320, 240}}
+    {0, mainmenuitems, 4, 0, {0, 96, 320, 144}},
+    {0, 0, 0, 0, {0, 0, 320, 240}},
+    {0, 0, 0, 0, {0, 0, 320, 240}}
 };
 
 void renderbackground()
@@ -98,10 +97,9 @@ void renderbackground()
 
 }
 
-void rendermenu()
+void rendermenu(struct menu *menu)
 {
 
-    struct menu *menu = &menus[currentmenu];
     unsigned int rowpage = (menu->currentitem / MENU_ROWS);
     unsigned int rowstart = rowpage * MENU_ROWS;
     unsigned int rowend = (rowstart + MENU_ROWS) > menu->total ? menu->total : rowstart + MENU_ROWS;
@@ -157,7 +155,7 @@ void render()
 {
 
     renderbackground();
-    rendermenu();
+    rendermenu(&menus[currentmenu]);
     SDL_Flip(display);
 
 }
@@ -216,7 +214,7 @@ void handlekeydown(SDL_Event *event)
 
 }
 
-void loadapps()
+void loadapps(struct menu *menu, char *name)
 {
 
     sqlite3 *db;
@@ -224,9 +222,8 @@ void loadapps()
     unsigned int count;
     unsigned int i;
     int rc;
-    struct menu *menu = &menus[1];
 
-    rc = sqlite3_open("db/official.db", &db);
+    rc = sqlite3_open(name, &db);
 
     if (rc != SQLITE_OK)
     {
@@ -326,7 +323,8 @@ int main(int argc, char **argv)
     if (!font)
         exit(EXIT_FAILURE);
 
-    loadapps();
+    loadapps(&menus[1], "db/apps.db");
+    loadapps(&menus[2], "db/official.db");
     render();
 
     while (currentstate)
