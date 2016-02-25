@@ -12,20 +12,19 @@
 #define MENU_PADDING                    24
 #define MENU_ROWS                       8
 #define MENU_ROWHEIGHT                  24
+#define MENUITEM_TYPE_NORMAL            0
+#define MENUITEM_TYPE_BLOCKED           1
 #define TEXT_XPADDING                   12
 #define TEXT_YPADDING                   4
 
-struct app
+struct box
 {
 
-    char *name;
+    unsigned int x;
+    unsigned int y;
+    unsigned int w;
+    unsigned int h;
 
-};
-
-struct app apps[3] = {
-    {"Deluxe Paint"},
-    {"Photoshop"},
-    {"DOOM"}
 };
 
 struct menuitem
@@ -33,6 +32,7 @@ struct menuitem
 
     char *name;
     unsigned int id;
+    unsigned int type;
     void (*callback)(unsigned int id);
 
 };
@@ -45,10 +45,7 @@ struct menu
     struct menuitem *items;
     unsigned int total;
     unsigned int currentitem;
-    unsigned int x;
-    unsigned int y;
-    unsigned int w;
-    unsigned int h;
+    struct box box;
 
 };
 
@@ -58,8 +55,6 @@ SDL_Surface *blur;
 TTF_Font *font;
 unsigned int currentstate = 1;
 unsigned int currentmenu;
-unsigned int currentoverlay;
-unsigned int currentapp;
 
 void changestate(unsigned int state)
 {
@@ -75,14 +70,6 @@ void menuchange(unsigned int id)
 
 }
 
-void menuapp(unsigned int id)
-{
-
-    currentoverlay = 1;
-    currentapp = id;
-
-}
-
 void menuexit(unsigned int id)
 {
 
@@ -91,30 +78,16 @@ void menuexit(unsigned int id)
 }
 
 struct menuitem mainmenuitems[32] = {
-    {"Apps", 1, menuchange},
-    {"Store", 2, menuchange},
-    {"Exit", 0, menuexit}
-};
-
-struct menuitem storeitems[32] = {
-    {"Deluxe paint", 0, 0},
-    {"Photoshop", 1, 0},
-    {"Deluxe paint", 0, 0},
-    {"Photoshop", 1, 0},
-    {"Deluxe paint", 0, 0},
-    {"Photoshop", 1, 0},
-    {"Deluxe paint", 0, 0},
-    {"Photoshop", 1, 0},
-    {"Deluxe paint", 0, 0},
-    {"Photoshop", 1, 0},
-    {"Deluxe paint", 0, 0},
-    {"DOOM", 2, 0}
+    {"Apps", 1, MENUITEM_TYPE_NORMAL, menuchange},
+    {"Market", 2, MENUITEM_TYPE_NORMAL, menuchange},
+    {"Downloads", 0, MENUITEM_TYPE_BLOCKED, menuchange},
+    {"Exit", 0, MENUITEM_TYPE_NORMAL, menuexit}
 };
 
 struct menu menus[32] = {
-    {"Main Menu", 0, mainmenuitems, 3, 0, 0, 120, 320, 120},
-    {"Apps", 0, 0, 0, 0, 0, 0, 320, 240},
-    {"Store", 0, storeitems, 12, 0, 0, 0, 320, 240}
+    {"Main Menu", 0, mainmenuitems, 4, 0, {0, 96, 320, 144}},
+    {"Apps", 0, 0, 0, 0, {0, 0, 320, 240}},
+    {"Market", 0, 0, 0, 0, {0, 0, 320, 240}}
 };
 
 void renderbackground()
@@ -135,19 +108,34 @@ void rendermenu()
     unsigned int row;
     SDL_Color color;
 
-    color.r = 240;
-    color.g = 240;
-    color.b = 240;
-
     for (row = rowstart; row < rowend; row++)
     {
 
-        SDL_Surface *text = TTF_RenderText_Solid(font, menu->items[row].name, color);
+        SDL_Surface *text;
         SDL_Rect rect;
 
-        rect.x = menu->x + MENU_PADDING;
-        rect.y = menu->y + MENU_PADDING + (row - rowstart) * MENU_ROWHEIGHT;
-        rect.w = menu->w - 2 * MENU_PADDING;
+        if (menu->items[row].type == MENUITEM_TYPE_BLOCKED)
+        {
+
+            color.r = 120;
+            color.g = 120;
+            color.b = 120;
+
+        }
+
+        else
+        {
+
+            color.r = 240;
+            color.g = 240;
+            color.b = 240;
+
+        }
+
+        text = TTF_RenderText_Solid(font, menu->items[row].name, color);
+        rect.x = menu->box.x + MENU_PADDING;
+        rect.y = menu->box.y + MENU_PADDING + (row - rowstart) * MENU_ROWHEIGHT;
+        rect.w = menu->box.w - 2 * MENU_PADDING;
         rect.h = MENU_ROWHEIGHT;
 
         if (row == menu->currentitem)
@@ -295,6 +283,7 @@ void loadapps()
 
         menu->items[i].name = strdup(name);
         menu->items[i].id = 0;
+        menu->items[i].type = MENUITEM_TYPE_NORMAL;
         menu->items[i].callback = 0;
 
     }
