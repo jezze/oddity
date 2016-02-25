@@ -96,8 +96,6 @@ struct menuitem mainmenuitems[32] = {
     {"Exit", 0, menuexit}
 };
 
-struct menuitem appsitems[32];
-
 struct menuitem storeitems[32] = {
     {"Deluxe paint", 0, 0},
     {"Photoshop", 1, 0},
@@ -115,7 +113,7 @@ struct menuitem storeitems[32] = {
 
 struct menu menus[32] = {
     {"Main Menu", 0, mainmenuitems, 3, 0, 0, 120, 320, 120},
-    {"Apps", 0, appsitems, 3, 0, 0, 0, 320, 240},
+    {"Apps", 0, 0, 0, 0, 0, 0, 320, 240},
     {"Store", 0, storeitems, 12, 0, 0, 0, 320, 240}
 };
 
@@ -238,6 +236,7 @@ void loadapps()
 
     int rc = sqlite3_open("db/official.db", &db);
     unsigned int i;
+    unsigned int count;
 
     if (rc != SQLITE_OK)
     {
@@ -248,7 +247,7 @@ void loadapps()
 
     }
 
-    rc = sqlite3_prepare_v2(db, "SELECT name FROM apps LIMIT 8", -1, &res, 0);
+    rc = sqlite3_prepare_v2(db, "SELECT COUNT(*) FROM apps", -1, &res, 0);
 
     if (rc != SQLITE_OK)
     {
@@ -259,20 +258,34 @@ void loadapps()
 
     }
 
-    i = 0;
+    rc = sqlite3_step(res);
+
+    count = sqlite3_column_int(res, 0);
+
+    menus[1].items = malloc(sizeof (struct menuitem) * count);
+
+    rc = sqlite3_prepare_v2(db, "SELECT name FROM apps ORDER BY name", -1, &res, 0);
+
+    if (rc != SQLITE_OK)
+    {
+
+        sqlite3_close(db);
+
+        return;
+
+    }
+
     menus[1].total = 0;
 
-    while ((rc = sqlite3_step(res)) == SQLITE_ROW)
+    for (i = 0; (rc = sqlite3_step(res)) == SQLITE_ROW; i++)
     {
 
         const char *name = sqlite3_column_text(res, 0);
 
-        appsitems[i].name = strdup(name);
-        appsitems[i].id = 0;
-        appsitems[i].callback = 0;
+        menus[1].items[i].name = strdup(name);
+        menus[1].items[i].id = 0;
+        menus[1].items[i].callback = 0;
         menus[1].total++;
-
-        i++;
 
     }
 
