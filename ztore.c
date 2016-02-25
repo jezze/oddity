@@ -233,10 +233,12 @@ void loadapps()
 
     sqlite3 *db;
     sqlite3_stmt *res;
-
-    int rc = sqlite3_open("db/official.db", &db);
-    unsigned int i;
     unsigned int count;
+    unsigned int i;
+    int rc;
+    struct menu *menu = &menus[1];
+
+    rc = sqlite3_open("db/official.db", &db);
 
     if (rc != SQLITE_OK)
     {
@@ -260,10 +262,20 @@ void loadapps()
 
     rc = sqlite3_step(res);
 
-    menus[1].total = sqlite3_column_int(res, 0);
-    menus[1].items = malloc(sizeof (struct menuitem) * menus[1].total);
+    menu->total = sqlite3_column_int(res, 0);
 
     sqlite3_finalize(res);
+
+    menu->items = malloc(sizeof (struct menuitem) * menu->total);
+
+    if (!menu->items)
+    {
+
+        sqlite3_close(db);
+
+        return;
+
+    }
 
     rc = sqlite3_prepare_v2(db, "SELECT name FROM apps ORDER BY name", -1, &res, 0);
 
@@ -281,9 +293,9 @@ void loadapps()
 
         const char *name = sqlite3_column_text(res, 0);
 
-        menus[1].items[i].name = strdup(name);
-        menus[1].items[i].id = 0;
-        menus[1].items[i].callback = 0;
+        menu->items[i].name = strdup(name);
+        menu->items[i].id = 0;
+        menu->items[i].callback = 0;
 
     }
 
