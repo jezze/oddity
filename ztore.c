@@ -4,6 +4,7 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL_gfxPrimitives.h>
+#include <sqlite3.h>
 
 #define SCREEN_HEIGHT                   240
 #define SCREEN_WIDTH                    320
@@ -95,11 +96,7 @@ struct menuitem mainmenuitems[32] = {
     {"Exit", 0, menuexit}
 };
 
-struct menuitem appsitems[32] = {
-    {"Deluxe paint", 0, menuapp},
-    {"Photoshop", 1, menuapp},
-    {"DOOM", 2, menuapp}
-};
+struct menuitem appsitems[32];
 
 struct menuitem storeitems[32] = {
     {"Deluxe paint", 0, 0},
@@ -233,6 +230,57 @@ void handlekeydown(SDL_Event *event)
 
 }
 
+void loadapps()
+{
+
+    sqlite3 *db;
+    sqlite3_stmt *res;
+
+    int rc = sqlite3_open("db/official.db", &db);
+    unsigned int i;
+
+    if (rc != SQLITE_OK)
+    {
+
+        sqlite3_close(db);
+
+        return;
+
+    }
+
+    rc = sqlite3_prepare_v2(db, "SELECT name FROM apps LIMIT 8", -1, &res, 0);
+
+    if (rc != SQLITE_OK)
+    {
+
+        sqlite3_close(db);
+
+        return;
+
+    }
+
+    i = 0;
+    menus[1].total = 0;
+
+    while ((rc = sqlite3_step(res)) == SQLITE_ROW)
+    {
+
+        const char *name = sqlite3_column_text(res, 0);
+
+        appsitems[i].name = strdup(name);
+        appsitems[i].id = 0;
+        appsitems[i].callback = 0;
+        menus[1].total++;
+
+        i++;
+
+    }
+
+    sqlite3_finalize(res);
+    sqlite3_close(db);
+
+}
+
 int main(int argc, char **argv)
 {
 
@@ -266,6 +314,7 @@ int main(int argc, char **argv)
     if (!font)
         exit(EXIT_FAILURE);
 
+    loadapps();
     render();
 
     while (currentstate)
