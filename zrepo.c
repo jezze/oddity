@@ -2,52 +2,64 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
-#include "tpl.h"
 
 struct app
 {
 
-    char *name;
+    char name[64];
 
 };
 
-void app_store(struct app *app)
+void app_init(struct app *app, char *name)
 {
 
-    struct tpl_node *node = tpl_map("A(S(s))", app);
-
-    tpl_pack(node, 1);
-    tpl_pack(node, 1);
-    tpl_pack(node, 1);
-    tpl_pack(node, 1);
-    tpl_dump(node, TPL_FILE, "apps.zrepo");
-    tpl_free(node);
+    strncpy(app->name, name, 64);
 
 }
 
-void handle_add()
+void handle_add(int argc, char **argv)
 {
 
+    FILE *db;
     struct app item;
 
-    item.name = "demo";
+    if (argc < 3)
+        return;
 
-    app_store(&item);
+    db = fopen("apps.zrepo", "ab");
+
+    if (!db)
+        return;
+
+    app_init(&item, argv[2]);
+    fwrite(&item, sizeof (struct app), 1, db);
+    fclose(db);
 
 }
 
-void handle_list()
+void handle_list(int argc, char **argv)
 {
 
-    struct app item;
-    struct tpl_node *node = tpl_map("A(S(s))", &item);
+    FILE *db;
+    struct app items[8];
+    unsigned int count;
 
-    tpl_load(node, TPL_FILE, "apps.zrepo");
+    db = fopen("apps.zrepo", "rb");
 
-    while (tpl_unpack(node, 1) > 0)
-        fprintf(stdout, "Name: %s\n", item.name);
+    if (!db)
+        return;
 
-    tpl_free(node);
+    while (count = fread(items, sizeof (struct app), 8, db))
+    {
+
+        unsigned int i;
+
+        for (i = 0; i < count; i++)
+            fprintf(stdout, "Name: %s\n", items[i].name);
+
+    }
+
+    fclose(db);
 
 }
 
@@ -64,10 +76,10 @@ int main(int argc, char **argv)
     }
 
     if (!strcmp(argv[1], "add"))
-        handle_add();
+        handle_add(argc, argv);
 
     if (!strcmp(argv[1], "list"))
-        handle_list();
+        handle_list(argc, argv);
 
     return 0;
 

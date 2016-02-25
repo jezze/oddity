@@ -2,10 +2,10 @@ include rules.cross
 
 all: ztore.opk
 
-opk/ztore: ztore.c tpl.c
+opk/ztore: ztore.c
 	$(CC) -o $@ `$(SDLCONFIG) --cflags --libs` -lSDL_image -lSDL_ttf -lSDL_gfx $^
 
-opk/zrepo: zrepo.c tpl.c
+opk/zrepo: zrepo.c
 	$(CC) -o $@ `$(SDLCONFIG) --cflags --libs` -lSDL_image -lSDL_ttf -lSDL_gfx $^
 
 ztore.opk: opk/ztore opk/zrepo

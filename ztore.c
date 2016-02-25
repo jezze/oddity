@@ -4,7 +4,6 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL_gfxPrimitives.h>
-#include "tpl.h"
 
 #define SCREEN_HEIGHT                   240
 #define SCREEN_WIDTH                    320
