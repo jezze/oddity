@@ -1,3 +1,5 @@
+SDLCONFIG=sdl-config
+
 include rules.cross
 
 all: ztore.opk
