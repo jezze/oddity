@@ -263,6 +263,8 @@ void loadapps()
     menus[1].total = sqlite3_column_int(res, 0);
     menus[1].items = malloc(sizeof (struct menuitem) * menus[1].total);
 
+    sqlite3_finalize(res);
+
     rc = sqlite3_prepare_v2(db, "SELECT name FROM apps ORDER BY name", -1, &res, 0);
 
     if (rc != SQLITE_OK)
