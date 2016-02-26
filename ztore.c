@@ -10,7 +10,6 @@
 #define SCREEN_WIDTH                    320
 #define SCREEN_BPP                      24
 #define MENU_PADDING                    24
-#define MENU_ROWS                       8
 #define MENU_ROWHEIGHT                  24
 #define MENUITEM_TYPE_NORMAL            0
 #define MENUITEM_TYPE_BLOCKED           1
@@ -116,10 +115,11 @@ void menu_prevrow(struct menu *menu)
 void menu_nextpage(struct menu *menu)
 {
 
-    unsigned int pagetotal = (menu->total / MENU_ROWS) + 1;
-    unsigned int pageoffset = (pagetotal + (menu->currentitem / MENU_ROWS) + 1) % pagetotal;
-    unsigned int rowoffset = menu->currentitem % MENU_ROWS;
-    unsigned int rowstart = pageoffset * MENU_ROWS;
+    unsigned int pagerows = (menu->box.h - 2 * MENU_PADDING) / MENU_ROWHEIGHT;
+    unsigned int pagetotal = (menu->total / pagerows) + 1;
+    unsigned int pageoffset = (pagetotal + (menu->currentitem / pagerows) + 1) % pagetotal;
+    unsigned int rowoffset = menu->currentitem % pagerows;
+    unsigned int rowstart = pageoffset * pagerows;
     unsigned int rowtotal = (menu->total - rowstart);
 
     menu->currentitem = rowstart + ((rowtotal <= rowoffset) ? rowtotal - 1 : rowoffset);
@@ -129,10 +129,11 @@ void menu_nextpage(struct menu *menu)
 void menu_prevpage(struct menu *menu)
 {
 
-    unsigned int pagetotal = (menu->total / MENU_ROWS) + 1;
-    unsigned int pageoffset = (pagetotal + (menu->currentitem / MENU_ROWS) - 1) % pagetotal;
-    unsigned int rowoffset = menu->currentitem % MENU_ROWS;
-    unsigned int rowstart = pageoffset * MENU_ROWS;
+    unsigned int pagerows = (menu->box.h - 2 * MENU_PADDING) / MENU_ROWHEIGHT;
+    unsigned int pagetotal = (menu->total / pagerows) + 1;
+    unsigned int pageoffset = (pagetotal + (menu->currentitem / pagerows) - 1) % pagetotal;
+    unsigned int rowoffset = menu->currentitem % pagerows;
+    unsigned int rowstart = pageoffset * pagerows;
     unsigned int rowtotal = (menu->total - rowstart);
 
     menu->currentitem = rowstart + ((rowtotal <= rowoffset) ? rowtotal - 1 : rowoffset);
@@ -150,9 +151,10 @@ void renderbackground()
 void rendermenu(struct menu *menu)
 {
 
-    unsigned int page = (menu->currentitem / MENU_ROWS);
-    unsigned int rowstart = page * MENU_ROWS;
-    unsigned int rowend = (rowstart + MENU_ROWS) > menu->total ? menu->total : rowstart + MENU_ROWS;
+    unsigned int pagerows = (menu->box.h - 2 * MENU_PADDING) / MENU_ROWHEIGHT;
+    unsigned int page = (menu->currentitem / pagerows);
+    unsigned int rowstart = page * pagerows;
+    unsigned int rowend = (rowstart + pagerows) > menu->total ? menu->total : rowstart + pagerows;
     unsigned int row;
     SDL_Color color;
 
