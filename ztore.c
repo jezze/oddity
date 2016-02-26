@@ -6,8 +6,8 @@
 #include <SDL/SDL_gfxPrimitives.h>
 #include <sqlite3.h>
 
-#define SCREEN_HEIGHT                   240
 #define SCREEN_WIDTH                    320
+#define SCREEN_HEIGHT                   240
 #define SCREEN_BPP                      24
 #define MENU_PADDING                    24
 #define MENU_ROWHEIGHT                  24
