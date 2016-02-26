@@ -397,11 +397,6 @@ void apps_handlekey(unsigned int keysym)
 
         break;
 
-    case SDLK_RETURN:
-        front.handleevent(menuitem->id);
-
-        break;
-
     }
 
 }
@@ -458,11 +453,6 @@ void browse_handlekey(unsigned int keysym)
 
     case SDLK_RIGHT:
         menu_nextpage(menu);
-
-        break;
-
-    case SDLK_RETURN:
-        front.handleevent(menuitem->id);
 
         break;
 
