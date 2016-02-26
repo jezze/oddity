@@ -26,10 +26,17 @@ struct box
 
 };
 
+struct text
+{
+
+    char *content;
+
+};
+
 struct menuitem
 {
 
-    char *name;
+    struct text text;
     unsigned int id;
     unsigned int type;
 
@@ -148,6 +155,51 @@ void renderbackground()
 
 }
 
+void rendertext(struct text *text, SDL_Rect rect, SDL_Color color)
+{
+
+    SDL_Surface *surface = TTF_RenderText_Solid(font, text->content, color);
+
+    rect.x = rect.x + TEXT_XPADDING;
+    rect.y = rect.y + TEXT_YPADDING;
+    rect.w = rect.w - TEXT_XPADDING;
+    rect.h = rect.h - TEXT_YPADDING;
+
+    SDL_BlitSurface(surface, NULL, display, &rect);
+    SDL_FreeSurface(surface);
+
+}
+
+void rendermenuitem(struct menuitem *menuitem, SDL_Rect rect, unsigned int active)
+{
+
+    SDL_Color color;
+
+    if (menuitem->type == MENUITEM_TYPE_BLOCKED)
+    {
+
+        color.r = 120;
+        color.g = 120;
+        color.b = 120;
+
+    }
+
+    else
+    {
+
+        color.r = 240;
+        color.g = 240;
+        color.b = 240;
+
+    }
+
+    if (active)
+        rectangleRGBA(display, rect.x, rect.y, rect.x + rect.w - 1, rect.y + rect.h - 1, 0x60, 0xC0, 0xC0, 0xFF);
+
+    rendertext(&menuitem->text, rect, color);
+
+}
+
 void rendermenu(struct menu *menu)
 {
 
@@ -156,48 +208,18 @@ void rendermenu(struct menu *menu)
     unsigned int rowstart = page * pagerows;
     unsigned int rowend = (rowstart + pagerows) > menu->total ? menu->total : rowstart + pagerows;
     unsigned int row;
-    SDL_Color color;
 
     for (row = rowstart; row < rowend; row++)
     {
 
-        SDL_Surface *text;
         SDL_Rect rect;
 
-        if (menu->items[row].type == MENUITEM_TYPE_BLOCKED)
-        {
-
-            color.r = 120;
-            color.g = 120;
-            color.b = 120;
-
-        }
-
-        else
-        {
-
-            color.r = 240;
-            color.g = 240;
-            color.b = 240;
-
-        }
-
-        text = TTF_RenderText_Solid(font, menu->items[row].name, color);
         rect.x = menu->box.x + MENU_PADDING;
         rect.y = menu->box.y + MENU_PADDING + (row - rowstart) * MENU_ROWHEIGHT;
         rect.w = menu->box.w - 2 * MENU_PADDING;
         rect.h = MENU_ROWHEIGHT;
 
-        if (row == menu->currentitem)
-            rectangleRGBA(display, rect.x, rect.y, rect.x + rect.w - 1, rect.y + rect.h - 1, 0x60, 0xC0, 0xC0, 0xFF);
-
-        rect.x = rect.x + TEXT_XPADDING;
-        rect.y = rect.y + TEXT_YPADDING;
-        rect.w = rect.w - TEXT_XPADDING;
-        rect.h = rect.h - TEXT_YPADDING;
-
-        SDL_BlitSurface(text, NULL, display, &rect);
-        SDL_FreeSurface(text);
+        rendermenuitem(&menu->items[row], rect, row == menu->currentitem);
 
     }
 
@@ -267,7 +289,7 @@ void loadapps(struct menu *menu, char *name)
 
         const char *name = sqlite3_column_text(res, 0);
 
-        menu->items[i].name = strdup(name);
+        menu->items[i].text.content = strdup(name);
         menu->items[i].id = 0;
         menu->items[i].type = MENUITEM_TYPE_NORMAL;
 
