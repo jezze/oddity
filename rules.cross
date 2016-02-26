@@ -1,8 +1,3 @@
-BUILDROOT=/home/jfu/gcw/buildroot
-BUILDROOT_HOST=$(BUILDROOT)/output/host
-BUILDROOT_HOST_BIN=$(BUILDROOT_HOST)/usr/bin
-BUILDROOT_STAGING=$(BUILDROOT)/output/staging
-BUILDROOT_STAGING_BIN=$(BUILDROOT_STAGING)/usr/bin
-CROSS_COMPILE=$(BUILDROOT_HOST_BIN)/mipsel-linux-
-SDLCONFIG=$(BUILDROOT_STAGING_BIN)/sdl-config
-CC=$(CROSS_COMPILE)gcc
+BUILDROOT=/home/jfu/gcw/buildroot/output/host
+CC=$(BUILDROOT)/usr/bin/mipsel-linux-gcc
+SDLCONFIG=$(BUILDROOT)/usr/mipsel-gcw0-linux-uclibc/sysroot/usr/bin/sdl-config
