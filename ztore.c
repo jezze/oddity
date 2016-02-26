@@ -51,7 +51,7 @@ struct view
 {
 
     void (*init)();
-    void (*exit)();
+    void (*destroy)();
     void (*render)();
     void (*handlekey)(unsigned int id);
     void (*handleevent)(unsigned int id);
@@ -79,8 +79,8 @@ void changestate(unsigned int state)
 void showview(struct view *view)
 {
 
-    if (currentview && currentview->exit)
-        currentview->exit();
+    if (currentview && currentview->destroy)
+        currentview->destroy();
 
     currentview = view;
 
