@@ -48,12 +48,25 @@ struct menu
 
 };
 
+struct view
+{
+
+    void (*init)();
+    void (*exit)();
+    void (*render)();
+    void (*handlekey)(unsigned int id);
+    void (*handleevent)(unsigned int id);
+
+};
+
 SDL_Surface *display;
 SDL_Surface *background;
 SDL_Surface *blur;
 TTF_Font *font;
 unsigned int currentstate = 1;
 unsigned int currentmenu;
+
+struct view front;
 
 void changestate(unsigned int state)
 {
@@ -88,6 +101,46 @@ struct menu menus[32] = {
     {0, 0, 0, 0, {0, 0, 320, 240}},
     {0, 0, 0, 0, {0, 0, 320, 240}}
 };
+
+void menu_nextrow(struct menu *menu)
+{
+
+    menu->currentitem = (menu->total + menu->currentitem + 1) % menu->total;
+
+}
+
+void menu_prevrow(struct menu *menu)
+{
+
+    menu->currentitem = (menu->total + menu->currentitem - 1) % menu->total;
+
+}
+
+void menu_nextpage(struct menu *menu)
+{
+
+    unsigned int pagetotal = (menu->total / MENU_ROWS) + 1;
+    unsigned int pageoffset = (pagetotal + (menu->currentitem / MENU_ROWS) + 1) % pagetotal;
+    unsigned int rowoffset = menu->currentitem % MENU_ROWS;
+    unsigned int rowstart = pageoffset * MENU_ROWS;
+    unsigned int rowtotal = (menu->total - rowstart);
+
+    menu->currentitem = rowstart + ((rowtotal <= rowoffset) ? rowtotal - 1 : rowoffset);
+
+}
+
+void menu_prevpage(struct menu *menu)
+{
+
+    unsigned int pagetotal = (menu->total / MENU_ROWS) + 1;
+    unsigned int pageoffset = (pagetotal + (menu->currentitem / MENU_ROWS) - 1) % pagetotal;
+    unsigned int rowoffset = menu->currentitem % MENU_ROWS;
+    unsigned int rowstart = pageoffset * MENU_ROWS;
+    unsigned int rowtotal = (menu->total - rowstart);
+
+    menu->currentitem = rowstart + ((rowtotal <= rowoffset) ? rowtotal - 1 : rowoffset);
+
+}
 
 void renderbackground()
 {
@@ -146,69 +199,6 @@ void rendermenu(struct menu *menu)
 
         SDL_BlitSurface(text, NULL, display, &rect);
         SDL_FreeSurface(text);
-
-    }
-
-}
-
-void render()
-{
-
-    renderbackground();
-    rendermenu(&menus[currentmenu]);
-    SDL_Flip(display);
-
-}
-
-void handlekeydown(SDL_Event *event)
-{
-
-    struct menu *menu = &menus[currentmenu];
-    unsigned int page = (menu->currentitem / MENU_ROWS);
-    unsigned int pagetotal = (menu->total / MENU_ROWS) + 1;
-    unsigned int rowstart = page * MENU_ROWS;
-    unsigned int rowoffset = menu->currentitem - rowstart;
-    unsigned int rowtotal;
-
-    switch (event->key.keysym.sym)
-    {
-
-    case SDLK_ESCAPE:
-        currentmenu = menu->parentmenu;
-
-        break;
-
-    case SDLK_UP:
-        menu->currentitem = (menu->total + menu->currentitem - 1) % menu->total;
-
-        break;
-
-    case SDLK_DOWN:
-        menu->currentitem = (menu->total + menu->currentitem + 1) % menu->total;
-
-        break;
-
-    case SDLK_LEFT:
-        page = (pagetotal + page - 1) % pagetotal;
-        rowstart = page * MENU_ROWS;
-        rowtotal = (menu->total - rowstart);
-        menu->currentitem = rowstart + ((rowtotal < rowoffset) ? rowtotal - 1 : rowoffset);
-
-        break;
-
-    case SDLK_RIGHT:
-        page = (pagetotal + page + 1) % pagetotal;
-        rowstart = page * MENU_ROWS;
-        rowtotal = (menu->total - rowstart);
-        menu->currentitem = rowstart + ((rowtotal < rowoffset) ? rowtotal - 1 : rowoffset);
-
-        break;
-
-    case SDLK_RETURN:
-        if (menu->items[menu->currentitem].callback)
-            menu->items[menu->currentitem].callback(menu->items[menu->currentitem].id);
-
-        break;
 
     }
 
@@ -290,8 +280,79 @@ void loadapps(struct menu *menu, char *name)
 
 }
 
+void front_init()
+{
+
+    loadapps(&menus[1], "db/apps.db");
+    loadapps(&menus[2], "db/official.db");
+
+}
+
+void front_exit()
+{
+
+}
+
+void front_render()
+{
+
+    renderbackground();
+    rendermenu(&menus[currentmenu]);
+    SDL_Flip(display);
+
+}
+
+void front_handlekey(unsigned int keysym)
+{
+
+    struct menu *menu = &menus[currentmenu];
+    struct menuitem *menuitem = &menu->items[menu->currentitem];
+
+    switch (keysym)
+    {
+
+    case SDLK_ESCAPE:
+        currentmenu = menu->parentmenu;
+
+        break;
+
+    case SDLK_UP:
+        menu_prevrow(menu);
+
+        break;
+
+    case SDLK_DOWN:
+        menu_nextrow(menu);
+
+        break;
+
+    case SDLK_LEFT:
+        menu_prevpage(menu);
+
+        break;
+
+    case SDLK_RIGHT:
+        menu_nextpage(menu);
+
+        break;
+
+    case SDLK_RETURN:
+        if (menuitem->callback)
+            menuitem->callback(menuitem->id);
+
+        break;
+
+    }
+
+}
+
 int main(int argc, char **argv)
 {
+
+    front.init = front_init;
+    front.exit = front_exit;
+    front.render = front_render;
+    front.handlekey = front_handlekey;
 
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
         exit(EXIT_FAILURE);
@@ -323,9 +384,8 @@ int main(int argc, char **argv)
     if (!font)
         exit(EXIT_FAILURE);
 
-    loadapps(&menus[1], "db/apps.db");
-    loadapps(&menus[2], "db/official.db");
-    render();
+    front.init();
+    front.render();
 
     while (currentstate)
     {
@@ -338,7 +398,7 @@ int main(int argc, char **argv)
         {
 
         case SDL_KEYDOWN:
-            handlekeydown(&event);
+            front.handlekey(event.key.keysym.sym);
 
             break;
 
@@ -349,7 +409,7 @@ int main(int argc, char **argv)
 
         }
 
-        render();
+        front.render();
 
     }
 
