@@ -33,7 +33,6 @@ struct menuitem
     char *name;
     unsigned int id;
     unsigned int type;
-    void (*callback)(unsigned int id);
 
 };
 
@@ -64,9 +63,11 @@ SDL_Surface *background;
 SDL_Surface *blur;
 TTF_Font *font;
 unsigned int currentstate = 1;
-unsigned int currentmenu;
 
 struct view front;
+struct view apps;
+struct view browse;
+struct view *currentview;
 
 void changestate(unsigned int state)
 {
@@ -75,25 +76,24 @@ void changestate(unsigned int state)
 
 }
 
-void menuchange(unsigned int id)
+void showview(struct view *view)
 {
 
-    currentmenu = id;
+    if (currentview && currentview->exit)
+        currentview->exit();
 
-}
+    currentview = view;
 
-void menuexit(unsigned int id)
-{
-
-    changestate(0);
+    if (currentview && currentview->init)
+        currentview->init();
 
 }
 
 struct menuitem mainmenuitems[32] = {
-    {"Apps", 1, MENUITEM_TYPE_NORMAL, menuchange},
-    {"Browse", 2, MENUITEM_TYPE_NORMAL, menuchange},
-    {"Downloads", 0, MENUITEM_TYPE_BLOCKED, menuchange},
-    {"Exit", 0, MENUITEM_TYPE_NORMAL, menuexit}
+    {"Apps", 1, MENUITEM_TYPE_NORMAL},
+    {"Browse", 2, MENUITEM_TYPE_NORMAL},
+    {"Downloads", 0, MENUITEM_TYPE_BLOCKED},
+    {"Exit", 8, MENUITEM_TYPE_NORMAL}
 };
 
 struct menu menus[32] = {
@@ -271,7 +271,6 @@ void loadapps(struct menu *menu, char *name)
         menu->items[i].name = strdup(name);
         menu->items[i].id = 0;
         menu->items[i].type = MENUITEM_TYPE_NORMAL;
-        menu->items[i].callback = 0;
 
     }
 
@@ -280,39 +279,103 @@ void loadapps(struct menu *menu, char *name)
 
 }
 
-void front_init()
-{
-
-    loadapps(&menus[1], "db/apps.db");
-    loadapps(&menus[2], "db/official.db");
-
-}
-
-void front_exit()
-{
-
-}
-
 void front_render()
 {
 
     renderbackground();
-    rendermenu(&menus[currentmenu]);
-    SDL_Flip(display);
+    rendermenu(&menus[0]);
 
 }
 
 void front_handlekey(unsigned int keysym)
 {
 
-    struct menu *menu = &menus[currentmenu];
+    struct menu *menu = &menus[0];
+    struct menuitem *menuitem = &menu->items[menu->currentitem];
+
+    switch (keysym)
+    {
+
+    case SDLK_UP:
+        menu_prevrow(menu);
+
+        break;
+
+    case SDLK_DOWN:
+        menu_nextrow(menu);
+
+        break;
+
+    case SDLK_LEFT:
+        menu_prevpage(menu);
+
+        break;
+
+    case SDLK_RIGHT:
+        menu_nextpage(menu);
+
+        break;
+
+    case SDLK_RETURN:
+        front.handleevent(menuitem->id);
+
+        break;
+
+    }
+
+}
+
+void front_handleevent(unsigned int id)
+{
+
+    switch (id)
+    {
+
+    case 1:
+        showview(&apps);
+
+        break;
+
+    case 2:
+        showview(&browse);
+
+        break;
+
+    case 8:
+        changestate(0);
+
+        break;
+
+    }
+
+}
+
+void apps_init()
+{
+
+    loadapps(&menus[1], "db/apps.db");
+
+}
+
+void apps_render()
+{
+
+    renderbackground();
+    rendermenu(&menus[1]);
+
+}
+
+void apps_handlekey(unsigned int keysym)
+{
+
+    struct menu *menu = &menus[1];
     struct menuitem *menuitem = &menu->items[menu->currentitem];
 
     switch (keysym)
     {
 
     case SDLK_ESCAPE:
-        currentmenu = menu->parentmenu;
+        showview(&front);
 
         break;
 
@@ -337,8 +400,7 @@ void front_handlekey(unsigned int keysym)
         break;
 
     case SDLK_RETURN:
-        if (menuitem->callback)
-            menuitem->callback(menuitem->id);
+        front.handleevent(menuitem->id);
 
         break;
 
@@ -346,13 +408,88 @@ void front_handlekey(unsigned int keysym)
 
 }
 
+void apps_handleevent(unsigned int id)
+{
+
+}
+
+void browse_init()
+{
+
+    loadapps(&menus[2], "db/official.db");
+
+}
+
+void browse_render()
+{
+
+    renderbackground();
+    rendermenu(&menus[2]);
+
+}
+
+void browse_handlekey(unsigned int keysym)
+{
+
+    struct menu *menu = &menus[2];
+    struct menuitem *menuitem = &menu->items[menu->currentitem];
+
+    switch (keysym)
+    {
+
+    case SDLK_ESCAPE:
+        showview(&front);
+
+        break;
+
+    case SDLK_UP:
+        menu_prevrow(menu);
+
+        break;
+
+    case SDLK_DOWN:
+        menu_nextrow(menu);
+
+        break;
+
+    case SDLK_LEFT:
+        menu_prevpage(menu);
+
+        break;
+
+    case SDLK_RIGHT:
+        menu_nextpage(menu);
+
+        break;
+
+    case SDLK_RETURN:
+        front.handleevent(menuitem->id);
+
+        break;
+
+    }
+
+}
+
+void browse_handleevent(unsigned int id)
+{
+
+}
+
 int main(int argc, char **argv)
 {
 
-    front.init = front_init;
-    front.exit = front_exit;
     front.render = front_render;
     front.handlekey = front_handlekey;
+    front.handleevent = front_handleevent;
+    apps.init = apps_init;
+    apps.render = apps_render;
+    apps.handlekey = apps_handlekey;
+    apps.handleevent = apps_handleevent;
+    browse.init = browse_init;
+    browse.render = browse_render;
+    browse.handlekey = browse_handlekey;
+    browse.handleevent = browse_handleevent;
 
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
         exit(EXIT_FAILURE);
@@ -384,8 +521,9 @@ int main(int argc, char **argv)
     if (!font)
         exit(EXIT_FAILURE);
 
-    front.init();
-    front.render();
+    showview(&front);
+    currentview->render();
+    SDL_Flip(display);
 
     while (currentstate)
     {
@@ -398,7 +536,7 @@ int main(int argc, char **argv)
         {
 
         case SDL_KEYDOWN:
-            front.handlekey(event.key.keysym.sym);
+            currentview->handlekey(event.key.keysym.sym);
 
             break;
 
@@ -409,7 +547,8 @@ int main(int argc, char **argv)
 
         }
 
-        front.render();
+        currentview->render();
+        SDL_Flip(display);
 
     }
 
