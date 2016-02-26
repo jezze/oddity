@@ -64,6 +64,16 @@ SDL_Surface *blur;
 TTF_Font *font;
 unsigned int currentstate = 1;
 
+struct menuitem front_menuitems[32] = {
+    {"Apps", 1, MENUITEM_TYPE_NORMAL},
+    {"Browse", 2, MENUITEM_TYPE_NORMAL},
+    {"Downloads", 0, MENUITEM_TYPE_BLOCKED},
+    {"Exit", 8, MENUITEM_TYPE_NORMAL}
+};
+
+struct menu frontmenu = {0, front_menuitems, 4, 0, {0, 96, 320, 144}};
+struct menu appsmenu = {0, 0, 0, 0, {0, 0, 320, 240}};
+struct menu browsemenu = {0, 0, 0, 0, {0, 0, 320, 240}};
 struct view front;
 struct view apps;
 struct view browse;
@@ -88,19 +98,6 @@ void showview(struct view *view)
         currentview->init();
 
 }
-
-struct menuitem mainmenuitems[32] = {
-    {"Apps", 1, MENUITEM_TYPE_NORMAL},
-    {"Browse", 2, MENUITEM_TYPE_NORMAL},
-    {"Downloads", 0, MENUITEM_TYPE_BLOCKED},
-    {"Exit", 8, MENUITEM_TYPE_NORMAL}
-};
-
-struct menu menus[32] = {
-    {0, mainmenuitems, 4, 0, {0, 96, 320, 144}},
-    {0, 0, 0, 0, {0, 0, 320, 240}},
-    {0, 0, 0, 0, {0, 0, 320, 240}}
-};
 
 void menu_nextrow(struct menu *menu)
 {
@@ -283,14 +280,14 @@ void front_render()
 {
 
     renderbackground();
-    rendermenu(&menus[0]);
+    rendermenu(&frontmenu);
 
 }
 
 void front_handlekey(unsigned int keysym)
 {
 
-    struct menu *menu = &menus[0];
+    struct menu *menu = &frontmenu;
     struct menuitem *menuitem = &menu->items[menu->currentitem];
 
     switch (keysym)
@@ -353,7 +350,8 @@ void front_handleevent(unsigned int id)
 void apps_init()
 {
 
-    loadapps(&menus[1], "db/apps.db");
+    if (!appsmenu.items)
+        loadapps(&appsmenu, "db/apps.db");
 
 }
 
@@ -361,14 +359,14 @@ void apps_render()
 {
 
     renderbackground();
-    rendermenu(&menus[1]);
+    rendermenu(&appsmenu);
 
 }
 
 void apps_handlekey(unsigned int keysym)
 {
 
-    struct menu *menu = &menus[1];
+    struct menu *menu = &appsmenu;
     struct menuitem *menuitem = &menu->items[menu->currentitem];
 
     switch (keysym)
@@ -416,7 +414,8 @@ void apps_handleevent(unsigned int id)
 void browse_init()
 {
 
-    loadapps(&menus[2], "db/official.db");
+    if (!browsemenu.items)
+        loadapps(&browsemenu, "db/official.db");
 
 }
 
@@ -424,14 +423,14 @@ void browse_render()
 {
 
     renderbackground();
-    rendermenu(&menus[2]);
+    rendermenu(&browsemenu);
 
 }
 
 void browse_handlekey(unsigned int keysym)
 {
 
-    struct menu *menu = &menus[2];
+    struct menu *menu = &browsemenu;
     struct menuitem *menuitem = &menu->items[menu->currentitem];
 
     switch (keysym)
