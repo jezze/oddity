@@ -100,8 +100,8 @@ void renderbackground()
 void rendermenu(struct menu *menu)
 {
 
-    unsigned int rowpage = (menu->currentitem / MENU_ROWS);
-    unsigned int rowstart = rowpage * MENU_ROWS;
+    unsigned int page = (menu->currentitem / MENU_ROWS);
+    unsigned int rowstart = page * MENU_ROWS;
     unsigned int rowend = (rowstart + MENU_ROWS) > menu->total ? menu->total : rowstart + MENU_ROWS;
     unsigned int row;
     SDL_Color color;
@@ -164,9 +164,9 @@ void handlekeydown(SDL_Event *event)
 {
 
     struct menu *menu = &menus[currentmenu];
-    unsigned int rowpage = (menu->currentitem / MENU_ROWS);
-    unsigned int rowpagetotal = (menu->total / MENU_ROWS) + 1;
-    unsigned int rowstart = rowpage * MENU_ROWS;
+    unsigned int page = (menu->currentitem / MENU_ROWS);
+    unsigned int pagetotal = (menu->total / MENU_ROWS) + 1;
+    unsigned int rowstart = page * MENU_ROWS;
     unsigned int rowoffset = menu->currentitem - rowstart;
     unsigned int rowtotal;
 
@@ -189,18 +189,18 @@ void handlekeydown(SDL_Event *event)
         break;
 
     case SDLK_LEFT:
-        rowpage = (rowpagetotal + rowpage - 1) % rowpagetotal;
-        rowstart = rowpage * MENU_ROWS;
-        rowtotal = (menu->total - rowstart) % MENU_ROWS;
-        menu->currentitem = rowstart + ((rowoffset >= rowtotal) ? rowtotal - 1 : rowoffset);
+        page = (pagetotal + page - 1) % pagetotal;
+        rowstart = page * MENU_ROWS;
+        rowtotal = (menu->total - rowstart);
+        menu->currentitem = rowstart + ((rowtotal < rowoffset) ? rowtotal - 1 : rowoffset);
 
         break;
 
     case SDLK_RIGHT:
-        rowpage = (rowpagetotal + rowpage + 1) % rowpagetotal;
-        rowstart = rowpage * MENU_ROWS;
-        rowtotal = (menu->total - rowstart) % MENU_ROWS;
-        menu->currentitem = rowstart + ((rowoffset >= rowtotal) ? rowtotal - 1 : rowoffset);
+        page = (pagetotal + page + 1) % pagetotal;
+        rowstart = page * MENU_ROWS;
+        rowtotal = (menu->total - rowstart);
+        menu->currentitem = rowstart + ((rowtotal < rowoffset) ? rowtotal - 1 : rowoffset);
 
         break;
 
