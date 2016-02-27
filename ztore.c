@@ -85,7 +85,7 @@ struct menuitem front_menuitems[32] = {
     {{"Exit"}, 8, MENUITEM_FLAG_NORMAL}
 };
 
-struct textbox fronttext = {{"Hello and welcome!\n\nThis is a very long text that I am using to see if my      wordwrap is working properly."}, {0, 0, 320, 240}};
+struct textbox fronttext = {{"Hello and welcome!\n\nThis is a very long text that I am using to see if my wordwrap is working properly."}, {0 + MENU_PADDING, 0 + MENU_PADDING, 320 - MENU_PADDING * 2, 96}};
 struct menu frontmenu = {front_menuitems, 4, 0, {0, 96, 320, 144}};
 struct menu appsmenu = {0, 0, 0, {0, 0, 320, 240}};
 struct menu browsemenu = {0, 0, 0, {0, 0, 320, 240}};
