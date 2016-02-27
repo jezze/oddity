@@ -9,7 +9,7 @@
 #define SCREEN_WIDTH                    320
 #define SCREEN_HEIGHT                   240
 #define SCREEN_BPP                      24
-#define MENU_PADDING                    24
+#define MENU_PADDING                    12
 #define MENU_ROWHEIGHT                  24
 #define MENUITEM_FLAG_NORMAL            0
 #define MENUITEM_FLAG_BLOCKED           1
@@ -86,7 +86,7 @@ struct menuitem front_menuitems[32] = {
 };
 
 struct textbox fronttext = {{"Hello and welcome!\n\nThis is a very long text that I am using to see if my wordwrap is working properly."}, {0 + MENU_PADDING, 0 + MENU_PADDING, 320 - MENU_PADDING * 2, 96}};
-struct menu frontmenu = {front_menuitems, 4, 0, {0, 96, 320, 144}};
+struct menu frontmenu = {front_menuitems, 4, 0, {0, 120, 320, 120}};
 struct menu appsmenu = {0, 0, 0, {0, 0, 320, 240}};
 struct menu browsemenu = {0, 0, 0, {0, 0, 320, 240}};
 struct view front;
