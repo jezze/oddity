@@ -5,6 +5,7 @@
 #include "app.h"
 #include "text.h"
 #include "menu.h"
+#include "db.h"
 #include "render.h"
 
 static struct menuitem menuitems[32] = {

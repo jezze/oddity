@@ -2,8 +2,10 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include "ztore.h"
+#include "app.h"
 #include "text.h"
 #include "menu.h"
+#include "db.h"
 #include "render.h"
 
 static struct menu menu = {0, 0, 0, {0, 0, 320, 240}};

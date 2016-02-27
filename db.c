@@ -11,7 +11,6 @@ void db_loadapp(struct app *app, unsigned int id, char *name)
 
     sqlite3 *db;
     sqlite3_stmt *res;
-    unsigned int i;
     int rc;
 
     rc = sqlite3_open(name, &db);

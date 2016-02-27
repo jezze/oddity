@@ -2,7 +2,6 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
-#include <SDL/SDL_gfxPrimitives.h>
 #include "ztore.h"
 #include "text.h"
 #include "menu.h"
@@ -132,7 +131,29 @@ void render_text(struct text *text, int x, int y, int w, int h, int r, int g, in
 void render_textbox(struct textbox *textbox)
 {
 
-    return render_text(&textbox->text, textbox->box.x, textbox->box.y, textbox->box.w, textbox->box.h, 160, 192, 192);
+    render_text(&textbox->text, textbox->box.x, textbox->box.y, textbox->box.w, textbox->box.h, 160, 192, 192);
+
+}
+
+static void dorectangle(SDL_Surface *s, int w, int h, unsigned int bgcolor, unsigned int bordercolor)
+{
+
+    unsigned int x, y;
+
+    for (x = 0; x < w; x++) {
+
+        for (y = 0; y < h; y++) {
+
+            unsigned int *p = s->pixels;
+
+            if (x == 0 || y == 0 || x == w - 1 || y == h - 1)
+                p[y * w + x] = bordercolor;
+            else
+                p[y * w + x] = bgcolor;
+
+        }
+
+    }
 
 }
 
@@ -142,8 +163,17 @@ void render_menuitem(struct menuitem *menuitem, int x, int y, int w, int h)
     if (menuitem->type & MENUITEM_FLAG_SELECTED)
     {
 
-        filledRectAlpha(display, x, y, x + w - 1, y + h - 1, 0xFFFFFF10);
-        rectangleColor(display, x, y, x + w - 1, y + h - 1, 0xFFFFFF40);
+        SDL_Rect r;
+        SDL_Surface *s = SDL_CreateRGBSurface(0, w, h, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
+
+        dorectangle(s, w, h, 0x10FFFFFF, 0x40FFFFFF);
+
+        r.x = x;
+        r.y = y;
+        r.w = w;
+        r.h = h;
+
+        SDL_BlitSurface(s, NULL, display, &r);
 
     }
 
