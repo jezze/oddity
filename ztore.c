@@ -169,7 +169,6 @@ void renderbackground()
 {
 
     SDL_BlitSurface(background, NULL, display, NULL);
-    SDL_BlitSurface(blur, NULL, display, NULL);
 
 }
 
@@ -319,7 +318,12 @@ void rendermenuitem(struct menuitem *menuitem, SDL_Rect rect)
     }
 
     if (menuitem->type & MENUITEM_FLAG_SELECTED)
-        rectangleRGBA(display, rect.x, rect.y, rect.x + rect.w - 1, rect.y + rect.h - 1, 0x60, 0xC0, 0xC0, 0xFF);
+    {
+
+        filledRectAlpha(display, rect.x, rect.y, rect.x + rect.w - 1, rect.y + rect.h - 1, 0xFFFFFF10);
+        rectangleColor(display, rect.x, rect.y, rect.x + rect.w - 1, rect.y + rect.h - 1, 0xFFFFFF40);
+
+    }
 
     rendertext(&menuitem->text, rect, color);
 
