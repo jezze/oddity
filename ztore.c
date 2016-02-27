@@ -11,8 +11,9 @@
 #define SCREEN_BPP                      24
 #define MENU_PADDING                    24
 #define MENU_ROWHEIGHT                  24
-#define MENUITEM_TYPE_NORMAL            0
-#define MENUITEM_TYPE_BLOCKED           1
+#define MENUITEM_FLAG_NORMAL            0
+#define MENUITEM_FLAG_BLOCKED           1
+#define MENUITEM_FLAG_SELECTED          2
 #define TEXT_XPADDING                   12
 #define TEXT_YPADDING                   4
 
@@ -71,10 +72,10 @@ TTF_Font *font;
 unsigned int currentstate = 1;
 
 struct menuitem front_menuitems[32] = {
-    {"Apps", 1, MENUITEM_TYPE_NORMAL},
-    {"Browse", 2, MENUITEM_TYPE_NORMAL},
-    {"Downloads", 0, MENUITEM_TYPE_BLOCKED},
-    {"Exit", 8, MENUITEM_TYPE_NORMAL}
+    {"Apps", 1, MENUITEM_FLAG_NORMAL | MENUITEM_FLAG_SELECTED},
+    {"Browse", 2, MENUITEM_FLAG_NORMAL},
+    {"Downloads", 0, MENUITEM_FLAG_BLOCKED},
+    {"Exit", 8, MENUITEM_FLAG_NORMAL}
 };
 
 struct menu frontmenu = {0, front_menuitems, 4, 0, {0, 96, 320, 144}};
@@ -105,17 +106,26 @@ void showview(struct view *view)
 
 }
 
+void menu_setrow(struct menu *menu, unsigned int index)
+{
+
+    menu->items[menu->currentitem].type &= ~MENUITEM_FLAG_SELECTED;
+    menu->currentitem = index;
+    menu->items[menu->currentitem].type |= MENUITEM_FLAG_SELECTED;
+
+}
+
 void menu_nextrow(struct menu *menu)
 {
 
-    menu->currentitem = (menu->total + menu->currentitem + 1) % menu->total;
+    menu_setrow(menu, (menu->total + menu->currentitem + 1) % menu->total);
 
 }
 
 void menu_prevrow(struct menu *menu)
 {
 
-    menu->currentitem = (menu->total + menu->currentitem - 1) % menu->total;
+    menu_setrow(menu, (menu->total + menu->currentitem - 1) % menu->total);
 
 }
 
@@ -129,7 +139,7 @@ void menu_nextpage(struct menu *menu)
     unsigned int rowstart = pageoffset * pagerows;
     unsigned int rowtotal = (menu->total - rowstart);
 
-    menu->currentitem = rowstart + ((rowtotal <= rowoffset) ? rowtotal - 1 : rowoffset);
+    menu_setrow(menu, rowstart + ((rowtotal <= rowoffset) ? rowtotal - 1 : rowoffset));
 
 }
 
@@ -143,7 +153,7 @@ void menu_prevpage(struct menu *menu)
     unsigned int rowstart = pageoffset * pagerows;
     unsigned int rowtotal = (menu->total - rowstart);
 
-    menu->currentitem = rowstart + ((rowtotal <= rowoffset) ? rowtotal - 1 : rowoffset);
+    menu_setrow(menu, rowstart + ((rowtotal <= rowoffset) ? rowtotal - 1 : rowoffset));
 
 }
 
@@ -170,12 +180,12 @@ void rendertext(struct text *text, SDL_Rect rect, SDL_Color color)
 
 }
 
-void rendermenuitem(struct menuitem *menuitem, SDL_Rect rect, unsigned int active)
+void rendermenuitem(struct menuitem *menuitem, SDL_Rect rect)
 {
 
     SDL_Color color;
 
-    if (menuitem->type == MENUITEM_TYPE_BLOCKED)
+    if (menuitem->type & MENUITEM_FLAG_BLOCKED)
     {
 
         color.r = 120;
@@ -193,7 +203,7 @@ void rendermenuitem(struct menuitem *menuitem, SDL_Rect rect, unsigned int activ
 
     }
 
-    if (active)
+    if (menuitem->type & MENUITEM_FLAG_SELECTED)
         rectangleRGBA(display, rect.x, rect.y, rect.x + rect.w - 1, rect.y + rect.h - 1, 0x60, 0xC0, 0xC0, 0xFF);
 
     rendertext(&menuitem->text, rect, color);
@@ -219,7 +229,7 @@ void rendermenu(struct menu *menu)
         rect.w = menu->box.w - 2 * MENU_PADDING;
         rect.h = MENU_ROWHEIGHT;
 
-        rendermenuitem(&menu->items[row], rect, row == menu->currentitem);
+        rendermenuitem(&menu->items[row], rect);
 
     }
 
@@ -291,7 +301,7 @@ void loadapps(struct menu *menu, char *name)
 
         menu->items[i].text.content = strdup(name);
         menu->items[i].id = 0;
-        menu->items[i].type = MENUITEM_TYPE_NORMAL;
+        menu->items[i].type = MENUITEM_FLAG_NORMAL;
 
     }
 
@@ -375,7 +385,12 @@ void apps_init()
 {
 
     if (!appsmenu.items)
+    {
+
         loadapps(&appsmenu, "db/apps.db");
+        menu_setrow(&appsmenu, 0);
+
+    }
 
 }
 
@@ -434,7 +449,12 @@ void browse_init()
 {
 
     if (!browsemenu.items)
+    {
+
         loadapps(&browsemenu, "db/official.db");
+        menu_setrow(&browsemenu, 0);
+
+    }
 
 }
 
