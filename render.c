@@ -8,12 +8,15 @@
 #include "menu.h"
 #include "render.h"
 
+SDL_Surface *display;
+SDL_Surface *background;
+SDL_Surface *blur;
 TTF_Font *font;
 
-void render_image(SDL_Surface *image, SDL_Surface *display)
+void render_background()
 {
 
-    SDL_BlitSurface(image, NULL, display, NULL);
+    SDL_BlitSurface(background, NULL, display, NULL);
 
 }
 
@@ -41,20 +44,25 @@ static unsigned int getwordlength(char *text, unsigned int count)
 
 }
 
-void render_text(struct text *text, SDL_Surface *display, SDL_Rect rect, SDL_Color color)
+void render_text(struct text *text, int x, int y, int w, int h, int r, int g, int b)
 {
 
     SDL_Surface *surface;
+    SDL_Rect rect;
     SDL_Rect glyphrect;
+    SDL_Color color;
     unsigned int i;
     unsigned int offsety;
     int ascent = TTF_FontAscent(font);
     int totallength = strlen(text->content);
 
-    rect.x = rect.x + TEXT_XPADDING;
-    rect.y = rect.y + TEXT_YPADDING;
-    rect.w = rect.w - TEXT_XPADDING * 2;
-    rect.h = rect.h - TEXT_YPADDING * 2;
+    color.r = r;
+    color.g = g;
+    color.b = b;
+    rect.x = x + TEXT_XPADDING;
+    rect.y = y + TEXT_YPADDING;
+    rect.w = w - TEXT_XPADDING * 2;
+    rect.h = h - TEXT_YPADDING * 2;
     glyphrect.x = rect.x;
     glyphrect.y = rect.y;
     glyphrect.w = rect.w;
@@ -121,60 +129,32 @@ void render_text(struct text *text, SDL_Surface *display, SDL_Rect rect, SDL_Col
 
 }
 
-void render_textbox(struct textbox *textbox, SDL_Surface *display)
+void render_textbox(struct textbox *textbox)
 {
 
-    SDL_Color color;
-    SDL_Rect rect;
-
-    rect.x = textbox->box.x;
-    rect.y = textbox->box.y;
-    rect.w = textbox->box.w;
-    rect.h = textbox->box.h;
-    color.r = 160;
-    color.g = 192;
-    color.b = 192;
-
-    return render_text(&textbox->text, display, rect, color);
+    return render_text(&textbox->text, textbox->box.x, textbox->box.y, textbox->box.w, textbox->box.h, 160, 192, 192);
 
 }
 
-void render_menuitem(struct menuitem *menuitem, SDL_Surface *display, SDL_Rect rect)
+void render_menuitem(struct menuitem *menuitem, int x, int y, int w, int h)
 {
-
-    SDL_Color color;
-
-    if (menuitem->type & MENUITEM_FLAG_BLOCKED)
-    {
-
-        color.r = 64;
-        color.g = 96;
-        color.b = 96;
-
-    }
-
-    else
-    {
-
-        color.r = 224;
-        color.g = 96;
-        color.b = 32;
-
-    }
 
     if (menuitem->type & MENUITEM_FLAG_SELECTED)
     {
 
-        filledRectAlpha(display, rect.x, rect.y, rect.x + rect.w - 1, rect.y + rect.h - 1, 0xFFFFFF10);
-        rectangleColor(display, rect.x, rect.y, rect.x + rect.w - 1, rect.y + rect.h - 1, 0xFFFFFF40);
+        filledRectAlpha(display, x, y, x + w - 1, y + h - 1, 0xFFFFFF10);
+        rectangleColor(display, x, y, x + w - 1, y + h - 1, 0xFFFFFF40);
 
     }
 
-    render_text(&menuitem->text, display, rect, color);
+    if (menuitem->type & MENUITEM_FLAG_BLOCKED)
+        render_text(&menuitem->text, x, y, w, h, 64, 96, 96);
+    else
+        render_text(&menuitem->text, x, y, w, h, 224, 96, 32);
 
 }
 
-void render_menu(struct menu *menu, SDL_Surface *display)
+void render_menu(struct menu *menu)
 {
 
     unsigned int pagerows = (menu->box.h - 2 * MENU_PADDING) / MENU_ROWHEIGHT;
@@ -193,7 +173,38 @@ void render_menu(struct menu *menu, SDL_Surface *display)
         rect.w = menu->box.w - 2 * MENU_PADDING;
         rect.h = MENU_ROWHEIGHT;
 
-        render_menuitem(&menu->items[row], display, rect);
+        render_menuitem(&menu->items[row], rect.x, rect.y, rect.w, rect.h);
+
+    }
+
+}
+
+void render_flip()
+{
+
+    SDL_Flip(display);
+
+}
+
+void render_waitevent(struct view *view)
+{
+
+    SDL_Event event;
+
+    SDL_WaitEvent(&event);
+
+    switch (event.type)
+    {
+
+    case SDL_KEYDOWN:
+        view->handlekey(event.key.keysym.sym);
+
+        break;
+
+    case SDL_QUIT:
+        ztore_changestate(0);
+
+        break;
 
     }
 
@@ -212,10 +223,44 @@ void render_initfont()
 
 }
 
+void render_init()
+{
+
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+        exit(EXIT_FAILURE);
+
+    display = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_HWSURFACE | SDL_DOUBLEBUF);
+
+    if (!display)
+        exit(EXIT_FAILURE);
+
+    SDL_ShowCursor(0);
+
+    background = IMG_Load("back.png");
+
+    if (!background)
+        exit(EXIT_FAILURE);
+
+    blur = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
+
+    if (!blur)
+        exit(EXIT_FAILURE);
+
+    SDL_FillRect(blur, NULL, SDL_MapRGBA(blur->format, 0x00, 0x00, 0x00, 0xE0));
+
+}
+
 void render_destroyfont()
 {
 
     TTF_Quit();
+
+}
+
+void render_destroy()
+{
+
+    SDL_Quit();
 
 }
 

@@ -23,11 +23,12 @@ static void init()
 
 }
 
-static void render(SDL_Surface *display)
+static void render()
 {
 
-    render_textbox(&fronttext, display);
-    render_menu(&frontmenu, display);
+    render_background();
+    render_textbox(&fronttext);
+    render_menu(&frontmenu);
 
 }
 
