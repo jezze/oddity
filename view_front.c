@@ -27,7 +27,7 @@ static void render()
 {
 
     render_background();
-    render_textbox(&text);
+    render_textbox(&text, 160, 192, 192);
     render_menu(&menu);
 
 }

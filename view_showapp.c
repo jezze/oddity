@@ -41,8 +41,8 @@ static void render()
 {
 
     render_background();
-    render_textbox(&title);
-    render_textbox(&shortdescription);
+    render_textbox(&title, 224, 224, 224);
+    render_textbox(&shortdescription, 160, 192, 192);
     render_menu(&menu);
 
 }

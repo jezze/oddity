@@ -1,6 +1,6 @@
 void render_background();
 void render_text(struct text *text, int x, int y, int w, int h, int r, int g, int b);
-void render_textbox(struct textbox *textbox);
+void render_textbox(struct textbox *textbox, int r, int g, int b);
 void render_menuitem(struct menuitem *menuitem, int x, int y, int w, int h);
 void render_menu(struct menu *menu);
 void render_flip();

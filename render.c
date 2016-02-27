@@ -128,10 +128,10 @@ void render_text(struct text *text, int x, int y, int w, int h, int r, int g, in
 
 }
 
-void render_textbox(struct textbox *textbox)
+void render_textbox(struct textbox *textbox, int r, int g, int b)
 {
 
-    render_text(&textbox->text, textbox->box.x, textbox->box.y, textbox->box.w, textbox->box.h, 160, 192, 192);
+    render_text(&textbox->text, textbox->box.x, textbox->box.y, textbox->box.w, textbox->box.h, r, g, b);
 
 }
 
