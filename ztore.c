@@ -286,7 +286,7 @@ void rendertextbox(struct textbox *textbox)
     rect.y = textbox->box.y;
     rect.w = textbox->box.w;
     rect.h = textbox->box.h;
-    color.r = 192;
+    color.r = 160;
     color.g = 192;
     color.b = 192;
 
@@ -302,18 +302,18 @@ void rendermenuitem(struct menuitem *menuitem, SDL_Rect rect)
     if (menuitem->type & MENUITEM_FLAG_BLOCKED)
     {
 
-        color.r = 120;
-        color.g = 120;
-        color.b = 120;
+        color.r = 64;
+        color.g = 96;
+        color.b = 96;
 
     }
 
     else
     {
 
-        color.r = 240;
-        color.g = 240;
-        color.b = 240;
+        color.r = 224;
+        color.g = 96;
+        color.b = 32;
 
     }
 
