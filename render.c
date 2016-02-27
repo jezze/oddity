@@ -135,23 +135,36 @@ void render_textbox(struct textbox *textbox)
 
 }
 
-static void dorectangle(SDL_Surface *s, int w, int h, unsigned int bgcolor, unsigned int bordercolor)
+static void dofillrectangle(SDL_Surface *s, int w, int h, unsigned int color)
 {
 
-    unsigned int x, y;
+    unsigned int *p = s->pixels;
+    unsigned int i;
 
-    for (x = 0; x < w; x++) {
+    for (i = 0; i < w * h; i++)
+        p[i] = color;
 
-        for (y = 0; y < h; y++) {
+}
 
-            unsigned int *p = s->pixels;
+static void doborderrectangle(SDL_Surface *s, int w, int h, unsigned int color)
+{
 
-            if (x == 0 || y == 0 || x == w - 1 || y == h - 1)
-                p[y * w + x] = bordercolor;
-            else
-                p[y * w + x] = bgcolor;
+    unsigned int *p = s->pixels;
+    unsigned int i;
 
-        }
+    for (i = 0; i < w; i++)
+    {
+
+        p[i] = color;
+        p[(h - 1) * w + i] = color;
+
+    }
+
+    for (i = 0; i < h; i++)
+    {
+
+        p[i * w] = color;
+        p[i * w + (w - 1)] = color;
 
     }
 
@@ -166,7 +179,8 @@ void render_menuitem(struct menuitem *menuitem, int x, int y, int w, int h)
         SDL_Rect r;
         SDL_Surface *s = SDL_CreateRGBSurface(0, w, h, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
 
-        dorectangle(s, w, h, 0x10FFFFFF, 0x40FFFFFF);
+        dofillrectangle(s, w, h, 0x10FFFFFF);
+        doborderrectangle(s, w, h, 0x40FFFFFF);
 
         r.x = x;
         r.y = y;
