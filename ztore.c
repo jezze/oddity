@@ -72,10 +72,10 @@ TTF_Font *font;
 unsigned int currentstate = 1;
 
 struct menuitem front_menuitems[32] = {
-    {"Apps", 1, MENUITEM_FLAG_NORMAL | MENUITEM_FLAG_SELECTED},
-    {"Browse", 2, MENUITEM_FLAG_NORMAL},
-    {"Downloads", 0, MENUITEM_FLAG_BLOCKED},
-    {"Exit", 8, MENUITEM_FLAG_NORMAL}
+    {{"Apps"}, 1, MENUITEM_FLAG_NORMAL | MENUITEM_FLAG_SELECTED},
+    {{"Browse"}, 2, MENUITEM_FLAG_NORMAL},
+    {{"Downloads"}, 0, MENUITEM_FLAG_BLOCKED},
+    {{"Exit"}, 8, MENUITEM_FLAG_NORMAL}
 };
 
 struct menu frontmenu = {0, front_menuitems, 4, 0, {0, 96, 320, 144}};
@@ -240,7 +240,6 @@ void loadapps(struct menu *menu, char *name)
 
     sqlite3 *db;
     sqlite3_stmt *res;
-    unsigned int count;
     unsigned int i;
     int rc;
 
@@ -297,9 +296,9 @@ void loadapps(struct menu *menu, char *name)
     for (i = 0; (rc = sqlite3_step(res)) == SQLITE_ROW; i++)
     {
 
-        const char *name = sqlite3_column_text(res, 0);
+        const unsigned char *name = sqlite3_column_text(res, 0);
 
-        menu->items[i].text.content = strdup(name);
+        menu->items[i].text.content = strdup((char *)name);
         menu->items[i].id = 0;
         menu->items[i].type = MENUITEM_FLAG_NORMAL;
 
@@ -321,34 +320,31 @@ void front_render()
 void front_handlekey(unsigned int keysym)
 {
 
-    struct menu *menu = &frontmenu;
-    struct menuitem *menuitem = &menu->items[menu->currentitem];
-
     switch (keysym)
     {
 
     case SDLK_UP:
-        menu_prevrow(menu);
+        menu_prevrow(&frontmenu);
 
         break;
 
     case SDLK_DOWN:
-        menu_nextrow(menu);
+        menu_nextrow(&frontmenu);
 
         break;
 
     case SDLK_LEFT:
-        menu_prevpage(menu);
+        menu_prevpage(&frontmenu);
 
         break;
 
     case SDLK_RIGHT:
-        menu_nextpage(menu);
+        menu_nextpage(&frontmenu);
 
         break;
 
     case SDLK_RETURN:
-        front.handleevent(menuitem->id);
+        front.handleevent(frontmenu.items[frontmenu.currentitem].id);
 
         break;
 
@@ -405,9 +401,6 @@ void apps_render()
 void apps_handlekey(unsigned int keysym)
 {
 
-    struct menu *menu = &appsmenu;
-    struct menuitem *menuitem = &menu->items[menu->currentitem];
-
     switch (keysym)
     {
 
@@ -417,22 +410,22 @@ void apps_handlekey(unsigned int keysym)
         break;
 
     case SDLK_UP:
-        menu_prevrow(menu);
+        menu_prevrow(&appsmenu);
 
         break;
 
     case SDLK_DOWN:
-        menu_nextrow(menu);
+        menu_nextrow(&appsmenu);
 
         break;
 
     case SDLK_LEFT:
-        menu_prevpage(menu);
+        menu_prevpage(&appsmenu);
 
         break;
 
     case SDLK_RIGHT:
-        menu_nextpage(menu);
+        menu_nextpage(&appsmenu);
 
         break;
 
@@ -469,9 +462,6 @@ void browse_render()
 void browse_handlekey(unsigned int keysym)
 {
 
-    struct menu *menu = &browsemenu;
-    struct menuitem *menuitem = &menu->items[menu->currentitem];
-
     switch (keysym)
     {
 
@@ -481,22 +471,22 @@ void browse_handlekey(unsigned int keysym)
         break;
 
     case SDLK_UP:
-        menu_prevrow(menu);
+        menu_prevrow(&browsemenu);
 
         break;
 
     case SDLK_DOWN:
-        menu_nextrow(menu);
+        menu_nextrow(&browsemenu);
 
         break;
 
     case SDLK_LEFT:
-        menu_prevpage(menu);
+        menu_prevpage(&browsemenu);
 
         break;
 
     case SDLK_RIGHT:
-        menu_nextpage(menu);
+        menu_nextpage(&browsemenu);
 
         break;
 
