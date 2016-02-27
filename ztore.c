@@ -57,6 +57,7 @@ int main(int argc, char **argv)
     view_frontsetup();
     view_appssetup();
     view_browsesetup();
+    view_showappsetup();
     view_set(0);
     render_init();
     render_initfont();

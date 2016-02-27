@@ -29,3 +29,4 @@ void view_register(unsigned int index, void (*init)(), void (*destroy)(), void (
 void view_frontsetup();
 void view_appssetup();
 void view_browsesetup();
+void view_showappsetup();

@@ -13,13 +13,13 @@ static struct menuitem menuitems[32] = {
     {{"Exit"}, 8, MENUITEM_FLAG_NORMAL}
 };
 
-static struct textbox fronttext = {{"Hello and welcome!\n\nThis is a very long text that I am using to see if my wordwrap is working properly."}, {0 + MENU_PADDING, 0 + MENU_PADDING, 320 - MENU_PADDING * 2, 96}};
-static struct menu frontmenu = {menuitems, 4, 0, {0, 120, 320, 120}};
+static struct textbox text = {{"Hello and welcome!\n\nThis is a very long text that I am using to see if my wordwrap is working properly."}, {0 + MENU_PADDING, 0 + MENU_PADDING, 320 - MENU_PADDING * 2, 96}};
+static struct menu menu = {menuitems, 4, 0, {0, 120, 320, 120}};
 
 static void init()
 {
 
-    menu_setrow(&frontmenu, 0);
+    menu_setrow(&menu, 0);
 
 }
 
@@ -27,8 +27,8 @@ static void render()
 {
 
     render_background();
-    render_textbox(&fronttext);
-    render_menu(&frontmenu);
+    render_textbox(&text);
+    render_menu(&menu);
 
 }
 
@@ -39,27 +39,27 @@ static void handlekey(unsigned int keysym)
     {
 
     case SDLK_UP:
-        menu_prevrow(&frontmenu);
+        menu_prevrow(&menu);
 
         break;
 
     case SDLK_DOWN:
-        menu_nextrow(&frontmenu);
+        menu_nextrow(&menu);
 
         break;
 
     case SDLK_LEFT:
-        menu_prevpage(&frontmenu);
+        menu_prevpage(&menu);
 
         break;
 
     case SDLK_RIGHT:
-        menu_nextpage(&frontmenu);
+        menu_nextpage(&menu);
 
         break;
 
     case SDLK_RETURN:
-        view_handleevent(0, frontmenu.items[frontmenu.currentitem].id);
+        view_handleevent(0, menu.items[menu.currentitem].id);
 
         break;
 

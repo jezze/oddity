@@ -6,16 +6,16 @@
 #include "menu.h"
 #include "render.h"
 
-static struct menu appsmenu = {0, 0, 0, {0, 0, 320, 240}};
+static struct menu menu = {0, 0, 0, {0, 0, 320, 240}};
 
 static void init()
 {
 
-    if (!appsmenu.items)
+    if (!menu.items)
     {
 
-        db_loadapps(&appsmenu, "db/apps.db");
-        menu_setrow(&appsmenu, 0);
+        db_loadapps(&menu, "db/apps.db");
+        menu_setrow(&menu, 0);
 
     }
 
@@ -25,7 +25,7 @@ static void render()
 {
 
     render_background();
-    render_menu(&appsmenu);
+    render_menu(&menu);
 
 }
 
@@ -41,22 +41,22 @@ static void handlekey(unsigned int keysym)
         break;
 
     case SDLK_UP:
-        menu_prevrow(&appsmenu);
+        menu_prevrow(&menu);
 
         break;
 
     case SDLK_DOWN:
-        menu_nextrow(&appsmenu);
+        menu_nextrow(&menu);
 
         break;
 
     case SDLK_LEFT:
-        menu_prevpage(&appsmenu);
+        menu_prevpage(&menu);
 
         break;
 
     case SDLK_RIGHT:
-        menu_nextpage(&appsmenu);
+        menu_nextpage(&menu);
 
         break;
 
