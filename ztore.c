@@ -85,7 +85,7 @@ struct menuitem front_menuitems[32] = {
     {{"Exit"}, 8, MENUITEM_FLAG_NORMAL}
 };
 
-struct textbox fronttext = {{"Hello and welcome!\n\nThis is a very long text that I am using to see if my wordwrap is working properly."}, {0, 0, 320, 240}};
+struct textbox fronttext = {{"Hello and welcome!\n\nThis is a very long text that I am using to see if my      wordwrap is working properly."}, {0, 0, 320, 240}};
 struct menu frontmenu = {front_menuitems, 4, 0, {0, 96, 320, 144}};
 struct menu appsmenu = {0, 0, 0, {0, 0, 320, 240}};
 struct menu browsemenu = {0, 0, 0, {0, 0, 320, 240}};
@@ -173,6 +173,30 @@ void renderbackground()
 
 }
 
+unsigned int getwordlength(char *text, unsigned int count)
+{
+
+    unsigned int i;
+    unsigned int total = 0;
+
+    for (i = 0; i < count; i++)
+    {
+
+        int advance;
+
+        if (text[i] == ' ' || text[i] == '\n')
+            break;
+
+        TTF_GlyphMetrics(font, text[i], NULL, NULL, NULL, NULL, &advance);
+
+        total += advance;
+
+    }
+
+    return total;
+
+}
+
 void rendertext(struct text *text, SDL_Rect rect, SDL_Color color)
 {
 
@@ -181,6 +205,7 @@ void rendertext(struct text *text, SDL_Rect rect, SDL_Color color)
     unsigned int i;
     unsigned int offsety;
     int ascent = TTF_FontAscent(font);
+    int totallength = strlen(text->content);
 
     rect.x = rect.x + TEXT_XPADDING;
     rect.y = rect.y + TEXT_YPADDING;
@@ -192,7 +217,7 @@ void rendertext(struct text *text, SDL_Rect rect, SDL_Color color)
     glyphrect.h = rect.h;
     offsety = rect.y;
 
-    for (i = 0; i < strlen(text->content); i++)
+    for (i = 0; i < totallength; i++)
     {
 
         int minx;
@@ -208,6 +233,24 @@ void rendertext(struct text *text, SDL_Rect rect, SDL_Color color)
             offsety += 16;
 
             continue;
+
+        }
+
+        if (glyphrect.x == rect.x && text->content[i] == ' ')
+            continue;
+
+        if (text->content[i] != ' ')
+        {
+
+            int x = getwordlength(&text->content[i], totallength - i - 1);
+
+            if (glyphrect.x + x > rect.x + rect.w)
+            {
+
+                glyphrect.x = rect.x;
+                offsety += 16;
+
+            }
 
         }
 
