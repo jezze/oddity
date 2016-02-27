@@ -46,7 +46,6 @@ struct menuitem
 struct menu
 {
 
-    unsigned int parentmenu;
     struct menuitem *items;
     unsigned int total;
     unsigned int currentitem;
@@ -78,9 +77,9 @@ struct menuitem front_menuitems[32] = {
     {{"Exit"}, 8, MENUITEM_FLAG_NORMAL}
 };
 
-struct menu frontmenu = {0, front_menuitems, 4, 0, {0, 96, 320, 144}};
-struct menu appsmenu = {0, 0, 0, 0, {0, 0, 320, 240}};
-struct menu browsemenu = {0, 0, 0, 0, {0, 0, 320, 240}};
+struct menu frontmenu = {front_menuitems, 4, 0, {0, 96, 320, 144}};
+struct menu appsmenu = {0, 0, 0, {0, 0, 320, 240}};
+struct menu browsemenu = {0, 0, 0, {0, 0, 320, 240}};
 struct view front;
 struct view apps;
 struct view browse;
