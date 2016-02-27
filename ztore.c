@@ -177,23 +177,20 @@ void rendertext(struct text *text, SDL_Rect rect, SDL_Color color)
 {
 
     SDL_Surface *surface;
-    SDL_Rect rect2;
-    SDL_Rect rect3;
+    SDL_Rect glyphrect;
     unsigned int i;
+    unsigned int offsety;
     int ascent = TTF_FontAscent(font);
 
     rect.x = rect.x + TEXT_XPADDING;
     rect.y = rect.y + TEXT_YPADDING;
     rect.w = rect.w - TEXT_XPADDING * 2;
     rect.h = rect.h - TEXT_YPADDING * 2;
-    rect2.x = rect.x;
-    rect2.y = rect.y;
-    rect2.w = rect.w;
-    rect2.h = rect.h;
-    rect3.x = rect2.x;
-    rect3.y = rect2.y;
-    rect3.w = rect2.w;
-    rect3.h = rect2.h;
+    glyphrect.x = rect.x;
+    glyphrect.y = rect.y;
+    glyphrect.w = rect.w;
+    glyphrect.h = rect.h;
+    offsety = rect.y;
 
     for (i = 0; i < strlen(text->content); i++)
     {
@@ -207,8 +204,8 @@ void rendertext(struct text *text, SDL_Rect rect, SDL_Color color)
         if (text->content[i] == '\n')
         {
 
-            rect3.x = rect.x;
-            rect2.y += 16;
+            glyphrect.x = rect.x;
+            offsety += 16;
 
             continue;
 
@@ -217,19 +214,19 @@ void rendertext(struct text *text, SDL_Rect rect, SDL_Color color)
         TTF_GlyphMetrics(font, text->content[i], &minx, &maxx, &miny, &maxy, &advance);
 
         surface = TTF_RenderGlyph_Solid(font, text->content[i], color);
-        rect3.y = rect2.y + ascent - maxy;
-        rect3.w = advance;
+        glyphrect.y = offsety + ascent - maxy;
+        glyphrect.w = advance;
 
-        SDL_BlitSurface(surface, NULL, display, &rect3);
+        SDL_BlitSurface(surface, NULL, display, &glyphrect);
         SDL_FreeSurface(surface);
 
-        rect3.x += advance;
+        glyphrect.x += advance;
 
-        if (rect3.x + rect3.w > rect.x + rect.w)
+        if (glyphrect.x + glyphrect.w > rect.x + rect.w)
         {
 
-            rect3.x = rect.x;
-            rect2.y += 16;
+            glyphrect.x = rect.x;
+            offsety += 16;
 
         }
 
