@@ -14,8 +14,9 @@ static struct menuitem menuitems[32] = {
 };
 
 static struct app app;
-static struct textbox title = {{"Invalid entry"}, {0 + MENU_PADDING, 0 + MENU_PADDING, 320 - MENU_PADDING * 2, 96}};
-static struct menu menu = {menuitems, 2, 0, {0, 120, 320, 120}};
+static struct textbox title = {{0}, {0 + MENU_PADDING, 0 + MENU_PADDING, 320 - MENU_PADDING * 2, 96}};
+static struct textbox shortdescription = {{0}, {0 + MENU_PADDING, 24 + MENU_PADDING, 320 - MENU_PADDING * 2, 96}};
+static struct menu menu = {menuitems, 2, 0, {0, 168, 320, 72}};
 
 static void init(unsigned int from, unsigned int id)
 {
@@ -24,6 +25,7 @@ static void init(unsigned int from, unsigned int id)
     menu_setrow(&menu, 0);
 
     title.text.content = app.name;
+    shortdescription.text.content = app.shortdescription;
 
 }
 
@@ -31,6 +33,7 @@ static void destroy()
 {
 
     free(app.name);
+    free(app.shortdescription);
 
 }
 
@@ -39,6 +42,7 @@ static void render()
 
     render_background();
     render_textbox(&title);
+    render_textbox(&shortdescription);
     render_menu(&menu);
 
 }

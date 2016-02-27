@@ -24,7 +24,7 @@ void db_loadapp(struct app *app, unsigned int id, char *name)
 
     }
 
-    rc = sqlite3_prepare_v2(db, "SELECT id, name FROM apps WHERE id = ?", -1, &res, 0);
+    rc = sqlite3_prepare_v2(db, "SELECT id, name, short FROM apps WHERE id = ?", -1, &res, 0);
 
     if (rc != SQLITE_OK)
     {
@@ -48,8 +48,10 @@ void db_loadapp(struct app *app, unsigned int id, char *name)
     {
 
         const unsigned char *name = sqlite3_column_text(res, 1);
+        const unsigned char *shortdescription = sqlite3_column_text(res, 2);
 
         app->name = strdup((char *)name);
+        app->shortdescription = strdup((char *)shortdescription);
 
     }
 
