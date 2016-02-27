@@ -15,7 +15,7 @@ struct box
 struct view
 {
 
-    void (*init)();
+    void (*init)(unsigned int from, unsigned int id);
     void (*destroy)();
     void (*render)();
     void (*handlekey)(unsigned int id);
@@ -24,8 +24,9 @@ struct view
 };
 
 void ztore_changestate(unsigned int state);
+void view_set(unsigned int index, unsigned int from, unsigned int value);
 void view_handleevent(unsigned int index, unsigned int id);
-void view_register(unsigned int index, void (*init)(), void (*destroy)(), void (*render)(), void (*handlekey)(unsigned int id), void (*handleevent)(unsigned int id));
+void view_register(unsigned int index, void (*init)(unsigned int from, unsigned int id), void (*destroy)(), void (*render)(), void (*handlekey)(unsigned int id), void (*handleevent)(unsigned int id));
 void view_frontsetup();
 void view_appssetup();
 void view_browsesetup();

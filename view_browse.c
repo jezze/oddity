@@ -8,7 +8,7 @@
 
 static struct menu menu = {0, 0, 0, {0, 0, 320, 240}};
 
-static void init()
+static void init(unsigned int from, unsigned int id)
 {
 
     if (!menu.items)
@@ -36,7 +36,7 @@ static void handlekey(unsigned int keysym)
     {
 
     case SDLK_ESCAPE:
-        view_set(0);
+        view_set(0, 2, 0);
 
         break;
 
@@ -72,7 +72,7 @@ static void handlekey(unsigned int keysym)
 static void handleevent(unsigned int id)
 {
 
-    view_set(3);
+    view_set(3, 2, id);
 
 }
 

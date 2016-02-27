@@ -16,7 +16,7 @@ static struct menuitem menuitems[32] = {
 static struct textbox text = {{"Hello and welcome!\n\nThis is a very long text that I am using to see if my wordwrap is working properly."}, {0 + MENU_PADDING, 0 + MENU_PADDING, 320 - MENU_PADDING * 2, 96}};
 static struct menu menu = {menuitems, 4, 0, {0, 120, 320, 120}};
 
-static void init()
+static void init(unsigned int from, unsigned int id)
 {
 
     menu_setrow(&menu, 0);
@@ -74,12 +74,12 @@ static void handleevent(unsigned int id)
     {
 
     case 1:
-        view_set(1);
+        view_set(1, 0, 0);
 
         break;
 
     case 2:
-        view_set(2);
+        view_set(2, 0, 0);
 
         break;
 

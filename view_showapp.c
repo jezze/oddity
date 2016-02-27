@@ -2,6 +2,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include "ztore.h"
+#include "app.h"
 #include "text.h"
 #include "menu.h"
 #include "render.h"
@@ -11,13 +12,24 @@ static struct menuitem menuitems[32] = {
     {{"Remove"}, 2, MENUITEM_FLAG_NORMAL}
 };
 
-static struct textbox text = {{"Game title here."}, {0 + MENU_PADDING, 0 + MENU_PADDING, 320 - MENU_PADDING * 2, 96}};
+static struct app app;
+static struct textbox title = {{"Invalid entry"}, {0 + MENU_PADDING, 0 + MENU_PADDING, 320 - MENU_PADDING * 2, 96}};
 static struct menu menu = {menuitems, 2, 0, {0, 120, 320, 120}};
 
-static void init()
+static void init(unsigned int from, unsigned int id)
 {
 
+    db_loadapp(&app, id, "db/official.db");    
     menu_setrow(&menu, 0);
+
+    title.text.content = app.name;
+
+}
+
+static void destroy()
+{
+
+    free(app.name);
 
 }
 
@@ -25,7 +37,7 @@ static void render()
 {
 
     render_background();
-    render_textbox(&text);
+    render_textbox(&title);
     render_menu(&menu);
 
 }
@@ -37,7 +49,7 @@ static void handlekey(unsigned int keysym)
     {
 
     case SDLK_ESCAPE:
-        view_set(2);
+        view_set(2, 3, 0);
 
         break;
 
@@ -73,7 +85,7 @@ static void handleevent(unsigned int id)
 void view_showappsetup()
 {
 
-    view_register(3, init, 0, render, handlekey, handleevent);
+    view_register(3, init, destroy, render, handlekey, handleevent);
 
 }
 

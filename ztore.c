@@ -16,7 +16,7 @@ void ztore_changestate(unsigned int state)
 
 }
 
-void view_set(unsigned int index)
+void view_set(unsigned int index, unsigned int from, unsigned int value)
 {
 
     if (currentview && currentview->destroy)
@@ -25,7 +25,7 @@ void view_set(unsigned int index)
     currentview = &views[index];
 
     if (currentview && currentview->init)
-        currentview->init();
+        currentview->init(from, value);
 
 }
 
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
     view_appssetup();
     view_browsesetup();
     view_showappsetup();
-    view_set(0);
+    view_set(0, 0, 0);
     render_init();
     render_initfont();
     currentview->render();
