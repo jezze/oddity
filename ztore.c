@@ -34,6 +34,14 @@ struct text
 
 };
 
+struct textbox
+{
+
+    struct text text;
+    struct box box;
+
+};
+
 struct menuitem
 {
 
@@ -72,11 +80,12 @@ unsigned int currentstate = 1;
 
 struct menuitem front_menuitems[32] = {
     {{"Apps"}, 1, MENUITEM_FLAG_NORMAL | MENUITEM_FLAG_SELECTED},
-    {{"Browse"}, 2, MENUITEM_FLAG_NORMAL},
+    {{"Store"}, 2, MENUITEM_FLAG_NORMAL},
     {{"Downloads"}, 0, MENUITEM_FLAG_BLOCKED},
     {{"Exit"}, 8, MENUITEM_FLAG_NORMAL}
 };
 
+struct textbox fronttext = {{"Hello and welcome!\n\nThis is a very long text that I am using to see if my wordwrap is working properly."}, {0, 0, 320, 240}};
 struct menu frontmenu = {front_menuitems, 4, 0, {0, 96, 320, 144}};
 struct menu appsmenu = {0, 0, 0, {0, 0, 320, 240}};
 struct menu browsemenu = {0, 0, 0, {0, 0, 320, 240}};
@@ -167,15 +176,82 @@ void renderbackground()
 void rendertext(struct text *text, SDL_Rect rect, SDL_Color color)
 {
 
-    SDL_Surface *surface = TTF_RenderText_Solid(font, text->content, color);
+    SDL_Surface *surface;
+    SDL_Rect rect2;
+    SDL_Rect rect3;
+    unsigned int i;
+    int ascent = TTF_FontAscent(font);
 
     rect.x = rect.x + TEXT_XPADDING;
     rect.y = rect.y + TEXT_YPADDING;
-    rect.w = rect.w - TEXT_XPADDING;
-    rect.h = rect.h - TEXT_YPADDING;
+    rect.w = rect.w - TEXT_XPADDING * 2;
+    rect.h = rect.h - TEXT_YPADDING * 2;
+    rect2.x = rect.x;
+    rect2.y = rect.y;
+    rect2.w = rect.w;
+    rect2.h = rect.h;
+    rect3.x = rect2.x;
+    rect3.y = rect2.y;
+    rect3.w = rect2.w;
+    rect3.h = rect2.h;
 
-    SDL_BlitSurface(surface, NULL, display, &rect);
-    SDL_FreeSurface(surface);
+    for (i = 0; i < strlen(text->content); i++)
+    {
+
+        int minx;
+        int maxx;
+        int miny;
+        int maxy;
+        int advance;
+
+        if (text->content[i] == '\n')
+        {
+
+            rect3.x = rect.x;
+            rect2.y += 16;
+
+            continue;
+
+        }
+
+        TTF_GlyphMetrics(font, text->content[i], &minx, &maxx, &miny, &maxy, &advance);
+
+        surface = TTF_RenderGlyph_Solid(font, text->content[i], color);
+        rect3.y = rect2.y + ascent - maxy;
+        rect3.w = advance;
+
+        SDL_BlitSurface(surface, NULL, display, &rect3);
+        SDL_FreeSurface(surface);
+
+        rect3.x += advance;
+
+        if (rect3.x + rect3.w > rect.x + rect.w)
+        {
+
+            rect3.x = rect.x;
+            rect2.y += 16;
+
+        }
+
+    }
+
+}
+
+void rendertextbox(struct textbox *textbox)
+{
+
+    SDL_Color color;
+    SDL_Rect rect;
+
+    rect.x = textbox->box.x;
+    rect.y = textbox->box.y;
+    rect.w = textbox->box.w;
+    rect.h = textbox->box.h;
+    color.r = 192;
+    color.g = 192;
+    color.b = 192;
+
+    return rendertext(&textbox->text, rect, color);
 
 }
 
@@ -312,6 +388,7 @@ void front_render()
 {
 
     renderbackground();
+    rendertextbox(&fronttext);
     rendermenu(&frontmenu);
 
 }
