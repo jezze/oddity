@@ -96,7 +96,7 @@ static void key(unsigned int keysym)
         break;
 
     case SDLK_RETURN:
-        showappview->load(applist.items[menu.currentitem].id);
+        view_loadshowapp(applist.items[menu.currentitem].id);
         ztore_setview(showappview);
 
         break;
@@ -105,15 +105,10 @@ static void key(unsigned int keysym)
 
 }
 
-static void load(unsigned int id)
-{
-
-}
-
 struct view *view_browsesetup(unsigned int w, unsigned int h, struct view *showapp)
 {
 
-    view_init(&view, init, destroy, render, key, load);
+    view_init(&view, init, destroy, render, key);
 
     showappview = showapp;
     emptytextbox.text.content = "No apps have been installed.";

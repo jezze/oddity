@@ -85,7 +85,7 @@ static void key(unsigned int keysym)
 
 }
 
-static void load(unsigned int id)
+void view_loadshowapp(unsigned int id)
 {
 
     dataid = id;
@@ -95,7 +95,7 @@ static void load(unsigned int id)
 struct view *view_showappsetup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view, init, destroy, render, key, load);
+    view_init(&view, init, destroy, render, key);
 
     menu.items = menuitems;
     menu.total = 2;

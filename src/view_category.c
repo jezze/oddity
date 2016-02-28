@@ -94,15 +94,10 @@ static void key(unsigned int keysym)
 
 }
 
-static void load(unsigned int id)
-{
-
-}
-
 struct view *view_categorysetup(unsigned int w, unsigned int h, struct view *browse)
 {
 
-    view_init(&view, init, destroy, render, key, load);
+    view_init(&view, init, destroy, render, key);
 
     browseview = browse;
     menu.items = menuitems;
