@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
-#include "ztore.h"
+#include "view.h"
 #include "box.h"
 #include "text.h"
 #include "render.h"

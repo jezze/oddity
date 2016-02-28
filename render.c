@@ -3,6 +3,7 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
 #include "ztore.h"
+#include "view.h"
 #include "event.h"
 #include "render.h"
 
@@ -120,7 +121,7 @@ void render_flip()
 
 }
 
-void render_waitevent(struct view *view)
+void render_waitevent()
 {
 
     SDL_Event event;
@@ -131,7 +132,7 @@ void render_waitevent(struct view *view)
     {
 
     case SDL_KEYDOWN:
-        view->onkey(event.key.keysym.sym);
+        view_key(event.key.keysym.sym);
 
         break;
 

@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-#include "ztore.h"
+#include "view.h"
 #include "event.h"
 #include "box.h"
 #include "text.h"

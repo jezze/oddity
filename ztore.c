@@ -1,37 +1,14 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include "ztore.h"
+#include "view.h"
 #include "event.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"
 #include "render.h"
 
-static struct view *currentview;
 static unsigned int currentstate = 1;
-
-void view_set(struct view *view)
-{
-
-    if (currentview)
-        currentview->ondestroy();
-
-    currentview = view;
-
-    if (currentview)
-        currentview->oninit();
-
-}
-
-void view_init(struct view *view, void (*oninit)(), void (*ondestroy)(), void (*onrender)(), void (*onkey)(unsigned int keysym))
-{
-
-    view->oninit = oninit;
-    view->ondestroy = ondestroy;
-    view->onrender = onrender;
-    view->onkey = onkey;
-
-}
 
 static void onevent(unsigned int type, void *data)
 {
@@ -58,14 +35,14 @@ int main(int argc, char **argv)
     view_showappsetup(SCREEN_WIDTH, SCREEN_HEIGHT);
     render_init();
     render_initfont();
-    currentview->onrender();
+    view_render();
     render_flip();
 
     while (currentstate)
     {
 
-        render_waitevent(currentview);
-        currentview->onrender();
+        render_waitevent();
+        view_render();
         render_flip();
 
     }
