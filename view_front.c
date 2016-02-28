@@ -139,18 +139,11 @@ void view_frontsetup(unsigned int w, unsigned int h)
 
     menu.items = menuitems;
     menu.total = 4;
-    menu.box.w = w;
-    menu.box.h = (menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING);
-    menu.box.x = 0;
-    menu.box.y = h - menu.box.h;
-
-    menu_setrow(&menu, 0);
-
     text.text.content = greeting;
-    text.box.w = w;
-    text.box.h = (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING);
-    text.box.x = 0;
-    text.box.y = 0;
+
+    box_init(&text.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+    box_init(&menu.box, 0, h - (menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+    menu_setrow(&menu, 0);
 
 }
 

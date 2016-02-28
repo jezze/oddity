@@ -117,9 +117,7 @@ void view_appssetup(unsigned int w, unsigned int h)
 
     event_register(onevent);
     view_init(&view, view_oninit, view_ondestroy, view_onrender, view_onkey);
-
-    menu.box.w = w;
-    menu.box.h = h;
+    box_init(&menu.box, 0, 0, w, h);
 
 }
 
