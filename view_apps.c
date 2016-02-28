@@ -10,15 +10,33 @@
 #include "render.h"
 
 static struct view view;
+static struct applist applist;
 static struct menu menu = {0, 0, 0, {0, 0, 320, 240}};
 
 static void view_oninit()
 {
 
-    if (!menu.items)
+    if (!menu.total)
     {
 
-        db_loadapps(&menu, "db/apps.db");
+        unsigned int i;
+
+        applist.count = db_countapps("db/apps.db");
+        applist.items = malloc(sizeof (struct app) * applist.count);
+
+        db_loadapps(applist.items, applist.count, "db/apps.db");
+
+        menu.total = applist.count;
+        menu.items = malloc(sizeof (struct menuitem) * menu.total);
+
+        for (i = 0; i < menu.total; i++)
+        {
+
+            menu.items[i].type = MENUITEM_FLAG_NORMAL;
+            menu.items[i].text.content = applist.items[i].name;
+
+        }
+
         menu_setrow(&menu, 0);
 
     }

@@ -12,8 +12,8 @@
 static struct view view;
 
 static struct menuitem menuitems[32] = {
-    {{"Install"}, 1, MENUITEM_FLAG_NORMAL},
-    {{"Remove"}, 2, MENUITEM_FLAG_NORMAL}
+    {{"Install"}, MENUITEM_FLAG_NORMAL},
+    {{"Remove"}, MENUITEM_FLAG_NORMAL}
 };
 
 static struct app app;

@@ -6,3 +6,11 @@ struct app
     char *shortdescription;
 
 };
+
+struct applist
+{
+
+    struct app *items;
+    unsigned int count;
+
+};

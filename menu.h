@@ -8,7 +8,6 @@ struct menuitem
 {
 
     struct text text;
-    unsigned int id;
     unsigned int type;
 
 };
