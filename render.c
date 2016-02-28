@@ -4,7 +4,6 @@
 #include <SDL/SDL_ttf.h>
 #include "ztore.h"
 #include "view.h"
-#include "event.h"
 #include "render.h"
 
 SDL_Surface *display;
@@ -137,7 +136,7 @@ void render_waitevent()
         break;
 
     case SDL_QUIT:
-        event_quit(NULL);
+        ztore_quit();
 
         break;
 

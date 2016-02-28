@@ -7,36 +7,36 @@ void view_set(struct view *view)
 {
 
     if (currentview)
-        currentview->ondestroy();
+        currentview->destroy();
 
     currentview = view;
 
     if (currentview)
-        currentview->oninit();
+        currentview->init();
 
 }
 
 void view_render()
 {
 
-    currentview->onrender();
+    currentview->render();
 
 }
 
 void view_key(unsigned int keysym)
 {
 
-    currentview->onkey(keysym);
+    currentview->key(keysym);
 
 }
 
-void view_init(struct view *view, void (*oninit)(), void (*ondestroy)(), void (*onrender)(), void (*onkey)(unsigned int keysym))
+void view_init(struct view *view, void (*init)(), void (*destroy)(), void (*render)(), void (*key)(unsigned int keysym))
 {
 
-    view->oninit = oninit;
-    view->ondestroy = ondestroy;
-    view->onrender = onrender;
-    view->onkey = onkey;
+    view->init = init;
+    view->destroy = destroy;
+    view->render = render;
+    view->key = key;
 
 }
 

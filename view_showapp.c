@@ -2,7 +2,6 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include "view.h"
-#include "event.h"
 #include "app.h"
 #include "box.h"
 #include "text.h"
@@ -21,7 +20,7 @@ static struct textbox title;
 static struct textbox shortdescription;
 static struct menu menu;
 
-static void view_oninit()
+static void init()
 {
 
     db_loadapp(&app, 12, "db/official.db");    
@@ -31,7 +30,7 @@ static void view_oninit()
 
 }
 
-static void view_ondestroy()
+static void destroy()
 {
 
     free(app.name);
@@ -39,7 +38,7 @@ static void view_ondestroy()
 
 }
 
-static void view_onrender()
+static void render()
 {
 
     render_background();
@@ -49,14 +48,14 @@ static void view_onrender()
 
 }
 
-static void view_onkey(unsigned int keysym)
+static void key(unsigned int keysym)
 {
 
     switch (keysym)
     {
 
     case SDLK_ESCAPE:
-        event_exitview(&view, 3);
+        view_set(view.parent);
 
         break;
 
@@ -84,31 +83,10 @@ static void view_onkey(unsigned int keysym)
 
 }
 
-static void onevent(unsigned int type, void *data)
+struct view *view_showappsetup(unsigned int w, unsigned int h)
 {
 
-    struct event_showview *showview;
-
-    switch (type)
-    {
-
-    case EVENT_TYPE_SHOWVIEW:
-        showview = data;
-
-        if (showview->id == 3)
-            view_set(&view);
-
-        break;
-
-    }
-
-}
-
-void view_showappsetup(unsigned int w, unsigned int h)
-{
-
-    event_register(onevent);
-    view_init(&view, view_oninit, view_ondestroy, view_onrender, view_onkey);
+    view_init(&view, init, destroy, render, key);
 
     menu.items = menuitems;
     menu.total = 2;
@@ -117,6 +95,8 @@ void view_showappsetup(unsigned int w, unsigned int h)
     box_init(&shortdescription.box, 0, (1 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING), w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     box_init(&menu.box, 0, h - (menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_setrow(&menu, 0);
+
+    return &view;
 
 }
 

@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+#include "ztore.h"
 #include "view.h"
-#include "event.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"
@@ -17,20 +17,22 @@ static struct menuitem menuitems[4] = {
 
 static char *greeting = "Hello and welcome!\n\nThis is a very long text that I am using to see if my wordwrap is working properly.";
 static struct view view;
+static struct view *appsview;
+static struct view *browseview;
 static struct textbox text;
 static struct menu menu;
 
-static void view_oninit()
+static void init()
 {
 
 }
 
-static void view_ondestroy()
+static void destroy()
 {
 
 }
 
-static void view_onrender()
+static void render()
 {
 
     render_background();
@@ -39,7 +41,7 @@ static void view_onrender()
 
 }
 
-static void view_onkey(unsigned int keysym)
+static void key(unsigned int keysym)
 {
 
     switch (keysym)
@@ -70,17 +72,17 @@ static void view_onkey(unsigned int keysym)
         {
 
         case 0:
-            event_showview(&view, 1);
+            view_set(appsview);
 
             break;
 
         case 1:
-            event_showview(&view, 2);
+            view_set(browseview);
 
             break;
 
         case 3:
-            event_quit(&view);
+            ztore_quit();
 
             break;
 
@@ -92,50 +94,14 @@ static void view_onkey(unsigned int keysym)
 
 }
 
-static void onevent(unsigned int type, void *data)
+struct view *view_frontsetup(unsigned int w, unsigned int h, struct view *apps, struct view *browse)
 {
 
-    struct event_exitview *exitview;
-    struct event_showview *showview;
-
-    switch (type)
-    {
-
-    case EVENT_TYPE_EXITVIEW:
-        exitview = data;
-
-        switch (exitview->id)
-        {
-
-        case 1:
-        case 2:
-            view_set(&view);
-
-            break;
-
-        }
-
-        break;
-
-    case EVENT_TYPE_SHOWVIEW:
-        showview = data;
-
-        if (showview->id == 0)
-            view_set(&view);
-
-        break;
-
-    }
-
-}
-
-void view_frontsetup(unsigned int w, unsigned int h)
-{
-
-    event_register(onevent);
-    view_init(&view, view_oninit, view_ondestroy, view_onrender, view_onkey);
+    view_init(&view, init, destroy, render, key);
     view_set(&view);
 
+    appsview = apps;
+    browseview = browse;
     text.text.content = greeting;
     menu.items = menuitems;
     menu.total = 4;
@@ -143,6 +109,8 @@ void view_frontsetup(unsigned int w, unsigned int h)
     box_init(&text.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     box_init(&menu.box, 0, h - (menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_setrow(&menu, 0);
+
+    return &view;
 
 }
 

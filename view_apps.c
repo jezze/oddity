@@ -2,7 +2,6 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include "view.h"
-#include "event.h"
 #include "app.h"
 #include "box.h"
 #include "text.h"
@@ -14,7 +13,7 @@ static struct view view;
 static struct applist applist;
 static struct menu menu;
 
-static void view_oninit()
+static void init()
 {
 
     if (!menu.total)
@@ -44,12 +43,12 @@ static void view_oninit()
 
 }
 
-static void view_ondestroy()
+static void destroy()
 {
 
 }
 
-static void view_onrender()
+static void render()
 {
 
     render_background();
@@ -57,14 +56,14 @@ static void view_onrender()
 
 }
 
-static void view_onkey(unsigned int keysym)
+static void key(unsigned int keysym)
 {
 
     switch (keysym)
     {
 
     case SDLK_ESCAPE:
-        event_exitview(&view, 1);
+        view_set(view.parent);
 
         break;
 
@@ -92,32 +91,13 @@ static void view_onkey(unsigned int keysym)
 
 }
 
-static void onevent(unsigned int type, void *data)
+struct view *view_appssetup(unsigned int w, unsigned int h)
 {
 
-    struct event_showview *showview;
-
-    switch (type)
-    {
-
-    case EVENT_TYPE_SHOWVIEW:
-        showview = data;
-
-        if (showview->id == 1)
-            view_set(&view);
-
-        break;
-
-    }
-
-}
-
-void view_appssetup(unsigned int w, unsigned int h)
-{
-
-    event_register(onevent);
-    view_init(&view, view_oninit, view_ondestroy, view_onrender, view_onkey);
+    view_init(&view, init, destroy, render, key);
     box_init(&menu.box, 0, 0, w, h);
+
+    return &view;
 
 }
 
