@@ -91,6 +91,7 @@ static void key(unsigned int keysym)
         break;
 
     case SDLK_RETURN:
+        showappview->load(applist.items[menu.currentitem].id);
         ztore_setview(showappview);
 
         break;

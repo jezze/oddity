@@ -20,11 +20,12 @@ static struct app app;
 static struct textbox title;
 static struct textbox shortdescription;
 static struct menu menu;
+static unsigned int dataid;
 
 static void init()
 {
 
-    db_loadapp(&app, 12, "db/official.db");    
+    db_loadapp(&app, dataid, "db/official.db");    
 
     title.text.content = app.name;
     shortdescription.text.content = app.shortdescription;
@@ -86,6 +87,8 @@ static void key(unsigned int keysym)
 
 static void load(unsigned int id)
 {
+
+    dataid = id;
 
 }
 
