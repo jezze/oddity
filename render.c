@@ -3,6 +3,7 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
 #include "ztore.h"
+#include "event.h"
 #include "text.h"
 #include "menu.h"
 #include "render.h"
@@ -241,12 +242,12 @@ void render_waitevent(struct view *view)
     {
 
     case SDL_KEYDOWN:
-        view->handlekey(event.key.keysym.sym);
+        view->onkey(event.key.keysym.sym);
 
         break;
 
     case SDL_QUIT:
-        ztore_changestate(0);
+        event_quit();
 
         break;
 

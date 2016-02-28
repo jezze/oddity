@@ -1,74 +1,70 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include "ztore.h"
+#include "event.h"
 #include "text.h"
 #include "menu.h"
 #include "render.h"
 
-struct view views[64];
-struct view *currentview;
-unsigned int currentstate = 1;
+static struct view *currentview;
+static unsigned int currentstate = 1;
 
-void ztore_changestate(unsigned int state)
+void view_set(struct view *view, unsigned int id)
 {
 
-    currentstate = state;
+    if (currentview)
+        currentview->ondestroy();
+
+    currentview = view;
+
+    if (currentview)
+        currentview->oninit(id);
 
 }
 
-void view_set(unsigned int index, unsigned int from, unsigned int value)
+void view_init(struct view *view, void (*oninit)(), void (*ondestroy)(), void (*onrender)(), void (*onkey)(unsigned int keysym))
 {
 
-    if (currentview && currentview->destroy)
-        currentview->destroy();
-
-    currentview = &views[index];
-
-    if (currentview && currentview->init)
-        currentview->init(from, value);
+    view->oninit = oninit;
+    view->ondestroy = ondestroy;
+    view->onrender = onrender;
+    view->onkey = onkey;
 
 }
 
-void view_handleevent(unsigned int index, unsigned int id)
+static void onevent(unsigned int type, void *data)
 {
 
-    struct view *view = &views[index];
+    switch (type)
+    {
 
-    view->handleevent(id);
+    case EVENT_TYPE_QUIT:
+        currentstate = 0;
 
-}
+        break;
 
-void view_register(unsigned int index, void (*init)(), void (*destroy)(), void (*render)(), void (*handlekey)(unsigned int id), void (*handleevent)(unsigned int id))
-{
-
-    struct view *view = &views[index];
-
-    view->init = init;
-    view->destroy = destroy;
-    view->render = render;
-    view->handlekey = handlekey;
-    view->handleevent = handleevent;
+    }
 
 }
 
 int main(int argc, char **argv)
 {
 
+    event_register(onevent);
     view_frontsetup();
     view_appssetup();
     view_browsesetup();
     view_showappsetup();
-    view_set(0, 0, 0);
     render_init();
     render_initfont();
-    currentview->render();
+    currentview->onrender();
     render_flip();
 
     while (currentstate)
     {
 
         render_waitevent(currentview);
-        currentview->render();
+        currentview->onrender();
         render_flip();
 
     }

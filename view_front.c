@@ -2,9 +2,12 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include "ztore.h"
+#include "event.h"
 #include "text.h"
 #include "menu.h"
 #include "render.h"
+
+static struct view view;
 
 static struct menuitem menuitems[32] = {
     {{"Apps"}, 1, MENUITEM_FLAG_NORMAL},
@@ -16,14 +19,19 @@ static struct menuitem menuitems[32] = {
 static struct textbox text = {{"Hello and welcome!\n\nThis is a very long text that I am using to see if my wordwrap is working properly."}, {0 + MENU_PADDING, 0 + MENU_PADDING, 320 - MENU_PADDING * 2, 96}};
 static struct menu menu = {menuitems, 4, 0, {0, 120, 320, 120}};
 
-static void init(unsigned int from, unsigned int id)
+static void view_oninit(unsigned int id)
 {
 
     menu_setrow(&menu, 0);
 
 }
 
-static void render()
+static void view_ondestroy()
+{
+
+}
+
+static void view_onrender()
 {
 
     render_background();
@@ -32,7 +40,7 @@ static void render()
 
 }
 
-static void handlekey(unsigned int keysym)
+static void view_onkey(unsigned int keysym)
 {
 
     switch (keysym)
@@ -59,7 +67,10 @@ static void handlekey(unsigned int keysym)
         break;
 
     case SDLK_RETURN:
-        view_handleevent(0, menu.items[menu.currentitem].id);
+        if (menu.currentitem == 3)
+            event_quit();
+        else
+            event_showview(menu.items[menu.currentitem].id);
 
         break;
 
@@ -67,24 +78,36 @@ static void handlekey(unsigned int keysym)
 
 }
 
-static void handleevent(unsigned int id)
+static void onevent(unsigned int type, void *data)
 {
 
-    switch (id)
+    struct event_exitview *exitview;
+    struct event_showview *showview;
+
+    switch (type)
     {
 
-    case 1:
-        view_set(1, 0, 0);
+    case EVENT_TYPE_EXITVIEW:
+        exitview = data;
+
+        switch (exitview->id)
+        {
+
+        case 1:
+        case 2:
+            view_set(&view, 0);
+
+            break;
+
+        }
 
         break;
 
-    case 2:
-        view_set(2, 0, 0);
+    case EVENT_TYPE_SHOWVIEW:
+        showview = data;
 
-        break;
-
-    case 8:
-        ztore_changestate(0);
+        if (showview->id == 0)
+            view_set(&view, 0);
 
         break;
 
@@ -95,7 +118,9 @@ static void handleevent(unsigned int id)
 void view_frontsetup()
 {
 
-    view_register(0, init, 0, render, handlekey, handleevent);
+    event_register(onevent);
+    view_init(&view, view_oninit, view_ondestroy, view_onrender, view_onkey);
+    view_set(&view, 0);
 
 }
 

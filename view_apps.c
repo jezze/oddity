@@ -2,15 +2,17 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include "ztore.h"
+#include "event.h"
 #include "app.h"
 #include "text.h"
 #include "menu.h"
 #include "db.h"
 #include "render.h"
 
+static struct view view;
 static struct menu menu = {0, 0, 0, {0, 0, 320, 240}};
 
-static void init(unsigned int from, unsigned int id)
+static void view_oninit(unsigned int id)
 {
 
     if (!menu.items)
@@ -23,7 +25,12 @@ static void init(unsigned int from, unsigned int id)
 
 }
 
-static void render()
+static void view_ondestroy()
+{
+
+}
+
+static void view_onrender()
 {
 
     render_background();
@@ -31,14 +38,14 @@ static void render()
 
 }
 
-static void handlekey(unsigned int keysym)
+static void view_onkey(unsigned int keysym)
 {
 
     switch (keysym)
     {
 
     case SDLK_ESCAPE:
-        view_set(0, 1, 0);
+        event_exitview(1);
 
         break;
 
@@ -66,15 +73,31 @@ static void handlekey(unsigned int keysym)
 
 }
 
-static void handleevent(unsigned int id)
+static void onevent(unsigned int type, void *data)
 {
+
+    struct event_showview *showview;
+
+    switch (type)
+    {
+
+    case EVENT_TYPE_SHOWVIEW:
+        showview = data;
+
+        if (showview->id == 1)
+            view_set(&view, 0);
+
+        break;
+
+    }
 
 }
 
 void view_appssetup()
 {
 
-    view_register(1, init, 0, render, handlekey, handleevent);
+    event_register(onevent);
+    view_init(&view, view_oninit, view_ondestroy, view_onrender, view_onkey);
 
 }
 
