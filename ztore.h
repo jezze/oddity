@@ -2,16 +2,6 @@
 #define SCREEN_HEIGHT                   240
 #define SCREEN_BPP                      24
 
-struct box
-{
-
-    unsigned int x;
-    unsigned int y;
-    unsigned int w;
-    unsigned int h;
-
-};
-
 struct view
 {
 

@@ -4,6 +4,7 @@
 #include "ztore.h"
 #include "event.h"
 #include "app.h"
+#include "box.h"
 #include "text.h"
 #include "menu.h"
 #include "db.h"

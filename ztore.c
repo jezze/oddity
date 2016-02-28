@@ -2,6 +2,7 @@
 #include <stdarg.h>
 #include "ztore.h"
 #include "event.h"
+#include "box.h"
 #include "text.h"
 #include "menu.h"
 #include "render.h"
