@@ -35,7 +35,7 @@ static void render()
 {
 
     render_background();
-    text_renderbox(&text, 160, 192, 192);
+    text_renderbox(&text, TEXT_COLOR_NORMAL);
     menu_render(&menu);
 
 }

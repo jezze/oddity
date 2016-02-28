@@ -58,7 +58,7 @@ static void render()
     if (applist.count)
         menu_render(&menu);
     else
-        text_renderbox(&emptytextbox, 160, 192, 192);
+        text_renderbox(&emptytextbox, TEXT_COLOR_NORMAL);
 
 }
 

@@ -44,8 +44,8 @@ static void render()
 {
 
     render_background();
-    text_renderbox(&title, 224, 224, 224);
-    text_renderbox(&shortdescription, 160, 192, 192);
+    text_renderbox(&title, TEXT_COLOR_TITLE);
+    text_renderbox(&shortdescription, TEXT_COLOR_NORMAL);
     menu_render(&menu);
 
 }

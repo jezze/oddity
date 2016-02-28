@@ -46,7 +46,7 @@ void render_background()
 
 }
 
-void render_glyph(char c, unsigned int x, unsigned int y, unsigned int w, unsigned int h, int r, int g, int b)
+void render_glyph(char c, unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int col)
 {
 
     SDL_Surface *surface;
@@ -57,9 +57,9 @@ void render_glyph(char c, unsigned int x, unsigned int y, unsigned int w, unsign
     rect.y = y;
     rect.w = w;
     rect.h = h;
-    color.r = r;
-    color.g = g;
-    color.b = b;
+    color.r = col >> 16;
+    color.g = col >> 8;
+    color.b = col >> 0;
     surface = TTF_RenderGlyph_Solid(font, c, color);
 
     SDL_BlitSurface(surface, NULL, display, &rect);
@@ -105,7 +105,7 @@ static void doborderrectangle(SDL_Surface *s, int w, int h, unsigned int color)
 void render_rect(int x, int y, int w, int h)
 {
 
-    SDL_Surface *surface = SDL_CreateRGBSurface(0, w, h, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
+    SDL_Surface *surface = SDL_CreateRGBSurface(0, w, h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 
     dofillrectangle(surface, w, h, 0x10FFFFFF);
     doborderrectangle(surface, w, h, 0x40FFFFFF);

@@ -29,7 +29,7 @@ static unsigned int getwordlength(char *text, unsigned int count)
 
 }
 
-void text_render(struct text *text, int x, int y, int w, int h, int r, int g, int b)
+void text_render(struct text *text, int x, int y, int w, int h, unsigned int color)
 {
 
     int ascent = render_getascent();
@@ -87,7 +87,7 @@ void text_render(struct text *text, int x, int y, int w, int h, int r, int g, in
         gy = offsety + ascent - maxy;
         gw = advance;
 
-        render_glyph(text->content[i], gx, gy, gw, gh, r, g, b);
+        render_glyph(text->content[i], gx, gy, gw, gh, color);
 
         gx += advance;
 
@@ -103,10 +103,10 @@ void text_render(struct text *text, int x, int y, int w, int h, int r, int g, in
 
 }
 
-void text_renderbox(struct textbox *textbox, int r, int g, int b)
+void text_renderbox(struct textbox *textbox, unsigned int color)
 {
 
-    text_render(&textbox->text, textbox->box.x + RENDER_PADDING, textbox->box.y + RENDER_PADDING, textbox->box.w - (2 * RENDER_PADDING), textbox->box.h - (2 * RENDER_PADDING), r, g, b);
+    text_render(&textbox->text, textbox->box.x + RENDER_PADDING, textbox->box.y + RENDER_PADDING, textbox->box.w - (2 * RENDER_PADDING), textbox->box.h - (2 * RENDER_PADDING), color);
 
 }
 

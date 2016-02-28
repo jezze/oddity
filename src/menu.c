@@ -65,9 +65,9 @@ void menu_renderitem(struct menuitem *menuitem, int x, int y, int w, int h)
         render_rect(x, y, w, h);
 
     if (menuitem->type & MENUITEM_FLAG_BLOCKED)
-        text_render(&menuitem->text, x, y, w, h, 64, 96, 96);
+        text_render(&menuitem->text, x, y, w, h, TEXT_COLOR_DISABLE);
     else
-        text_render(&menuitem->text, x, y, w, h, 224, 96, 32);
+        text_render(&menuitem->text, x, y, w, h, TEXT_COLOR_SELECT);
 
 }
 
