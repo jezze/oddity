@@ -22,8 +22,6 @@ static struct menu menu = {menuitems, 4, 0, {0, 120, 320, 120}};
 static void view_oninit(unsigned int id)
 {
 
-    menu_setrow(&menu, 0);
-
 }
 
 static void view_ondestroy()
@@ -121,6 +119,7 @@ void view_frontsetup()
     event_register(onevent);
     view_init(&view, view_oninit, view_ondestroy, view_onrender, view_onkey);
     view_set(&view, 0);
+    menu_setrow(&menu, 0);
 
 }
 
