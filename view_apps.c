@@ -92,10 +92,15 @@ static void key(unsigned int keysym)
 
 }
 
+static void load(unsigned int id)
+{
+
+}
+
 struct view *view_appssetup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view, init, destroy, render, key);
+    view_init(&view, init, destroy, render, key, load);
     box_init(&menu.box, 0, 0, w, h);
 
     return &view;

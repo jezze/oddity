@@ -94,10 +94,15 @@ static void key(unsigned int keysym)
 
 }
 
+static void load(unsigned int id)
+{
+
+}
+
 struct view *view_frontsetup(unsigned int w, unsigned int h, struct view *apps, struct view *browse)
 {
 
-    view_init(&view, init, destroy, render, key);
+    view_init(&view, init, destroy, render, key, load);
 
     appsview = apps;
     browseview = browse;
