@@ -8,18 +8,14 @@
 #include "render.h"
 #include "ztore.h"
 
-static struct menuitem menuitems[4] = {
-    {{"Apps"}, MENUITEM_FLAG_NORMAL},
-    {{"Store"}, MENUITEM_FLAG_NORMAL},
-    {{"Downloads"}, MENUITEM_FLAG_BLOCKED},
-    {{"Exit"}, MENUITEM_FLAG_NORMAL}
+static struct menuitem menuitems[3] = {
+    {{"All"}, MENUITEM_FLAG_NORMAL},
+    {{"Games"}, MENUITEM_FLAG_NORMAL},
+    {{"Emulators"}, MENUITEM_FLAG_NORMAL}
 };
 
-static char *greeting = "Hello and welcome!\n\nThis is a very long text that I am using to see if my wordwrap is working properly.";
 static struct view view;
-static struct view *appsview;
-static struct view *categoryview;
-static struct textbox text;
+static struct view *browseview;
 static struct menu menu;
 
 static void init()
@@ -36,7 +32,6 @@ static void render()
 {
 
     render_background();
-    text_renderbox(&text, 160, 192, 192);
     menu_render(&menu);
 
 }
@@ -77,17 +72,17 @@ static void key(unsigned int keysym)
         {
 
         case 0:
-            ztore_setview(appsview);
+            ztore_setview(browseview);
 
             break;
 
         case 1:
-            ztore_setview(categoryview);
+            ztore_setview(browseview);
 
             break;
 
-        case 3:
-            ztore_quit();
+        case 2:
+            ztore_setview(browseview);
 
             break;
 
@@ -104,18 +99,15 @@ static void load(unsigned int id)
 
 }
 
-struct view *view_frontsetup(unsigned int w, unsigned int h, struct view *apps, struct view *category)
+struct view *view_categorysetup(unsigned int w, unsigned int h, struct view *browse)
 {
 
     view_init(&view, init, destroy, render, key, load);
 
-    appsview = apps;
-    categoryview = category;
-    text.text.content = greeting;
+    browseview = browse;
     menu.items = menuitems;
-    menu.total = 4;
+    menu.total = 3;
 
-    box_init(&text.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     box_init(&menu.box, 0, h - (menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_setrow(&menu, 0);
 
