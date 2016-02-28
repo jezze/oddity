@@ -12,7 +12,7 @@
 static struct view view;
 static struct menu menu = {0, 0, 0, {0, 0, 320, 240}};
 
-static void view_oninit(unsigned int id)
+static void view_oninit()
 {
 
     if (!menu.items)
@@ -85,7 +85,7 @@ static void onevent(unsigned int type, void *data)
         showview = data;
 
         if (showview->id == 1)
-            view_set(&view, 0);
+            view_set(&view);
 
         break;
 

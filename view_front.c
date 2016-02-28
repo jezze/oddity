@@ -19,7 +19,7 @@ static struct menuitem menuitems[32] = {
 static struct textbox text = {{"Hello and welcome!\n\nThis is a very long text that I am using to see if my wordwrap is working properly."}, {0 + MENU_PADDING, 0 + MENU_PADDING, 320 - MENU_PADDING * 2, 96}};
 static struct menu menu = {menuitems, 4, 0, {0, 120, 320, 120}};
 
-static void view_oninit(unsigned int id)
+static void view_oninit()
 {
 
 }
@@ -93,7 +93,7 @@ static void onevent(unsigned int type, void *data)
 
         case 1:
         case 2:
-            view_set(&view, 0);
+            view_set(&view);
 
             break;
 
@@ -105,7 +105,7 @@ static void onevent(unsigned int type, void *data)
         showview = data;
 
         if (showview->id == 0)
-            view_set(&view, 0);
+            view_set(&view);
 
         break;
 
@@ -118,7 +118,7 @@ void view_frontsetup()
 
     event_register(onevent);
     view_init(&view, view_oninit, view_ondestroy, view_onrender, view_onkey);
-    view_set(&view, 0);
+    view_set(&view);
     menu_setrow(&menu, 0);
 
 }

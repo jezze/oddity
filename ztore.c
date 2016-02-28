@@ -9,7 +9,7 @@
 static struct view *currentview;
 static unsigned int currentstate = 1;
 
-void view_set(struct view *view, unsigned int id)
+void view_set(struct view *view)
 {
 
     if (currentview)
@@ -18,7 +18,7 @@ void view_set(struct view *view, unsigned int id)
     currentview = view;
 
     if (currentview)
-        currentview->oninit(id);
+        currentview->oninit();
 
 }
 

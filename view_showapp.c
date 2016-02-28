@@ -21,10 +21,10 @@ static struct textbox title = {{0}, {0 + MENU_PADDING, 0 + MENU_PADDING, 320 - M
 static struct textbox shortdescription = {{0}, {0 + MENU_PADDING, 24 + MENU_PADDING, 320 - MENU_PADDING * 2, 96}};
 static struct menu menu = {menuitems, 2, 0, {0, 168, 320, 72}};
 
-static void view_oninit(unsigned int id)
+static void view_oninit()
 {
 
-    db_loadapp(&app, id, "db/official.db");    
+    db_loadapp(&app, 12, "db/official.db");    
     menu_setrow(&menu, 0);
 
     title.text.content = app.name;
@@ -97,7 +97,7 @@ static void onevent(unsigned int type, void *data)
         showview = data;
 
         if (showview->id == 3)
-            view_set(&view, 0);
+            view_set(&view);
 
         break;
 
