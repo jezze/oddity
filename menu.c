@@ -17,14 +17,16 @@ void menu_setrow(struct menu *menu, unsigned int index)
 void menu_nextrow(struct menu *menu)
 {
 
-    menu_setrow(menu, (menu->total + menu->currentitem + 1) % menu->total);
+    if (menu->total)
+        menu_setrow(menu, (menu->total + menu->currentitem + 1) % menu->total);
 
 }
 
 void menu_prevrow(struct menu *menu)
 {
 
-    menu_setrow(menu, (menu->total + menu->currentitem - 1) % menu->total);
+    if (menu->total)
+        menu_setrow(menu, (menu->total + menu->currentitem - 1) % menu->total);
 
 }
 
