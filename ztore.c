@@ -20,44 +20,37 @@ void ztore_quit()
 void ztore_setview(struct view *view)
 {
 
-    if (currentview)
-        currentview->destroy();
+    currentview->destroy();
 
     currentview = view;
 
-    if (currentview)
-        currentview->init();
+    currentview->init();
 
 }
 
 int main(int argc, char **argv)
 {
 
-    struct view *browseview;
-    struct view *showappview;
-    struct view *appview;
-    struct view *frontview;
+    struct view *showappview = view_showappsetup(SCREEN_WIDTH, SCREEN_HEIGHT);
+    struct view *browseview = view_browsesetup(SCREEN_WIDTH, SCREEN_HEIGHT, showappview);
+    struct view *appview = view_appssetup(SCREEN_WIDTH, SCREEN_HEIGHT);
+    struct view *frontview = view_frontsetup(SCREEN_WIDTH, SCREEN_HEIGHT, appview, browseview);
 
-    showappview = view_showappsetup(SCREEN_WIDTH, SCREEN_HEIGHT);
-    browseview = view_browsesetup(SCREEN_WIDTH, SCREEN_HEIGHT, showappview);
-    appview = view_appssetup(SCREEN_WIDTH, SCREEN_HEIGHT);
-    frontview = view_frontsetup(SCREEN_WIDTH, SCREEN_HEIGHT, appview, browseview);
+    view_setparent(showappview, browseview);
+    view_setparent(browseview, frontview);
+    view_setparent(appview, frontview);
 
-    showappview->parent = browseview;
-    browseview->parent = frontview;
-    appview->parent = frontview;
+    currentview = frontview;
 
     render_init();
     render_initfont();
-    currentview->render();
-    render_flip();
+    render_update(currentview);
 
     while (currentstate)
     {
 
         render_waitevent(currentview);
-        currentview->render();
-        render_flip();
+        render_update(currentview);
 
     }
 

@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include "view.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"

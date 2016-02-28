@@ -98,7 +98,6 @@ struct view *view_frontsetup(unsigned int w, unsigned int h, struct view *apps, 
 {
 
     view_init(&view, init, destroy, render, key);
-    ztore_setview(&view);
 
     appsview = apps;
     browseview = browse;

@@ -113,13 +113,6 @@ void render_rect(int x, int y, int w, int h)
 
 }
 
-void render_flip()
-{
-
-    SDL_Flip(display);
-
-}
-
 void render_waitevent(struct view *view)
 {
 
@@ -141,6 +134,14 @@ void render_waitevent(struct view *view)
         break;
 
     }
+
+}
+
+void render_update(struct view *view)
+{
+
+    view->render();
+    SDL_Flip(display);
 
 }
 
