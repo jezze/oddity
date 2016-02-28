@@ -15,3 +15,6 @@ struct textbox
     struct box box;
 
 };
+
+void text_render(struct text *text, int x, int y, int w, int h, int r, int g, int b);
+void text_renderbox(struct textbox *textbox, int r, int g, int b);

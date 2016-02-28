@@ -43,8 +43,8 @@ static void view_onrender()
 {
 
     render_background();
-    render_textbox(&title, 224, 224, 224);
-    render_textbox(&shortdescription, 160, 192, 192);
+    text_renderbox(&title, 224, 224, 224);
+    text_renderbox(&shortdescription, 160, 192, 192);
     menu_render(&menu);
 
 }

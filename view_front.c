@@ -34,7 +34,7 @@ static void view_onrender()
 {
 
     render_background();
-    render_textbox(&text, 160, 192, 192);
+    text_renderbox(&text, 160, 192, 192);
     menu_render(&menu);
 
 }
