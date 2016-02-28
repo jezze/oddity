@@ -8,6 +8,7 @@
 #include "menu.h"
 #include "db.h"
 #include "render.h"
+#include "ztore.h"
 
 static struct menuitem menuitems[2] = {
     {{"Install"}, MENUITEM_FLAG_NORMAL},
@@ -55,7 +56,7 @@ static void key(unsigned int keysym)
     {
 
     case SDLK_ESCAPE:
-        view_set(view.parent);
+        ztore_setview(view.parent);
 
         break;
 

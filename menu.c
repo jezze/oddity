@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include "ztore.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"

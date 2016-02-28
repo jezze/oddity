@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sqlite3.h>
-#include "ztore.h"
 #include "app.h"
 
 void db_loadapp(struct app *app, unsigned int id, char *name)

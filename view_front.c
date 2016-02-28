@@ -1,12 +1,12 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-#include "ztore.h"
 #include "view.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"
 #include "render.h"
+#include "ztore.h"
 
 static struct menuitem menuitems[4] = {
     {{"Apps"}, MENUITEM_FLAG_NORMAL},
@@ -72,12 +72,12 @@ static void key(unsigned int keysym)
         {
 
         case 0:
-            view_set(appsview);
+            ztore_setview(appsview);
 
             break;
 
         case 1:
-            view_set(browseview);
+            ztore_setview(browseview);
 
             break;
 
@@ -98,7 +98,7 @@ struct view *view_frontsetup(unsigned int w, unsigned int h, struct view *apps, 
 {
 
     view_init(&view, init, destroy, render, key);
-    view_set(&view);
+    ztore_setview(&view);
 
     appsview = apps;
     browseview = browse;

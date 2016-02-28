@@ -2,9 +2,9 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
-#include "ztore.h"
 #include "view.h"
 #include "render.h"
+#include "ztore.h"
 
 SDL_Surface *display;
 SDL_Surface *background;
@@ -120,7 +120,7 @@ void render_flip()
 
 }
 
-void render_waitevent()
+void render_waitevent(struct view *view)
 {
 
     SDL_Event event;
@@ -131,7 +131,7 @@ void render_waitevent()
     {
 
     case SDL_KEYDOWN:
-        view_key(event.key.keysym.sym);
+        view->key(event.key.keysym.sym);
 
         break;
 

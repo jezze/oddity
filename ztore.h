@@ -3,3 +3,4 @@
 #define SCREEN_BPP                      24
 
 void ztore_quit();
+void ztore_setview(struct view *view);

@@ -1,18 +1,32 @@
 #include <stdlib.h>
 #include <stdarg.h>
-#include "ztore.h"
 #include "view.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"
 #include "render.h"
+#include "ztore.h"
 
+static struct view *currentview;
 static unsigned int currentstate = 1;
 
 void ztore_quit()
 {
 
     currentstate = 0;
+
+}
+
+void ztore_setview(struct view *view)
+{
+
+    if (currentview)
+        currentview->destroy();
+
+    currentview = view;
+
+    if (currentview)
+        currentview->init();
 
 }
 
@@ -35,14 +49,14 @@ int main(int argc, char **argv)
 
     render_init();
     render_initfont();
-    view_render();
+    currentview->render();
     render_flip();
 
     while (currentstate)
     {
 
-        render_waitevent();
-        view_render();
+        render_waitevent(currentview);
+        currentview->render();
         render_flip();
 
     }

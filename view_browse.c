@@ -8,6 +8,7 @@
 #include "menu.h"
 #include "db.h"
 #include "render.h"
+#include "ztore.h"
 
 static struct view view;
 static struct view *showappview;
@@ -65,7 +66,7 @@ static void key(unsigned int keysym)
     {
 
     case SDLK_ESCAPE:
-        view_set(view.parent);
+        ztore_setview(view.parent);
 
         break;
 
@@ -90,7 +91,7 @@ static void key(unsigned int keysym)
         break;
 
     case SDLK_RETURN:
-        view_set(showappview);
+        ztore_setview(showappview);
 
         break;
 
