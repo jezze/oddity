@@ -4,11 +4,11 @@ include rules.cross
 
 all: ztore.opk
 
-opk/ztore: ztore.c view.c db.c box.c text.c menu.c render.c view_front.c view_apps.c view_browse.c view_showapp.c view_category.c
+opk/ztore: src/ztore.c src/view.c src/db.c src/box.c src/text.c src/menu.c src/render.c src/view_front.c src/view_apps.c src/view_browse.c src/view_showapp.c src/view_category.c
 	$(CC) -o $@ -Wall -Werror -pedantic -std=c89 `$(SDLCONFIG) --cflags --libs` -lSDL_image -lSDL_ttf -lsqlite3 $^
 
 ztore.opk: opk/ztore
 	mksquashfs opk $@
 
 clean:
-	rm -f ztore.opk opk/ztore *.o
+	rm -f ztore.opk opk/ztore src/*.o
