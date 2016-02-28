@@ -5,13 +5,40 @@
 #include "ztore.h"
 #include "event.h"
 #include "text.h"
-#include "menu.h"
 #include "render.h"
 
 SDL_Surface *display;
 SDL_Surface *background;
 SDL_Surface *blur;
 TTF_Font *font;
+
+static void blit(SDL_Surface *surface, int x, int y, int w, int h)
+{
+
+    SDL_Rect r;
+
+    r.x = x;
+    r.y = y;
+    r.w = w;
+    r.h = h;
+
+    SDL_BlitSurface(surface, NULL, display, &r);
+
+}
+
+int render_getascent()
+{
+
+    return TTF_FontAscent(font);
+
+}
+
+void render_getmetrics(char c, int *minx, int *maxx, int *miny, int *maxy, int *advance)
+{
+
+    TTF_GlyphMetrics(font, c, minx, maxx, miny, maxy, advance);
+
+}
 
 void render_background()
 {
@@ -44,30 +71,42 @@ static unsigned int getwordlength(char *text, unsigned int count)
 
 }
 
-void render_text(struct text *text, int x, int y, int w, int h, int r, int g, int b)
+void render_glyph(char c, unsigned int x, unsigned int y, unsigned int w, unsigned int h, int r, int g, int b)
 {
 
     SDL_Surface *surface;
     SDL_Rect rect;
-    SDL_Rect glyphrect;
     SDL_Color color;
-    unsigned int i;
-    unsigned int offsety;
-    int ascent = TTF_FontAscent(font);
-    int totallength = strlen(text->content);
 
+    rect.x = x;
+    rect.y = y;
+    rect.w = w;
+    rect.h = h;
     color.r = r;
     color.g = g;
     color.b = b;
-    rect.x = x + TEXT_XPADDING;
-    rect.y = y + TEXT_YPADDING;
-    rect.w = w - TEXT_XPADDING * 2;
-    rect.h = h - TEXT_YPADDING * 2;
-    glyphrect.x = rect.x;
-    glyphrect.y = rect.y;
-    glyphrect.w = rect.w;
-    glyphrect.h = rect.h;
-    offsety = rect.y;
+    surface = TTF_RenderGlyph_Solid(font, c, color);
+
+    SDL_BlitSurface(surface, NULL, display, &rect);
+    SDL_FreeSurface(surface);
+
+}
+
+void render_text(struct text *text, int x, int y, int w, int h, int r, int g, int b)
+{
+
+    int ascent = render_getascent();
+    int totallength = strlen(text->content);
+    unsigned int rx = x + TEXT_XPADDING;
+    unsigned int ry = y + TEXT_YPADDING;
+    unsigned int rw = w - TEXT_XPADDING * 2;
+    unsigned int rh = h - TEXT_YPADDING * 2;
+    unsigned int gx = rx;
+    unsigned int gy = ry;
+    unsigned int gw = rw;
+    unsigned int gh = rh;
+    unsigned int offsety = ry;
+    unsigned int i;
 
     for (i = 0; i < totallength; i++)
     {
@@ -81,14 +120,14 @@ void render_text(struct text *text, int x, int y, int w, int h, int r, int g, in
         if (text->content[i] == '\n')
         {
 
-            glyphrect.x = rect.x;
+            gx = rx;
             offsety += 16;
 
             continue;
 
         }
 
-        if (glyphrect.x == rect.x && text->content[i] == ' ')
+        if (gx == rx && text->content[i] == ' ')
             continue;
 
         if (text->content[i] != ' ')
@@ -96,31 +135,29 @@ void render_text(struct text *text, int x, int y, int w, int h, int r, int g, in
 
             int x = getwordlength(&text->content[i], totallength - i - 1);
 
-            if (glyphrect.x + x > rect.x + rect.w)
+            if (gx + x > rx + rw)
             {
 
-                glyphrect.x = rect.x;
+                gx = rx;
                 offsety += 16;
 
             }
 
         }
 
-        TTF_GlyphMetrics(font, text->content[i], &minx, &maxx, &miny, &maxy, &advance);
+        render_getmetrics(text->content[i], &minx, &maxx, &miny, &maxy, &advance);
 
-        surface = TTF_RenderGlyph_Solid(font, text->content[i], color);
-        glyphrect.y = offsety + ascent - maxy;
-        glyphrect.w = advance;
+        gy = offsety + ascent - maxy;
+        gw = advance;
 
-        SDL_BlitSurface(surface, NULL, display, &glyphrect);
-        SDL_FreeSurface(surface);
+        render_glyph(text->content[i], gx, gy, gw, gh, r, g, b);
 
-        glyphrect.x += advance;
+        gx += advance;
 
-        if (glyphrect.x + glyphrect.w > rect.x + rect.w)
+        if (gx + gw > rx + rw)
         {
 
-            glyphrect.x = rect.x;
+            gx = rx;
             offsety += 16;
 
         }
@@ -132,7 +169,7 @@ void render_text(struct text *text, int x, int y, int w, int h, int r, int g, in
 void render_textbox(struct textbox *textbox, int r, int g, int b)
 {
 
-    render_text(&textbox->text, textbox->box.x, textbox->box.y, textbox->box.w, textbox->box.h, r, g, b);
+    render_text(&textbox->text, textbox->box.x + RENDER_PADDING, textbox->box.y + RENDER_PADDING, textbox->box.w - (2 * RENDER_PADDING), textbox->box.h - (2 * RENDER_PADDING), r, g, b);
 
 }
 
@@ -171,56 +208,14 @@ static void doborderrectangle(SDL_Surface *s, int w, int h, unsigned int color)
 
 }
 
-void render_menuitem(struct menuitem *menuitem, int x, int y, int w, int h)
+void render_rect(int x, int y, int w, int h)
 {
 
-    if (menuitem->type & MENUITEM_FLAG_SELECTED)
-    {
+    SDL_Surface *surface = SDL_CreateRGBSurface(0, w, h, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
 
-        SDL_Rect r;
-        SDL_Surface *s = SDL_CreateRGBSurface(0, w, h, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
-
-        dofillrectangle(s, w, h, 0x10FFFFFF);
-        doborderrectangle(s, w, h, 0x40FFFFFF);
-
-        r.x = x;
-        r.y = y;
-        r.w = w;
-        r.h = h;
-
-        SDL_BlitSurface(s, NULL, display, &r);
-
-    }
-
-    if (menuitem->type & MENUITEM_FLAG_BLOCKED)
-        render_text(&menuitem->text, x, y, w, h, 64, 96, 96);
-    else
-        render_text(&menuitem->text, x, y, w, h, 224, 96, 32);
-
-}
-
-void render_menu(struct menu *menu)
-{
-
-    unsigned int pagerows = (menu->box.h - 2 * MENU_PADDING) / MENU_ROWHEIGHT;
-    unsigned int page = (menu->currentitem / pagerows);
-    unsigned int rowstart = page * pagerows;
-    unsigned int rowend = (rowstart + pagerows) > menu->total ? menu->total : rowstart + pagerows;
-    unsigned int row;
-
-    for (row = rowstart; row < rowend; row++)
-    {
-
-        SDL_Rect rect;
-
-        rect.x = menu->box.x + MENU_PADDING;
-        rect.y = menu->box.y + MENU_PADDING + (row - rowstart) * MENU_ROWHEIGHT;
-        rect.w = menu->box.w - 2 * MENU_PADDING;
-        rect.h = MENU_ROWHEIGHT;
-
-        render_menuitem(&menu->items[row], rect.x, rect.y, rect.w, rect.h);
-
-    }
+    dofillrectangle(surface, w, h, 0x10FFFFFF);
+    doborderrectangle(surface, w, h, 0x40FFFFFF);
+    blit(surface, x, y, w, h);
 
 }
 

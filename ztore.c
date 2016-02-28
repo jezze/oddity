@@ -51,10 +51,10 @@ int main(int argc, char **argv)
 {
 
     event_register(onevent);
-    view_frontsetup();
-    view_appssetup();
-    view_browsesetup();
-    view_showappsetup();
+    view_frontsetup(SCREEN_WIDTH, SCREEN_HEIGHT);
+    view_appssetup(SCREEN_WIDTH, SCREEN_HEIGHT);
+    view_browsesetup(SCREEN_WIDTH, SCREEN_HEIGHT);
+    view_showappsetup(SCREEN_WIDTH, SCREEN_HEIGHT);
     render_init();
     render_initfont();
     currentview->onrender();

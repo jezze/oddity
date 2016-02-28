@@ -1,5 +1,3 @@
-#define MENU_PADDING                    12
-#define MENU_ROWHEIGHT                  24
 #define MENUITEM_FLAG_NORMAL            0
 #define MENUITEM_FLAG_BLOCKED           1
 #define MENUITEM_FLAG_SELECTED          2
@@ -27,3 +25,5 @@ void menu_nextrow(struct menu *menu);
 void menu_prevrow(struct menu *menu);
 void menu_nextpage(struct menu *menu);
 void menu_prevpage(struct menu *menu);
+void menu_renderitem(struct menuitem *menuitem, int x, int y, int w, int h);
+void menu_render(struct menu *menu);

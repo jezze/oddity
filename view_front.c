@@ -9,15 +9,16 @@
 
 static struct view view;
 
-static struct menuitem menuitems[32] = {
+static struct menuitem menuitems[4] = {
     {{"Apps"}, MENUITEM_FLAG_NORMAL},
     {{"Store"}, MENUITEM_FLAG_NORMAL},
     {{"Downloads"}, MENUITEM_FLAG_BLOCKED},
     {{"Exit"}, MENUITEM_FLAG_NORMAL}
 };
 
-static struct textbox text = {{"Hello and welcome!\n\nThis is a very long text that I am using to see if my wordwrap is working properly."}, {0 + MENU_PADDING, 0 + MENU_PADDING, 320 - MENU_PADDING * 2, 96}};
-static struct menu menu = {menuitems, 4, 0, {0, 120, 320, 120}};
+static char *greeting = "Hello and welcome!\n\nThis is a very long text that I am using to see if my wordwrap is working properly.";
+static struct textbox text;
+static struct menu menu;
 
 static void view_oninit()
 {
@@ -34,7 +35,7 @@ static void view_onrender()
 
     render_background();
     render_textbox(&text, 160, 192, 192);
-    render_menu(&menu);
+    menu_render(&menu);
 
 }
 
@@ -128,13 +129,27 @@ static void onevent(unsigned int type, void *data)
 
 }
 
-void view_frontsetup()
+void view_frontsetup(unsigned int w, unsigned int h)
 {
 
     event_register(onevent);
     view_init(&view, view_oninit, view_ondestroy, view_onrender, view_onkey);
     view_set(&view);
+
+    menu.items = menuitems;
+    menu.total = 4;
+    menu.box.w = w;
+    menu.box.h = (menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING);
+    menu.box.x = 0;
+    menu.box.y = h - menu.box.h;
+
     menu_setrow(&menu, 0);
+
+    text.text.content = greeting;
+    text.box.w = w;
+    text.box.h = (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING);
+    text.box.x = 0;
+    text.box.y = 0;
 
 }
 

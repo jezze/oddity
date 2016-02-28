@@ -2,6 +2,7 @@
 #include "ztore.h"
 #include "text.h"
 #include "menu.h"
+#include "render.h"
 
 void menu_setrow(struct menu *menu, unsigned int index)
 {
@@ -29,7 +30,7 @@ void menu_prevrow(struct menu *menu)
 void menu_nextpage(struct menu *menu)
 {
 
-    unsigned int pagerows = (menu->box.h - 2 * MENU_PADDING) / MENU_ROWHEIGHT;
+    unsigned int pagerows = (menu->box.h - 2 * RENDER_PADDING) / RENDER_ROWHEIGHT;
     unsigned int pagetotal = (menu->total / pagerows) + 1;
     unsigned int pageoffset = (pagetotal + (menu->currentitem / pagerows) + 1) % pagetotal;
     unsigned int rowoffset = menu->currentitem % pagerows;
@@ -43,7 +44,7 @@ void menu_nextpage(struct menu *menu)
 void menu_prevpage(struct menu *menu)
 {
 
-    unsigned int pagerows = (menu->box.h - 2 * MENU_PADDING) / MENU_ROWHEIGHT;
+    unsigned int pagerows = (menu->box.h - 2 * RENDER_PADDING) / RENDER_ROWHEIGHT;
     unsigned int pagetotal = (menu->total / pagerows) + 1;
     unsigned int pageoffset = (pagetotal + (menu->currentitem / pagerows) - 1) % pagetotal;
     unsigned int rowoffset = menu->currentitem % pagerows;
@@ -51,6 +52,33 @@ void menu_prevpage(struct menu *menu)
     unsigned int rowtotal = (menu->total - rowstart);
 
     menu_setrow(menu, rowstart + ((rowtotal <= rowoffset) ? rowtotal - 1 : rowoffset));
+
+}
+
+void menu_renderitem(struct menuitem *menuitem, int x, int y, int w, int h)
+{
+
+    if (menuitem->type & MENUITEM_FLAG_SELECTED)
+        render_rect(x, y, w, h);
+
+    if (menuitem->type & MENUITEM_FLAG_BLOCKED)
+        render_text(&menuitem->text, x, y, w, h, 64, 96, 96);
+    else
+        render_text(&menuitem->text, x, y, w, h, 224, 96, 32);
+
+}
+
+void menu_render(struct menu *menu)
+{
+
+    unsigned int pagerows = (menu->box.h - 2 * RENDER_PADDING) / RENDER_ROWHEIGHT;
+    unsigned int page = (menu->currentitem / pagerows);
+    unsigned int rowstart = page * pagerows;
+    unsigned int rowend = (rowstart + pagerows) > menu->total ? menu->total : rowstart + pagerows;
+    unsigned int row;
+
+    for (row = rowstart; row < rowend; row++)
+        menu_renderitem(&menu->items[row], menu->box.x + RENDER_PADDING, menu->box.y + RENDER_PADDING + (row - rowstart) * RENDER_ROWHEIGHT, menu->box.w - (2 * RENDER_PADDING), RENDER_ROWHEIGHT);
 
 }
 

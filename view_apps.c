@@ -11,7 +11,7 @@
 
 static struct view view;
 static struct applist applist;
-static struct menu menu = {0, 0, 0, {0, 0, 320, 240}};
+static struct menu menu;
 
 static void view_oninit()
 {
@@ -52,7 +52,7 @@ static void view_onrender()
 {
 
     render_background();
-    render_menu(&menu);
+    menu_render(&menu);
 
 }
 
@@ -111,11 +111,14 @@ static void onevent(unsigned int type, void *data)
 
 }
 
-void view_appssetup()
+void view_appssetup(unsigned int w, unsigned int h)
 {
 
     event_register(onevent);
     view_init(&view, view_oninit, view_ondestroy, view_onrender, view_onkey);
+
+    menu.box.w = w;
+    menu.box.h = h;
 
 }
 

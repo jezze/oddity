@@ -11,21 +11,20 @@
 
 static struct view view;
 
-static struct menuitem menuitems[32] = {
+static struct menuitem menuitems[2] = {
     {{"Install"}, MENUITEM_FLAG_NORMAL},
     {{"Remove"}, MENUITEM_FLAG_NORMAL}
 };
 
 static struct app app;
-static struct textbox title = {{0}, {0 + MENU_PADDING, 0 + MENU_PADDING, 320 - MENU_PADDING * 2, 96}};
-static struct textbox shortdescription = {{0}, {0 + MENU_PADDING, 24 + MENU_PADDING, 320 - MENU_PADDING * 2, 96}};
-static struct menu menu = {menuitems, 2, 0, {0, 168, 320, 72}};
+static struct textbox title;
+static struct textbox shortdescription;
+static struct menu menu;
 
 static void view_oninit()
 {
 
     db_loadapp(&app, 12, "db/official.db");    
-    menu_setrow(&menu, 0);
 
     title.text.content = app.name;
     shortdescription.text.content = app.shortdescription;
@@ -46,7 +45,7 @@ static void view_onrender()
     render_background();
     render_textbox(&title, 224, 224, 224);
     render_textbox(&shortdescription, 160, 192, 192);
-    render_menu(&menu);
+    menu_render(&menu);
 
 }
 
@@ -105,11 +104,30 @@ static void onevent(unsigned int type, void *data)
 
 }
 
-void view_showappsetup()
+void view_showappsetup(unsigned int w, unsigned int h)
 {
 
     event_register(onevent);
     view_init(&view, view_oninit, view_ondestroy, view_onrender, view_onkey);
+
+    menu.items = menuitems;
+    menu.total = 2;
+    menu.box.w = w;
+    menu.box.h = (menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING);
+    menu.box.x = 0;
+    menu.box.y = h - menu.box.h;
+
+    menu_setrow(&menu, 0);
+
+    title.box.w = w;
+    title.box.h = (1 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING);
+    title.box.x = 0;
+    title.box.y = 0;
+
+    shortdescription.box.w = w;
+    shortdescription.box.h = (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING);
+    shortdescription.box.x = 0;
+    shortdescription.box.y = title.box.h;
 
 }
 
