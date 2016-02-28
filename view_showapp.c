@@ -10,13 +10,12 @@
 #include "db.h"
 #include "render.h"
 
-static struct view view;
-
 static struct menuitem menuitems[2] = {
     {{"Install"}, MENUITEM_FLAG_NORMAL},
     {{"Remove"}, MENUITEM_FLAG_NORMAL}
 };
 
+static struct view view;
 static struct app app;
 static struct textbox title;
 static struct textbox shortdescription;

@@ -8,8 +8,6 @@
 #include "menu.h"
 #include "render.h"
 
-static struct view view;
-
 static struct menuitem menuitems[4] = {
     {{"Apps"}, MENUITEM_FLAG_NORMAL},
     {{"Store"}, MENUITEM_FLAG_NORMAL},
@@ -18,6 +16,7 @@ static struct menuitem menuitems[4] = {
 };
 
 static char *greeting = "Hello and welcome!\n\nThis is a very long text that I am using to see if my wordwrap is working properly.";
+static struct view view;
 static struct textbox text;
 static struct menu menu;
 
@@ -137,9 +136,9 @@ void view_frontsetup(unsigned int w, unsigned int h)
     view_init(&view, view_oninit, view_ondestroy, view_onrender, view_onkey);
     view_set(&view);
 
+    text.text.content = greeting;
     menu.items = menuitems;
     menu.total = 4;
-    text.text.content = greeting;
 
     box_init(&text.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     box_init(&menu.box, 0, h - (menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
