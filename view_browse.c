@@ -14,6 +14,7 @@ static struct view view;
 static struct view *showappview;
 static struct applist applist;
 static struct menu menu;
+static struct textbox emptytextbox;
 
 static void init()
 {
@@ -55,7 +56,11 @@ static void render()
 {
 
     render_background();
-    menu_render(&menu);
+
+    if (applist.count)
+        menu_render(&menu);
+    else
+        text_renderbox(&emptytextbox, 160, 192, 192);
 
 }
 
@@ -111,7 +116,9 @@ struct view *view_browsesetup(unsigned int w, unsigned int h, struct view *showa
     view_init(&view, init, destroy, render, key, load);
 
     showappview = showapp;
+    emptytextbox.text.content = "No apps have been installed.";
 
+    box_init(&emptytextbox.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     box_init(&menu.box, 0, 0, w, h);
 
     return &view;

@@ -15,7 +15,6 @@ static struct menuitem menuitems[4] = {
     {{"Exit"}, MENUITEM_FLAG_NORMAL}
 };
 
-static char *greeting = "Hello and welcome!\n\nThis is a very long text that I am using to see if my wordwrap is working properly.";
 static struct view view;
 static struct view *appsview;
 static struct view *categoryview;
@@ -111,7 +110,7 @@ struct view *view_frontsetup(unsigned int w, unsigned int h, struct view *apps, 
 
     appsview = apps;
     categoryview = category;
-    text.text.content = greeting;
+    text.text.content = "Hello and welcome!\n\nThis is a very long text that I am using to see if my wordwrap is working properly.";
     menu.items = menuitems;
     menu.total = 4;
 
