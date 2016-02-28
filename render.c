@@ -137,7 +137,7 @@ void render_waitevent()
         break;
 
     case SDL_QUIT:
-        event_quit();
+        event_quit(NULL);
 
         break;
 

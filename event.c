@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "ztore.h"
+#include "view.h"
 #include "event.h"
 
 static void (*events[64])(unsigned int type, void *data);
@@ -15,29 +15,35 @@ static void raise(unsigned int type, void *data)
 
 }
 
-void event_quit()
+void event_quit(struct view *view)
 {
 
-    raise(EVENT_TYPE_QUIT, 0);
+    struct event_quit quit;
+
+    quit.caller = view;
+
+    raise(EVENT_TYPE_QUIT, &quit);
 
 }
 
-void event_exitview(unsigned int id)
+void event_exitview(struct view *view, unsigned int id)
 {
 
     struct event_exitview exitview;
 
+    exitview.caller = view;
     exitview.id = id;
 
     raise(EVENT_TYPE_EXITVIEW, &exitview);
 
 }
 
-void event_showview(unsigned int id)
+void event_showview(struct view *view, unsigned int id)
 {
 
     struct event_showview showview;
 
+    showview.caller = view;
     showview.id = id;
 
     raise(EVENT_TYPE_SHOWVIEW, &showview);

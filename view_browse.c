@@ -65,7 +65,7 @@ static void view_onkey(unsigned int keysym)
     {
 
     case SDLK_ESCAPE:
-        event_exitview(2);
+        event_exitview(&view, 2);
 
         break;
 
@@ -90,7 +90,7 @@ static void view_onkey(unsigned int keysym)
         break;
 
     case SDLK_RETURN:
-        event_showview(3);
+        event_showview(&view, 3);
 
         break;
 

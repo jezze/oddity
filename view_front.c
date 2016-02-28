@@ -70,17 +70,17 @@ static void view_onkey(unsigned int keysym)
         {
 
         case 0:
-            event_showview(1);
+            event_showview(&view, 1);
 
             break;
 
         case 1:
-            event_showview(2);
+            event_showview(&view, 2);
 
             break;
 
         case 3:
-            event_quit();
+            event_quit(&view);
 
             break;
 
