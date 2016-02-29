@@ -10,7 +10,7 @@ void db_loadapp(struct app *app, unsigned int id, char *name)
     sqlite3_stmt *res;
     int rc;
 
-    rc = sqlite3_open(name, &db);
+    rc = sqlite3_open("db/apps.db", &db);
 
     if (rc != SQLITE_OK)
     {
@@ -21,7 +21,47 @@ void db_loadapp(struct app *app, unsigned int id, char *name)
 
     }
 
-    rc = sqlite3_prepare_v2(db, "SELECT id, name, short FROM apps WHERE id = ?", -1, &res, 0);
+    rc = sqlite3_prepare_v2(db, "ATTACH DATABASE ? AS remote", -1, &res, 0);
+
+    if (rc != SQLITE_OK)
+    {
+
+        sqlite3_close(db);
+
+        return;
+
+    }
+
+    else
+    {
+
+        sqlite3_bind_text(res, 1, "db/official.db", -1, 0);
+
+    }
+
+    rc = sqlite3_step(res);
+
+    if (rc != SQLITE_DONE)
+    {
+
+        sqlite3_close(db);
+
+        return;
+
+    }
+
+    rc = sqlite3_finalize(res);
+
+    if (rc != SQLITE_OK)
+    {
+
+        sqlite3_close(db);
+
+        return;
+
+    }
+
+    rc = sqlite3_prepare_v2(db, "SELECT id, name, short FROM remote.apps WHERE id = ?", -1, &res, 0);
 
     if (rc != SQLITE_OK)
     {
@@ -53,6 +93,7 @@ void db_loadapp(struct app *app, unsigned int id, char *name)
     }
 
     sqlite3_finalize(res);
+
     sqlite3_close(db);
 
 }
@@ -97,6 +138,7 @@ unsigned int db_countapps(char *name)
     }
 
     sqlite3_finalize(res);
+
     sqlite3_close(db);
 
     return count;
@@ -144,6 +186,7 @@ void db_loadapps(struct app *apps, unsigned int count, char *name)
     }
 
     sqlite3_finalize(res);
+
     sqlite3_close(db);
 
 }
