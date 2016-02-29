@@ -35,10 +35,10 @@ static void render()
 
 }
 
-static void key(unsigned int keysym)
+static void keydown(unsigned int key)
 {
 
-    switch (keysym)
+    switch (key)
     {
 
     case KEY_UP:
@@ -81,7 +81,7 @@ static void key(unsigned int keysym)
 struct view *view_frontsetup(unsigned int w, unsigned int h, struct view *category)
 {
 
-    view_init(&view, init, destroy, render, key);
+    view_init(&view, init, destroy, render, keydown);
 
     categoryview = category;
     text.text.content = "Welcome to Ztore!";

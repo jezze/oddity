@@ -121,72 +121,72 @@ void backend_waitevent(struct view *view)
         {
 
         case SDLK_LEFT:
-            view->key(KEY_LEFT);
+            view->keydown(KEY_LEFT);
 
             break;
 
         case SDLK_RIGHT:
-            view->key(KEY_RIGHT);
+            view->keydown(KEY_RIGHT);
 
             break;
 
         case SDLK_UP:
-            view->key(KEY_UP);
+            view->keydown(KEY_UP);
 
             break;
 
         case SDLK_DOWN:
-            view->key(KEY_DOWN);
+            view->keydown(KEY_DOWN);
 
             break;
 
         case SDLK_LCTRL:
-            view->key(KEY_A);
+            view->keydown(KEY_A);
 
             break;
 
         case SDLK_LALT:
-            view->key(KEY_B);
+            view->keydown(KEY_B);
 
             break;
 
         case SDLK_LSHIFT:
-            view->key(KEY_X);
+            view->keydown(KEY_X);
 
             break;
 
         case SDLK_SPACE:
-            view->key(KEY_Y);
+            view->keydown(KEY_Y);
 
             break;
 
         case SDLK_TAB:
-            view->key(KEY_L);
+            view->keydown(KEY_L);
 
             break;
 
         case SDLK_BACKSPACE:
-            view->key(KEY_R);
+            view->keydown(KEY_R);
 
             break;
 
         case SDLK_ESCAPE:
-            view->key(KEY_SELECT);
+            view->keydown(KEY_SELECT);
 
             break;
 
         case SDLK_RETURN:
-            view->key(KEY_START);
+            view->keydown(KEY_START);
 
             break;
 
         case SDLK_PAUSE:
-            view->key(KEY_LOCKDOWN);
+            view->keydown(KEY_LOCKDOWN);
 
             break;
 
         case SDLK_HOME:
-            view->key(KEY_LOCKUP);
+            view->keydown(KEY_LOCKUP);
 
             break;
 

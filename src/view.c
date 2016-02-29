@@ -8,13 +8,13 @@ void view_setparent(struct view *view, struct view *parent)
 
 }
 
-void view_init(struct view *view, void (*init)(), void (*destroy)(), void (*render)(), void (*key)(unsigned int keysym))
+void view_init(struct view *view, void (*init)(), void (*destroy)(), void (*render)(), void (*keydown)(unsigned int key))
 {
 
     view->init = init;
     view->destroy = destroy;
     view->render = render;
-    view->key = key;
+    view->keydown = keydown;
 
 }
 

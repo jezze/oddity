@@ -47,10 +47,10 @@ static void render()
 
 }
 
-static void key(unsigned int keysym)
+static void keydown(unsigned int key)
 {
 
-    switch (keysym)
+    switch (key)
     {
 
     case KEY_UP:
@@ -85,7 +85,7 @@ void view_loadshowapp(unsigned int id)
 struct view *view_showappsetup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view, init, destroy, render, key);
+    view_init(&view, init, destroy, render, keydown);
 
     menu.items = menuitems;
     menu.total = 2;

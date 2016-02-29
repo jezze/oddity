@@ -60,10 +60,10 @@ static void render()
 
 }
 
-static void key(unsigned int keysym)
+static void keydown(unsigned int key)
 {
 
-    switch (keysym)
+    switch (key)
     {
 
     case KEY_UP:
@@ -104,7 +104,7 @@ static void key(unsigned int keysym)
 struct view *view_browsesetup(unsigned int w, unsigned int h, struct view *showapp)
 {
 
-    view_init(&view, init, destroy, render, key);
+    view_init(&view, init, destroy, render, keydown);
 
     showappview = showapp;
     emptytextbox.text.content = "No apps have been installed.";
