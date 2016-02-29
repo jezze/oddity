@@ -4,7 +4,7 @@ include rules.cross
 
 all: ztore.opk
 
-opk/ztore: src/ztore.c src/view.c src/db.c src/box.c src/text.c src/menu.c src/render.c src/view_front.c src/view_apps.c src/view_browse.c src/view_showapp.c src/view_category.c
+opk/ztore: src/ztore.c src/view.c src/db.c src/box.c src/text.c src/menu.c src/render.c src/view_front.c src/view_browse.c src/view_showapp.c src/view_category.c
 	$(CC) -o $@ -Wall -Werror -pedantic -std=c89 `$(SDLCONFIG) --cflags --libs` -lSDL_image -lSDL_ttf -lsqlite3 $^
 
 ztore.opk: opk/ztore

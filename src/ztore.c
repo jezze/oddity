@@ -34,13 +34,11 @@ int main(int argc, char **argv)
     struct view *showappview = view_showappsetup(SCREEN_WIDTH, SCREEN_HEIGHT);
     struct view *browseview = view_browsesetup(SCREEN_WIDTH, SCREEN_HEIGHT, showappview);
     struct view *categoryview = view_categorysetup(SCREEN_WIDTH, SCREEN_HEIGHT, browseview);
-    struct view *appview = view_appssetup(SCREEN_WIDTH, SCREEN_HEIGHT);
-    struct view *frontview = view_frontsetup(SCREEN_WIDTH, SCREEN_HEIGHT, appview, categoryview);
+    struct view *frontview = view_frontsetup(SCREEN_WIDTH, SCREEN_HEIGHT, categoryview);
 
     view_setparent(showappview, browseview);
     view_setparent(browseview, categoryview);
     view_setparent(categoryview, frontview);
-    view_setparent(appview, frontview);
     view_setparent(frontview, frontview);
 
     currentview = frontview;
