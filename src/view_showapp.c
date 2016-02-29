@@ -56,7 +56,7 @@ static void key(unsigned int keysym)
     switch (keysym)
     {
 
-    case SDLK_ESCAPE:
+    case SDLK_LALT:
         ztore_setview(view.parent);
 
         break;

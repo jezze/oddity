@@ -156,14 +156,14 @@ void render_init()
     if (!display)
         exit(EXIT_FAILURE);
 
-    SDL_ShowCursor(0);
+    SDL_ShowCursor(SDL_DISABLE);
 
     background = IMG_Load("back.png");
 
     if (!background)
         exit(EXIT_FAILURE);
 
-    blur = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
+    blur = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 
     if (!blur)
         exit(EXIT_FAILURE);

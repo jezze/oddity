@@ -70,7 +70,7 @@ static void key(unsigned int keysym)
     switch (keysym)
     {
 
-    case SDLK_ESCAPE:
+    case SDLK_LALT:
         ztore_setview(view.parent);
 
         break;
@@ -95,7 +95,7 @@ static void key(unsigned int keysym)
 
         break;
 
-    case SDLK_RETURN:
+    case SDLK_LCTRL:
         view_loadshowapp(applist.items[menu.currentitem].id);
         ztore_setview(showappview);
 
