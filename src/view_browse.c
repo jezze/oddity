@@ -1,13 +1,11 @@
 #include <stdlib.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
 #include "view.h"
 #include "app.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"
 #include "db.h"
-#include "render.h"
+#include "backend.h"
 #include "ztore.h"
 
 static struct view view;
@@ -55,8 +53,6 @@ static void destroy()
 static void render()
 {
 
-    render_background();
-
     if (applist.count)
         menu_render(&menu);
     else
@@ -70,34 +66,34 @@ static void key(unsigned int keysym)
     switch (keysym)
     {
 
-    case SDLK_LALT:
-        ztore_setview(view.parent);
-
-        break;
-
-    case SDLK_UP:
+    case KEY_UP:
         menu_prevrow(&menu);
 
         break;
 
-    case SDLK_DOWN:
+    case KEY_DOWN:
         menu_nextrow(&menu);
 
         break;
 
-    case SDLK_LEFT:
+    case KEY_LEFT:
         menu_prevpage(&menu);
 
         break;
 
-    case SDLK_RIGHT:
+    case KEY_RIGHT:
         menu_nextpage(&menu);
 
         break;
 
-    case SDLK_LCTRL:
+    case KEY_A:
         view_loadshowapp(applist.items[menu.currentitem].id);
         ztore_setview(showappview);
+
+        break;
+
+    case KEY_B:
+        ztore_setview(view.parent);
 
         break;
 

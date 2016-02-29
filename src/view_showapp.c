@@ -1,13 +1,11 @@
 #include <stdlib.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
 #include "view.h"
 #include "app.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"
 #include "db.h"
-#include "render.h"
+#include "backend.h"
 #include "ztore.h"
 
 static struct menuitem menuitems[2] = {
@@ -43,7 +41,6 @@ static void destroy()
 static void render()
 {
 
-    render_background();
     text_renderbox(&title, TEXT_COLOR_TITLE);
     text_renderbox(&shortdescription, TEXT_COLOR_NORMAL);
     menu_render(&menu);
@@ -56,18 +53,21 @@ static void key(unsigned int keysym)
     switch (keysym)
     {
 
-    case SDLK_LALT:
-        ztore_setview(view.parent);
-
-        break;
-
-    case SDLK_UP:
+    case KEY_UP:
         menu_prevrow(&menu);
 
         break;
 
-    case SDLK_DOWN:
+    case KEY_DOWN:
         menu_nextrow(&menu);
+
+        break;
+
+    case KEY_A:
+        break;
+
+    case KEY_B:
+        ztore_setview(view.parent);
 
         break;
 

@@ -3,7 +3,7 @@
 #include "box.h"
 #include "text.h"
 #include "menu.h"
-#include "render.h"
+#include "backend.h"
 
 void menu_setrow(struct menu *menu, unsigned int index)
 {
@@ -62,7 +62,7 @@ void menu_renderitem(struct menuitem *menuitem, int x, int y, int w, int h)
 {
 
     if (menuitem->type & MENUITEM_FLAG_SELECTED)
-        render_rect(x, y, w, h);
+        backend_rect(x, y, w, h);
 
     if (menuitem->type & MENUITEM_FLAG_BLOCKED)
         text_render(&menuitem->text, x, y, w, h, TEXT_COLOR_DISABLE);

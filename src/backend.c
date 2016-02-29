@@ -3,7 +3,7 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
 #include "view.h"
-#include "render.h"
+#include "backend.h"
 #include "ztore.h"
 
 SDL_Surface *display;
@@ -25,28 +25,21 @@ static void blit(SDL_Surface *surface, int x, int y, int w, int h)
 
 }
 
-int render_getascent()
+int backend_getascent()
 {
 
     return TTF_FontAscent(font);
 
 }
 
-void render_getmetrics(char c, int *minx, int *maxx, int *miny, int *maxy, int *advance)
+void backend_getmetrics(char c, int *minx, int *maxx, int *miny, int *maxy, int *advance)
 {
 
     TTF_GlyphMetrics(font, c, minx, maxx, miny, maxy, advance);
 
 }
 
-void render_background()
-{
-
-    SDL_BlitSurface(background, NULL, display, NULL);
-
-}
-
-void render_glyph(char c, unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int col)
+void backend_glyph(char c, unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int col)
 {
 
     SDL_Surface *surface;
@@ -102,7 +95,7 @@ static void doborderrectangle(SDL_Surface *s, int w, int h, unsigned int color)
 
 }
 
-void render_rect(int x, int y, int w, int h)
+void backend_rect(int x, int y, int w, int h)
 {
 
     SDL_Surface *surface = SDL_CreateRGBSurface(0, w, h, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
@@ -113,7 +106,7 @@ void render_rect(int x, int y, int w, int h)
 
 }
 
-void render_waitevent(struct view *view)
+void backend_waitevent(struct view *view)
 {
 
     SDL_Event event;
@@ -124,7 +117,83 @@ void render_waitevent(struct view *view)
     {
 
     case SDL_KEYDOWN:
-        view->key(event.key.keysym.sym);
+        switch (event.key.keysym.sym)
+        {
+
+        case SDLK_LEFT:
+            view->key(KEY_LEFT);
+
+            break;
+
+        case SDLK_RIGHT:
+            view->key(KEY_RIGHT);
+
+            break;
+
+        case SDLK_UP:
+            view->key(KEY_UP);
+
+            break;
+
+        case SDLK_DOWN:
+            view->key(KEY_DOWN);
+
+            break;
+
+        case SDLK_LCTRL:
+            view->key(KEY_A);
+
+            break;
+
+        case SDLK_LALT:
+            view->key(KEY_B);
+
+            break;
+
+        case SDLK_LSHIFT:
+            view->key(KEY_X);
+
+            break;
+
+        case SDLK_SPACE:
+            view->key(KEY_Y);
+
+            break;
+
+        case SDLK_TAB:
+            view->key(KEY_L);
+
+            break;
+
+        case SDLK_BACKSPACE:
+            view->key(KEY_R);
+
+            break;
+
+        case SDLK_ESCAPE:
+            view->key(KEY_SELECT);
+
+            break;
+
+        case SDLK_RETURN:
+            view->key(KEY_START);
+
+            break;
+
+        case SDLK_PAUSE:
+            view->key(KEY_LOCKDOWN);
+
+            break;
+
+        case SDLK_HOME:
+            view->key(KEY_LOCKUP);
+
+            break;
+
+        default:
+            break;
+
+        }
 
         break;
 
@@ -137,15 +206,16 @@ void render_waitevent(struct view *view)
 
 }
 
-void render_update(struct view *view)
+void backend_update(struct view *view)
 {
 
+    SDL_BlitSurface(background, NULL, display, NULL);
     view->render();
     SDL_Flip(display);
 
 }
 
-void render_init(unsigned int w, unsigned int h, unsigned int bpp)
+void backend_init(unsigned int w, unsigned int h, unsigned int bpp)
 {
 
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
@@ -180,7 +250,7 @@ void render_init(unsigned int w, unsigned int h, unsigned int bpp)
 
 }
 
-void render_destroy()
+void backend_destroy()
 {
 
     TTF_Quit();

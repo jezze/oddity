@@ -4,7 +4,7 @@
 #include "box.h"
 #include "text.h"
 #include "menu.h"
-#include "render.h"
+#include "backend.h"
 #include "ztore.h"
 
 #define SCREEN_WIDTH                    320
@@ -49,18 +49,18 @@ int main(int argc, char **argv)
 
     currentview = frontview;
 
-    render_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
-    render_update(currentview);
+    backend_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
+    backend_update(currentview);
 
     while (!quit)
     {
 
-        render_waitevent(currentview);
-        render_update(currentview);
+        backend_waitevent(currentview);
+        backend_update(currentview);
 
     }
 
-    render_destroy();
+    backend_destroy();
 
     return 0;
 

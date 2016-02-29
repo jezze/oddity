@@ -3,7 +3,7 @@
 #include "view.h"
 #include "box.h"
 #include "text.h"
-#include "render.h"
+#include "backend.h"
 
 static unsigned int getwordlength(char *text, unsigned int count)
 {
@@ -19,7 +19,7 @@ static unsigned int getwordlength(char *text, unsigned int count)
         if (text[i] == ' ' || text[i] == '\n')
             break;
 
-        render_getmetrics(text[i], NULL, NULL, NULL, NULL, &advance);
+        backend_getmetrics(text[i], NULL, NULL, NULL, NULL, &advance);
 
         total += advance;
 
@@ -32,7 +32,7 @@ static unsigned int getwordlength(char *text, unsigned int count)
 void text_render(struct text *text, int x, int y, int w, int h, unsigned int color)
 {
 
-    int ascent = render_getascent();
+    int ascent = backend_getascent();
     int totallength = strlen(text->content);
     unsigned int rx = x + TEXT_XPADDING;
     unsigned int ry = y + TEXT_YPADDING;
@@ -82,12 +82,12 @@ void text_render(struct text *text, int x, int y, int w, int h, unsigned int col
 
         }
 
-        render_getmetrics(text->content[i], &minx, &maxx, &miny, &maxy, &advance);
+        backend_getmetrics(text->content[i], &minx, &maxx, &miny, &maxy, &advance);
 
         gy = offsety + ascent - maxy;
         gw = advance;
 
-        render_glyph(text->content[i], gx, gy, gw, gh, color);
+        backend_glyph(text->content[i], gx, gy, gw, gh, color);
 
         gx += advance;
 
