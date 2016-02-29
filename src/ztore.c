@@ -13,6 +13,8 @@ static unsigned int quit;
 void ztore_quit()
 {
 
+    currentview->destroy();
+
     quit = 1;
 
 }
