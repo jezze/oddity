@@ -8,7 +8,5 @@ void render_glyph(char c, unsigned int x, unsigned int y, unsigned int w, unsign
 void render_rect(int x, int y, int w, int h);
 void render_waitevent(struct view *view);
 void render_update(struct view *view);
-void render_initfont();
 void render_init();
-void render_destroyfont();
 void render_destroy();

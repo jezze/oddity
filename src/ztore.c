@@ -8,12 +8,12 @@
 #include "ztore.h"
 
 static struct view *currentview;
-static unsigned int currentstate = 1;
+static unsigned int quit;
 
 void ztore_quit()
 {
 
-    currentstate = 0;
+    quit = 1;
 
 }
 
@@ -44,10 +44,9 @@ int main(int argc, char **argv)
     currentview = frontview;
 
     render_init();
-    render_initfont();
     render_update(currentview);
 
-    while (currentstate)
+    while (!quit)
     {
 
         render_waitevent(currentview);
@@ -55,7 +54,6 @@ int main(int argc, char **argv)
 
     }
 
-    render_destroyfont();
     render_destroy();
 
     return 0;

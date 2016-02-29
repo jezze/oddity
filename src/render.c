@@ -145,19 +145,6 @@ void render_update(struct view *view)
 
 }
 
-void render_initfont()
-{
-
-    if (TTF_Init() < 0)
-        exit(EXIT_FAILURE);
-
-    font = TTF_OpenFont("habbo.ttf", 16);
-
-    if (!font)
-        exit(EXIT_FAILURE);
-
-}
-
 void render_init()
 {
 
@@ -183,18 +170,20 @@ void render_init()
 
     SDL_FillRect(blur, NULL, SDL_MapRGBA(blur->format, 0x00, 0x00, 0x00, 0xE0));
 
-}
+    if (TTF_Init() < 0)
+        exit(EXIT_FAILURE);
 
-void render_destroyfont()
-{
+    font = TTF_OpenFont("habbo.ttf", 16);
 
-    TTF_Quit();
+    if (!font)
+        exit(EXIT_FAILURE);
 
 }
 
 void render_destroy()
 {
 
+    TTF_Quit();
     SDL_Quit();
 
 }
