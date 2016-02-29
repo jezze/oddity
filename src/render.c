@@ -105,7 +105,7 @@ static void doborderrectangle(SDL_Surface *s, int w, int h, unsigned int color)
 void render_rect(int x, int y, int w, int h)
 {
 
-    SDL_Surface *surface = SDL_CreateRGBSurface(0, w, h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+    SDL_Surface *surface = SDL_CreateRGBSurface(0, w, h, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 
     dofillrectangle(surface, w, h, 0x10FFFFFF);
     doborderrectangle(surface, w, h, 0x40FFFFFF);
@@ -145,13 +145,13 @@ void render_update(struct view *view)
 
 }
 
-void render_init()
+void render_init(unsigned int w, unsigned int h, unsigned int bpp)
 {
 
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
         exit(EXIT_FAILURE);
 
-    display = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    display = SDL_SetVideoMode(w, h, bpp, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
     if (!display)
         exit(EXIT_FAILURE);
@@ -163,7 +163,7 @@ void render_init()
     if (!background)
         exit(EXIT_FAILURE);
 
-    blur = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+    blur = SDL_CreateRGBSurface(0, display->w, display->h, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 
     if (!blur)
         exit(EXIT_FAILURE);

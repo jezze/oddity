@@ -7,6 +7,10 @@
 #include "render.h"
 #include "ztore.h"
 
+#define SCREEN_WIDTH                    320
+#define SCREEN_HEIGHT                   240
+#define SCREEN_BPP                      32
+
 static struct view *currentview;
 static unsigned int quit;
 
@@ -45,7 +49,7 @@ int main(int argc, char **argv)
 
     currentview = frontview;
 
-    render_init();
+    render_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
     render_update(currentview);
 
     while (!quit)
