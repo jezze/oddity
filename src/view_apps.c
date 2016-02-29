@@ -102,7 +102,7 @@ struct view *view_appssetup(unsigned int w, unsigned int h)
 
     view_init(&view, init, destroy, render, key);
 
-    emptytextbox.text.content = "No apps have been installed.";
+    emptytextbox.text.content = "You have no apps installed yet.";
 
     box_init(&menu.box, 0, 0, w, h);
     box_init(&emptytextbox.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));

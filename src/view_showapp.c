@@ -101,7 +101,7 @@ struct view *view_showappsetup(unsigned int w, unsigned int h)
     menu.total = 2;
 
     box_init(&title.box, 0, 0, w, (1 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
-    box_init(&shortdescription.box, 0, (1 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING), w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+    box_init(&shortdescription.box, 0, (1 * RENDER_ROWHEIGHT), w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     box_init(&menu.box, 0, h - (menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_setrow(&menu, 0);
 

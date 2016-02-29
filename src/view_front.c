@@ -105,7 +105,7 @@ struct view *view_frontsetup(unsigned int w, unsigned int h, struct view *apps, 
 
     appsview = apps;
     categoryview = category;
-    text.text.content = "Welcome to Ztore!\n\nThis tool helps you download the latest apps to your GCW Zero, simple and straightforward.";
+    text.text.content = "Welcome to Ztore!";
     menu.items = menuitems;
     menu.total = 4;
 
