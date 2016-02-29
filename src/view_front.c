@@ -59,16 +59,6 @@ static void key(unsigned int keysym)
 
         break;
 
-    case SDLK_LEFT:
-        menu_prevpage(&menu);
-
-        break;
-
-    case SDLK_RIGHT:
-        menu_nextpage(&menu);
-
-        break;
-
     case SDLK_RETURN:
         switch (menu.currentitem)
         {
