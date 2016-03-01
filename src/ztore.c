@@ -49,6 +49,7 @@ int main(int argc, char **argv)
 
     currentview = frontview;
 
+    ztore_flipview(currentview);
     backend_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
     backend_loadbackground("back.png");
     backend_loadfont("habbo.ttf");

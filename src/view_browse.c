@@ -14,34 +14,52 @@ static struct menu menu;
 static struct textbox emptytextbox;
 static unsigned int config_offset;
 
-static void show()
+static void load()
 {
 
-    if (!menu.total)
+    unsigned int i;
+
+    db_countapps(&applist, "db/official.db");
+
+    applist.items = malloc(sizeof (struct db_app) * applist.count);
+
+    db_loadapps(applist.items, config_offset, applist.count, "db/official.db");
+
+    menu.total = applist.count;
+    menu.items = malloc(sizeof (struct menuitem) * menu.total);
+
+    for (i = 0; i < menu.total; i++)
     {
 
-        unsigned int i;
-
-        db_countapps(&applist, "db/official.db");
-
-        applist.items = malloc(sizeof (struct db_app) * applist.count);
-
-        db_loadapps(applist.items, config_offset, applist.count, "db/official.db");
-
-        menu.total = applist.count;
-        menu.items = malloc(sizeof (struct menuitem) * menu.total);
-
-        for (i = 0; i < menu.total; i++)
-        {
-
-            menu.items[i].type = MENUITEM_FLAG_NORMAL;
-            menu.items[i].text.content = applist.items[i].name;
-
-        }
-
-        menu_setrow(&menu, 0);
+        menu.items[i].type = MENUITEM_FLAG_NORMAL;
+        menu.items[i].text.content = applist.items[i].name;
 
     }
+
+    menu_setrow(&menu, 0);
+
+}
+
+static void unload()
+{
+
+    unsigned int i;
+
+    for (i = 0; i < applist.count; i++)
+    {
+
+        free(applist.items[i].name);
+        free(applist.items[i].shortdescription);
+
+    }
+
+    free(applist.items);
+    free(menu.items);
+
+}
+
+static void show()
+{
 
 }
 
@@ -104,7 +122,27 @@ static void keydown(unsigned int key)
 void view_configbrowse(unsigned int offset)
 {
 
-    config_offset = offset;
+    if (view.state == VIEW_STATE_LOADED && config_offset != offset)
+    {
+
+        unload();
+
+        config_offset = offset;
+
+        load();
+
+    }
+
+    else if (view.state == VIEW_STATE_NONE)
+    {
+
+        config_offset = offset;
+
+        load();
+
+        view.state = VIEW_STATE_LOADED;
+
+    }
 
 }
 

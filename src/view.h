@@ -1,6 +1,10 @@
+#define VIEW_STATE_NONE                 0
+#define VIEW_STATE_LOADED               1
+
 struct view
 {
 
+    unsigned int state;
     struct view *parent;
     void (*show)();
     void (*hide)();

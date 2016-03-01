@@ -88,9 +88,9 @@ struct view *view_frontsetup(unsigned int w, unsigned int h, struct view *catego
     menu.items = menuitems;
     menu.total = 3;
 
+    menu_setrow(&menu, 0);
     box_init(&text.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     box_init(&menu.box, 0, h - (menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
-    menu_setrow(&menu, 0);
 
     return &view;
 

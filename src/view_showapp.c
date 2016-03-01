@@ -20,7 +20,7 @@ static struct textbox shortdescription;
 static struct menu menu;
 static unsigned int config_id;
 
-static void show()
+static void load()
 {
 
     db_loadapp(&app, config_id, "db/official.db");
@@ -28,13 +28,25 @@ static void show()
     title.text.content = app.name;
     shortdescription.text.content = app.shortdescription;
 
+    menu_setrow(&menu, 0);
+
 }
 
-static void hide()
+static void unload()
 {
 
     free(app.name);
     free(app.shortdescription);
+
+}
+
+static void show()
+{
+
+}
+
+static void hide()
+{
 
 }
 
@@ -89,7 +101,27 @@ static void keydown(unsigned int key)
 void view_configshowapp(unsigned int id)
 {
 
-    config_id = id;
+    if (view.state == VIEW_STATE_LOADED && config_id != id)
+    {
+
+        unload();
+
+        config_id = id;
+
+        load();
+
+    }
+
+    else if (view.state == VIEW_STATE_NONE)
+    {
+
+        config_id = id;
+
+        load();
+
+        view.state = VIEW_STATE_LOADED;
+
+    }
 
 }
 
@@ -104,7 +136,6 @@ struct view *view_showappsetup(unsigned int w, unsigned int h)
     box_init(&title.box, 0, 0, w, (1 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     box_init(&shortdescription.box, 0, (1 * RENDER_ROWHEIGHT), w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     box_init(&menu.box, 0, h - (menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
-    menu_setrow(&menu, 0);
 
     return &view;
 

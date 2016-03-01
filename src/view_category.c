@@ -93,8 +93,8 @@ struct view *view_categorysetup(unsigned int w, unsigned int h, struct view *bro
     menu.items = menuitems;
     menu.total = 3;
 
-    box_init(&menu.box, 0, 0, w, h);
     menu_setrow(&menu, 0);
+    box_init(&menu.box, 0, 0, w, h);
 
     return &view;
 
