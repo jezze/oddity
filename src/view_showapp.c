@@ -18,19 +18,19 @@ static struct db_app app;
 static struct textbox title;
 static struct textbox shortdescription;
 static struct menu menu;
-static unsigned int dataid;
+static unsigned int config_id;
 
-static void init()
+static void show()
 {
 
-    db_loadapp(&app, dataid, "db/official.db");    
+    db_loadapp(&app, config_id, "db/official.db");
 
     title.text.content = app.name;
     shortdescription.text.content = app.shortdescription;
 
 }
 
-static void destroy()
+static void hide()
 {
 
     free(app.name);
@@ -78,7 +78,7 @@ static void keydown(unsigned int key)
         break;
 
     case KEY_B:
-        ztore_setview(view.parent);
+        ztore_flipview(view.parent);
 
         break;
 
@@ -86,17 +86,17 @@ static void keydown(unsigned int key)
 
 }
 
-void view_loadshowapp(unsigned int id)
+void view_configshowapp(unsigned int id)
 {
 
-    dataid = id;
+    config_id = id;
 
 }
 
 struct view *view_showappsetup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view, init, destroy, render, keydown);
+    view_init(&view, show, hide, render, keydown);
 
     menu.items = menuitems;
     menu.total = 2;

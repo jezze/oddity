@@ -17,20 +17,20 @@ static unsigned int quit;
 void ztore_quit()
 {
 
-    currentview->destroy();
+    currentview->hide();
 
     quit = 1;
 
 }
 
-void ztore_setview(struct view *view)
+void ztore_flipview(struct view *view)
 {
 
-    currentview->destroy();
+    currentview->hide();
 
     currentview = view;
 
-    currentview->init();
+    currentview->show();
 
 }
 

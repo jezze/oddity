@@ -16,12 +16,12 @@ static struct view view;
 static struct view *browseview;
 static struct menu menu;
 
-static void init()
+static void show()
 {
 
 }
 
-static void destroy()
+static void hide()
 {
 
 }
@@ -54,17 +54,20 @@ static void keydown(unsigned int key)
         {
 
         case 0:
-            ztore_setview(browseview);
+            view_configbrowse(0);
+            ztore_flipview(browseview);
 
             break;
 
         case 1:
-            ztore_setview(browseview);
+            view_configbrowse(0);
+            ztore_flipview(browseview);
 
             break;
 
         case 2:
-            ztore_setview(browseview);
+            view_configbrowse(0);
+            ztore_flipview(browseview);
 
             break;
 
@@ -73,7 +76,7 @@ static void keydown(unsigned int key)
         break;
 
     case KEY_B:
-        ztore_setview(view.parent);
+        ztore_flipview(view.parent);
 
         break;
 
@@ -84,7 +87,7 @@ static void keydown(unsigned int key)
 struct view *view_categorysetup(unsigned int w, unsigned int h, struct view *browse)
 {
 
-    view_init(&view, init, destroy, render, keydown);
+    view_init(&view, show, hide, render, keydown);
 
     browseview = browse;
     menu.items = menuitems;

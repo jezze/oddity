@@ -1,2 +1,2 @@
 void ztore_quit();
-void ztore_setview(struct view *view);
+void ztore_flipview(struct view *view);

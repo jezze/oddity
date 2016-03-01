@@ -17,12 +17,12 @@ static struct view *categoryview;
 static struct textbox text;
 static struct menu menu;
 
-static void init()
+static void show()
 {
 
 }
 
-static void destroy()
+static void hide()
 {
 
 }
@@ -56,7 +56,7 @@ static void keydown(unsigned int key)
         {
 
         case 0:
-            ztore_setview(categoryview);
+            ztore_flipview(categoryview);
 
             break;
 
@@ -70,7 +70,7 @@ static void keydown(unsigned int key)
         break;
 
     case KEY_B:
-        ztore_setview(view.parent);
+        ztore_flipview(view.parent);
 
         break;
 
@@ -81,7 +81,7 @@ static void keydown(unsigned int key)
 struct view *view_frontsetup(unsigned int w, unsigned int h, struct view *category)
 {
 
-    view_init(&view, init, destroy, render, keydown);
+    view_init(&view, show, hide, render, keydown);
 
     categoryview = category;
     text.text.content = "Welcome to Ztore!";

@@ -12,8 +12,9 @@ static struct view *showappview;
 static struct db_applist applist;
 static struct menu menu;
 static struct textbox emptytextbox;
+static unsigned int config_offset;
 
-static void init()
+static void show()
 {
 
     if (!menu.total)
@@ -25,7 +26,7 @@ static void init()
 
         applist.items = malloc(sizeof (struct db_app) * applist.count);
 
-        db_loadapps(applist.items, 0, applist.count, "db/official.db");
+        db_loadapps(applist.items, config_offset, applist.count, "db/official.db");
 
         menu.total = applist.count;
         menu.items = malloc(sizeof (struct menuitem) * menu.total);
@@ -44,11 +45,10 @@ static void init()
 
 }
 
-static void destroy()
+static void hide()
 {
 
 }
-
 
 static void render()
 {
@@ -87,13 +87,13 @@ static void keydown(unsigned int key)
         break;
 
     case KEY_A:
-        view_loadshowapp(applist.items[menu.currentitem].id);
-        ztore_setview(showappview);
+        view_configshowapp(applist.items[menu.currentitem].id);
+        ztore_flipview(showappview);
 
         break;
 
     case KEY_B:
-        ztore_setview(view.parent);
+        ztore_flipview(view.parent);
 
         break;
 
@@ -101,10 +101,17 @@ static void keydown(unsigned int key)
 
 }
 
+void view_configbrowse(unsigned int offset)
+{
+
+    config_offset = offset;
+
+}
+
 struct view *view_browsesetup(unsigned int w, unsigned int h, struct view *showapp)
 {
 
-    view_init(&view, init, destroy, render, keydown);
+    view_init(&view, show, hide, render, keydown);
 
     showappview = showapp;
     emptytextbox.text.content = "No apps have been installed.";
