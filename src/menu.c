@@ -85,3 +85,19 @@ void menu_render(struct menu *menu)
 
 }
 
+void menu_inititem(struct menuitem *menuitem, char *label, unsigned int type)
+{
+
+    menuitem->text.content = label;
+    menuitem->type = type;
+
+}
+
+void menu_init(struct menu *menu, struct menuitem *items, unsigned int total)
+{
+
+    menu->items = items;
+    menu->total = total;
+
+}
+

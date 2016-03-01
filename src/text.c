@@ -110,3 +110,10 @@ void text_renderbox(struct textbox *textbox, unsigned int color)
 
 }
 
+void text_init(struct text *text, char *content)
+{
+
+    text->content = content;
+
+}
+

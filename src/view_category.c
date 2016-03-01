@@ -6,15 +6,10 @@
 #include "backend.h"
 #include "ztore.h"
 
-static struct menuitem menuitems[3] = {
-    {{"All"}, MENUITEM_FLAG_NORMAL},
-    {{"Games"}, MENUITEM_FLAG_NORMAL},
-    {{"Emulators"}, MENUITEM_FLAG_NORMAL}
-};
-
 static struct view view;
 static struct view *browseview;
 static struct menu menu;
+static struct menuitem menuitems[3];
 
 static void show()
 {
@@ -88,13 +83,14 @@ struct view *view_categorysetup(unsigned int w, unsigned int h, struct view *bro
 {
 
     view_init(&view, show, hide, render, keydown);
-
-    browseview = browse;
-    menu.items = menuitems;
-    menu.total = 3;
-
+    menu_init(&menu, menuitems, 3);
+    menu_inititem(&menuitems[0], "All", MENUITEM_FLAG_NORMAL);
+    menu_inititem(&menuitems[1], "Installed", MENUITEM_FLAG_NORMAL);
+    menu_inititem(&menuitems[2], "Official", MENUITEM_FLAG_NORMAL);
     menu_setrow(&menu, 0);
     box_init(&menu.box, 0, 0, w, h);
+
+    browseview = browse;
 
     return &view;
 

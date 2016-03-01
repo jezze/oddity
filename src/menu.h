@@ -27,3 +27,5 @@ void menu_nextpage(struct menu *menu);
 void menu_prevpage(struct menu *menu);
 void menu_renderitem(struct menuitem *menuitem, int x, int y, int w, int h);
 void menu_render(struct menu *menu);
+void menu_inititem(struct menuitem *menuitem, char *label, unsigned int type);
+void menu_init(struct menu *menu, struct menuitem *items, unsigned int total);

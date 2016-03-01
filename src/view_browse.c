@@ -24,17 +24,10 @@ static void load()
     applist.items = malloc(sizeof (struct db_app) * applist.count);
 
     db_loadapps(applist.items, config_offset, applist.count, "db/official.db");
-
-    menu.total = applist.count;
-    menu.items = malloc(sizeof (struct menuitem) * menu.total);
+    menu_init(&menu, malloc(sizeof (struct menuitem) * applist.count), applist.count);
 
     for (i = 0; i < menu.total; i++)
-    {
-
-        menu.items[i].type = MENUITEM_FLAG_NORMAL;
-        menu.items[i].text.content = applist.items[i].name;
-
-    }
+        menu_inititem(&menu.items[i], applist.items[i].name, MENUITEM_FLAG_NORMAL);
 
     menu_setrow(&menu, 0);
 
@@ -151,11 +144,12 @@ struct view *view_browsesetup(unsigned int w, unsigned int h, struct view *showa
 
     view_init(&view, show, hide, render, keydown);
 
-    showappview = showapp;
-    emptytextbox.text.content = "No apps have been installed.";
-
+    text_init(&emptytextbox.text, "No items found.");
     box_init(&emptytextbox.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+    menu_init(&menu, 0, 0);
     box_init(&menu.box, 0, 0, w, h);
+
+    showappview = showapp;
 
     return &view;
 

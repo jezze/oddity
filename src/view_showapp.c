@@ -8,16 +8,12 @@
 #include "backend.h"
 #include "ztore.h"
 
-static struct menuitem menuitems[2] = {
-    {{"Install"}, MENUITEM_FLAG_NORMAL},
-    {{"Remove"}, MENUITEM_FLAG_NORMAL}
-};
-
 static struct view view;
 static struct db_app app;
 static struct textbox title;
 static struct textbox shortdescription;
 static struct menu menu;
+static struct menuitem menuitems[2];
 static unsigned int config_id;
 
 static void load()
@@ -129,10 +125,10 @@ struct view *view_showappsetup(unsigned int w, unsigned int h)
 {
 
     view_init(&view, show, hide, render, keydown);
-
-    menu.items = menuitems;
-    menu.total = 2;
-
+    menu_init(&menu, menuitems, 2);
+    menu_inititem(&menuitems[0], "Install", MENUITEM_FLAG_NORMAL);
+    menu_inititem(&menuitems[1], "Uninstall", MENUITEM_FLAG_BLOCKED);
+    menu_setrow(&menu, 0);
     box_init(&title.box, 0, 0, w, (1 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     box_init(&shortdescription.box, 0, (1 * RENDER_ROWHEIGHT), w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     box_init(&menu.box, 0, h - (menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
