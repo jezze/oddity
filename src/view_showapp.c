@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include "view.h"
-#include "app.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"
 #include "db.h"
+#include "file.h"
 #include "backend.h"
 #include "ztore.h"
 
@@ -14,7 +14,7 @@ static struct menuitem menuitems[2] = {
 };
 
 static struct view view;
-static struct app app;
+static struct db_app app;
 static struct textbox title;
 static struct textbox shortdescription;
 static struct menu menu;
@@ -64,6 +64,17 @@ static void keydown(unsigned int key)
         break;
 
     case KEY_A:
+        switch (menu.currentitem)
+        {
+
+        case 0:
+            if (file_matchsha1("griffon.opk", "9a45660a3aad10bdedb77a676dc197637f2be1c2"))
+                menu_nextrow(&menu);
+
+            break;
+
+        }
+
         break;
 
     case KEY_B:

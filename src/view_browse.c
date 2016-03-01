@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include "view.h"
-#include "app.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"
@@ -10,7 +9,7 @@
 
 static struct view view;
 static struct view *showappview;
-static struct applist applist;
+static struct db_applist applist;
 static struct menu menu;
 static struct textbox emptytextbox;
 
@@ -22,8 +21,9 @@ static void init()
 
         unsigned int i;
 
-        applist.count = db_countapps("db/official.db");
-        applist.items = malloc(sizeof (struct app) * applist.count);
+        db_countapps(&applist, "db/official.db");
+
+        applist.items = malloc(sizeof (struct db_app) * applist.count);
 
         db_loadapps(applist.items, 0, applist.count, "db/official.db");
 
