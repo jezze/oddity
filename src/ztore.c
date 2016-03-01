@@ -50,6 +50,8 @@ int main(int argc, char **argv)
     currentview = frontview;
 
     backend_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
+    backend_loadbackground("back.png");
+    backend_loadfont("habbo.ttf");
     backend_update(currentview);
 
     while (!quit)
@@ -60,6 +62,8 @@ int main(int argc, char **argv)
 
     }
 
+    backend_unloadbackground();
+    backend_unloadfont();
     backend_destroy();
 
     return 0;

@@ -228,7 +228,23 @@ void backend_init(unsigned int w, unsigned int h, unsigned int bpp)
 
     SDL_ShowCursor(SDL_DISABLE);
 
-    background = IMG_Load("back.png");
+    if (TTF_Init() < 0)
+        exit(EXIT_FAILURE);
+
+}
+
+void backend_destroy()
+{
+
+    TTF_Quit();
+    SDL_Quit();
+
+}
+
+void backend_loadbackground(char *name)
+{
+
+    background = IMG_Load(name);
 
     if (!background)
         exit(EXIT_FAILURE);
@@ -240,8 +256,10 @@ void backend_init(unsigned int w, unsigned int h, unsigned int bpp)
 
     SDL_FillRect(blur, NULL, SDL_MapRGBA(blur->format, 0x00, 0x00, 0x00, 0xE0));
 
-    if (TTF_Init() < 0)
-        exit(EXIT_FAILURE);
+}
+
+void backend_loadfont(char *name)
+{
 
     font = TTF_OpenFont("habbo.ttf", 16);
 
@@ -250,11 +268,18 @@ void backend_init(unsigned int w, unsigned int h, unsigned int bpp)
 
 }
 
-void backend_destroy()
+void backend_unloadbackground()
 {
 
-    TTF_Quit();
-    SDL_Quit();
+    SDL_FreeSurface(background);
+    SDL_FreeSurface(blur);
+
+}
+
+void backend_unloadfont()
+{
+
+    TTF_CloseFont(font);
 
 }
 

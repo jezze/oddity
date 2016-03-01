@@ -23,3 +23,7 @@ void backend_waitevent(struct view *view);
 void backend_update(struct view *view);
 void backend_init();
 void backend_destroy();
+void backend_loadbackground(char *name);
+void backend_loadfont(char *name);
+void backend_unloadbackground();
+void backend_unloadfont();
