@@ -25,7 +25,7 @@ static void init()
         applist.count = db_countapps("db/official.db");
         applist.items = malloc(sizeof (struct app) * applist.count);
 
-        db_loadapps(applist.items, applist.count, "db/official.db");
+        db_loadapps(applist.items, 0, applist.count, "db/official.db");
 
         menu.total = applist.count;
         menu.items = malloc(sizeof (struct menuitem) * menu.total);
