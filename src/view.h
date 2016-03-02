@@ -1,5 +1,7 @@
 #define VIEW_STATE_NONE                 0
-#define VIEW_STATE_LOADED               1
+#define VIEW_STATE_CONFIGURED           1
+#define VIEW_STATE_RECONFIGURED         2
+#define VIEW_STATE_DONE                 3
 
 struct view
 {

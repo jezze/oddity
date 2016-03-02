@@ -39,6 +39,26 @@ static void unload()
 static void show()
 {
 
+    switch (view.state)
+    {
+
+    case VIEW_STATE_CONFIGURED:
+        load();
+
+        view.state = VIEW_STATE_DONE;
+
+        break;
+
+    case VIEW_STATE_RECONFIGURED:
+        unload();
+        load();
+
+        view.state = VIEW_STATE_DONE;
+
+        break;
+
+    }
+
 }
 
 static void hide()
@@ -97,25 +117,25 @@ static void keydown(unsigned int key)
 void view_app_config(unsigned int id)
 {
 
-    if (view.state == VIEW_STATE_LOADED && config_id != id)
+    switch (view.state)
     {
 
-        unload();
+    case VIEW_STATE_NONE:
+        config_id = id;
+
+        view.state = VIEW_STATE_CONFIGURED;
+
+        break;
+
+    case VIEW_STATE_DONE:
+        if (config_id == id)
+            break;
 
         config_id = id;
 
-        load();
+        view.state = VIEW_STATE_RECONFIGURED;
 
-    }
-
-    else if (view.state == VIEW_STATE_NONE)
-    {
-
-        config_id = id;
-
-        load();
-
-        view.state = VIEW_STATE_LOADED;
+        break;
 
     }
 
