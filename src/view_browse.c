@@ -145,7 +145,6 @@ struct view *view_browsesetup(unsigned int w, unsigned int h, struct view *showa
 {
 
     view_init(&view, show, hide, render, keydown);
-
     text_init(&emptytextbox.text, "No items found.");
     box_init(&emptytextbox.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&menu, 0, 0);
