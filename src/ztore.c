@@ -37,17 +37,17 @@ void ztore_flipview(struct view *view)
 int main(int argc, char **argv)
 {
 
-    struct view *showappview = view_showappsetup(SCREEN_WIDTH, SCREEN_HEIGHT);
-    struct view *browseview = view_browsesetup(SCREEN_WIDTH, SCREEN_HEIGHT, showappview);
-    struct view *categoryview = view_categorysetup(SCREEN_WIDTH, SCREEN_HEIGHT, browseview);
-    struct view *frontview = view_frontsetup(SCREEN_WIDTH, SCREEN_HEIGHT, categoryview);
+    struct view *app = view_app_setup(SCREEN_WIDTH, SCREEN_HEIGHT);
+    struct view *applist = view_applist_setup(SCREEN_WIDTH, SCREEN_HEIGHT, app);
+    struct view *repolist = view_repolist_setup(SCREEN_WIDTH, SCREEN_HEIGHT, applist);
+    struct view *front = view_front_setup(SCREEN_WIDTH, SCREEN_HEIGHT, repolist);
 
-    view_setparent(showappview, browseview);
-    view_setparent(browseview, categoryview);
-    view_setparent(categoryview, frontview);
-    view_setparent(frontview, frontview);
+    view_setparent(app, applist);
+    view_setparent(applist, repolist);
+    view_setparent(repolist, front);
+    view_setparent(front, front);
 
-    currentview = frontview;
+    currentview = front;
 
     ztore_flipview(currentview);
     backend_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);

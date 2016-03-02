@@ -8,7 +8,7 @@
 #include "ztore.h"
 
 static struct view view;
-static struct view *showappview;
+static struct view *appview;
 static struct db_applist applist;
 static struct menu menu;
 static struct textbox emptytextbox;
@@ -100,8 +100,8 @@ static void keydown(unsigned int key)
         break;
 
     case KEY_A:
-        view_configshowapp(applist.items[menu.currentitem].id);
-        ztore_flipview(showappview);
+        view_app_config(applist.items[menu.currentitem].id);
+        ztore_flipview(appview);
 
         break;
 
@@ -114,7 +114,7 @@ static void keydown(unsigned int key)
 
 }
 
-void view_configbrowse(unsigned int offset)
+void view_applist_config(unsigned int offset)
 {
 
     if (view.state == VIEW_STATE_LOADED && config_offset != offset)
@@ -141,7 +141,7 @@ void view_configbrowse(unsigned int offset)
 
 }
 
-struct view *view_browsesetup(unsigned int w, unsigned int h, struct view *showapp)
+struct view *view_applist_setup(unsigned int w, unsigned int h, struct view *app)
 {
 
     view_init(&view, show, hide, render, keydown);
@@ -150,7 +150,7 @@ struct view *view_browsesetup(unsigned int w, unsigned int h, struct view *showa
     menu_init(&menu, 0, 0);
     box_init(&menu.box, 0, 0, w, h);
 
-    showappview = showapp;
+    appview = app;
 
     return &view;
 

@@ -94,7 +94,7 @@ static void keydown(unsigned int key)
 
 }
 
-void view_configshowapp(unsigned int id)
+void view_app_config(unsigned int id)
 {
 
     if (view.state == VIEW_STATE_LOADED && config_id != id)
@@ -121,7 +121,7 @@ void view_configshowapp(unsigned int id)
 
 }
 
-struct view *view_showappsetup(unsigned int w, unsigned int h)
+struct view *view_app_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view, show, hide, render, keydown);

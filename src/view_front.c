@@ -7,7 +7,7 @@
 #include "ztore.h"
 
 static struct view view;
-static struct view *categoryview;
+static struct view *applistview;
 static struct textbox text;
 static struct menu menu;
 static struct menuitem menuitems[3];
@@ -51,7 +51,7 @@ static void keydown(unsigned int key)
         {
 
         case 0:
-            ztore_flipview(categoryview);
+            ztore_flipview(applistview);
 
             break;
 
@@ -73,7 +73,7 @@ static void keydown(unsigned int key)
 
 }
 
-struct view *view_frontsetup(unsigned int w, unsigned int h, struct view *category)
+struct view *view_front_setup(unsigned int w, unsigned int h, struct view *applist)
 {
 
     view_init(&view, show, hide, render, keydown);
@@ -86,7 +86,7 @@ struct view *view_frontsetup(unsigned int w, unsigned int h, struct view *catego
     menu_setrow(&menu, 0);
     box_init(&menu.box, 0, h - (menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
 
-    categoryview = category;
+    applistview = applist;
 
     return &view;
 
