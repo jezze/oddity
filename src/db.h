@@ -33,6 +33,8 @@ struct db_packagelist
 
 };
 
+void db_init();
+int db_sync();
 int db_loadapp(struct db_app *app, unsigned int id, char *name);
 int db_countapps(struct db_applist *list, char *name);
 int db_loadapps(struct db_app *apps, unsigned int offset, unsigned int limit, char *name);

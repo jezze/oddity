@@ -1,9 +1,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sqlite3.h>
+#include "file.h"
 #include "db.h"
 
-static int attach(sqlite3 *db, char *name, char *alias)
+static int attach(sqlite3 *db, char *alias, char *name)
 {
 
     sqlite3_stmt *res;
@@ -32,6 +33,87 @@ fail:
 
 }
 
+static int detach(sqlite3 *db, char *alias)
+{
+
+    sqlite3_stmt *res;
+    int rc;
+
+    rc = sqlite3_prepare_v2(db, "DETACH DATABASE ?", -1, &res, 0);
+
+    if (rc != SQLITE_OK)
+        goto fail;
+
+    sqlite3_bind_text(res, 1, alias, -1, 0);
+
+    rc = sqlite3_step(res);
+
+    if (rc != SQLITE_DONE)
+        goto fail;
+
+    rc = sqlite3_finalize(res);
+
+    if (rc != SQLITE_OK)
+        goto fail;
+
+fail:
+    return rc;
+
+}
+
+void db_init()
+{
+
+    file_mkdir("/media/data/local/home/.ztore");
+    file_copy("db/data.db", "/media/data/local/home/.ztore/data.db");
+    file_copy("db/remote_1.db", "/media/data/local/home/.ztore/remote_1.db");
+
+}
+
+int db_sync()
+{
+
+    sqlite3 *db;
+    sqlite3_stmt *res;
+    int rc;
+
+    rc = sqlite3_open("/media/data/local/home/.ztore/data.db", &db);
+
+    if (rc != SQLITE_OK)
+        goto fail;
+
+    rc = attach(db, "external", "/media/data/local/home/.ztore/remote_1.db");
+
+    if (rc != SQLITE_OK)
+        goto fail;
+
+    rc = sqlite3_prepare_v2(db, "INSERT OR IGNORE INTO apps (remotes_id, id, name, short, icon, preview, date, author, portauthor, homepage, description, state) SELECT 1, *, 1 FROM external.apps", -1, &res, 0);
+
+    if (rc != SQLITE_OK)
+        goto fail;
+
+    rc = sqlite3_step(res);
+
+    if (rc != SQLITE_DONE)
+        goto fail;
+
+    rc = sqlite3_finalize(res);
+
+    if (rc != SQLITE_OK)
+        goto fail;
+
+    rc = detach(db, "external");
+
+    if (rc != SQLITE_OK)
+        goto fail;
+
+fail:
+    sqlite3_close(db);
+
+    return rc;
+
+}
+
 int db_loadapp(struct db_app *app, unsigned int id, char *name)
 {
 
@@ -39,17 +121,12 @@ int db_loadapp(struct db_app *app, unsigned int id, char *name)
     sqlite3_stmt *res;
     int rc;
 
-    rc = sqlite3_open("db/local.db", &db);
+    rc = sqlite3_open("/media/data/local/home/.ztore/data.db", &db);
 
     if (rc != SQLITE_OK)
         goto fail;
 
-    rc = attach(db, name, "remote");
-
-    if (rc != SQLITE_OK)
-        goto fail;
-
-    rc = sqlite3_prepare_v2(db, "SELECT id, name, short FROM remote.apps WHERE id = ?", -1, &res, 0);
+    rc = sqlite3_prepare_v2(db, "SELECT id, name, short FROM apps WHERE id = ?", -1, &res, 0);
 
     if (rc != SQLITE_OK)
         goto fail;
@@ -89,17 +166,12 @@ int db_countapps(struct db_applist *list, char *name)
     sqlite3_stmt *res;
     int rc;
 
-    rc = sqlite3_open("db/local.db", &db);
+    rc = sqlite3_open("/media/data/local/home/.ztore/data.db", &db);
 
     if (rc != SQLITE_OK)
         goto fail;
 
-    rc = attach(db, name, "remote");
-
-    if (rc != SQLITE_OK)
-        goto fail;
-
-    rc = sqlite3_prepare_v2(db, "SELECT COUNT(*) AS count FROM remote.apps", -1, &res, 0);
+    rc = sqlite3_prepare_v2(db, "SELECT COUNT(*) AS count FROM apps", -1, &res, 0);
 
     if (rc != SQLITE_OK)
         goto fail;
@@ -134,17 +206,12 @@ int db_loadapps(struct db_app *apps, unsigned int offset, unsigned int limit, ch
     unsigned int i;
     int rc;
 
-    rc = sqlite3_open("db/local.db", &db);
+    rc = sqlite3_open("/media/data/local/home/.ztore/data.db", &db);
 
     if (rc != SQLITE_OK)
         goto fail;
 
-    rc = attach(db, name, "remote");
-
-    if (rc != SQLITE_OK)
-        goto fail;
-
-    rc = sqlite3_prepare_v2(db, "SELECT id, name, short FROM remote.apps ORDER BY name LIMIT ? OFFSET ?", -1, &res, 0);
+    rc = sqlite3_prepare_v2(db, "SELECT id, name, short FROM apps ORDER BY name LIMIT ? OFFSET ?", -1, &res, 0);
 
     if (rc != SQLITE_OK)
         goto fail;
@@ -184,17 +251,12 @@ int db_loadapppackages(struct db_package *packages, struct db_app *app, unsigned
     unsigned int i;
     int rc;
 
-    rc = sqlite3_open("db/local.db", &db);
+    rc = sqlite3_open("/media/data/local/home/.ztore/data.db", &db);
 
     if (rc != SQLITE_OK)
         goto fail;
 
-    rc = attach(db, name, "remote");
-
-    if (rc != SQLITE_OK)
-        goto fail;
-
-    rc = sqlite3_prepare_v2(db, "SELECT id, name, date, sha1 FROM remote.packages WHERE apps_id = ? ORDER BY date LIMIT ? OFFSET ?", -1, &res, 0);
+    rc = sqlite3_prepare_v2(db, "SELECT id, name, date, sha1 FROM packages WHERE apps_id = ? ORDER BY date LIMIT ? OFFSET ?", -1, &res, 0);
 
     if (rc != SQLITE_OK)
         goto fail;

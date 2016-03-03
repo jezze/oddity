@@ -40,11 +40,13 @@ int main(int argc, char **argv)
     struct view *app = view_app_setup(SCREEN_WIDTH, SCREEN_HEIGHT);
     struct view *applist = view_applist_setup(SCREEN_WIDTH, SCREEN_HEIGHT, app);
     struct view *repolist = view_repolist_setup(SCREEN_WIDTH, SCREEN_HEIGHT, applist);
-    struct view *front = view_front_setup(SCREEN_WIDTH, SCREEN_HEIGHT, repolist);
+    struct view *sync = view_sync_setup(SCREEN_WIDTH, SCREEN_HEIGHT);
+    struct view *front = view_front_setup(SCREEN_WIDTH, SCREEN_HEIGHT, repolist, sync);
 
     view_setparent(app, applist);
     view_setparent(applist, repolist);
     view_setparent(repolist, front);
+    view_setparent(sync, front);
     view_setparent(front, front);
 
     currentview = front;

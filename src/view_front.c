@@ -7,10 +7,11 @@
 #include "ztore.h"
 
 static struct view view;
-static struct view *applistview;
+static struct view *repolistview;
+static struct view *syncview;
 static struct textbox text;
 static struct menu menu;
-static struct menuitem menuitems[3];
+static struct menuitem menuitems[4];
 
 static void show()
 {
@@ -51,11 +52,16 @@ static void keydown(unsigned int key)
         {
 
         case 0:
-            ztore_flipview(applistview);
+            ztore_flipview(repolistview);
 
             break;
 
-        case 2:
+        case 1:
+            ztore_flipview(syncview);
+
+            break;
+
+        case 3:
             ztore_quit();
 
             break;
@@ -73,20 +79,22 @@ static void keydown(unsigned int key)
 
 }
 
-struct view *view_front_setup(unsigned int w, unsigned int h, struct view *applist)
+struct view *view_front_setup(unsigned int w, unsigned int h, struct view *repolist, struct view *sync)
 {
 
     view_init(&view, show, hide, render, keydown);
     text_init(&text.text, "Welcome to Ztore!");
     box_init(&text.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
-    menu_init(&menu, menuitems, 3);
+    menu_init(&menu, menuitems, 4);
     menu_inititem(&menuitems[0], "Browse", MENUITEM_FLAG_NORMAL);
-    menu_inititem(&menuitems[1], "Settings", MENUITEM_FLAG_BLOCKED);
-    menu_inititem(&menuitems[2], "Exit", MENUITEM_FLAG_NORMAL);
+    menu_inititem(&menuitems[1], "Sync", MENUITEM_FLAG_NORMAL);
+    menu_inititem(&menuitems[2], "Settings", MENUITEM_FLAG_BLOCKED);
+    menu_inititem(&menuitems[3], "Exit", MENUITEM_FLAG_NORMAL);
     menu_setrow(&menu, 0);
     box_init(&menu.box, 0, h - (menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
 
-    applistview = applist;
+    repolistview = repolist;
+    syncview = sync;
 
     return &view;
 

@@ -5,6 +5,44 @@
 
 static char *appspath = "/media/data/apps";
 
+unsigned int file_mkdir(char *dir)
+{
+
+    FILE *file;
+    char command[128];
+
+    snprintf(command, 128, "mkdir %s", dir);
+
+    file = popen(command, "r");
+
+    if (!file)
+        return 0;
+
+    pclose(file);
+
+    return 1;
+
+}
+
+unsigned int file_copy(char *from, char *to)
+{
+
+    FILE *file;
+    char command[128];
+
+    snprintf(command, 128, "cp %s %s", from, to);
+
+    file = popen(command, "r");
+
+    if (!file)
+        return 0;
+
+    pclose(file);
+
+    return 1;
+
+}
+
 unsigned int file_matchsha1(char *filename, char *sha1)
 {
 
