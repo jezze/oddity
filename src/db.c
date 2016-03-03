@@ -65,11 +65,10 @@ void db_init()
 {
 
     file_copy("db/data.db", "data.db");
-    file_copy("db/remote_1.db", "remote_1.db");
 
 }
 
-int db_sync()
+int db_sync_remote(char *name)
 {
 
     sqlite3 *db;
@@ -79,7 +78,7 @@ int db_sync()
     int rc;
 
     file_getpath(datapath, "data.db");
-    file_getpath(remotepath, "remote_1.db");
+    file_getpath(remotepath, name);
 
     rc = sqlite3_open(datapath, &db);
 
@@ -115,6 +114,16 @@ fail:
     sqlite3_close(db);
 
     return rc;
+
+}
+
+int db_sync()
+{
+
+    file_copy("db/remote_1.db", "remote_1.db");
+    db_sync_remote("remote_1.db");
+
+    return SQLITE_OK;
 
 }
 

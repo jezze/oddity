@@ -34,6 +34,7 @@ struct db_packagelist
 };
 
 void db_init();
+int db_sync_remote(char *name);
 int db_sync();
 int db_loadapp(struct db_app *app, unsigned int id, char *name);
 int db_countapps(struct db_applist *list, char *name);
