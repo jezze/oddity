@@ -5,6 +5,7 @@
 #include "text.h"
 #include "menu.h"
 #include "backend.h"
+#include "file.h"
 #include "ztore.h"
 
 #define SCREEN_WIDTH                    320
@@ -51,6 +52,7 @@ int main(int argc, char **argv)
 
     currentview = front;
 
+    file_init();
     ztore_flipview(currentview);
     backend_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
     backend_loadbackground("back.png");

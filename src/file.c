@@ -3,24 +3,28 @@
 #include <string.h>
 #include "file.h"
 
-static char *appspath = "/media/data/apps";
+static char *home;
 
-unsigned int file_mkdir(char *dir)
+void file_init()
 {
 
     FILE *file;
     char command[128];
 
-    snprintf(command, 128, "mkdir %s", dir);
+    home = getenv("HOME");
+
+    snprintf(command, 128, "mkdir -p %s/.ztore", home);
 
     file = popen(command, "r");
 
-    if (!file)
-        return 0;
-
     pclose(file);
 
-    return 1;
+}
+
+void file_getpath(char *path, char *file)
+{
+
+    snprintf(path, 256, "%s/.ztore/%s", home, file);
 
 }
 
@@ -30,7 +34,7 @@ unsigned int file_copy(char *from, char *to)
     FILE *file;
     char command[128];
 
-    snprintf(command, 128, "cp %s %s", from, to);
+    snprintf(command, 128, "cp %s %s/.ztore/%s", from, home, to);
 
     file = popen(command, "r");
 
@@ -51,7 +55,7 @@ unsigned int file_matchsha1(char *filename, char *sha1)
     char data[40];
     size_t count;
 
-    snprintf(command, 128, "sha1sum %s/%s", appspath, filename);
+    snprintf(command, 128, "sha1sum /media/data/apps/%s", filename);
 
     file = popen(command, "r");
 

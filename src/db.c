@@ -64,9 +64,8 @@ fail:
 void db_init()
 {
 
-    file_mkdir("/media/data/local/home/.ztore");
-    file_copy("db/data.db", "/media/data/local/home/.ztore/data.db");
-    file_copy("db/remote_1.db", "/media/data/local/home/.ztore/remote_1.db");
+    file_copy("db/data.db", "data.db");
+    file_copy("db/remote_1.db", "remote_1.db");
 
 }
 
@@ -75,14 +74,19 @@ int db_sync()
 
     sqlite3 *db;
     sqlite3_stmt *res;
+    char datapath[256];
+    char remotepath[256];
     int rc;
 
-    rc = sqlite3_open("/media/data/local/home/.ztore/data.db", &db);
+    file_getpath(datapath, "data.db");
+    file_getpath(remotepath, "remote_1.db");
+
+    rc = sqlite3_open(datapath, &db);
 
     if (rc != SQLITE_OK)
         goto fail;
 
-    rc = attach(db, "external", "/media/data/local/home/.ztore/remote_1.db");
+    rc = attach(db, "external", remotepath);
 
     if (rc != SQLITE_OK)
         goto fail;
@@ -119,9 +123,12 @@ int db_loadapp(struct db_app *app, unsigned int id, char *name)
 
     sqlite3 *db;
     sqlite3_stmt *res;
+    char datapath[256];
     int rc;
 
-    rc = sqlite3_open("/media/data/local/home/.ztore/data.db", &db);
+    file_getpath(datapath, "data.db");
+
+    rc = sqlite3_open(datapath, &db);
 
     if (rc != SQLITE_OK)
         goto fail;
@@ -164,9 +171,12 @@ int db_countapps(struct db_applist *list, char *name)
 
     sqlite3 *db;
     sqlite3_stmt *res;
+    char datapath[256];
     int rc;
 
-    rc = sqlite3_open("/media/data/local/home/.ztore/data.db", &db);
+    file_getpath(datapath, "data.db");
+
+    rc = sqlite3_open(datapath, &db);
 
     if (rc != SQLITE_OK)
         goto fail;
@@ -203,10 +213,13 @@ int db_loadapps(struct db_app *apps, unsigned int offset, unsigned int limit, ch
 
     sqlite3 *db;
     sqlite3_stmt *res;
+    char datapath[256];
     unsigned int i;
     int rc;
 
-    rc = sqlite3_open("/media/data/local/home/.ztore/data.db", &db);
+    file_getpath(datapath, "data.db");
+
+    rc = sqlite3_open(datapath, &db);
 
     if (rc != SQLITE_OK)
         goto fail;
@@ -248,10 +261,13 @@ int db_loadapppackages(struct db_package *packages, struct db_app *app, unsigned
 
     sqlite3 *db;
     sqlite3_stmt *res;
+    char datapath[256];
     unsigned int i;
     int rc;
 
-    rc = sqlite3_open("/media/data/local/home/.ztore/data.db", &db);
+    file_getpath(datapath, "data.db");
+
+    rc = sqlite3_open(datapath, &db);
 
     if (rc != SQLITE_OK)
         goto fail;
