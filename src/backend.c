@@ -206,7 +206,7 @@ void backend_waitevent(struct view *view)
 
 }
 
-void backend_update(struct view *view)
+void backend_render(struct view *view)
 {
 
     SDL_BlitSurface(background, NULL, display, NULL);

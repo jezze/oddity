@@ -16,10 +16,7 @@ static struct menuitem menuitems[4];
 static void show()
 {
 
-}
-
-static void hide()
-{
+    ztore_flipview(&view);
 
 }
 
@@ -52,12 +49,12 @@ static void keydown(unsigned int key)
         {
 
         case 0:
-            ztore_flipview(repolistview);
+            repolistview->show();
 
             break;
 
         case 1:
-            ztore_flipview(syncview);
+            syncview->show();
 
             break;
 
@@ -70,11 +67,6 @@ static void keydown(unsigned int key)
 
         break;
 
-    case KEY_B:
-        ztore_flipview(view.parent);
-
-        break;
-
     }
 
 }
@@ -82,7 +74,7 @@ static void keydown(unsigned int key)
 struct view *view_front_setup(unsigned int w, unsigned int h, struct view *repolist, struct view *sync)
 {
 
-    view_init(&view, show, hide, render, keydown);
+    view_init(&view, show, render, keydown);
     text_init(&text.text, "Welcome to Ztore!");
     box_init(&text.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&menu, menuitems, 4);
@@ -94,7 +86,9 @@ struct view *view_front_setup(unsigned int w, unsigned int h, struct view *repol
     box_init(&menu.box, 0, h - (menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
 
     repolistview = repolist;
+    repolistview->onquit = show;
     syncview = sync;
+    syncview->onquit = show;
 
     return &view;
 

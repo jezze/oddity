@@ -18,8 +18,6 @@ static unsigned int quit;
 void ztore_quit()
 {
 
-    currentview->hide();
-
     quit = 1;
 
 }
@@ -27,11 +25,7 @@ void ztore_quit()
 void ztore_flipview(struct view *view)
 {
 
-    currentview->hide();
-
     currentview = view;
-
-    currentview->show();
 
 }
 
@@ -44,26 +38,20 @@ int main(int argc, char **argv)
     struct view *sync = view_sync_setup(SCREEN_WIDTH, SCREEN_HEIGHT);
     struct view *front = view_front_setup(SCREEN_WIDTH, SCREEN_HEIGHT, repolist, sync);
 
-    view_setparent(app, applist);
-    view_setparent(applist, repolist);
-    view_setparent(repolist, front);
-    view_setparent(sync, front);
-    view_setparent(front, front);
-
-    currentview = front;
-
     file_init();
-    ztore_flipview(currentview);
     backend_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
     backend_loadbackground("back.png");
     backend_loadfont("habbo.ttf");
-    backend_update(currentview);
+
+    front->show();
+
+    backend_render(currentview);
 
     while (!quit)
     {
 
         backend_waitevent(currentview);
-        backend_update(currentview);
+        backend_render(currentview);
 
     }
 

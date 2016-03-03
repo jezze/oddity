@@ -15,11 +15,7 @@ static void show()
 
     db_init();
     db_sync();
-
-}
-
-static void hide()
-{
+    ztore_flipview(&view);
 
 }
 
@@ -37,7 +33,7 @@ static void keydown(unsigned int key)
     {
 
     case KEY_B:
-        ztore_flipview(view.parent);
+        view_quit(&view);
 
         break;
 
@@ -48,7 +44,7 @@ static void keydown(unsigned int key)
 struct view *view_sync_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view, show, hide, render, keydown);
+    view_init(&view, show, render, keydown);
     text_init(&text.text, "Sync complete!");
     box_init(&text.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
 

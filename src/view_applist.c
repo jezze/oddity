@@ -76,10 +76,7 @@ static void show()
 
     }
 
-}
-
-static void hide()
-{
+    ztore_flipview(&view);
 
 }
 
@@ -121,12 +118,12 @@ static void keydown(unsigned int key)
 
     case KEY_A:
         view_app_config(applist.items[menu.currentitem].id);
-        ztore_flipview(appview);
+        appview->show();
 
         break;
 
     case KEY_B:
-        ztore_flipview(view.parent);
+        view_quit(&view);
 
         break;
 
@@ -164,13 +161,14 @@ void view_applist_config(unsigned int offset)
 struct view *view_applist_setup(unsigned int w, unsigned int h, struct view *app)
 {
 
-    view_init(&view, show, hide, render, keydown);
+    view_init(&view, show, render, keydown);
     text_init(&emptytextbox.text, "No items found.");
     box_init(&emptytextbox.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&menu, 0, 0);
     box_init(&menu.box, 0, 0, w, h);
 
     appview = app;
+    appview->onquit = show;
 
     return &view;
 

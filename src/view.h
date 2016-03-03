@@ -7,16 +7,15 @@ struct view
 {
 
     unsigned int state;
-    struct view *parent;
     void (*show)();
-    void (*hide)();
     void (*render)();
     void (*keydown)(unsigned int key);
+    void (*onquit)();
 
 };
 
-void view_setparent(struct view *view, struct view *parent);
-void view_init(struct view *view, void (*show)(), void (*hide)(), void (*render)(), void (*keydown)(unsigned int key));
+void view_quit(struct view *view);
+void view_init(struct view *view, void (*show)(), void (*render)(), void (*keydown)(unsigned int key));
 struct view *view_app_setup(unsigned int w, unsigned int h);
 void view_app_config(unsigned int id);
 struct view *view_applist_setup(unsigned int w, unsigned int h, struct view *app);

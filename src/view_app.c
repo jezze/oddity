@@ -59,10 +59,7 @@ static void show()
 
     }
 
-}
-
-static void hide()
-{
+    ztore_flipview(&view);
 
 }
 
@@ -106,7 +103,7 @@ static void keydown(unsigned int key)
         break;
 
     case KEY_B:
-        ztore_flipview(view.parent);
+        view_quit(&view);
 
         break;
 
@@ -144,7 +141,7 @@ void view_app_config(unsigned int id)
 struct view *view_app_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view, show, hide, render, keydown);
+    view_init(&view, show, render, keydown);
     menu_init(&menu, menuitems, 2);
     menu_inititem(&menuitems[0], "Install", MENUITEM_FLAG_NORMAL);
     menu_inititem(&menuitems[1], "Uninstall", MENUITEM_FLAG_BLOCKED);

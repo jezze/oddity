@@ -14,10 +14,7 @@ static struct menuitem menuitems[3];
 static void show()
 {
 
-}
-
-static void hide()
-{
+    ztore_flipview(&view);
 
 }
 
@@ -50,19 +47,19 @@ static void keydown(unsigned int key)
 
         case 0:
             view_applist_config(0);
-            ztore_flipview(applistview);
+            applistview->show();
 
             break;
 
         case 1:
             view_applist_config(0);
-            ztore_flipview(applistview);
+            applistview->show();
 
             break;
 
         case 2:
             view_applist_config(0);
-            ztore_flipview(applistview);
+            applistview->show();
 
             break;
 
@@ -71,7 +68,7 @@ static void keydown(unsigned int key)
         break;
 
     case KEY_B:
-        ztore_flipview(view.parent);
+        view_quit(&view);
 
         break;
 
@@ -82,7 +79,7 @@ static void keydown(unsigned int key)
 struct view *view_repolist_setup(unsigned int w, unsigned int h, struct view *applist)
 {
 
-    view_init(&view, show, hide, render, keydown);
+    view_init(&view, show, render, keydown);
     menu_init(&menu, menuitems, 3);
     menu_inititem(&menuitems[0], "All", MENUITEM_FLAG_NORMAL);
     menu_inititem(&menuitems[1], "Installed", MENUITEM_FLAG_NORMAL);
@@ -91,6 +88,7 @@ struct view *view_repolist_setup(unsigned int w, unsigned int h, struct view *ap
     box_init(&menu.box, 0, 0, w, h);
 
     applistview = applist;
+    applistview->onquit = show;
 
     return &view;
 
