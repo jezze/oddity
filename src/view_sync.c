@@ -33,7 +33,12 @@ static int sync(void *arg)
     db_loadremotes(remotelist.items, 0, remotelist.count);
 
     for (i = 0; i < remotelist.count; i++)
+    {
+
         db_sync(&remotelist.items[i]);
+        db_freeremote(&remotelist.items[i]);
+
+    }
 
     view.status.text.content = status[2];
 
