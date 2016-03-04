@@ -27,10 +27,7 @@ static int sync(void *arg)
 
     menu_enable(&view.menu, 0);
     ztore_redraw();
-    remotelist.count = db_countremotes();
-    remotelist.items = malloc(sizeof (struct db_remote) * remotelist.count);
-
-    db_loadremotes(remotelist.items, 0, remotelist.count);
+    db_loadremotes(&remotelist);
 
     for (i = 0; i < remotelist.count; i++)
     {

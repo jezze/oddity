@@ -89,10 +89,7 @@ static unsigned int applistview_onload(struct db_applist *applist)
     if (applist->count)
         return 0;
 
-    applist->count = db_countapps();
-    applist->items = malloc(sizeof (struct db_app) * applist->count);
-
-    db_loadapps(applist->items, 0, applist->count);
+    db_loadapps(applist);
 
     return 1;
 

@@ -152,14 +152,11 @@ int db_loadremote(struct db_remote *remote, unsigned int id)
 
 }
 
-unsigned int db_countremotes()
+static unsigned int countremotes(sqlite3 *db)
 {
 
-    sqlite3 *db;
     sqlite3_stmt *res;
     unsigned int count;
-
-    opendatabase(&db);
 
     if (sqlite3_prepare_v2(db, "SELECT COUNT(*) AS count FROM remotes", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
@@ -173,13 +170,11 @@ unsigned int db_countremotes()
     if (sqlite3_finalize(res) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
-    closedatabase(db);
-
     return count;
 
 }
 
-int db_loadremotes(struct db_remote *remotes, unsigned int offset, unsigned int limit)
+int db_loadremotes(struct db_remotelist *list)
 {
 
     sqlite3 *db;
@@ -188,14 +183,14 @@ int db_loadremotes(struct db_remote *remotes, unsigned int offset, unsigned int 
 
     opendatabase(&db);
 
-    if (sqlite3_prepare_v2(db, "SELECT id, name FROM remotes ORDER BY name LIMIT ? OFFSET ?", -1, &res, 0) != SQLITE_OK)
+    list->count = countremotes(db);
+    list->items = malloc(sizeof (struct db_remote) * list->count);
+
+    if (sqlite3_prepare_v2(db, "SELECT id, name FROM remotes ORDER BY name", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
-    sqlite3_bind_int(res, 1, limit);
-    sqlite3_bind_int(res, 2, offset);
-
     for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
-        db_createremote(&remotes[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1));
+        db_createremote(&list->items[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1));
 
     if (sqlite3_finalize(res) != SQLITE_OK)
         exit(EXIT_FAILURE);
@@ -257,14 +252,11 @@ int db_loadapp(struct db_app *app, unsigned int id)
 
 }
 
-unsigned int db_countapps()
+static unsigned int countapps(sqlite3 *db)
 {
 
-    sqlite3 *db;
     sqlite3_stmt *res;
     unsigned int count;
-
-    opendatabase(&db);
 
     if (sqlite3_prepare_v2(db, "SELECT COUNT(*) AS count FROM apps", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
@@ -278,13 +270,11 @@ unsigned int db_countapps()
     if (sqlite3_finalize(res) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
-    closedatabase(db);
-
     return count;
 
 }
 
-int db_loadapps(struct db_app *apps, unsigned int offset, unsigned int limit)
+int db_loadapps(struct db_applist *list)
 {
 
     sqlite3 *db;
@@ -293,14 +283,14 @@ int db_loadapps(struct db_app *apps, unsigned int offset, unsigned int limit)
 
     opendatabase(&db);
 
-    if (sqlite3_prepare_v2(db, "SELECT id, name, short FROM apps ORDER BY name LIMIT ? OFFSET ?", -1, &res, 0) != SQLITE_OK)
+    list->count = countapps(db);
+    list->items = malloc(sizeof (struct db_app) * list->count);
+
+    if (sqlite3_prepare_v2(db, "SELECT id, name, short FROM apps ORDER BY name", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
-    sqlite3_bind_int(res, 1, limit);
-    sqlite3_bind_int(res, 2, offset);
-
     for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
-        db_createapp(&apps[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2));
+        db_createapp(&list->items[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2));
 
     if (sqlite3_finalize(res) != SQLITE_OK)
         exit(EXIT_FAILURE);
@@ -365,14 +355,11 @@ int db_loadpackage(struct db_package *package, unsigned int id)
 
 }
 
-unsigned int db_countapppackages(struct db_app *app)
+static unsigned int countapppackages(sqlite3 *db, struct db_app *app)
 {
 
-    sqlite3 *db;
     sqlite3_stmt *res;
     unsigned int count;
-
-    opendatabase(&db);
 
     if (sqlite3_prepare_v2(db, "SELECT COUNT(*) AS count FROM packages WHERE apps_id = ?", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
@@ -388,13 +375,11 @@ unsigned int db_countapppackages(struct db_app *app)
     if (sqlite3_finalize(res) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
-    closedatabase(db);
-
     return count;
 
 }
 
-int db_loadapppackages(struct db_package *packages, struct db_app *app, unsigned int offset, unsigned int limit)
+int db_loadapppackages(struct db_packagelist *list, struct db_app *app)
 {
 
     sqlite3 *db;
@@ -403,15 +388,16 @@ int db_loadapppackages(struct db_package *packages, struct db_app *app, unsigned
 
     opendatabase(&db);
 
-    if (sqlite3_prepare_v2(db, "SELECT id, name, date, sha1 FROM packages WHERE apps_id = ? ORDER BY date LIMIT ? OFFSET ?", -1, &res, 0) != SQLITE_OK)
+    list->count = countapppackages(db, app);
+    list->items = malloc(sizeof (struct db_package) * list->count);
+
+    if (sqlite3_prepare_v2(db, "SELECT id, name, date, sha1 FROM packages WHERE apps_id = ? ORDER BY date", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
     sqlite3_bind_int(res, 1, app->id);
-    sqlite3_bind_int(res, 2, limit);
-    sqlite3_bind_int(res, 3, offset);
 
     for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
-        db_createpackage(&packages[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2), (char *)sqlite3_column_text(res, 3));
+        db_createpackage(&list->items[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2), (char *)sqlite3_column_text(res, 3));
 
     if (sqlite3_finalize(res) != SQLITE_OK)
         exit(EXIT_FAILURE);
