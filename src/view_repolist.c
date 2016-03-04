@@ -73,8 +73,11 @@ static void keydown(unsigned int key)
 
 }
 
-static void applistview_onload(struct db_applist *applist)
+static unsigned int applistview_onload(struct db_applist *applist)
 {
+
+    if (applist->count)
+        return 0;
 
     db_countapps(applist);
 
@@ -82,22 +85,14 @@ static void applistview_onload(struct db_applist *applist)
 
     db_loadapps(applist->items, 0, applist->count);
 
+    return 1;
+
 }
 
-static void applistview_onunload(struct db_applist *applist)
+static unsigned int applistview_onunload(struct db_applist *applist)
 {
 
-    unsigned int i;
-
-    for (i = 0; i < applist->count; i++)
-    {
-
-        free(applist->items[i].name);
-        free(applist->items[i].shortdescription);
-
-    }
-
-    free(applist->items);
+    return 0;
 
 }
 

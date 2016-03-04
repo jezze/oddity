@@ -6,8 +6,8 @@ struct view_applist
     struct db_applist applist;
     struct menu menu;
     struct textbox emptytextbox;
-    void (*onload)(struct db_applist *applist);
-    void (*onunload)(struct db_applist *applist);
+    unsigned int (*onload)(struct db_applist *applist);
+    unsigned int (*onunload)(struct db_applist *applist);
 
 };
 

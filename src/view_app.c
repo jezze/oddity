@@ -14,12 +14,15 @@ static struct view_app view;
 static void load()
 {
 
-    view.onload(&view.app);
+    if (view.onload(&view.app))
+    {
 
-    view.title.text.content = view.app.name;
-    view.shortdescription.text.content = view.app.shortdescription;
+        view.title.text.content = view.app.name;
+        view.shortdescription.text.content = view.app.shortdescription;
 
-    menu_setrow(&view.menu, 0);
+        menu_setrow(&view.menu, 0);
+
+    }
 
 }
 

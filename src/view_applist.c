@@ -16,15 +16,20 @@ static void load()
 
     unsigned int i;
 
-    view.onload(&view.applist);
+    if (view.onload(&view.applist))
+    {
 
-    view.menu.items = malloc(sizeof (struct menuitem) * view.applist.count);
-    view.menu.total = view.applist.count;
+        free(view.menu.items);
 
-    for (i = 0; i < view.menu.total; i++)
-        menu_inititem(&view.menu.items[i], view.applist.items[i].name, MENUITEM_FLAG_NORMAL);
+        view.menu.items = malloc(sizeof (struct menuitem) * view.applist.count);
+        view.menu.total = view.applist.count;
 
-    menu_setrow(&view.menu, 0);
+        for (i = 0; i < view.menu.total; i++)
+            menu_inititem(&view.menu.items[i], view.applist.items[i].name, MENUITEM_FLAG_NORMAL);
+
+        menu_setrow(&view.menu, 0);
+
+    }
 
 }
 
@@ -32,8 +37,6 @@ static void unload()
 {
 
     view.onunload(&view.applist);
-
-    free(view.menu.items);
 
 }
 
@@ -96,17 +99,27 @@ static void keydown(unsigned int key)
 
 }
 
-static void appview_onload(struct db_app *app)
+static unsigned int appview_onload(struct db_app *app)
 {
 
-    db_loadapp(app, view.applist.items[view.menu.currentitem].id);
+    if (app->id != view.applist.items[view.menu.currentitem].id)
+    {
+
+        db_freeapp(app);
+        db_loadapp(app, view.applist.items[view.menu.currentitem].id);
+
+        return 1;
+
+    }
+
+    return 0;
 
 }
 
-static void appview_onunload(struct db_app *app)
+static unsigned int appview_onunload(struct db_app *app)
 {
 
-    db_freeapp(app);
+    return 0;
 
 }
 
