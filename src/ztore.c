@@ -39,13 +39,17 @@ int main(int argc, char **argv)
 
     currentview = view_front_setup(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    backend_render(currentview);
+    backend_prerender();
+    currentview->render();
+    backend_postrender();
 
     while (!quit)
     {
 
         backend_waitevent(currentview);
-        backend_render(currentview);
+        backend_prerender();
+        currentview->render();
+        backend_postrender();
 
     }
 

@@ -207,11 +207,16 @@ void backend_waitevent(struct view *view)
 
 }
 
-void backend_render(struct view *view)
+void backend_prerender()
 {
 
     SDL_BlitSurface(background, NULL, display, NULL);
-    view->render();
+
+}
+
+void backend_postrender()
+{
+
     SDL_Flip(display);
 
 }

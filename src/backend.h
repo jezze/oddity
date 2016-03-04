@@ -3,7 +3,8 @@ void backend_getmetrics(char c, int *minx, int *maxx, int *miny, int *maxy, int 
 void backend_glyph(char c, unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int color);
 void backend_rect(int x, int y, int w, int h);
 void backend_waitevent(struct view *view);
-void backend_render(struct view *view);
+void backend_prerender();
+void backend_postrender();
 void backend_init();
 void backend_destroy();
 void backend_loadbackground(char *name);
