@@ -1,11 +1,11 @@
 #include <stdlib.h>
+#include "define.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"
 #include "view.h"
 #include "view_repolist.h"
 #include "view_sync.h"
-#include "backend.h"
 #include "ztore.h"
 
 static struct view view;

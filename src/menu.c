@@ -1,8 +1,9 @@
 #include <stdlib.h>
-#include "view.h"
+#include "define.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"
+#include "view.h"
 #include "backend.h"
 
 void menu_setrow(struct menu *menu, unsigned int index)

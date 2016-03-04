@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include "define.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"
@@ -6,7 +7,6 @@
 #include "db.h"
 #include "view.h"
 #include "view_app.h"
-#include "backend.h"
 #include "ztore.h"
 
 static struct view_app view;

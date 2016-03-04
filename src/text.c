@@ -1,8 +1,9 @@
 #include <stdlib.h>
 #include <string.h>
-#include "view.h"
+#include "define.h"
 #include "box.h"
 #include "text.h"
+#include "view.h"
 #include "backend.h"
 
 static unsigned int getwordlength(char *text, unsigned int count)
