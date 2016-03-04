@@ -46,7 +46,6 @@ static void show()
 
     void *installthread;
 
-    ztore_flipview(&view.base);
     changestate(0);
 
     installthread = backend_createthread(install, NULL);

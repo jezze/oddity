@@ -31,8 +31,6 @@ static void show()
 
     }
 
-    ztore_flipview(&view.base);
-
 }
 
 static void render()
@@ -75,7 +73,7 @@ static void keydown(unsigned int key)
         if (!menu_isactive(&view.menu, view.menu.currentitem))
             break;
 
-        view.appview->base.show();
+        ztore_flipview(&view.appview->base);
 
         break;
 
@@ -91,7 +89,7 @@ static void keydown(unsigned int key)
 static void appview_onquit()
 {
 
-    show();
+    ztore_flipview(&view.base);
 
 }
 

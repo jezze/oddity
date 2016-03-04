@@ -14,8 +14,6 @@ static struct view_front view;
 static void show()
 {
 
-    ztore_flipview(&view.base);
-
 }
 
 static void render()
@@ -50,12 +48,12 @@ static void keydown(unsigned int key)
         {
 
         case 0:
-            view.repolistview->base.show();
+            ztore_flipview(&view.repolistview->base);
 
             break;
 
         case 1:
-            view.syncview->base.show();
+            ztore_flipview(&view.syncview->base);
 
             break;
 
@@ -75,7 +73,7 @@ static void keydown(unsigned int key)
 static void repolistview_onquit()
 {
 
-    show();
+    ztore_flipview(&view.base);
 
 }
 
@@ -83,7 +81,7 @@ static void repolistview_onquit()
 static void syncview_onquit()
 {
 
-    show();
+    ztore_flipview(&view.base);
 
 }
 

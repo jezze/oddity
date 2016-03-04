@@ -25,8 +25,6 @@ static void show()
 
     }
 
-    ztore_flipview(&view.base);
-
 }
 
 static void render()
@@ -62,7 +60,7 @@ static void keydown(unsigned int key)
         {
 
         case 0:
-            view.installview->base.show();
+            ztore_flipview(&view.installview->base);
 
             break;
 
@@ -82,7 +80,7 @@ static void keydown(unsigned int key)
 static void installview_onquit()
 {
 
-    show();
+    ztore_flipview(&view.base);
 
 }
 

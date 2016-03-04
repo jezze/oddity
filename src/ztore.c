@@ -35,6 +35,8 @@ void ztore_flipview(struct view *view)
 
     currentview = view;
 
+    currentview->show();
+
 }
 
 int main(int argc, char **argv)

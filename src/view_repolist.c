@@ -14,8 +14,6 @@ static struct view_repolist view;
 static void show()
 {
 
-    ztore_flipview(&view.base);
-
 }
 
 static void render()
@@ -49,17 +47,17 @@ static void keydown(unsigned int key)
         {
 
         case 0:
-            view.applistview->base.show();
+            ztore_flipview(&view.applistview->base);
 
             break;
 
         case 1:
-            view.applistview->base.show();
+            ztore_flipview(&view.applistview->base);
 
             break;
 
         case 2:
-            view.applistview->base.show();
+            ztore_flipview(&view.applistview->base);
 
             break;
 
@@ -79,7 +77,7 @@ static void keydown(unsigned int key)
 static void applistview_onquit()
 {
 
-    show();
+    ztore_flipview(&view.base);
 
 }
 

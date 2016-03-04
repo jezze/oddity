@@ -56,7 +56,6 @@ static void show()
 
     void *syncthread;
 
-    ztore_flipview(&view.base);
     changestate(0);
 
     syncthread = backend_createthread(sync, NULL);
