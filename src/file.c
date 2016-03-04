@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 #include "file.h"
 
 static char *home;
@@ -21,10 +22,31 @@ void file_init()
 
 }
 
-void file_getpath(char *path, char *file)
+void file_getdatabasepath(char *path, unsigned int count)
 {
 
-    snprintf(path, 256, "%s/.ztore/%s", home, file);
+    snprintf(path, count, "%s/.ztore/data.db", home);
+
+}
+
+void file_getremotedatabasepath(char *path, unsigned int count, unsigned int id)
+{
+
+    snprintf(path, count, "%s/.ztore/remote_%u.db", home, id);
+
+}
+
+void file_getpackagepath(char *path, unsigned int count, char *name)
+{
+
+    snprintf(path, count, "/media/data/apps/%s", name);
+
+}
+
+unsigned int file_exist(char *path)
+{
+
+    return access(path, F_OK) != -1;
 
 }
 
@@ -34,7 +56,7 @@ unsigned int file_copy(char *from, char *to)
     FILE *file;
     char command[128];
 
-    snprintf(command, 128, "cp %s %s/.ztore/%s", from, home, to);
+    snprintf(command, 128, "cp %s %s", from, to);
 
     file = popen(command, "r");
 
@@ -47,7 +69,21 @@ unsigned int file_copy(char *from, char *to)
 
 }
 
-unsigned int file_matchsha1(char *filename, char *sha1)
+unsigned int file_downloadremote(unsigned int id)
+{
+
+    char temppath[64];
+    char remotedatapath[64];
+
+    snprintf(temppath, 64, "db/remote_%u.db", id);
+    file_getremotedatabasepath(remotedatapath, 64, id);
+    file_copy(temppath, remotedatapath);
+
+    return 1;
+
+}
+
+unsigned int file_matchsha1(char *path, char *sha1)
 {
 
     FILE *file;
@@ -55,7 +91,7 @@ unsigned int file_matchsha1(char *filename, char *sha1)
     char data[40];
     size_t count;
 
-    snprintf(command, 128, "sha1sum /media/data/apps/%s", filename);
+    snprintf(command, 128, "sha1sum %s", path);
 
     file = popen(command, "r");
 

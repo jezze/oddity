@@ -3,6 +3,7 @@
 #include "text.h"
 #include "menu.h"
 #include "file.h"
+#include "db.h"
 #include "view.h"
 #include "view_front.h"
 #include "backend.h"
@@ -22,6 +23,13 @@ void ztore_quit()
 
 }
 
+void ztore_redraw()
+{
+
+    backend_redraw();
+
+}
+
 void ztore_flipview(struct view *view)
 {
 
@@ -35,6 +43,7 @@ int main(int argc, char **argv)
     struct view_front *front;
 
     file_init();
+    db_init();
     backend_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
     backend_loadbackground("back.png");
     backend_loadfont("habbo.ttf");

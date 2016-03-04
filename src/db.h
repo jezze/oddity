@@ -38,6 +38,6 @@ int db_sync_remote(char *name);
 int db_sync();
 int db_loadapp(struct db_app *app, unsigned int id);
 int db_freeapp(struct db_app *app);
-int db_countapps(struct db_applist *list);
+unsigned int db_countapps();
 int db_loadapps(struct db_app *apps, unsigned int offset, unsigned int limit);
 int db_loadapppackages(struct db_package *packages, struct db_app *app, unsigned int offset, unsigned int limit);

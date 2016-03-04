@@ -42,6 +42,9 @@ static void keydown(unsigned int key)
         break;
 
     case KEY_A:
+        if (!menu_isactive(&view.menu, view.menu.currentitem))
+            break;
+
         switch (view.menu.currentitem)
         {
 
@@ -73,14 +76,20 @@ static void keydown(unsigned int key)
 
 }
 
+static void applistview_onquit()
+{
+
+    show();
+
+}
+
 static unsigned int applistview_onload(struct db_applist *applist)
 {
 
     if (applist->count)
         return 0;
 
-    db_countapps(applist);
-
+    applist->count = db_countapps();
     applist->items = malloc(sizeof (struct db_app) * applist->count);
 
     db_loadapps(applist->items, 0, applist->count);
@@ -89,28 +98,20 @@ static unsigned int applistview_onload(struct db_applist *applist)
 
 }
 
-static unsigned int applistview_onunload(struct db_applist *applist)
-{
-
-    return 0;
-
-}
-
 struct view_repolist *view_repolist_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, show, render, keydown);
     menu_init(&view.menu, view.menuitems, 3);
-    menu_inititem(&view.menuitems[0], "All", MENUITEM_FLAG_NORMAL);
-    menu_inititem(&view.menuitems[1], "Installed", MENUITEM_FLAG_NORMAL);
-    menu_inititem(&view.menuitems[2], "Official", MENUITEM_FLAG_NORMAL);
+    menu_inititem(&view.menuitems[0], "All");
+    menu_inititem(&view.menuitems[1], "Installed");
+    menu_inititem(&view.menuitems[2], "Official");
     menu_setrow(&view.menu, 0);
     box_init(&view.menu.box, 0, 0, w, h);
 
     view.applistview = view_applist_setup(w, h);
     view.applistview->onload = applistview_onload;
-    view.applistview->onunload = applistview_onunload;
-    view.applistview->base.onquit = show;
+    view.applistview->base.onquit = applistview_onquit;
 
     return &view;
 

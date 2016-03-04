@@ -43,6 +43,9 @@ static void keydown(unsigned int key)
         break;
 
     case KEY_A:
+        if (!menu_isactive(&view.menu, view.menu.currentitem))
+            break;
+
         switch (view.menu.currentitem)
         {
 
@@ -69,6 +72,21 @@ static void keydown(unsigned int key)
 
 }
 
+static void repolistview_onquit()
+{
+
+    show();
+
+}
+
+
+static void syncview_onquit()
+{
+
+    show();
+
+}
+
 struct view_front *view_front_setup(unsigned int w, unsigned int h)
 {
 
@@ -76,17 +94,18 @@ struct view_front *view_front_setup(unsigned int w, unsigned int h)
     text_init(&view.text.text, "Welcome to Ztore!");
     box_init(&view.text.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 4);
-    menu_inititem(&view.menuitems[0], "Browse", MENUITEM_FLAG_NORMAL);
-    menu_inititem(&view.menuitems[1], "Sync", MENUITEM_FLAG_NORMAL);
-    menu_inititem(&view.menuitems[2], "Settings", MENUITEM_FLAG_BLOCKED);
-    menu_inititem(&view.menuitems[3], "Exit", MENUITEM_FLAG_NORMAL);
+    menu_inititem(&view.menuitems[0], "Browse");
+    menu_inititem(&view.menuitems[1], "Sync");
+    menu_inititem(&view.menuitems[2], "Settings");
+    menu_inititem(&view.menuitems[3], "Exit");
+    menu_disable(&view.menu, 2);
     menu_setrow(&view.menu, 0);
     box_init(&view.menu.box, 0, h - (view.menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (view.menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
 
     view.repolistview = view_repolist_setup(w, h);
-    view.repolistview->base.onquit = show;
+    view.repolistview->base.onquit = repolistview_onquit;
     view.syncview = view_sync_setup(w, h);
-    view.syncview->base.onquit = show;
+    view.syncview->base.onquit = syncview_onquit;
 
     return &view;
 

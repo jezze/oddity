@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
+#include <SDL/SDL_thread.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
 #include "define.h"
@@ -218,6 +219,24 @@ void backend_postrender()
 {
 
     SDL_Flip(display);
+
+}
+
+void backend_redraw()
+{
+
+    SDL_Event sdlevent;
+
+    sdlevent.type = 0;
+
+    SDL_PushEvent(&sdlevent);
+
+}
+
+void *backend_createthread(int (*fun)(void *data), void *data)
+{
+
+    return SDL_CreateThread(fun, data);
 
 }
 

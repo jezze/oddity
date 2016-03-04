@@ -4,126 +4,117 @@
 #include "file.h"
 #include "db.h"
 
-static int attach(sqlite3 *db, char *alias, char *name)
+static void attach(sqlite3 *db, char *alias, char *name)
 {
 
     sqlite3_stmt *res;
-    int rc;
 
-    rc = sqlite3_prepare_v2(db, "ATTACH DATABASE ? AS ?", -1, &res, 0);
-
-    if (rc != SQLITE_OK)
-        goto fail;
+    if (sqlite3_prepare_v2(db, "ATTACH DATABASE ? AS ?", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
 
     sqlite3_bind_text(res, 1, name, -1, 0);
     sqlite3_bind_text(res, 2, alias, -1, 0);
 
-    rc = sqlite3_step(res);
+    if (sqlite3_step(res) != SQLITE_DONE)
+        exit(EXIT_FAILURE);
 
-    if (rc != SQLITE_DONE)
-        goto fail;
-
-    rc = sqlite3_finalize(res);
-
-    if (rc != SQLITE_OK)
-        goto fail;
-
-fail:
-    return rc;
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
 
 }
 
-static int detach(sqlite3 *db, char *alias)
+static void detach(sqlite3 *db, char *alias)
 {
 
     sqlite3_stmt *res;
-    int rc;
 
-    rc = sqlite3_prepare_v2(db, "DETACH DATABASE ?", -1, &res, 0);
-
-    if (rc != SQLITE_OK)
-        goto fail;
+    if (sqlite3_prepare_v2(db, "DETACH DATABASE ?", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
 
     sqlite3_bind_text(res, 1, alias, -1, 0);
 
-    rc = sqlite3_step(res);
+    if (sqlite3_step(res) != SQLITE_DONE)
+        exit(EXIT_FAILURE);
 
-    if (rc != SQLITE_DONE)
-        goto fail;
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
 
-    rc = sqlite3_finalize(res);
+}
 
-    if (rc != SQLITE_OK)
-        goto fail;
+static void syncremote(sqlite3 *db, char *remote)
+{
 
-fail:
-    return rc;
+    sqlite3_stmt *res;
+
+    attach(db, "external", remote);
+
+    if (sqlite3_prepare_v2(db, "INSERT OR IGNORE INTO apps (remotes_id, id, name, short, icon, preview, date, author, portauthor, homepage, description, state) SELECT 1, *, 1 FROM external.apps", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    if (sqlite3_step(res) != SQLITE_DONE)
+        exit(EXIT_FAILURE);
+
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    detach(db, "external");
+
+}
+
+static void opendatabase(sqlite3 **db)
+{
+
+    char datapath[64];
+
+    file_getdatabasepath(datapath, 64);
+
+    if (sqlite3_open(datapath, db) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+}
+
+static void closedatabase(sqlite3 *db)
+{
+
+    if (sqlite3_close(db) != SQLITE_OK)
+        exit(EXIT_FAILURE);
 
 }
 
 void db_init()
 {
 
-    file_copy("db/data.db", "data.db");
+    char datapath[64];
 
-}
+    file_getdatabasepath(datapath, 64);
 
-int db_sync_remote(char *name)
-{
-
-    sqlite3 *db;
-    sqlite3_stmt *res;
-    char datapath[256];
-    char remotepath[256];
-    int rc;
-
-    file_getpath(datapath, "data.db");
-    file_getpath(remotepath, name);
-
-    rc = sqlite3_open(datapath, &db);
-
-    if (rc != SQLITE_OK)
-        goto fail;
-
-    rc = attach(db, "external", remotepath);
-
-    if (rc != SQLITE_OK)
-        goto fail;
-
-    rc = sqlite3_prepare_v2(db, "INSERT OR IGNORE INTO apps (remotes_id, id, name, short, icon, preview, date, author, portauthor, homepage, description, state) SELECT 1, *, 1 FROM external.apps", -1, &res, 0);
-
-    if (rc != SQLITE_OK)
-        goto fail;
-
-    rc = sqlite3_step(res);
-
-    if (rc != SQLITE_DONE)
-        goto fail;
-
-    rc = sqlite3_finalize(res);
-
-    if (rc != SQLITE_OK)
-        goto fail;
-
-    rc = detach(db, "external");
-
-    if (rc != SQLITE_OK)
-        goto fail;
-
-fail:
-    sqlite3_close(db);
-
-    return rc;
+    if (!file_exist(datapath))
+        file_copy("db/data.db", datapath);
 
 }
 
 int db_sync()
 {
 
-    file_copy("db/remote_1.db", "remote_1.db");
-    db_sync_remote("remote_1.db");
+    sqlite3 *db;
+    unsigned int i;
 
-    return SQLITE_OK;
+    opendatabase(&db);
+
+    for (i = 0; i < 1; i++)
+    {
+
+        char remotedatapath[64];
+
+        file_downloadremote(i + 1);
+        file_getremotedatabasepath(remotedatapath, 64, i + 1);
+        syncremote(db, remotedatapath);
+
+    }
+
+    closedatabase(db);
+
+    return 1;
 
 }
 
@@ -132,46 +123,30 @@ int db_loadapp(struct db_app *app, unsigned int id)
 
     sqlite3 *db;
     sqlite3_stmt *res;
-    char datapath[256];
-    int rc;
 
-    file_getpath(datapath, "data.db");
+    opendatabase(&db);
 
-    rc = sqlite3_open(datapath, &db);
-
-    if (rc != SQLITE_OK)
-        goto fail;
-
-    rc = sqlite3_prepare_v2(db, "SELECT id, name, short FROM apps WHERE id = ?", -1, &res, 0);
-
-    if (rc != SQLITE_OK)
-        goto fail;
+    if (sqlite3_prepare_v2(db, "SELECT id, name, short FROM apps WHERE id = ?", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
 
     sqlite3_bind_int(res, 1, id);
 
-    rc = sqlite3_step(res);
-
-    if (rc != SQLITE_ROW)
-        goto fail;
+    if (sqlite3_step(res) != SQLITE_ROW)
+        exit(EXIT_FAILURE);
 
     app->id = sqlite3_column_int(res, 0);
     app->name = strdup((char *)sqlite3_column_text(res, 1));
     app->shortdescription = strdup((char *)sqlite3_column_text(res, 2));
 
-    rc = sqlite3_step(res);
+    if (sqlite3_step(res) != SQLITE_DONE)
+        exit(EXIT_FAILURE);
 
-    if (rc != SQLITE_DONE)
-        goto fail;
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
 
-    rc = sqlite3_finalize(res);
+    closedatabase(db);
 
-    if (rc != SQLITE_OK)
-        goto fail;
-
-fail:
-    sqlite3_close(db);
-
-    return rc;
+    return 1;
 
 }
 
@@ -181,49 +156,34 @@ int db_freeapp(struct db_app *app)
     free(app->name);
     free(app->shortdescription);
 
-    return SQLITE_OK;
+    return 1;
 
 }
 
-int db_countapps(struct db_applist *list)
+unsigned int db_countapps()
 {
 
     sqlite3 *db;
     sqlite3_stmt *res;
-    char datapath[256];
-    int rc;
+    unsigned int count;
 
-    file_getpath(datapath, "data.db");
+    opendatabase(&db);
 
-    rc = sqlite3_open(datapath, &db);
+    if (sqlite3_prepare_v2(db, "SELECT COUNT(*) AS count FROM apps", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
 
-    if (rc != SQLITE_OK)
-        goto fail;
+    if (sqlite3_step(res) == SQLITE_ROW)
+        count = sqlite3_column_int(res, 0);
 
-    rc = sqlite3_prepare_v2(db, "SELECT COUNT(*) AS count FROM apps", -1, &res, 0);
+    if (sqlite3_step(res) != SQLITE_DONE)
+        exit(EXIT_FAILURE);
 
-    if (rc != SQLITE_OK)
-        goto fail;
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
 
-    rc = sqlite3_step(res);
+    closedatabase(db);
 
-    if (rc == SQLITE_ROW)
-        list->count = sqlite3_column_int(res, 0);
-
-    rc = sqlite3_step(res);
-
-    if (rc != SQLITE_DONE)
-        goto fail;
-
-    rc = sqlite3_finalize(res);
-
-    if (rc != SQLITE_OK)
-        goto fail;
-
-fail:
-    sqlite3_close(db);
-
-    return rc;
+    return count;
 
 }
 
@@ -232,26 +192,17 @@ int db_loadapps(struct db_app *apps, unsigned int offset, unsigned int limit)
 
     sqlite3 *db;
     sqlite3_stmt *res;
-    char datapath[256];
     unsigned int i;
-    int rc;
 
-    file_getpath(datapath, "data.db");
+    opendatabase(&db);
 
-    rc = sqlite3_open(datapath, &db);
-
-    if (rc != SQLITE_OK)
-        goto fail;
-
-    rc = sqlite3_prepare_v2(db, "SELECT id, name, short FROM apps ORDER BY name LIMIT ? OFFSET ?", -1, &res, 0);
-
-    if (rc != SQLITE_OK)
-        goto fail;
+    if (sqlite3_prepare_v2(db, "SELECT id, name, short FROM apps ORDER BY name LIMIT ? OFFSET ?", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
 
     sqlite3_bind_int(res, 1, limit);
     sqlite3_bind_int(res, 2, offset);
 
-    for (i = 0; (rc = sqlite3_step(res)) == SQLITE_ROW; i++)
+    for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
     {
 
         apps[i].id = sqlite3_column_int(res, 0);
@@ -260,18 +211,12 @@ int db_loadapps(struct db_app *apps, unsigned int offset, unsigned int limit)
 
     }
 
-    if (rc != SQLITE_DONE)
-        goto fail;
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
 
-    rc = sqlite3_finalize(res);
+    closedatabase(db);
 
-    if (rc != SQLITE_OK)
-        goto fail;
-
-fail:
-    sqlite3_close(db);
-
-    return rc;
+    return 1;
 
 }
 
@@ -280,27 +225,18 @@ int db_loadapppackages(struct db_package *packages, struct db_app *app, unsigned
 
     sqlite3 *db;
     sqlite3_stmt *res;
-    char datapath[256];
     unsigned int i;
-    int rc;
 
-    file_getpath(datapath, "data.db");
+    opendatabase(&db);
 
-    rc = sqlite3_open(datapath, &db);
-
-    if (rc != SQLITE_OK)
-        goto fail;
-
-    rc = sqlite3_prepare_v2(db, "SELECT id, name, date, sha1 FROM packages WHERE apps_id = ? ORDER BY date LIMIT ? OFFSET ?", -1, &res, 0);
-
-    if (rc != SQLITE_OK)
-        goto fail;
+    if (sqlite3_prepare_v2(db, "SELECT id, name, date, sha1 FROM packages WHERE apps_id = ? ORDER BY date LIMIT ? OFFSET ?", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
 
     sqlite3_bind_int(res, 1, app->id);
     sqlite3_bind_int(res, 2, limit);
     sqlite3_bind_int(res, 3, offset);
 
-    for (i = 0; (rc = sqlite3_step(res)) == SQLITE_ROW; i++)
+    for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
     {
 
         packages[i].id = sqlite3_column_int(res, 0);
@@ -310,18 +246,12 @@ int db_loadapppackages(struct db_package *packages, struct db_app *app, unsigned
 
     }
 
-    if (rc != SQLITE_DONE)
-        goto fail;
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
 
-    rc = sqlite3_finalize(res);
+    closedatabase(db);
 
-    if (rc != SQLITE_OK)
-        goto fail;
-
-fail:
-    sqlite3_close(db);
-
-    return rc;
+    return 1;
 
 }
 

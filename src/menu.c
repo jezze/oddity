@@ -6,12 +6,33 @@
 #include "view.h"
 #include "backend.h"
 
+unsigned int menu_isactive(struct menu *menu, unsigned int index)
+{
+
+    return menu->currentitem == index && !(menu->items[menu->currentitem].flag & MENUITEM_FLAG_DISABLED);
+
+}
+
 void menu_setrow(struct menu *menu, unsigned int index)
 {
 
-    menu->items[menu->currentitem].type &= ~MENUITEM_FLAG_SELECTED;
+    menu->items[menu->currentitem].flag &= ~MENUITEM_FLAG_SELECTED;
     menu->currentitem = index;
-    menu->items[menu->currentitem].type |= MENUITEM_FLAG_SELECTED;
+    menu->items[menu->currentitem].flag |= MENUITEM_FLAG_SELECTED;
+
+}
+
+void menu_enable(struct menu *menu, unsigned int index)
+{
+
+    menu->items[index].flag &= ~MENUITEM_FLAG_DISABLED;
+
+}
+
+void menu_disable(struct menu *menu, unsigned int index)
+{
+
+    menu->items[index].flag |= MENUITEM_FLAG_DISABLED;
 
 }
 
@@ -62,10 +83,10 @@ void menu_prevpage(struct menu *menu)
 void menu_renderitem(struct menuitem *menuitem, int x, int y, int w, int h)
 {
 
-    if (menuitem->type & MENUITEM_FLAG_SELECTED)
+    if (menuitem->flag & MENUITEM_FLAG_SELECTED)
         backend_rect(x, y, w, h);
 
-    if (menuitem->type & MENUITEM_FLAG_BLOCKED)
+    if (menuitem->flag & MENUITEM_FLAG_DISABLED)
         text_render(&menuitem->text, x, y, w, h, TEXT_COLOR_DISABLE);
     else
         text_render(&menuitem->text, x, y, w, h, TEXT_COLOR_SELECT);
@@ -86,11 +107,11 @@ void menu_render(struct menu *menu)
 
 }
 
-void menu_inititem(struct menuitem *menuitem, char *label, unsigned int type)
+void menu_inititem(struct menuitem *menuitem, char *label)
 {
 
     menuitem->text.content = label;
-    menuitem->type = type;
+    menuitem->flag = MENUITEM_FLAG_NORMAL;
 
 }
 

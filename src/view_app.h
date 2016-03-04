@@ -8,7 +8,6 @@ struct view_app
     struct menu menu;
     struct menuitem menuitems[2];
     unsigned int (*onload)(struct db_app *app);
-    unsigned int (*onunload)(struct db_app *app);
 
 };
 

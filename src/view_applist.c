@@ -11,13 +11,13 @@
 
 static struct view_applist view;
 
-static void load()
+static void show()
 {
-
-    unsigned int i;
 
     if (view.onload(&view.applist))
     {
+
+        unsigned int i;
 
         free(view.menu.items);
 
@@ -25,26 +25,12 @@ static void load()
         view.menu.total = view.applist.count;
 
         for (i = 0; i < view.menu.total; i++)
-            menu_inititem(&view.menu.items[i], view.applist.items[i].name, MENUITEM_FLAG_NORMAL);
+            menu_inititem(&view.menu.items[i], view.applist.items[i].name);
 
         menu_setrow(&view.menu, 0);
 
     }
 
-}
-
-static void unload()
-{
-
-    view.onunload(&view.applist);
-
-}
-
-static void show()
-{
-
-    unload();
-    load();
     ztore_flipview(&view.base);
 
 }
@@ -86,6 +72,9 @@ static void keydown(unsigned int key)
         break;
 
     case KEY_A:
+        if (!menu_isactive(&view.menu, view.menu.currentitem))
+            break;
+
         view.appview->base.show();
 
         break;
@@ -96,6 +85,13 @@ static void keydown(unsigned int key)
         break;
 
     }
+
+}
+
+static void appview_onquit()
+{
+
+    show();
 
 }
 
@@ -116,13 +112,6 @@ static unsigned int appview_onload(struct db_app *app)
 
 }
 
-static unsigned int appview_onunload(struct db_app *app)
-{
-
-    return 0;
-
-}
-
 struct view_applist *view_applist_setup(unsigned int w, unsigned int h)
 {
 
@@ -134,8 +123,7 @@ struct view_applist *view_applist_setup(unsigned int w, unsigned int h)
 
     view.appview = view_app_setup(w, h);
     view.appview->onload = appview_onload;
-    view.appview->onunload = appview_onunload;
-    view.appview->base.onquit = show;
+    view.appview->base.onquit = appview_onquit;
 
     return &view;
 
