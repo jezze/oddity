@@ -77,7 +77,6 @@ static void repolistview_onquit()
 
 }
 
-
 static void syncview_onquit()
 {
 
