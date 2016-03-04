@@ -97,6 +97,17 @@ int db_sync(struct db_remote *remote)
     if (sqlite3_finalize(res) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
+    if (sqlite3_prepare_v2(db, "INSERT OR IGNORE INTO packages (remotes_id, id, apps_id, name, date, sha1, state) SELECT ?, *, 1 FROM external.packages", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    sqlite3_bind_int(res, 1, remote->id);
+
+    if (sqlite3_step(res) != SQLITE_DONE)
+        exit(EXIT_FAILURE);
+
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
     detach(db, "external");
     closedatabase(db);
 
