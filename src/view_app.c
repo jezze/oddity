@@ -7,6 +7,7 @@
 #include "db.h"
 #include "view.h"
 #include "view_app.h"
+#include "view_install.h"
 #include "ztore.h"
 
 static struct view_app view;
@@ -61,6 +62,8 @@ static void keydown(unsigned int key)
         {
 
         case 0:
+            view.installview->base.show();
+
             break;
 
         }
@@ -76,6 +79,13 @@ static void keydown(unsigned int key)
 
 }
 
+static void installview_onquit()
+{
+
+    show();
+
+}
+
 struct view_app *view_app_setup(unsigned int w, unsigned int h)
 {
 
@@ -88,6 +98,9 @@ struct view_app *view_app_setup(unsigned int w, unsigned int h)
     box_init(&view.title.box, 0, 0, w, (1 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     box_init(&view.shortdescription.box, 0, (1 * RENDER_ROWHEIGHT), w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     box_init(&view.menu.box, 0, h - (view.menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (view.menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+
+    view.installview = view_install_setup(w, h);
+    view.installview->base.onquit = installview_onquit;
 
     return &view;
 

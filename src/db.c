@@ -118,6 +118,129 @@ int db_sync()
 
 }
 
+void db_createremote(struct db_remote *remote, unsigned int id, char *name)
+{
+
+    remote->id = id;
+    remote->name = strdup(name);
+
+}
+
+void db_freeremote(struct db_remote *remote)
+{
+
+    free(remote->name);
+
+    remote->id = 0;
+    remote->name = 0;
+
+}
+
+int db_loadremote(struct db_remote *remote, unsigned int id)
+{
+
+    sqlite3 *db;
+    sqlite3_stmt *res;
+
+    opendatabase(&db);
+
+    if (sqlite3_prepare_v2(db, "SELECT id, name FROM remotes WHERE id = ?", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    sqlite3_bind_int(res, 1, id);
+
+    if (sqlite3_step(res) != SQLITE_ROW)
+        exit(EXIT_FAILURE);
+
+    db_createremote(remote, sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1));
+
+    if (sqlite3_step(res) != SQLITE_DONE)
+        exit(EXIT_FAILURE);
+
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    closedatabase(db);
+
+    return 1;
+
+}
+
+unsigned int db_countremotes()
+{
+
+    sqlite3 *db;
+    sqlite3_stmt *res;
+    unsigned int count;
+
+    opendatabase(&db);
+
+    if (sqlite3_prepare_v2(db, "SELECT COUNT(*) AS count FROM remotes", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    if (sqlite3_step(res) == SQLITE_ROW)
+        count = sqlite3_column_int(res, 0);
+
+    if (sqlite3_step(res) != SQLITE_DONE)
+        exit(EXIT_FAILURE);
+
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    closedatabase(db);
+
+    return count;
+
+}
+
+int db_loadremotes(struct db_remote *remotes, unsigned int offset, unsigned int limit)
+{
+
+    sqlite3 *db;
+    sqlite3_stmt *res;
+    unsigned int i;
+
+    opendatabase(&db);
+
+    if (sqlite3_prepare_v2(db, "SELECT id, name FROM remotes ORDER BY name LIMIT ? OFFSET ?", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    sqlite3_bind_int(res, 1, limit);
+    sqlite3_bind_int(res, 2, offset);
+
+    for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
+        db_createremote(&remotes[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1));
+
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    closedatabase(db);
+
+    return 1;
+
+}
+
+void db_createapp(struct db_app *app, unsigned int id, char *name, char *shortdescription)
+{
+
+    app->id = id;
+    app->name = strdup(name);
+    app->shortdescription = strdup(shortdescription);
+
+}
+
+void db_freeapp(struct db_app *app)
+{
+
+    free(app->name);
+    free(app->shortdescription);
+
+    app->id = 0;
+    app->name = 0;
+    app->shortdescription = 0;
+
+}
+
 int db_loadapp(struct db_app *app, unsigned int id)
 {
 
@@ -134,9 +257,7 @@ int db_loadapp(struct db_app *app, unsigned int id)
     if (sqlite3_step(res) != SQLITE_ROW)
         exit(EXIT_FAILURE);
 
-    app->id = sqlite3_column_int(res, 0);
-    app->name = strdup((char *)sqlite3_column_text(res, 1));
-    app->shortdescription = strdup((char *)sqlite3_column_text(res, 2));
+    db_createapp(app, sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2));
 
     if (sqlite3_step(res) != SQLITE_DONE)
         exit(EXIT_FAILURE);
@@ -145,16 +266,6 @@ int db_loadapp(struct db_app *app, unsigned int id)
         exit(EXIT_FAILURE);
 
     closedatabase(db);
-
-    return 1;
-
-}
-
-int db_freeapp(struct db_app *app)
-{
-
-    free(app->name);
-    free(app->shortdescription);
 
     return 1;
 
@@ -203,13 +314,7 @@ int db_loadapps(struct db_app *apps, unsigned int offset, unsigned int limit)
     sqlite3_bind_int(res, 2, offset);
 
     for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
-    {
-
-        apps[i].id = sqlite3_column_int(res, 0);
-        apps[i].name = strdup((char *)sqlite3_column_text(res, 1));
-        apps[i].shortdescription = strdup((char *)sqlite3_column_text(res, 2));
-
-    }
+        db_createapp(&apps[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2));
 
     if (sqlite3_finalize(res) != SQLITE_OK)
         exit(EXIT_FAILURE);
@@ -217,6 +322,89 @@ int db_loadapps(struct db_app *apps, unsigned int offset, unsigned int limit)
     closedatabase(db);
 
     return 1;
+
+}
+
+void db_createpackage(struct db_package *package, unsigned int id, char *name, char *date, char *sha1)
+{
+
+    package->id = id;
+    package->name = strdup(name);
+    package->date = strdup(date);
+    package->sha1 = strdup(sha1);
+
+}
+
+void db_freepackage(struct db_package *package)
+{
+
+    free(package->name);
+    free(package->date);
+    free(package->sha1);
+
+    package->id = 0;
+    package->name = 0;
+    package->date = 0;
+    package->sha1 = 0;
+
+}
+
+int db_loadpackage(struct db_package *package, unsigned int id)
+{
+
+    sqlite3 *db;
+    sqlite3_stmt *res;
+
+    opendatabase(&db);
+
+    if (sqlite3_prepare_v2(db, "SELECT id, name, date, sha1 FROM packages WHERE id = ?", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    sqlite3_bind_int(res, 1, id);
+
+    if (sqlite3_step(res) != SQLITE_ROW)
+        exit(EXIT_FAILURE);
+
+    db_createpackage(package, sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2), (char *)sqlite3_column_text(res, 3));
+
+    if (sqlite3_step(res) != SQLITE_DONE)
+        exit(EXIT_FAILURE);
+
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    closedatabase(db);
+
+    return 1;
+
+}
+
+unsigned int db_countapppackages(struct db_app *app)
+{
+
+    sqlite3 *db;
+    sqlite3_stmt *res;
+    unsigned int count;
+
+    opendatabase(&db);
+
+    if (sqlite3_prepare_v2(db, "SELECT COUNT(*) AS count FROM packages WHERE apps_id = ?", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    sqlite3_bind_int(res, 1, app->id);
+
+    if (sqlite3_step(res) == SQLITE_ROW)
+        count = sqlite3_column_int(res, 0);
+
+    if (sqlite3_step(res) != SQLITE_DONE)
+        exit(EXIT_FAILURE);
+
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    closedatabase(db);
+
+    return count;
 
 }
 
@@ -237,14 +425,7 @@ int db_loadapppackages(struct db_package *packages, struct db_app *app, unsigned
     sqlite3_bind_int(res, 3, offset);
 
     for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
-    {
-
-        packages[i].id = sqlite3_column_int(res, 0);
-        packages[i].name = strdup((char *)sqlite3_column_text(res, 1));
-        packages[i].date = strdup((char *)sqlite3_column_text(res, 2));
-        packages[i].sha1 = strdup((char *)sqlite3_column_text(res, 3));
-
-    }
+        db_createpackage(&packages[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2), (char *)sqlite3_column_text(res, 3));
 
     if (sqlite3_finalize(res) != SQLITE_OK)
         exit(EXIT_FAILURE);

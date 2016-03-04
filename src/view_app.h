@@ -2,6 +2,7 @@ struct view_app
 {
 
     struct view base;
+    struct view_install *installview;
     struct db_app app;
     struct textbox title;
     struct textbox shortdescription;
