@@ -20,11 +20,11 @@ static void load()
 
     unsigned int i;
 
-    db_countapps(&view.applist, "db/official.db");
+    db_countapps(&view.applist);
 
     view.applist.items = malloc(sizeof (struct db_app) * view.applist.count);
 
-    db_loadapps(view.applist.items, config_offset, view.applist.count, "db/official.db");
+    db_loadapps(view.applist.items, config_offset, view.applist.count);
 
     menu.items = malloc(sizeof (struct menuitem) * view.applist.count);
     menu.total = view.applist.count;

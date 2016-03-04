@@ -19,7 +19,7 @@ static unsigned int config_id;
 static void load()
 {
 
-    db_loadapp(&view.app, config_id, "db/official.db");
+    db_loadapp(&view.app, config_id);
 
     title.text.content = view.app.name;
     shortdescription.text.content = view.app.shortdescription;

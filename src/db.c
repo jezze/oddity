@@ -127,7 +127,7 @@ int db_sync()
 
 }
 
-int db_loadapp(struct db_app *app, unsigned int id, char *name)
+int db_loadapp(struct db_app *app, unsigned int id)
 {
 
     sqlite3 *db;
@@ -175,7 +175,7 @@ fail:
 
 }
 
-int db_countapps(struct db_applist *list, char *name)
+int db_countapps(struct db_applist *list)
 {
 
     sqlite3 *db;
@@ -217,7 +217,7 @@ fail:
 
 }
 
-int db_loadapps(struct db_app *apps, unsigned int offset, unsigned int limit, char *name)
+int db_loadapps(struct db_app *apps, unsigned int offset, unsigned int limit)
 {
 
     sqlite3 *db;
@@ -265,7 +265,7 @@ fail:
 
 }
 
-int db_loadapppackages(struct db_package *packages, struct db_app *app, unsigned int offset, unsigned int limit, char *name)
+int db_loadapppackages(struct db_package *packages, struct db_app *app, unsigned int offset, unsigned int limit)
 {
 
     sqlite3 *db;

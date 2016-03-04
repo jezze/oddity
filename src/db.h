@@ -36,7 +36,7 @@ struct db_packagelist
 void db_init();
 int db_sync_remote(char *name);
 int db_sync();
-int db_loadapp(struct db_app *app, unsigned int id, char *name);
-int db_countapps(struct db_applist *list, char *name);
-int db_loadapps(struct db_app *apps, unsigned int offset, unsigned int limit, char *name);
-int db_loadapppackages(struct db_package *packages, struct db_app *app, unsigned int offset, unsigned int limit, char *name);
+int db_loadapp(struct db_app *app, unsigned int id);
+int db_countapps(struct db_applist *list);
+int db_loadapps(struct db_app *apps, unsigned int offset, unsigned int limit);
+int db_loadapppackages(struct db_package *packages, struct db_app *app, unsigned int offset, unsigned int limit);
