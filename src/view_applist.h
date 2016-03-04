@@ -2,7 +2,10 @@ struct view_applist
 {
 
     struct view base;
+    struct view_app *appview;
     struct db_applist applist;
+    struct menu menu;
+    struct textbox emptytextbox;
     void (*onload)(struct db_applist *applist);
     void (*onunload)(struct db_applist *applist);
 

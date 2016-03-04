@@ -10,9 +10,6 @@
 #include "ztore.h"
 
 static struct view_applist view;
-static struct view_app *appview;
-static struct menu menu;
-static struct textbox emptytextbox;
 
 static void load()
 {
@@ -21,13 +18,13 @@ static void load()
 
     view.onload(&view.applist);
 
-    menu.items = malloc(sizeof (struct menuitem) * view.applist.count);
-    menu.total = view.applist.count;
+    view.menu.items = malloc(sizeof (struct menuitem) * view.applist.count);
+    view.menu.total = view.applist.count;
 
-    for (i = 0; i < menu.total; i++)
-        menu_inititem(&menu.items[i], view.applist.items[i].name, MENUITEM_FLAG_NORMAL);
+    for (i = 0; i < view.menu.total; i++)
+        menu_inititem(&view.menu.items[i], view.applist.items[i].name, MENUITEM_FLAG_NORMAL);
 
-    menu_setrow(&menu, 0);
+    menu_setrow(&view.menu, 0);
 
 }
 
@@ -36,7 +33,7 @@ static void unload()
 
     view.onunload(&view.applist);
 
-    free(menu.items);
+    free(view.menu.items);
 
 }
 
@@ -53,9 +50,9 @@ static void render()
 {
 
     if (view.applist.count)
-        menu_render(&menu);
+        menu_render(&view.menu);
     else
-        text_renderbox(&emptytextbox, TEXT_COLOR_NORMAL);
+        text_renderbox(&view.emptytextbox, TEXT_COLOR_NORMAL);
 
 }
 
@@ -66,27 +63,27 @@ static void keydown(unsigned int key)
     {
 
     case KEY_UP:
-        menu_prevrow(&menu);
+        menu_prevrow(&view.menu);
 
         break;
 
     case KEY_DOWN:
-        menu_nextrow(&menu);
+        menu_nextrow(&view.menu);
 
         break;
 
     case KEY_LEFT:
-        menu_prevpage(&menu);
+        menu_prevpage(&view.menu);
 
         break;
 
     case KEY_RIGHT:
-        menu_nextpage(&menu);
+        menu_nextpage(&view.menu);
 
         break;
 
     case KEY_A:
-        appview->base.show();
+        view.appview->base.show();
 
         break;
 
@@ -102,7 +99,7 @@ static void keydown(unsigned int key)
 static void appview_onload(struct db_app *app)
 {
 
-    db_loadapp(app, view.applist.items[menu.currentitem].id);
+    db_loadapp(app, view.applist.items[view.menu.currentitem].id);
 
 }
 
@@ -117,15 +114,15 @@ struct view_applist *view_applist_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, show, render, keydown);
-    text_init(&emptytextbox.text, "No items found.");
-    box_init(&emptytextbox.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
-    menu_init(&menu, 0, 0);
-    box_init(&menu.box, 0, 0, w, h);
+    text_init(&view.emptytextbox.text, "No items found.");
+    box_init(&view.emptytextbox.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+    menu_init(&view.menu, 0, 0);
+    box_init(&view.menu.box, 0, 0, w, h);
 
-    appview = view_app_setup(w, h);
-    appview->onload = appview_onload;
-    appview->onunload = appview_onunload;
-    appview->base.onquit = show;
+    view.appview = view_app_setup(w, h);
+    view.appview->onload = appview_onload;
+    view.appview->onunload = appview_onunload;
+    view.appview->base.onquit = show;
 
     return &view;
 

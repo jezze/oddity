@@ -5,24 +5,24 @@
 #include "menu.h"
 #include "db.h"
 #include "view.h"
+#include "view_sync.h"
 #include "ztore.h"
 
-static struct view view;
-static struct textbox text;
+static struct view_sync view;
 
 static void show()
 {
 
     db_init();
     db_sync();
-    ztore_flipview(&view);
+    ztore_flipview(&view.base);
 
 }
 
 static void render()
 {
 
-    text_renderbox(&text, TEXT_COLOR_NORMAL);
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL);
 
 }
 
@@ -33,7 +33,7 @@ static void keydown(unsigned int key)
     {
 
     case KEY_B:
-        view_quit(&view);
+        view_quit(&view.base);
 
         break;
 
@@ -41,12 +41,12 @@ static void keydown(unsigned int key)
 
 }
 
-struct view *view_sync_setup(unsigned int w, unsigned int h)
+struct view_sync *view_sync_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view, show, render, keydown);
-    text_init(&text.text, "Sync complete!");
-    box_init(&text.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+    view_init(&view.base, show, render, keydown);
+    text_init(&view.status.text, "Sync complete!");
+    box_init(&view.status.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
 
     return &view;
 

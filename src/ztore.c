@@ -32,12 +32,15 @@ void ztore_flipview(struct view *view)
 int main(int argc, char **argv)
 {
 
+    struct view_front *front;
+
     file_init();
     backend_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
     backend_loadbackground("back.png");
     backend_loadfont("habbo.ttf");
 
-    currentview = view_front_setup(SCREEN_WIDTH, SCREEN_HEIGHT);
+    front = view_front_setup(SCREEN_WIDTH, SCREEN_HEIGHT);
+    currentview = &front->base;
 
     backend_prerender();
     currentview->render();

@@ -6,27 +6,23 @@
 #include "view.h"
 #include "view_repolist.h"
 #include "view_sync.h"
+#include "view_front.h"
 #include "ztore.h"
 
-static struct view view;
-static struct view *repolistview;
-static struct view *syncview;
-static struct textbox text;
-static struct menu menu;
-static struct menuitem menuitems[4];
+static struct view_front view;
 
 static void show()
 {
 
-    ztore_flipview(&view);
+    ztore_flipview(&view.base);
 
 }
 
 static void render()
 {
 
-    text_renderbox(&text, TEXT_COLOR_NORMAL);
-    menu_render(&menu);
+    text_renderbox(&view.text, TEXT_COLOR_NORMAL);
+    menu_render(&view.menu);
 
 }
 
@@ -37,26 +33,26 @@ static void keydown(unsigned int key)
     {
 
     case KEY_UP:
-        menu_prevrow(&menu);
+        menu_prevrow(&view.menu);
 
         break;
 
     case KEY_DOWN:
-        menu_nextrow(&menu);
+        menu_nextrow(&view.menu);
 
         break;
 
     case KEY_A:
-        switch (menu.currentitem)
+        switch (view.menu.currentitem)
         {
 
         case 0:
-            repolistview->show();
+            view.repolistview->base.show();
 
             break;
 
         case 1:
-            syncview->show();
+            view.syncview->base.show();
 
             break;
 
@@ -73,24 +69,24 @@ static void keydown(unsigned int key)
 
 }
 
-struct view *view_front_setup(unsigned int w, unsigned int h)
+struct view_front *view_front_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view, show, render, keydown);
-    text_init(&text.text, "Welcome to Ztore!");
-    box_init(&text.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
-    menu_init(&menu, menuitems, 4);
-    menu_inititem(&menuitems[0], "Browse", MENUITEM_FLAG_NORMAL);
-    menu_inititem(&menuitems[1], "Sync", MENUITEM_FLAG_NORMAL);
-    menu_inititem(&menuitems[2], "Settings", MENUITEM_FLAG_BLOCKED);
-    menu_inititem(&menuitems[3], "Exit", MENUITEM_FLAG_NORMAL);
-    menu_setrow(&menu, 0);
-    box_init(&menu.box, 0, h - (menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+    view_init(&view.base, show, render, keydown);
+    text_init(&view.text.text, "Welcome to Ztore!");
+    box_init(&view.text.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+    menu_init(&view.menu, view.menuitems, 4);
+    menu_inititem(&view.menuitems[0], "Browse", MENUITEM_FLAG_NORMAL);
+    menu_inititem(&view.menuitems[1], "Sync", MENUITEM_FLAG_NORMAL);
+    menu_inititem(&view.menuitems[2], "Settings", MENUITEM_FLAG_BLOCKED);
+    menu_inititem(&view.menuitems[3], "Exit", MENUITEM_FLAG_NORMAL);
+    menu_setrow(&view.menu, 0);
+    box_init(&view.menu.box, 0, h - (view.menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (view.menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
 
-    repolistview = view_repolist_setup(w, h);
-    repolistview->onquit = show;
-    syncview = view_sync_setup(w, h);
-    syncview->onquit = show;
+    view.repolistview = view_repolist_setup(w, h);
+    view.repolistview->base.onquit = show;
+    view.syncview = view_sync_setup(w, h);
+    view.syncview->base.onquit = show;
 
     return &view;
 

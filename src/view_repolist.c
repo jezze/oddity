@@ -6,24 +6,22 @@
 #include "db.h"
 #include "view.h"
 #include "view_applist.h"
+#include "view_repolist.h"
 #include "ztore.h"
 
-static struct view view;
-static struct view_applist *applistview;
-static struct menu menu;
-static struct menuitem menuitems[3];
+static struct view_repolist view;
 
 static void show()
 {
 
-    ztore_flipview(&view);
+    ztore_flipview(&view.base);
 
 }
 
 static void render()
 {
 
-    menu_render(&menu);
+    menu_render(&view.menu);
 
 }
 
@@ -34,31 +32,31 @@ static void keydown(unsigned int key)
     {
 
     case KEY_UP:
-        menu_prevrow(&menu);
+        menu_prevrow(&view.menu);
 
         break;
 
     case KEY_DOWN:
-        menu_nextrow(&menu);
+        menu_nextrow(&view.menu);
 
         break;
 
     case KEY_A:
-        switch (menu.currentitem)
+        switch (view.menu.currentitem)
         {
 
         case 0:
-            applistview->base.show();
+            view.applistview->base.show();
 
             break;
 
         case 1:
-            applistview->base.show();
+            view.applistview->base.show();
 
             break;
 
         case 2:
-            applistview->base.show();
+            view.applistview->base.show();
 
             break;
 
@@ -67,7 +65,7 @@ static void keydown(unsigned int key)
         break;
 
     case KEY_B:
-        view_quit(&view);
+        view_quit(&view.base);
 
         break;
 
@@ -103,21 +101,21 @@ static void applistview_onunload(struct db_applist *applist)
 
 }
 
-struct view *view_repolist_setup(unsigned int w, unsigned int h)
+struct view_repolist *view_repolist_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view, show, render, keydown);
-    menu_init(&menu, menuitems, 3);
-    menu_inititem(&menuitems[0], "All", MENUITEM_FLAG_NORMAL);
-    menu_inititem(&menuitems[1], "Installed", MENUITEM_FLAG_NORMAL);
-    menu_inititem(&menuitems[2], "Official", MENUITEM_FLAG_NORMAL);
-    menu_setrow(&menu, 0);
-    box_init(&menu.box, 0, 0, w, h);
+    view_init(&view.base, show, render, keydown);
+    menu_init(&view.menu, view.menuitems, 3);
+    menu_inititem(&view.menuitems[0], "All", MENUITEM_FLAG_NORMAL);
+    menu_inititem(&view.menuitems[1], "Installed", MENUITEM_FLAG_NORMAL);
+    menu_inititem(&view.menuitems[2], "Official", MENUITEM_FLAG_NORMAL);
+    menu_setrow(&view.menu, 0);
+    box_init(&view.menu.box, 0, 0, w, h);
 
-    applistview = view_applist_setup(w, h);
-    applistview->onload = applistview_onload;
-    applistview->onunload = applistview_onunload;
-    applistview->base.onquit = show;
+    view.applistview = view_applist_setup(w, h);
+    view.applistview->onload = applistview_onload;
+    view.applistview->onunload = applistview_onunload;
+    view.applistview->base.onquit = show;
 
     return &view;
 
