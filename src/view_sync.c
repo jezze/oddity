@@ -17,7 +17,7 @@ static char *status[4] = {
     "Sync failed!"
 };
 
-static int dosync(void *arg)
+static int sync(void *arg)
 {
 
     view.status.text.content = status[1];
@@ -38,13 +38,13 @@ static int dosync(void *arg)
 static void show()
 {
 
-    void *thread;
+    void *syncthread;
 
     ztore_flipview(&view.base);
 
-    thread = backend_createthread(dosync, NULL);
+    syncthread = backend_createthread(sync, NULL);
 
-    if (!thread)
+    if (!syncthread)
         view.status.text.content = status[3];
 
 }
