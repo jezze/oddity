@@ -20,14 +20,20 @@ static char *status[4] = {
 static int sync(void *arg)
 {
 
-    struct db_remote remote;
+    struct db_remotelist remotelist;
+    unsigned int i;
 
     view.status.text.content = status[1];
 
     menu_enable(&view.menu, 0);
     ztore_redraw();
-    db_loadremote(&remote, 1);
-    db_sync(&remote);
+    remotelist.count = db_countremotes();
+    remotelist.items = malloc(sizeof (struct db_remote) * remotelist.count);
+
+    db_loadremotes(remotelist.items, 0, remotelist.count);
+
+    for (i = 0; i < remotelist.count; i++)
+        db_sync(&remotelist.items[i]);
 
     view.status.text.content = status[2];
 
