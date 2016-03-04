@@ -50,8 +50,7 @@ struct db_packagelist
 };
 
 void db_init();
-int db_sync_remote(char *name);
-int db_sync();
+int db_sync(struct db_remote *remote);
 void db_createremote(struct db_remote *remote, unsigned int id, char *name);
 void db_freeremote(struct db_remote *remote);
 int db_loadremote(struct db_remote *remote, unsigned int id);

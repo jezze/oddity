@@ -20,11 +20,14 @@ static char *status[4] = {
 static int sync(void *arg)
 {
 
+    struct db_remote remote;
+
     view.status.text.content = status[1];
 
     menu_enable(&view.menu, 0);
     ztore_redraw();
-    db_sync();
+    db_loadremote(&remote, 1);
+    db_sync(&remote);
 
     view.status.text.content = status[2];
 

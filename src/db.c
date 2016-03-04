@@ -41,28 +41,6 @@ static void detach(sqlite3 *db, char *alias)
 
 }
 
-static void syncremote(sqlite3 *db, char *remotedatapath, unsigned int remoteid)
-{
-
-    sqlite3_stmt *res;
-
-    attach(db, "external", remotedatapath);
-
-    if (sqlite3_prepare_v2(db, "INSERT OR IGNORE INTO apps (remotes_id, id, name, short, icon, preview, date, author, portauthor, homepage, description, state) SELECT ?, *, 1 FROM external.apps", -1, &res, 0) != SQLITE_OK)
-        exit(EXIT_FAILURE);
-
-    sqlite3_bind_int(res, 1, remoteid);
-
-    if (sqlite3_step(res) != SQLITE_DONE)
-        exit(EXIT_FAILURE);
-
-    if (sqlite3_finalize(res) != SQLITE_OK)
-        exit(EXIT_FAILURE);
-
-    detach(db, "external");
-
-}
-
 static void opendatabase(sqlite3 **db)
 {
 
@@ -95,25 +73,31 @@ void db_init()
 
 }
 
-int db_sync()
+int db_sync(struct db_remote *remote)
 {
 
     sqlite3 *db;
-    unsigned int i;
+    sqlite3_stmt *res;
+    char remotedatapath[64];
 
+    file_downloadremote(remote->id);
+    file_getremotedatabasepath(remotedatapath, 64, remote->id);
     opendatabase(&db);
 
-    for (i = 0; i < 1; i++)
-    {
+    attach(db, "external", remotedatapath);
 
-        char remotedatapath[64];
+    if (sqlite3_prepare_v2(db, "INSERT OR IGNORE INTO apps (remotes_id, id, name, short, icon, preview, date, author, portauthor, homepage, description, state) SELECT ?, *, 1 FROM external.apps", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
 
-        file_downloadremote(i + 1);
-        file_getremotedatabasepath(remotedatapath, 64, i + 1);
-        syncremote(db, remotedatapath, i + 1);
+    sqlite3_bind_int(res, 1, remote->id);
 
-    }
+    if (sqlite3_step(res) != SQLITE_DONE)
+        exit(EXIT_FAILURE);
 
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    detach(db, "external");
     closedatabase(db);
 
     return 1;
