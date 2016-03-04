@@ -1,11 +1,11 @@
 #include <stdlib.h>
-#include <stdarg.h>
-#include "view.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"
-#include "backend.h"
 #include "file.h"
+#include "view.h"
+#include "view_front.h"
+#include "backend.h"
 #include "ztore.h"
 
 #define SCREEN_WIDTH                    320
@@ -32,18 +32,12 @@ void ztore_flipview(struct view *view)
 int main(int argc, char **argv)
 {
 
-    struct view *app = view_app_setup(SCREEN_WIDTH, SCREEN_HEIGHT);
-    struct view *applist = view_applist_setup(SCREEN_WIDTH, SCREEN_HEIGHT, app);
-    struct view *repolist = view_repolist_setup(SCREEN_WIDTH, SCREEN_HEIGHT, applist);
-    struct view *sync = view_sync_setup(SCREEN_WIDTH, SCREEN_HEIGHT);
-    struct view *front = view_front_setup(SCREEN_WIDTH, SCREEN_HEIGHT, repolist, sync);
-
     file_init();
     backend_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
     backend_loadbackground("back.png");
     backend_loadfont("habbo.ttf");
 
-    front->show();
+    currentview = view_front_setup(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     backend_render(currentview);
 

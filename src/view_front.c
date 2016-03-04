@@ -1,8 +1,10 @@
 #include <stdlib.h>
-#include "view.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"
+#include "view.h"
+#include "view_repolist.h"
+#include "view_sync.h"
 #include "backend.h"
 #include "ztore.h"
 
@@ -71,7 +73,7 @@ static void keydown(unsigned int key)
 
 }
 
-struct view *view_front_setup(unsigned int w, unsigned int h, struct view *repolist, struct view *sync)
+struct view *view_front_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view, show, render, keydown);
@@ -85,9 +87,9 @@ struct view *view_front_setup(unsigned int w, unsigned int h, struct view *repol
     menu_setrow(&menu, 0);
     box_init(&menu.box, 0, h - (menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
 
-    repolistview = repolist;
+    repolistview = view_repolist_setup(w, h);
     repolistview->onquit = show;
-    syncview = sync;
+    syncview = view_sync_setup(w, h);
     syncview->onquit = show;
 
     return &view;

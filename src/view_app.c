@@ -1,15 +1,15 @@
 #include <stdlib.h>
-#include "view.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"
-#include "db.h"
 #include "file.h"
+#include "db.h"
+#include "view.h"
+#include "view_app.h"
 #include "backend.h"
 #include "ztore.h"
 
-static struct view view;
-static struct db_app app;
+static struct view_app view;
 static struct textbox title;
 static struct textbox shortdescription;
 static struct menu menu;
@@ -19,10 +19,10 @@ static unsigned int config_id;
 static void load()
 {
 
-    db_loadapp(&app, config_id, "db/official.db");
+    db_loadapp(&view.app, config_id, "db/official.db");
 
-    title.text.content = app.name;
-    shortdescription.text.content = app.shortdescription;
+    title.text.content = view.app.name;
+    shortdescription.text.content = view.app.shortdescription;
 
     menu_setrow(&menu, 0);
 
@@ -31,21 +31,21 @@ static void load()
 static void unload()
 {
 
-    free(app.name);
-    free(app.shortdescription);
+    free(view.app.name);
+    free(view.app.shortdescription);
 
 }
 
 static void show()
 {
 
-    switch (view.state)
+    switch (view.base.state)
     {
 
     case VIEW_STATE_CONFIGURED:
         load();
 
-        view.state = VIEW_STATE_DONE;
+        view.base.state = VIEW_STATE_DONE;
 
         break;
 
@@ -53,13 +53,13 @@ static void show()
         unload();
         load();
 
-        view.state = VIEW_STATE_DONE;
+        view.base.state = VIEW_STATE_DONE;
 
         break;
 
     }
 
-    ztore_flipview(&view);
+    ztore_flipview(&view.base);
 
 }
 
@@ -103,7 +103,7 @@ static void keydown(unsigned int key)
         break;
 
     case KEY_B:
-        view_quit(&view);
+        view_quit(&view.base);
 
         break;
 
@@ -114,13 +114,13 @@ static void keydown(unsigned int key)
 void view_app_config(unsigned int id)
 {
 
-    switch (view.state)
+    switch (view.base.state)
     {
 
     case VIEW_STATE_NONE:
         config_id = id;
 
-        view.state = VIEW_STATE_CONFIGURED;
+        view.base.state = VIEW_STATE_CONFIGURED;
 
         break;
 
@@ -130,7 +130,7 @@ void view_app_config(unsigned int id)
 
         config_id = id;
 
-        view.state = VIEW_STATE_RECONFIGURED;
+        view.base.state = VIEW_STATE_RECONFIGURED;
 
         break;
 
@@ -138,10 +138,10 @@ void view_app_config(unsigned int id)
 
 }
 
-struct view *view_app_setup(unsigned int w, unsigned int h)
+struct view_app *view_app_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view, show, render, keydown);
+    view_init(&view.base, show, render, keydown);
     menu_init(&menu, menuitems, 2);
     menu_inititem(&menuitems[0], "Install", MENUITEM_FLAG_NORMAL);
     menu_inititem(&menuitems[1], "Uninstall", MENUITEM_FLAG_BLOCKED);

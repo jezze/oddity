@@ -1,13 +1,15 @@
 #include <stdlib.h>
-#include "view.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"
+#include "db.h"
+#include "view.h"
+#include "view_applist.h"
 #include "backend.h"
 #include "ztore.h"
 
 static struct view view;
-static struct view *applistview;
+static struct view_applist *applistview;
 static struct menu menu;
 static struct menuitem menuitems[3];
 
@@ -47,19 +49,19 @@ static void keydown(unsigned int key)
 
         case 0:
             view_applist_config(0);
-            applistview->show();
+            applistview->base.show();
 
             break;
 
         case 1:
             view_applist_config(0);
-            applistview->show();
+            applistview->base.show();
 
             break;
 
         case 2:
             view_applist_config(0);
-            applistview->show();
+            applistview->base.show();
 
             break;
 
@@ -76,7 +78,7 @@ static void keydown(unsigned int key)
 
 }
 
-struct view *view_repolist_setup(unsigned int w, unsigned int h, struct view *applist)
+struct view *view_repolist_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view, show, render, keydown);
@@ -87,8 +89,8 @@ struct view *view_repolist_setup(unsigned int w, unsigned int h, struct view *ap
     menu_setrow(&menu, 0);
     box_init(&menu.box, 0, 0, w, h);
 
-    applistview = applist;
-    applistview->onquit = show;
+    applistview = view_applist_setup(w, h);
+    applistview->base.onquit = show;
 
     return &view;
 
