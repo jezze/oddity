@@ -51,7 +51,7 @@ static int sync(void *arg)
 
 }
 
-static void show()
+static void load()
 {
 
     void *syncthread;
@@ -107,7 +107,7 @@ static void keydown(unsigned int key)
 struct view_sync *view_sync_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, show, render, keydown);
+    view_init(&view.base, load, render, keydown);
     text_init(&view.status.text, status[0]);
     box_init(&view.status.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 1);

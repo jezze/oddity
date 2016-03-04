@@ -9,10 +9,10 @@ void view_quit(struct view *view)
 
 }
 
-void view_init(struct view *view, void (*show)(), void (*render)(), void (*keydown)(unsigned int key))
+void view_init(struct view *view, void (*load)(), void (*render)(), void (*keydown)(unsigned int key))
 {
 
-    view->show = show;
+    view->load = load;
     view->render = render;
     view->keydown = keydown;
 

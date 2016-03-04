@@ -11,7 +11,7 @@
 
 static struct view_applist view;
 
-static void show()
+static void load()
 {
 
     if (view.onload(&view.applist))
@@ -73,7 +73,7 @@ static void keydown(unsigned int key)
         if (!menu_isactive(&view.menu, view.menu.currentitem))
             break;
 
-        ztore_flipview(&view.appview->base);
+        ztore_load(&view.appview->base);
 
         break;
 
@@ -89,7 +89,7 @@ static void keydown(unsigned int key)
 static void appview_onquit()
 {
 
-    ztore_flipview(&view.base);
+    ztore_load(&view.base);
 
 }
 
@@ -113,7 +113,7 @@ static unsigned int appview_onload(struct db_app *app)
 struct view_applist *view_applist_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, show, render, keydown);
+    view_init(&view.base, load, render, keydown);
     text_init(&view.emptytextbox.text, "No items found.");
     box_init(&view.emptytextbox.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, 0, 0);

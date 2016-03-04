@@ -11,7 +11,7 @@
 
 static struct view_repolist view;
 
-static void show()
+static void load()
 {
 
 }
@@ -47,17 +47,17 @@ static void keydown(unsigned int key)
         {
 
         case 0:
-            ztore_flipview(&view.applistview->base);
+            ztore_load(&view.applistview->base);
 
             break;
 
         case 1:
-            ztore_flipview(&view.applistview->base);
+            ztore_load(&view.applistview->base);
 
             break;
 
         case 2:
-            ztore_flipview(&view.applistview->base);
+            ztore_load(&view.applistview->base);
 
             break;
 
@@ -77,7 +77,7 @@ static void keydown(unsigned int key)
 static void applistview_onquit()
 {
 
-    ztore_flipview(&view.base);
+    ztore_load(&view.base);
 
 }
 
@@ -96,7 +96,7 @@ static unsigned int applistview_onload(struct db_applist *applist)
 struct view_repolist *view_repolist_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, show, render, keydown);
+    view_init(&view.base, load, render, keydown);
     menu_init(&view.menu, view.menuitems, 3);
     menu_inititem(&view.menuitems[0], "All");
     menu_inititem(&view.menuitems[1], "Installed");

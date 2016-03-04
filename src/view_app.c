@@ -12,7 +12,7 @@
 
 static struct view_app view;
 
-static void show()
+static void load()
 {
 
     if (view.onload(&view.app))
@@ -60,7 +60,7 @@ static void keydown(unsigned int key)
         {
 
         case 0:
-            ztore_flipview(&view.installview->base);
+            ztore_load(&view.installview->base);
 
             break;
 
@@ -80,14 +80,14 @@ static void keydown(unsigned int key)
 static void installview_onquit()
 {
 
-    ztore_flipview(&view.base);
+    ztore_load(&view.base);
 
 }
 
 struct view_app *view_app_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, show, render, keydown);
+    view_init(&view.base, load, render, keydown);
     menu_init(&view.menu, view.menuitems, 2);
     menu_inititem(&view.menuitems[0], "Install");
     menu_inititem(&view.menuitems[1], "Uninstall");
