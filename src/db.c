@@ -175,6 +175,16 @@ fail:
 
 }
 
+int db_freeapp(struct db_app *app)
+{
+
+    free(app->name);
+    free(app->shortdescription);
+
+    return SQLITE_OK;
+
+}
+
 int db_countapps(struct db_applist *list)
 {
 

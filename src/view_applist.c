@@ -13,18 +13,13 @@ static struct view_applist view;
 static struct view_app *appview;
 static struct menu menu;
 static struct textbox emptytextbox;
-static unsigned int config_offset;
 
 static void load()
 {
 
     unsigned int i;
 
-    db_countapps(&view.applist);
-
-    view.applist.items = malloc(sizeof (struct db_app) * view.applist.count);
-
-    db_loadapps(view.applist.items, config_offset, view.applist.count);
+    view.onload(&view.applist);
 
     menu.items = malloc(sizeof (struct menuitem) * view.applist.count);
     menu.total = view.applist.count;
@@ -39,17 +34,8 @@ static void load()
 static void unload()
 {
 
-    unsigned int i;
+    view.onunload(&view.applist);
 
-    for (i = 0; i < view.applist.count; i++)
-    {
-
-        free(view.applist.items[i].name);
-        free(view.applist.items[i].shortdescription);
-
-    }
-
-    free(view.applist.items);
     free(menu.items);
 
 }
@@ -57,26 +43,8 @@ static void unload()
 static void show()
 {
 
-    switch (view.base.state)
-    {
-
-    case VIEW_STATE_CONFIGURED:
-        load();
-
-        view.base.state = VIEW_STATE_DONE;
-
-        break;
-
-    case VIEW_STATE_RECONFIGURED:
-        unload();
-        load();
-
-        view.base.state = VIEW_STATE_DONE;
-
-        break;
-
-    }
-
+    unload();
+    load();
     ztore_flipview(&view.base);
 
 }
@@ -118,7 +86,6 @@ static void keydown(unsigned int key)
         break;
 
     case KEY_A:
-        view_app_config(view.applist.items[menu.currentitem].id);
         appview->base.show();
 
         break;
@@ -132,30 +99,17 @@ static void keydown(unsigned int key)
 
 }
 
-void view_applist_config(unsigned int offset)
+static void appview_onload(struct db_app *app)
 {
 
-    switch (view.base.state)
-    {
+    db_loadapp(app, view.applist.items[menu.currentitem].id);
 
-    case VIEW_STATE_NONE:
-        config_offset = offset;
+}
 
-        view.base.state = VIEW_STATE_CONFIGURED;
+static void appview_onunload(struct db_app *app)
+{
 
-        break;
-
-    case VIEW_STATE_DONE:
-        if (config_offset == offset)
-            break;
-
-        config_offset = offset;
-
-        view.base.state = VIEW_STATE_RECONFIGURED;
-
-        break;
-
-    }
+    db_freeapp(app);
 
 }
 
@@ -169,6 +123,8 @@ struct view_applist *view_applist_setup(unsigned int w, unsigned int h)
     box_init(&menu.box, 0, 0, w, h);
 
     appview = view_app_setup(w, h);
+    appview->onload = appview_onload;
+    appview->onunload = appview_onunload;
     appview->base.onquit = show;
 
     return &view;

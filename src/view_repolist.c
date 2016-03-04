@@ -48,19 +48,16 @@ static void keydown(unsigned int key)
         {
 
         case 0:
-            view_applist_config(0);
             applistview->base.show();
 
             break;
 
         case 1:
-            view_applist_config(0);
             applistview->base.show();
 
             break;
 
         case 2:
-            view_applist_config(0);
             applistview->base.show();
 
             break;
@@ -78,6 +75,34 @@ static void keydown(unsigned int key)
 
 }
 
+static void applistview_onload(struct db_applist *applist)
+{
+
+    db_countapps(applist);
+
+    applist->items = malloc(sizeof (struct db_app) * applist->count);
+
+    db_loadapps(applist->items, 0, applist->count);
+
+}
+
+static void applistview_onunload(struct db_applist *applist)
+{
+
+    unsigned int i;
+
+    for (i = 0; i < applist->count; i++)
+    {
+
+        free(applist->items[i].name);
+        free(applist->items[i].shortdescription);
+
+    }
+
+    free(applist->items);
+
+}
+
 struct view *view_repolist_setup(unsigned int w, unsigned int h)
 {
 
@@ -90,6 +115,8 @@ struct view *view_repolist_setup(unsigned int w, unsigned int h)
     box_init(&menu.box, 0, 0, w, h);
 
     applistview = view_applist_setup(w, h);
+    applistview->onload = applistview_onload;
+    applistview->onunload = applistview_onunload;
     applistview->base.onquit = show;
 
     return &view;

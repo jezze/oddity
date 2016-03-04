@@ -14,12 +14,11 @@ static struct textbox title;
 static struct textbox shortdescription;
 static struct menu menu;
 static struct menuitem menuitems[2];
-static unsigned int config_id;
 
 static void load()
 {
 
-    db_loadapp(&view.app, config_id);
+    view.onload(&view.app);
 
     title.text.content = view.app.name;
     shortdescription.text.content = view.app.shortdescription;
@@ -31,34 +30,15 @@ static void load()
 static void unload()
 {
 
-    free(view.app.name);
-    free(view.app.shortdescription);
+    view.onunload(&view.app);
 
 }
 
 static void show()
 {
 
-    switch (view.base.state)
-    {
-
-    case VIEW_STATE_CONFIGURED:
-        load();
-
-        view.base.state = VIEW_STATE_DONE;
-
-        break;
-
-    case VIEW_STATE_RECONFIGURED:
-        unload();
-        load();
-
-        view.base.state = VIEW_STATE_DONE;
-
-        break;
-
-    }
-
+    unload();
+    load();
     ztore_flipview(&view.base);
 
 }
@@ -104,33 +84,6 @@ static void keydown(unsigned int key)
 
     case KEY_B:
         view_quit(&view.base);
-
-        break;
-
-    }
-
-}
-
-void view_app_config(unsigned int id)
-{
-
-    switch (view.base.state)
-    {
-
-    case VIEW_STATE_NONE:
-        config_id = id;
-
-        view.base.state = VIEW_STATE_CONFIGURED;
-
-        break;
-
-    case VIEW_STATE_DONE:
-        if (config_id == id)
-            break;
-
-        config_id = id;
-
-        view.base.state = VIEW_STATE_RECONFIGURED;
 
         break;
 
