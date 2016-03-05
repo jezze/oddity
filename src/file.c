@@ -9,16 +9,12 @@ static char *home;
 void file_init()
 {
 
-    FILE *file;
     char command[128];
 
     home = getenv("HOME");
 
     snprintf(command, 128, "mkdir -p %s/.ztore", home);
-
-    file = popen(command, "r");
-
-    pclose(file);
+    system(command);
 
 }
 
@@ -53,38 +49,22 @@ unsigned int file_exist(char *path)
 unsigned int file_copy(char *from, char *to)
 {
 
-    FILE *file;
     char command[128];
 
     snprintf(command, 128, "cp %s %s", from, to);
 
-    file = popen(command, "r");
-
-    if (!file)
-        return 0;
-
-    pclose(file);
-
-    return 1;
+    return system(command) == 0;
 
 }
 
 unsigned int file_remove(char *name)
 {
 
-    FILE *file;
     char command[128];
 
     snprintf(command, 128, "rm %s", name);
 
-    file = popen(command, "r");
-
-    if (!file)
-        return 0;
-
-    pclose(file);
-
-    return 1;
+    return system(command) == 0;
 
 }
 
@@ -103,19 +83,11 @@ unsigned int file_removeremote(unsigned int id)
 unsigned int file_download(char *url, char *to)
 {
 
-    FILE *file;
     char command[128];
 
     snprintf(command, 128, "wget %s -O %s", url, to);
 
-    file = popen(command, "r");
-
-    if (!file)
-        return 0;
-
-    pclose(file);
-
-    return 1;
+    return system(command) == 0;
 
 }
 
@@ -127,9 +99,8 @@ unsigned int file_downloadremote(char *url, unsigned int id)
 
     snprintf(downloadpath, 256, url);
     file_getremotedatabasepath(remotedatapath, 64, id);
-    file_download(downloadpath, remotedatapath);
 
-    return 1;
+    return file_download(downloadpath, remotedatapath);
 
 }
 

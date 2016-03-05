@@ -39,9 +39,12 @@ static int sync(void *arg)
     for (i = 0; i < remotelist.count; i++)
     {
 
-        file_downloadremote(remotelist.items[i].url, remotelist.items[i].id);
-        db_sync(&remotelist.items[i]);
-        file_removeremote(remotelist.items[i].id);
+        struct db_remote *remote = &remotelist.items[i];
+
+        if (file_downloadremote(remote->url, remote->id))
+            db_sync(remote);
+
+        file_removeremote(remote->id);
 
     }
 
