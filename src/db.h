@@ -62,6 +62,7 @@ void db_freeapp(struct db_app *app);
 int db_loadapp(struct db_app *app, unsigned int id);
 int db_saveappstate(struct db_app *app, unsigned int state);
 int db_loadapps(struct db_applist *list);
+int db_loadinstalledapps(struct db_applist *list);
 int db_loadappsfromremote(struct db_applist *list, struct db_remote *remote);
 void db_createpackage(struct db_package *package, unsigned int id, char *name, char *date, char *sha1, unsigned int state);
 void db_freepackage(struct db_package *package);

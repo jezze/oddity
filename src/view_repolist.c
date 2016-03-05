@@ -56,11 +56,6 @@ static void keydown(unsigned int key)
 
             break;
 
-        case 2:
-            ztore_load(&view.applistview->base);
-
-            break;
-
         }
 
         break;
@@ -84,10 +79,10 @@ static void applistview_onquit()
 static unsigned int applistview_onload(struct db_applist *applist)
 {
 
-    if (applist->count)
-        return 0;
-
-    db_loadapps(applist);
+    if (view.menu.currentitem == 0)
+        db_loadapps(applist);
+    else if (view.menu.currentitem == 1)
+        db_loadinstalledapps(applist);
 
     return 1;
 
@@ -97,10 +92,9 @@ struct view_repolist *view_repolist_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, load, render, keydown);
-    menu_init(&view.menu, view.menuitems, 3);
+    menu_init(&view.menu, view.menuitems, 2);
     menu_inititem(&view.menuitems[0], "All");
     menu_inititem(&view.menuitems[1], "Installed");
-    menu_inititem(&view.menuitems[2], "Official");
     menu_setrow(&view.menu, 0);
     box_init(&view.menu.box, 0, 0, w, h);
 

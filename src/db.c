@@ -340,6 +340,55 @@ int db_loadapps(struct db_applist *list)
 
 }
 
+static unsigned int countinstalledapps(sqlite3 *db)
+{
+
+    sqlite3_stmt *res;
+    unsigned int count;
+
+    if (sqlite3_prepare_v2(db, "SELECT COUNT(*) AS count FROM apps WHERE state = 3", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    if (sqlite3_step(res) == SQLITE_ROW)
+        count = sqlite3_column_int(res, 0);
+
+    if (sqlite3_step(res) != SQLITE_DONE)
+        exit(EXIT_FAILURE);
+
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    return count;
+
+}
+
+int db_loadinstalledapps(struct db_applist *list)
+{
+
+    sqlite3 *db;
+    sqlite3_stmt *res;
+    unsigned int i;
+
+    opendatabase(&db);
+
+    list->count = countinstalledapps(db);
+    list->items = malloc(sizeof (struct db_app) * list->count);
+
+    if (sqlite3_prepare_v2(db, "SELECT id, name, short, state FROM apps WHERE state = 3 ORDER BY name", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
+        db_createapp(&list->items[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2), sqlite3_column_int(res, 3));
+
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    closedatabase(db);
+
+    return 1;
+
+}
+
 static unsigned int countappsfromremote(sqlite3 *db, struct db_remote *remote)
 {
 

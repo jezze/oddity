@@ -4,7 +4,7 @@ struct view_repolist
     struct view base;
     struct view_applist *applistview;
     struct menu menu;
-    struct menuitem menuitems[3];
+    struct menuitem menuitems[2];
 
 };
 
