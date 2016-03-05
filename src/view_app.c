@@ -67,11 +67,12 @@ static void runpackage()
             continue;
 
         ztore_exec(packagelist.items[i].name);
-        db_freepackage(&packagelist.items[i]);
 
         break;
 
     }
+
+    db_freepackages(&packagelist);
 
 }
 
@@ -132,7 +133,9 @@ static void installview_onload(struct db_app *app, struct db_packagelist *packag
 {
 
     view.onload(&view.app);
-    view.onload(app);
+    db_freeapp(app);
+    db_loadapp(app, view.app.id);
+    db_freepackages(packagelist);
     db_loadpackagesfromapp(packagelist, app);
 
 }

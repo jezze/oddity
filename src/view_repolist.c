@@ -79,6 +79,8 @@ static void applistview_onquit()
 static void applistview_onload(struct db_applist *applist)
 {
 
+    db_freeapps(applist);
+
     switch (view.menu.currentitem)
     {
 

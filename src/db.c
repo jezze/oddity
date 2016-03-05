@@ -135,6 +135,16 @@ void db_freeremote(struct db_remote *remote)
 
 }
 
+void db_freeremotes(struct db_remotelist *list)
+{
+
+    unsigned int i;
+
+    for (i = 0; i < list->count; i++)
+        db_freeremote(&list->items[i]);
+
+}
+
 int db_loadremote(struct db_remote *remote, unsigned int id)
 {
 
@@ -234,6 +244,16 @@ void db_freeapp(struct db_app *app)
     app->name = 0;
     app->shortdescription = 0;
     app->state = 0;
+
+}
+
+void db_freeapps(struct db_applist *list)
+{
+
+    unsigned int i;
+
+    for (i = 0; i < list->count; i++)
+        db_freeapp(&list->items[i]);
 
 }
 
@@ -467,6 +487,16 @@ void db_freepackage(struct db_package *package)
     package->date = 0;
     package->sha1 = 0;
     package->state = 0;
+
+}
+
+void db_freepackages(struct db_packagelist *list)
+{
+
+    unsigned int i;
+
+    for (i = 0; i < list->count; i++)
+        db_freepackage(&list->items[i]);
 
 }
 
