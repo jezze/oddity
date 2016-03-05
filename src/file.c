@@ -69,15 +69,34 @@ unsigned int file_copy(char *from, char *to)
 
 }
 
-unsigned int file_downloadremote(unsigned int id)
+unsigned int file_download(char *url, char *to)
 {
 
-    char temppath[64];
+    FILE *file;
+    char command[128];
+
+    snprintf(command, 128, "wget %s -O %s", url, to);
+
+    file = popen(command, "r");
+
+    if (!file)
+        return 0;
+
+    pclose(file);
+
+    return 1;
+
+}
+
+unsigned int file_downloadremote(char *url, unsigned int id)
+{
+
+    char downloadpath[256];
     char remotedatapath[64];
 
-    snprintf(temppath, 64, "db/remote_%u.db", id);
+    snprintf(downloadpath, 256, url);
     file_getremotedatabasepath(remotedatapath, 64, id);
-    file_copy(temppath, remotedatapath);
+    file_download(downloadpath, remotedatapath);
 
     return 1;
 

@@ -80,7 +80,6 @@ int db_sync(struct db_remote *remote)
     sqlite3_stmt *res;
     char remotedatapath[64];
 
-    file_downloadremote(remote->id);
     file_getremotedatabasepath(remotedatapath, 64, remote->id);
     opendatabase(&db);
 
@@ -115,11 +114,12 @@ int db_sync(struct db_remote *remote)
 
 }
 
-void db_createremote(struct db_remote *remote, unsigned int id, char *name)
+void db_createremote(struct db_remote *remote, unsigned int id, char *name, char *url)
 {
 
     remote->id = id;
     remote->name = strdup(name);
+    remote->url = strdup(url);
 
 }
 
@@ -127,9 +127,11 @@ void db_freeremote(struct db_remote *remote)
 {
 
     free(remote->name);
+    free(remote->url);
 
     remote->id = 0;
     remote->name = 0;
+    remote->url = 0;
 
 }
 
@@ -141,7 +143,7 @@ int db_loadremote(struct db_remote *remote, unsigned int id)
 
     opendatabase(&db);
 
-    if (sqlite3_prepare_v2(db, "SELECT id, name FROM remotes WHERE id = ?", -1, &res, 0) != SQLITE_OK)
+    if (sqlite3_prepare_v2(db, "SELECT id, name, url FROM remotes WHERE id = ?", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
     sqlite3_bind_int(res, 1, id);
@@ -149,7 +151,7 @@ int db_loadremote(struct db_remote *remote, unsigned int id)
     if (sqlite3_step(res) != SQLITE_ROW)
         exit(EXIT_FAILURE);
 
-    db_createremote(remote, sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1));
+    db_createremote(remote, sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2));
 
     if (sqlite3_step(res) != SQLITE_DONE)
         exit(EXIT_FAILURE);
@@ -197,11 +199,11 @@ int db_loadremotes(struct db_remotelist *list)
     list->count = countremotes(db);
     list->items = malloc(sizeof (struct db_remote) * list->count);
 
-    if (sqlite3_prepare_v2(db, "SELECT id, name FROM remotes ORDER BY name", -1, &res, 0) != SQLITE_OK)
+    if (sqlite3_prepare_v2(db, "SELECT id, name, url FROM remotes ORDER BY name", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
     for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
-        db_createremote(&list->items[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1));
+        db_createremote(&list->items[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2));
 
     if (sqlite3_finalize(res) != SQLITE_OK)
         exit(EXIT_FAILURE);

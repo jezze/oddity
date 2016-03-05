@@ -3,6 +3,7 @@
 #include "box.h"
 #include "text.h"
 #include "menu.h"
+#include "file.h"
 #include "db.h"
 #include "view.h"
 #include "view_sync.h"
@@ -39,6 +40,7 @@ static int sync(void *arg)
     for (i = 0; i < remotelist.count; i++)
     {
 
+        file_downloadremote(remotelist.items[i].url, remotelist.items[i].id);
         db_sync(&remotelist.items[i]);
         db_freeremote(&remotelist.items[i]);
 

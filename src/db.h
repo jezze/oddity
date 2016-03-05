@@ -3,6 +3,7 @@ struct db_remote
 
     unsigned int id;
     char *name;
+    char *url;
 
 };
 
@@ -53,7 +54,7 @@ struct db_packagelist
 
 void db_init();
 int db_sync(struct db_remote *remote);
-void db_createremote(struct db_remote *remote, unsigned int id, char *name);
+void db_createremote(struct db_remote *remote, unsigned int id, char *name, char *url);
 void db_freeremote(struct db_remote *remote);
 int db_loadremote(struct db_remote *remote, unsigned int id);
 int db_loadremotes(struct db_remotelist *list);
