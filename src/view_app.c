@@ -23,6 +23,23 @@ static void load()
         view.shortdescription.text.content = view.app.shortdescription;
 
         menu_setrow(&view.menu, 0);
+        menu_disable(&view.menu, 0);
+
+        if (view.app.state == 3)
+        {
+
+            menu_disable(&view.menu, 1);
+            menu_enable(&view.menu, 2);
+
+        }
+
+        else
+        {
+
+            menu_enable(&view.menu, 1);
+            menu_disable(&view.menu, 2);
+
+        }
 
     }
 
@@ -104,7 +121,6 @@ struct view_app *view_app_setup(unsigned int w, unsigned int h)
     menu_inititem(&view.menuitems[0], "Run");
     menu_inititem(&view.menuitems[1], "Install");
     menu_inititem(&view.menuitems[2], "Uninstall");
-    menu_disable(&view.menu, 0);
     menu_setrow(&view.menu, 0);
     box_init(&view.title.box, 0, 0, w, (1 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     box_init(&view.shortdescription.box, 0, (1 * RENDER_ROWHEIGHT), w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));

@@ -20,6 +20,7 @@ struct db_app
     unsigned int id;
     char *name;
     char *shortdescription;
+    unsigned int state;
 
 };
 
@@ -38,6 +39,7 @@ struct db_package
     char *name;
     char *date;
     char *sha1;
+    unsigned int state;
 
 };
 
@@ -55,13 +57,13 @@ void db_createremote(struct db_remote *remote, unsigned int id, char *name);
 void db_freeremote(struct db_remote *remote);
 int db_loadremote(struct db_remote *remote, unsigned int id);
 int db_loadremotes(struct db_remotelist *list);
-void db_createapp(struct db_app *app, unsigned int id, char *name, char *shortdescription);
+void db_createapp(struct db_app *app, unsigned int id, char *name, char *shortdescription, unsigned int state);
 void db_freeapp(struct db_app *app);
 int db_loadapp(struct db_app *app, unsigned int id);
 int db_saveappstate(struct db_app *app, unsigned int state);
 int db_loadapps(struct db_applist *list);
 int db_loadappsfromremote(struct db_applist *list, struct db_remote *remote);
-void db_createpackage(struct db_package *package, unsigned int id, char *name, char *date, char *sha1);
+void db_createpackage(struct db_package *package, unsigned int id, char *name, char *date, char *sha1, unsigned int state);
 void db_freepackage(struct db_package *package);
 int db_loadpackage(struct db_package *package, unsigned int id);
 int db_savepackagestate(struct db_package *package, unsigned int state);
