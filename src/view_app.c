@@ -21,14 +21,13 @@ static void load()
     view.title.text.content = view.app.name;
     view.shortdescription.text.content = view.app.shortdescription;
 
-    menu_setrow(&view.menu, 0);
-
     if (view.app.state == 3)
     {
 
         menu_enable(&view.menu, 0);
         menu_disable(&view.menu, 1);
         menu_enable(&view.menu, 2);
+        menu_setrow(&view.menu, 0);
 
     }
 
@@ -38,6 +37,7 @@ static void load()
         menu_disable(&view.menu, 0);
         menu_enable(&view.menu, 1);
         menu_disable(&view.menu, 2);
+        menu_setrow(&view.menu, 1);
 
     }
 
