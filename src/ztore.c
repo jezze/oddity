@@ -17,10 +17,10 @@
 static struct view *currentview;
 static unsigned int quit;
 
-void ztore_setmode(unsigned int mode)
+void ztore_setmode(void (*render)())
 {
 
-    currentview->state = mode;
+    currentview->render = render;
 
     backend_redraw();
 

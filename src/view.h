@@ -6,7 +6,6 @@
 struct view
 {
 
-    unsigned int state;
     void (*load)();
     void (*render)();
     void (*keydown)(unsigned int key);

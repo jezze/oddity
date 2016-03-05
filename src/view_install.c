@@ -11,12 +11,50 @@
 #include "ztore.h"
 
 static struct view_install view;
-static char *status[4] = {
-    "Please wait...",
-    "Installing...",
-    "Install complete!",
-    "Install failed!"
-};
+
+static void renderdefault()
+{
+
+    view.status.text.content = "Please wait...";
+
+    menu_disable(&view.menu, 0);
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL);
+    menu_render(&view.menu);
+
+}
+
+static void renderworking()
+{
+
+    view.status.text.content = "Installing...";
+
+    menu_enable(&view.menu, 0);
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL);
+    menu_render(&view.menu);
+
+}
+
+static void rendercomplete()
+{
+
+    view.status.text.content = "Install complete!";
+
+    menu_disable(&view.menu, 0);
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL);
+    menu_render(&view.menu);
+
+}
+
+static void renderfail()
+{
+
+    view.status.text.content = "Install failed!";
+
+    menu_disable(&view.menu, 0);
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL);
+    menu_render(&view.menu);
+
+}
 
 static void updatestates(struct db_package *package)
 {
@@ -101,13 +139,13 @@ static int install(void *arg)
 
     struct db_packagelist packagelist;
 
-    ztore_setmode(1);
+    ztore_setmode(renderworking);
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (doinstall(&packagelist))
-        ztore_setmode(2);
+        ztore_setmode(rendercomplete);
     else
-        ztore_setmode(3);
+        ztore_setmode(renderfail);
 
     db_freepackages(&packagelist);
 
@@ -122,27 +160,12 @@ static void load()
 
     view.onload();
 
-    ztore_setmode(0);
+    ztore_setmode(renderdefault);
 
     installthread = backend_createthread(install, NULL);
 
     if (!installthread)
-        ztore_setmode(3);
-
-}
-
-static void render()
-{
-
-    view.status.text.content = status[view.base.state];
-
-    if (view.base.state == 1)
-        menu_enable(&view.menu, 0);
-    else
-        menu_disable(&view.menu, 0);
-
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL);
-    menu_render(&view.menu);
+        ztore_setmode(renderfail);
 
 }
 
@@ -179,8 +202,8 @@ static void menu_onselect()
 struct view_install *view_install_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, load, render, keydown);
-    text_init(&view.status.text, status[0]);
+    view_init(&view.base, load, renderdefault, keydown);
+    text_init(&view.status.text, 0);
     box_init(&view.status.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 1);
     menu_inititem(&view.menuitems[0], "Cancel");

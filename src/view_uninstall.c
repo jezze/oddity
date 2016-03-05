@@ -11,12 +11,43 @@
 #include "ztore.h"
 
 static struct view_uninstall view;
-static char *status[4] = {
-    "Are you sure you want to uninstall?",
-    "Uninstalling...",
-    "Uninstall complete!",
-    "Uninstall failed!"
-};
+
+static void renderdefault()
+{
+
+    view.status.text.content = "Are you sure you want to uninstall?";
+
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL);
+    menu_render(&view.menu);
+
+}
+
+static void renderworking()
+{
+
+    view.status.text.content = "Uninstalling...";
+
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL);
+
+}
+
+static void rendercomplete()
+{
+
+    view.status.text.content = "Uninstall complete!";
+
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL);
+
+}
+
+static void renderfail()
+{
+
+    view.status.text.content = "Uninstall failed!";
+
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL);
+
+}
 
 static void updatestates(struct db_package *package)
 {
@@ -74,13 +105,13 @@ static int uninstall(void *arg)
 
     struct db_packagelist packagelist;
 
-    ztore_setmode(1);
+    ztore_setmode(renderworking);
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (douninstall(&packagelist))
-        ztore_setmode(2);
+        ztore_setmode(rendercomplete);
     else
-        ztore_setmode(3);
+        ztore_setmode(renderfail);
 
     db_freepackages(&packagelist);
 
@@ -93,19 +124,7 @@ static void load()
 
     view.onload();
 
-    ztore_setmode(0);
-
-}
-
-static void render()
-{
-
-    view.status.text.content = status[view.base.state];
-
-    if (view.base.state == 0)
-        menu_render(&view.menu);
-
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL);
+    ztore_setmode(renderdefault);
 
 }
 
@@ -115,7 +134,7 @@ static void confirm()
     void *uninstallthread = backend_createthread(uninstall, NULL);
 
     if (!uninstallthread)
-        ztore_setmode(3);
+        ztore_setmode(renderfail);
 
 }
 
@@ -154,8 +173,8 @@ static void menu_onselect()
 struct view_uninstall *view_uninstall_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, load, render, keydown);
-    text_init(&view.status.text, status[0]);
+    view_init(&view.base, load, renderdefault, keydown);
+    text_init(&view.status.text, 0);
     box_init(&view.status.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 1);
     menu_inititem(&view.menuitems[0], "Yes, I am sure");
