@@ -80,47 +80,38 @@ static void runpackage()
 static void keydown(unsigned int key)
 {
 
+    menu_keydown(&view.menu, key);
+
     switch (key)
     {
 
-    case KEY_UP:
-        menu_prevrow(&view.menu);
-
-        break;
-
-    case KEY_DOWN:
-        menu_nextrow(&view.menu);
-
-        break;
-
-    case KEY_A:
-        if (!menu_isactive(&view.menu, view.menu.currentitem))
-            break;
-
-        switch (view.menu.currentitem)
-        {
-
-        case 0:
-            runpackage();
-
-            break;
-
-        case 1:
-            ztore_load(&view.installview->base);
-
-            break;
-
-        case 2:
-            ztore_load(&view.uninstallview->base);
-
-            break;
-
-        }
-
-        break;
-
     case KEY_B:
         view_quit(&view.base);
+
+        break;
+
+    }
+
+}
+
+static void menu_onselect()
+{
+
+    switch (view.menu.currentitem)
+    {
+
+    case 0:
+        runpackage();
+
+        break;
+
+    case 1:
+        ztore_load(&view.installview->base);
+
+        break;
+
+    case 2:
+        ztore_load(&view.uninstallview->base);
 
         break;
 
@@ -162,6 +153,7 @@ struct view_app *view_app_setup(unsigned int w, unsigned int h)
     box_init(&view.shortdescription.box, 0, (1 * RENDER_ROWHEIGHT), w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     box_init(&view.menu.box, 0, h - (view.menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (view.menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
 
+    view.menu.onselect = menu_onselect;
     view.installview = view_install_setup(w, h);
     view.installview->base.onquit = xinstallview_onquit;
     view.installview->onload = installview_onload;

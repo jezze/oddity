@@ -47,6 +47,9 @@ static void menu_onselect()
 
         break;
 
+    case 2:
+        break;
+
     case 3:
         ztore_quit();
 

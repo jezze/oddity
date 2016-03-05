@@ -122,27 +122,28 @@ static void confirm()
 static void keydown(unsigned int key)
 {
 
+    menu_keydown(&view.menu, key);
+
     switch (key)
     {
 
-    case KEY_A:
-        if (!menu_isactive(&view.menu, view.menu.currentitem))
-            break;
-
-        switch (view.menu.currentitem)
-        {
-
-        case 0:
-            confirm();
-
-            break;
-
-        }
+    case KEY_B:
+        view_quit(&view.base);
 
         break;
 
-    case KEY_B:
-        view_quit(&view.base);
+    }
+
+}
+
+static void menu_onselect()
+{
+
+    switch (view.menu.currentitem)
+    {
+
+    case 0:
+        confirm();
 
         break;
 
@@ -160,6 +161,8 @@ struct view_uninstall *view_uninstall_setup(unsigned int w, unsigned int h)
     menu_inititem(&view.menuitems[0], "Yes, I am sure");
     menu_setrow(&view.menu, 0);
     box_init(&view.menu.box, 0, h - (view.menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (view.menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+
+    view.menu.onselect = menu_onselect;
 
     return &view;
 

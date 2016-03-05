@@ -149,26 +149,27 @@ static void render()
 static void keydown(unsigned int key)
 {
 
+    menu_keydown(&view.menu, key);
+
     switch (key)
     {
-
-    case KEY_A:
-        if (!menu_isactive(&view.menu, view.menu.currentitem))
-            break;
-
-        switch (view.menu.currentitem)
-        {
-
-        case 0:
-            break;
-
-        }
-
-        break;
 
     case KEY_B:
         view_quit(&view.base);
 
+        break;
+
+    }
+
+}
+
+static void menu_onselect()
+{
+
+    switch (view.menu.currentitem)
+    {
+
+    case 0:
         break;
 
     }
@@ -186,6 +187,8 @@ struct view_install *view_install_setup(unsigned int w, unsigned int h)
     menu_disable(&view.menu, 0);
     menu_setrow(&view.menu, 0);
     box_init(&view.menu.box, 0, h - (view.menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (view.menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+
+    view.menu.onselect = menu_onselect;
 
     return &view;
 

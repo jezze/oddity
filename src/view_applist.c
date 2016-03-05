@@ -43,36 +43,10 @@ static void render()
 static void keydown(unsigned int key)
 {
 
+    menu_keydown(&view.menu, key);
+
     switch (key)
     {
-
-    case KEY_UP:
-        menu_prevrow(&view.menu);
-
-        break;
-
-    case KEY_DOWN:
-        menu_nextrow(&view.menu);
-
-        break;
-
-    case KEY_LEFT:
-        menu_prevpage(&view.menu);
-
-        break;
-
-    case KEY_RIGHT:
-        menu_nextpage(&view.menu);
-
-        break;
-
-    case KEY_A:
-        if (!menu_isactive(&view.menu, view.menu.currentitem))
-            break;
-
-        ztore_load(&view.appview->base);
-
-        break;
 
     case KEY_B:
         view_quit(&view.base);
@@ -80,6 +54,13 @@ static void keydown(unsigned int key)
         break;
 
     }
+
+}
+
+static void menu_onselect()
+{
+
+    ztore_load(&view.appview->base);
 
 }
 
@@ -106,6 +87,7 @@ struct view_applist *view_applist_setup(unsigned int w, unsigned int h)
     menu_init(&view.menu, 0, 0);
     box_init(&view.menu.box, 0, 0, w, h);
 
+    view.menu.onselect = menu_onselect;
     view.appview = view_app_setup(w, h);
     view.appview->onload = appview_onload;
     view.appview->base.onquit = appview_onquit;

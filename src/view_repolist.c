@@ -26,42 +26,33 @@ static void render()
 static void keydown(unsigned int key)
 {
 
+    menu_keydown(&view.menu, key);
+
     switch (key)
     {
 
-    case KEY_UP:
-        menu_prevrow(&view.menu);
-
-        break;
-
-    case KEY_DOWN:
-        menu_nextrow(&view.menu);
-
-        break;
-
-    case KEY_A:
-        if (!menu_isactive(&view.menu, view.menu.currentitem))
-            break;
-
-        switch (view.menu.currentitem)
-        {
-
-        case 0:
-            ztore_load(&view.applistview->base);
-
-            break;
-
-        case 1:
-            ztore_load(&view.applistview->base);
-
-            break;
-
-        }
-
-        break;
-
     case KEY_B:
         view_quit(&view.base);
+
+        break;
+
+    }
+
+}
+
+static void menu_onselect()
+{
+
+    switch (view.menu.currentitem)
+    {
+
+    case 0:
+        ztore_load(&view.applistview->base);
+
+        break;
+
+    case 1:
+        ztore_load(&view.applistview->base);
 
         break;
 
@@ -108,6 +99,7 @@ struct view_repolist *view_repolist_setup(unsigned int w, unsigned int h)
     menu_setrow(&view.menu, 0);
     box_init(&view.menu.box, 0, 0, w, h);
 
+    view.menu.onselect = menu_onselect;
     view.applistview = view_applist_setup(w, h);
     view.applistview->onload = applistview_onload;
     view.applistview->base.onquit = applistview_onquit;
