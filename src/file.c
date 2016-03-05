@@ -74,9 +74,8 @@ unsigned int file_removeremote(unsigned int id)
     char remotedatapath[64];
 
     file_getremotedatabasepath(remotedatapath, 64, id);
-    file_remove(remotedatapath);
 
-    return 1;
+    return file_remove(remotedatapath);
 
 }
 
