@@ -15,10 +15,8 @@ static struct view_install view;
 static void renderdefault()
 {
 
-    view.status.text.content = "Please wait...";
-
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Please wait...");
     menu_disable(&view.menu, 0);
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL);
     menu_render(&view.menu);
 
 }
@@ -26,10 +24,8 @@ static void renderdefault()
 static void renderworking()
 {
 
-    view.status.text.content = "Installing...";
-
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Installing...");
     menu_enable(&view.menu, 0);
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL);
     menu_render(&view.menu);
 
 }
@@ -37,10 +33,8 @@ static void renderworking()
 static void rendercomplete()
 {
 
-    view.status.text.content = "Install complete!";
-
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Install complete!");
     menu_disable(&view.menu, 0);
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL);
     menu_render(&view.menu);
 
 }
@@ -48,10 +42,8 @@ static void rendercomplete()
 static void renderfail()
 {
 
-    view.status.text.content = "Install failed!";
-
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Install failed!");
     menu_disable(&view.menu, 0);
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL);
     menu_render(&view.menu);
 
 }

@@ -17,7 +17,7 @@ static void render()
     if (view.applist.count)
         menu_render(&view.menu);
     else
-        text_renderbox(&view.emptytextbox, TEXT_COLOR_NORMAL);
+        text_renderbox(&view.emptytextbox, TEXT_COLOR_NORMAL, "No items found.");
 
 }
 
@@ -82,7 +82,7 @@ struct view_applist *view_applist_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, load, render, keydown);
-    text_init(&view.emptytextbox.text, "No items found.");
+    text_init(&view.emptytextbox.text, 0);
     box_init(&view.emptytextbox.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, 0, 0);
     box_init(&view.menu.box, 0, 0, w, h);

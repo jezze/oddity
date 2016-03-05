@@ -21,5 +21,5 @@ struct textbox
 };
 
 void text_render(struct text *text, int x, int y, int w, int h, unsigned int color);
-void text_renderbox(struct textbox *textbox, unsigned int color);
+void text_renderbox(struct textbox *textbox, unsigned int color, char *content);
 void text_init(struct text *text, char *content);

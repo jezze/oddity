@@ -104,8 +104,10 @@ void text_render(struct text *text, int x, int y, int w, int h, unsigned int col
 
 }
 
-void text_renderbox(struct textbox *textbox, unsigned int color)
+void text_renderbox(struct textbox *textbox, unsigned int color, char *content)
 {
+
+    textbox->text.content = content;
 
     text_render(&textbox->text, textbox->box.x + RENDER_PADDING, textbox->box.y + RENDER_PADDING, textbox->box.w - (2 * RENDER_PADDING), textbox->box.h - (2 * RENDER_PADDING), color);
 

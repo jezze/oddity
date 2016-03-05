@@ -17,8 +17,8 @@ static struct view_app view;
 static void render()
 {
 
-    text_renderbox(&view.title, TEXT_COLOR_TITLE);
-    text_renderbox(&view.shortdescription, TEXT_COLOR_NORMAL);
+    text_renderbox(&view.title, TEXT_COLOR_TITLE, view.app->name);
+    text_renderbox(&view.shortdescription, TEXT_COLOR_NORMAL, view.app->shortdescription);
     menu_render(&view.menu);
 
 }
@@ -44,9 +44,6 @@ static void load()
 {
 
     view.onload();
-
-    view.title.text.content = view.app->name;
-    view.shortdescription.text.content = view.app->shortdescription;
 
     if (view.app->state == 3)
     {

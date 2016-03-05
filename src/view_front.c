@@ -14,7 +14,7 @@ static struct view_front view;
 static void render()
 {
 
-    text_renderbox(&view.text, TEXT_COLOR_NORMAL);
+    text_renderbox(&view.text, TEXT_COLOR_NORMAL, "Welcome to Ztore!");
     menu_render(&view.menu);
 
 }
@@ -77,7 +77,7 @@ struct view_front *view_front_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, load, render, keydown);
-    text_init(&view.text.text, "Welcome to Ztore!");
+    text_init(&view.text.text, 0);
     box_init(&view.text.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 4);
     menu_inititem(&view.menuitems[0], "Browse");
