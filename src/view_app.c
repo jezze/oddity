@@ -14,6 +14,32 @@
 
 static struct view_app view;
 
+static void render()
+{
+
+    text_renderbox(&view.title, TEXT_COLOR_TITLE);
+    text_renderbox(&view.shortdescription, TEXT_COLOR_NORMAL);
+    menu_render(&view.menu);
+
+}
+
+static void keydown(unsigned int key)
+{
+
+    menu_keydown(&view.menu, key);
+
+    switch (key)
+    {
+
+    case KEY_B:
+        view_quit(&view.base);
+
+        break;
+
+    }
+
+}
+
 static void load()
 {
 
@@ -44,15 +70,6 @@ static void load()
 
 }
 
-static void render()
-{
-
-    text_renderbox(&view.title, TEXT_COLOR_TITLE);
-    text_renderbox(&view.shortdescription, TEXT_COLOR_NORMAL);
-    menu_render(&view.menu);
-
-}
-
 static void runpackage()
 {
 
@@ -74,23 +91,6 @@ static void runpackage()
     }
 
     db_freepackages(&packagelist);
-
-}
-
-static void keydown(unsigned int key)
-{
-
-    menu_keydown(&view.menu, key);
-
-    switch (key)
-    {
-
-    case KEY_B:
-        view_quit(&view.base);
-
-        break;
-
-    }
 
 }
 

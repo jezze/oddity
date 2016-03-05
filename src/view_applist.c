@@ -11,25 +11,6 @@
 
 static struct view_applist view;
 
-static void load()
-{
-
-    unsigned int i;
-
-    view.onload();
-
-    free(view.menu.items);
-
-    view.menu.items = malloc(sizeof (struct menuitem) * view.applist.count);
-    view.menu.total = view.applist.count;
-
-    for (i = 0; i < view.menu.total; i++)
-        menu_inititem(&view.menu.items[i], view.applist.items[i].name);
-
-    menu_setrow(&view.menu, 0);
-
-}
-
 static void render()
 {
 
@@ -54,6 +35,25 @@ static void keydown(unsigned int key)
         break;
 
     }
+
+}
+
+static void load()
+{
+
+    unsigned int i;
+
+    view.onload();
+
+    free(view.menu.items);
+
+    view.menu.items = malloc(sizeof (struct menuitem) * view.applist.count);
+    view.menu.total = view.applist.count;
+
+    for (i = 0; i < view.menu.total; i++)
+        menu_inititem(&view.menu.items[i], view.applist.items[i].name);
+
+    menu_setrow(&view.menu, 0);
 
 }
 

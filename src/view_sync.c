@@ -56,13 +56,35 @@ static void renderfail()
 
 }
 
+static void keydownworking(unsigned int key)
+{
+
+    menu_keydown(&view.menu, key);
+
+}
+
+static void keydown(unsigned int key)
+{
+
+    switch (key)
+    {
+
+    case KEY_B:
+        view_quit(&view.base);
+
+        break;
+
+    }
+
+}
+
 static int sync(void *arg)
 {
 
     struct db_remotelist remotelist;
     unsigned int i;
 
-    ztore_setmode(renderworking);
+    ztore_setmode(renderworking, keydownworking);
     db_loadremotes(&remotelist);
 
     for (i = 0; i < remotelist.count; i++)
@@ -77,7 +99,7 @@ static int sync(void *arg)
 
     }
 
-    ztore_setmode(rendercomplete);
+    ztore_setmode(rendercomplete, keydown);
     db_freeremotes(&remotelist);
 
     return 0;
@@ -89,29 +111,12 @@ static void load()
 
     void *syncthread;
 
-    ztore_setmode(renderdefault);
+    ztore_setmode(renderdefault, keydown);
 
     syncthread = backend_createthread(sync, NULL);
 
     if (!syncthread)
-        ztore_setmode(renderfail);
-
-}
-
-static void keydown(unsigned int key)
-{
-
-    menu_keydown(&view.menu, key);
-
-    switch (key)
-    {
-
-    case KEY_B:
-        view_quit(&view.base);
-
-        break;
-
-    }
+        ztore_setmode(renderfail, keydown);
 
 }
 

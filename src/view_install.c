@@ -56,6 +56,28 @@ static void renderfail()
 
 }
 
+static void keydownworking(unsigned int key)
+{
+
+    menu_keydown(&view.menu, key);
+
+}
+
+static void keydown(unsigned int key)
+{
+
+    switch (key)
+    {
+
+    case KEY_B:
+        view_quit(&view.base);
+
+        break;
+
+    }
+
+}
+
 static void updatestates(struct db_package *package)
 {
 
@@ -139,13 +161,13 @@ static int install(void *arg)
 
     struct db_packagelist packagelist;
 
-    ztore_setmode(renderworking);
+    ztore_setmode(renderworking, keydownworking);
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (doinstall(&packagelist))
-        ztore_setmode(rendercomplete);
+        ztore_setmode(rendercomplete, keydown);
     else
-        ztore_setmode(renderfail);
+        ztore_setmode(renderfail, keydown);
 
     db_freepackages(&packagelist);
 
@@ -160,29 +182,12 @@ static void load()
 
     view.onload();
 
-    ztore_setmode(renderdefault);
+    ztore_setmode(renderdefault, keydown);
 
     installthread = backend_createthread(install, NULL);
 
     if (!installthread)
-        ztore_setmode(renderfail);
-
-}
-
-static void keydown(unsigned int key)
-{
-
-    menu_keydown(&view.menu, key);
-
-    switch (key)
-    {
-
-    case KEY_B:
-        view_quit(&view.base);
-
-        break;
-
-    }
+        ztore_setmode(renderfail, keydown);
 
 }
 

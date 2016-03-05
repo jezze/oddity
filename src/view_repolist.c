@@ -11,11 +11,6 @@
 
 static struct view_repolist view;
 
-static void load()
-{
-
-}
-
 static void render()
 {
 
@@ -37,6 +32,11 @@ static void keydown(unsigned int key)
         break;
 
     }
+
+}
+
+static void load()
+{
 
 }
 

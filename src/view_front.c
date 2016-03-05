@@ -11,11 +11,6 @@
 
 static struct view_front view;
 
-static void load()
-{
-
-}
-
 static void render()
 {
 
@@ -28,6 +23,11 @@ static void keydown(unsigned int key)
 {
 
     menu_keydown(&view.menu, key);
+
+}
+
+static void load()
+{
 
 }
 

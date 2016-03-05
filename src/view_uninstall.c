@@ -49,6 +49,38 @@ static void renderfail()
 
 }
 
+static void keydowndefault(unsigned int key)
+{
+
+    menu_keydown(&view.menu, key);
+
+    switch (key)
+    {
+
+    case KEY_B:
+        view_quit(&view.base);
+
+        break;
+
+    }
+
+}
+
+static void keydown(unsigned int key)
+{
+
+    switch (key)
+    {
+
+    case KEY_B:
+        view_quit(&view.base);
+
+        break;
+
+    }
+
+}
+
 static void updatestates(struct db_package *package)
 {
 
@@ -105,13 +137,13 @@ static int uninstall(void *arg)
 
     struct db_packagelist packagelist;
 
-    ztore_setmode(renderworking);
+    ztore_setmode(renderworking, keydown);
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (douninstall(&packagelist))
-        ztore_setmode(rendercomplete);
+        ztore_setmode(rendercomplete, keydown);
     else
-        ztore_setmode(renderfail);
+        ztore_setmode(renderfail, keydown);
 
     db_freepackages(&packagelist);
 
@@ -124,7 +156,7 @@ static void load()
 
     view.onload();
 
-    ztore_setmode(renderdefault);
+    ztore_setmode(renderdefault, keydowndefault);
 
 }
 
@@ -134,24 +166,7 @@ static void confirm()
     void *uninstallthread = backend_createthread(uninstall, NULL);
 
     if (!uninstallthread)
-        ztore_setmode(renderfail);
-
-}
-
-static void keydown(unsigned int key)
-{
-
-    menu_keydown(&view.menu, key);
-
-    switch (key)
-    {
-
-    case KEY_B:
-        view_quit(&view.base);
-
-        break;
-
-    }
+        ztore_setmode(renderfail, keydown);
 
 }
 
@@ -173,7 +188,7 @@ static void menu_onselect()
 struct view_uninstall *view_uninstall_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, load, renderdefault, keydown);
+    view_init(&view.base, load, renderdefault, keydowndefault);
     text_init(&view.status.text, 0);
     box_init(&view.status.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 1);
