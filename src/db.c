@@ -287,7 +287,7 @@ int db_loadapp(struct db_app *app, unsigned int id)
 
 }
 
-int db_saveappstate(struct db_app *app, unsigned int state)
+int db_saveappstate(struct db_app *app)
 {
 
     sqlite3 *db;
@@ -298,7 +298,7 @@ int db_saveappstate(struct db_app *app, unsigned int state)
     if (sqlite3_prepare_v2(db, "UPDATE apps SET state = ? WHERE id = ?", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
-    sqlite3_bind_int(res, 1, state);
+    sqlite3_bind_int(res, 1, app->state);
     sqlite3_bind_int(res, 2, app->id);
 
     if (sqlite3_step(res) != SQLITE_DONE)
@@ -530,7 +530,7 @@ int db_loadpackage(struct db_package *package, unsigned int id)
 
 }
 
-int db_savepackagestate(struct db_package *package, unsigned int state)
+int db_savepackagestate(struct db_package *package)
 {
 
     sqlite3 *db;
@@ -541,7 +541,7 @@ int db_savepackagestate(struct db_package *package, unsigned int state)
     if (sqlite3_prepare_v2(db, "UPDATE packages SET state = ? WHERE id = ?", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
-    sqlite3_bind_int(res, 1, state);
+    sqlite3_bind_int(res, 1, package->state);
     sqlite3_bind_int(res, 2, package->id);
 
     if (sqlite3_step(res) != SQLITE_DONE)

@@ -42,8 +42,13 @@ static unsigned int installcheck()
         if (file_exist(path) && file_matchsha1(path, view.packagelist.items[i].sha1))
         {
 
-            db_saveappstate(&view.app, 3);
-            db_savepackagestate(&view.packagelist.items[i], 3);
+            view.app.state = 3;
+
+            db_saveappstate(&view.app);
+
+            view.packagelist.items[i].state = 3;
+
+            db_savepackagestate(&view.packagelist.items[i]);
 
             return 1;
 
