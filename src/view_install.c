@@ -88,15 +88,12 @@ static void load()
 
     changestate(0);
 
-    if (view.onload(&view.app, &view.packagelist))
-    {
+    view.onload(&view.app, &view.packagelist);
 
-        installthread = backend_createthread(install, NULL);
+    installthread = backend_createthread(install, NULL);
 
-        if (!installthread)
-            changestate(3);
-
-    }
+    if (!installthread)
+        changestate(3);
 
 }
 

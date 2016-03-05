@@ -16,30 +16,27 @@ static struct view_app view;
 static void load()
 {
 
-    if (view.onload(&view.app))
+    view.onload(&view.app);
+
+    view.title.text.content = view.app.name;
+    view.shortdescription.text.content = view.app.shortdescription;
+
+    menu_setrow(&view.menu, 0);
+    menu_disable(&view.menu, 0);
+
+    if (view.app.state == 3)
     {
 
-        view.title.text.content = view.app.name;
-        view.shortdescription.text.content = view.app.shortdescription;
+        menu_disable(&view.menu, 1);
+        menu_enable(&view.menu, 2);
 
-        menu_setrow(&view.menu, 0);
-        menu_disable(&view.menu, 0);
+    }
 
-        if (view.app.state == 3)
-        {
+    else
+    {
 
-            menu_disable(&view.menu, 1);
-            menu_enable(&view.menu, 2);
-
-        }
-
-        else
-        {
-
-            menu_enable(&view.menu, 1);
-            menu_disable(&view.menu, 2);
-
-        }
+        menu_enable(&view.menu, 1);
+        menu_disable(&view.menu, 2);
 
     }
 
@@ -102,14 +99,12 @@ static void installview_onquit()
 
 }
 
-static unsigned int installview_onload(struct db_app *app, struct db_packagelist *packagelist)
+static void installview_onload(struct db_app *app, struct db_packagelist *packagelist)
 {
 
-    memcpy(app, &view.app, sizeof (struct db_app));
-
+    view.onload(&view.app);
+    view.onload(app);
     db_loadpackagesfromapp(packagelist, app);
-
-    return 1;
 
 }
 

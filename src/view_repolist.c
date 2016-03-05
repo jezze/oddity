@@ -76,15 +76,23 @@ static void applistview_onquit()
 
 }
 
-static unsigned int applistview_onload(struct db_applist *applist)
+static void applistview_onload(struct db_applist *applist)
 {
 
-    if (view.menu.currentitem == 0)
+    switch (view.menu.currentitem)
+    {
+
+    case 0:
         db_loadapps(applist);
-    else if (view.menu.currentitem == 1)
+
+        break;
+
+    case 1:
         db_loadinstalledapps(applist);
 
-    return 1;
+        break;
+
+    }
 
 }
 

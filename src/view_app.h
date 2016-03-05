@@ -8,7 +8,7 @@ struct view_app
     struct textbox shortdescription;
     struct menu menu;
     struct menuitem menuitems[3];
-    unsigned int (*onload)(struct db_app *app);
+    void (*onload)(struct db_app *app);
 
 };
 

@@ -8,7 +8,7 @@ struct view_install
     struct textbox status;
     struct menu menu;
     struct menuitem menuitems[1];
-    unsigned int (*onload)(struct db_app *app, struct db_packagelist *packagelist);
+    void (*onload)(struct db_app *app, struct db_packagelist *packagelist);
 
 };
 
