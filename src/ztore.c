@@ -16,6 +16,19 @@
 static struct view *currentview;
 static unsigned int quit;
 
+void ztore_exec()
+{
+
+    backend_unloadfont();
+    backend_unloadbackground();
+    backend_destroy();
+    system("opkrun /media/data/apps/griffon.opk");
+    backend_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
+    backend_loadbackground("back.png");
+    backend_loadfont("habbo.ttf");
+
+}
+
 void ztore_quit()
 {
 
@@ -67,8 +80,8 @@ int main(int argc, char **argv)
 
     }
 
-    backend_unloadbackground();
     backend_unloadfont();
+    backend_unloadbackground();
     backend_destroy();
 
     return 0;

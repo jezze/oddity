@@ -22,11 +22,11 @@ static void load()
     view.shortdescription.text.content = view.app.shortdescription;
 
     menu_setrow(&view.menu, 0);
-    menu_disable(&view.menu, 0);
 
     if (view.app.state == 3)
     {
 
+        menu_enable(&view.menu, 0);
         menu_disable(&view.menu, 1);
         menu_enable(&view.menu, 2);
 
@@ -35,6 +35,7 @@ static void load()
     else
     {
 
+        menu_disable(&view.menu, 0);
         menu_enable(&view.menu, 1);
         menu_disable(&view.menu, 2);
 
@@ -73,6 +74,11 @@ static void keydown(unsigned int key)
 
         switch (view.menu.currentitem)
         {
+
+        case 0:
+            ztore_exec();
+
+            break;
 
         case 1:
             ztore_load(&view.installview->base);
