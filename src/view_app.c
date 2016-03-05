@@ -16,12 +16,12 @@ static struct view_app view;
 static void load()
 {
 
-    view.onload(&view.app);
+    view.onload();
 
-    view.title.text.content = view.app.name;
-    view.shortdescription.text.content = view.app.shortdescription;
+    view.title.text.content = view.app->name;
+    view.shortdescription.text.content = view.app->shortdescription;
 
-    if (view.app.state == 3)
+    if (view.app->state == 3)
     {
 
         menu_enable(&view.menu, 0);
@@ -58,7 +58,7 @@ static void runpackage()
     struct db_packagelist packagelist;
     unsigned int i;
 
-    db_loadpackagesfromapp(&packagelist, &view.app);
+    db_loadpackagesfromapp(&packagelist, view.app);
 
     for (i = 0; i < packagelist.count; i++)
     {
@@ -129,13 +129,13 @@ static void installview_onquit()
 
 }
 
-static void installview_onload(struct db_app *app, struct db_packagelist *packagelist)
+static void installview_onload()
 {
 
-    db_freeapp(app);
-    db_loadapp(app, view.app.id);
-    db_freepackages(packagelist);
-    db_loadpackagesfromapp(packagelist, app);
+    view.installview->app = view.app;
+
+    db_freepackages(&view.installview->packagelist);
+    db_loadpackagesfromapp(&view.installview->packagelist, view.installview->app);
 
 }
 

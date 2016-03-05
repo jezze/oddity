@@ -76,21 +76,21 @@ static void applistview_onquit()
 
 }
 
-static void applistview_onload(struct db_applist *applist)
+static void applistview_onload()
 {
 
-    db_freeapps(applist);
+    db_freeapps(&view.applistview->applist);
 
     switch (view.menu.currentitem)
     {
 
     case 0:
-        db_loadapps(applist);
+        db_loadapps(&view.applistview->applist);
 
         break;
 
     case 1:
-        db_loadinstalledapps(applist);
+        db_loadinstalledapps(&view.applistview->applist);
 
         break;
 

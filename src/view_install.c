@@ -42,9 +42,9 @@ static unsigned int installcheck()
         if (file_exist(path) && file_matchsha1(path, view.packagelist.items[i].sha1))
         {
 
-            view.app.state = 3;
+            view.app->state = 3;
 
-            db_saveappstate(&view.app);
+            db_saveappstate(view.app);
 
             view.packagelist.items[i].state = 3;
 
@@ -93,7 +93,7 @@ static void load()
 
     changestate(0);
 
-    view.onload(&view.app, &view.packagelist);
+    view.onload();
 
     installthread = backend_createthread(install, NULL);
 

@@ -16,7 +16,7 @@ static void load()
 
     unsigned int i;
 
-    view.onload(&view.applist);
+    view.onload();
 
     free(view.menu.items);
 
@@ -90,11 +90,10 @@ static void appview_onquit()
 
 }
 
-static void appview_onload(struct db_app *app)
+static void appview_onload()
 {
 
-    db_freeapp(app);
-    db_loadapp(app, view.applist.items[view.menu.currentitem].id);
+    view.appview->app = &view.applist.items[view.menu.currentitem];
 
 }
 
