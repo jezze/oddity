@@ -39,6 +39,13 @@ void file_getpackagepath(char *path, unsigned int count, char *name)
 
 }
 
+void file_getremotepackagepath(char *path, unsigned int count, char *name)
+{
+
+    snprintf(path, count, "%s/%s/%s", "http://gcw.abstraction.se/", "apps/official", name);
+
+}
+
 unsigned int file_exist(char *path)
 {
 
@@ -93,13 +100,24 @@ unsigned int file_download(char *url, char *to)
 unsigned int file_downloadremote(char *url, unsigned int id)
 {
 
-    char downloadpath[256];
     char remotedatapath[64];
 
-    snprintf(downloadpath, 256, url);
     file_getremotedatabasepath(remotedatapath, 64, id);
 
-    return file_download(downloadpath, remotedatapath);
+    return file_download(url, remotedatapath);
+
+}
+
+unsigned int file_downloadpackage(char *name)
+{
+
+    char packagepath[64];
+    char remotepackagepath[64];
+
+    file_getpackagepath(packagepath, 64, name);
+    file_getremotepackagepath(remotepackagepath, 64, name);
+
+    return file_download(remotepackagepath, packagepath);
 
 }
 

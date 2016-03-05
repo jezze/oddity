@@ -83,8 +83,8 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
     if (checkexist(packagelist))
         return 1;
 
-/*
-    file_downloadpackage(&packagelist->items[0]);
+    if (!file_downloadpackage(packagelist->items[0].name))
+        return 0;
 
     if (checkpackageexist(&packagelist->items[0]))
     {
@@ -94,7 +94,6 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
         return 1;
 
     }
-*/
 
     return 0;
 
