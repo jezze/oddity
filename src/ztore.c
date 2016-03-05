@@ -17,6 +17,15 @@
 static struct view *currentview;
 static unsigned int quit;
 
+void ztore_setmode(unsigned int mode)
+{
+
+    currentview->state = mode;
+
+    backend_redraw();
+
+}
+
 void ztore_exec(char *name)
 {
 
@@ -37,13 +46,6 @@ void ztore_quit()
 {
 
     quit = 1;
-
-}
-
-void ztore_redraw()
-{
-
-    backend_redraw();
 
 }
 

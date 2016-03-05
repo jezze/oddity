@@ -9,10 +9,9 @@ void view_quit(struct view *view)
 
 }
 
-void view_init(struct view *view, void (*setmode)(unsigned int mode), void (*load)(), void (*render)(), void (*keydown)(unsigned int key))
+void view_init(struct view *view, void (*load)(), void (*render)(), void (*keydown)(unsigned int key))
 {
 
-    view->setmode = setmode;
     view->load = load;
     view->render = render;
     view->keydown = keydown;

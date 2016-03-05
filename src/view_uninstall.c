@@ -18,15 +18,6 @@ static char *status[4] = {
     "Uninstall failed!"
 };
 
-static void setmode(unsigned int mode)
-{
-
-    view.state = mode;
-
-    ztore_redraw();
-
-}
-
 static void updatestates(struct db_package *package)
 {
 
@@ -83,13 +74,13 @@ static int uninstall(void *arg)
 
     struct db_packagelist packagelist;
 
-    setmode(1);
+    ztore_setmode(1);
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (douninstall(&packagelist))
-        setmode(2);
+        ztore_setmode(2);
     else
-        setmode(3);
+        ztore_setmode(3);
 
     db_freepackages(&packagelist);
 
@@ -102,16 +93,16 @@ static void load()
 
     view.onload();
 
-    setmode(0);
+    ztore_setmode(0);
 
 }
 
 static void render()
 {
 
-    view.status.text.content = status[view.state];
+    view.status.text.content = status[view.base.state];
 
-    if (view.state == 0)
+    if (view.base.state == 0)
         menu_render(&view.menu);
 
     text_renderbox(&view.status, TEXT_COLOR_NORMAL);
@@ -124,7 +115,7 @@ static void confirm()
     void *uninstallthread = backend_createthread(uninstall, NULL);
 
     if (!uninstallthread)
-        setmode(3);
+        ztore_setmode(3);
 
 }
 
@@ -162,7 +153,7 @@ static void keydown(unsigned int key)
 struct view_uninstall *view_uninstall_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, setmode, load, render, keydown);
+    view_init(&view.base, load, render, keydown);
     text_init(&view.status.text, status[0]);
     box_init(&view.status.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 1);

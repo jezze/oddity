@@ -11,11 +11,6 @@
 
 static struct view_applist view;
 
-static void setmode(unsigned int mode)
-{
-
-}
-
 static void load()
 {
 
@@ -105,7 +100,7 @@ static void appview_onload()
 struct view_applist *view_applist_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, setmode, load, render, keydown);
+    view_init(&view.base, load, render, keydown);
     text_init(&view.emptytextbox.text, "No items found.");
     box_init(&view.emptytextbox.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, 0, 0);

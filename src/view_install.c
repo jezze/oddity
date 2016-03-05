@@ -18,15 +18,6 @@ static char *status[4] = {
     "Install failed!"
 };
 
-static void setmode(unsigned int mode)
-{
-
-    view.state = mode;
-
-    ztore_redraw();
-
-}
-
 static void updatestates(struct db_package *package)
 {
 
@@ -110,13 +101,13 @@ static int install(void *arg)
 
     struct db_packagelist packagelist;
 
-    setmode(1);
+    ztore_setmode(1);
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (doinstall(&packagelist))
-        setmode(2);
+        ztore_setmode(2);
     else
-        setmode(3);
+        ztore_setmode(3);
 
     db_freepackages(&packagelist);
 
@@ -131,21 +122,21 @@ static void load()
 
     view.onload();
 
-    setmode(0);
+    ztore_setmode(0);
 
     installthread = backend_createthread(install, NULL);
 
     if (!installthread)
-        setmode(3);
+        ztore_setmode(3);
 
 }
 
 static void render()
 {
 
-    view.status.text.content = status[view.state];
+    view.status.text.content = status[view.base.state];
 
-    if (view.state == 1)
+    if (view.base.state == 1)
         menu_enable(&view.menu, 0);
     else
         menu_disable(&view.menu, 0);
@@ -187,7 +178,7 @@ static void keydown(unsigned int key)
 struct view_install *view_install_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, setmode, load, render, keydown);
+    view_init(&view.base, load, render, keydown);
     text_init(&view.status.text, status[0]);
     box_init(&view.status.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 1);

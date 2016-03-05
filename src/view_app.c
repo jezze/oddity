@@ -14,11 +14,6 @@
 
 static struct view_app view;
 
-static void setmode(unsigned int mode)
-{
-
-}
-
 static void load()
 {
 
@@ -157,7 +152,7 @@ static void uninstallview_onload()
 struct view_app *view_app_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, setmode, load, render, keydown);
+    view_init(&view.base, load, render, keydown);
     menu_init(&view.menu, view.menuitems, 3);
     menu_inititem(&view.menuitems[0], "Run");
     menu_inititem(&view.menuitems[1], "Install");

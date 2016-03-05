@@ -11,11 +11,6 @@
 
 static struct view_repolist view;
 
-static void setmode(unsigned int mode)
-{
-
-}
-
 static void load()
 {
 
@@ -106,7 +101,7 @@ static void applistview_onload()
 struct view_repolist *view_repolist_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, setmode, load, render, keydown);
+    view_init(&view.base, load, render, keydown);
     menu_init(&view.menu, view.menuitems, 2);
     menu_inititem(&view.menuitems[0], "All");
     menu_inititem(&view.menuitems[1], "Installed");
