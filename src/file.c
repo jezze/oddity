@@ -86,6 +86,17 @@ unsigned int file_removeremote(unsigned int id)
 
 }
 
+unsigned int file_removepackage(char *name)
+{
+
+    char remotedatapath[64];
+
+    file_getpackagepath(remotedatapath, 64, name);
+
+    return file_remove(remotedatapath);
+
+}
+
 unsigned int file_download(char *url, char *to)
 {
 

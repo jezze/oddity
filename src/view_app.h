@@ -3,6 +3,7 @@ struct view_app
 
     struct view base;
     struct view_install *installview;
+    struct view_uninstall *uninstallview;
     struct db_app *app;
     struct textbox title;
     struct textbox shortdescription;

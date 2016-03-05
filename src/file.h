@@ -6,6 +6,7 @@ unsigned int file_exist(char *path);
 unsigned int file_copy(char *from, char *to);
 unsigned int file_remove(char *name);
 unsigned int file_removeremote(unsigned int id);
+unsigned int file_removepackage(char *name);
 unsigned int file_download(char *url, char *to);
 unsigned int file_downloadremote(char *url, unsigned int id);
 unsigned int file_downloadpackage(char *name);

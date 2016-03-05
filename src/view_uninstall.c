@@ -6,16 +6,16 @@
 #include "file.h"
 #include "db.h"
 #include "view.h"
-#include "view_install.h"
+#include "view_uninstall.h"
 #include "backend.h"
 #include "ztore.h"
 
-static struct view_install view;
+static struct view_uninstall view;
 static char *status[4] = {
-    "Please wait...",
-    "Installing...",
-    "Install complete!",
-    "Install failed!"
+    "Are you sure you want to uninstall?",
+    "Uninstalling...",
+    "Uninstall complete!",
+    "Uninstall failed!"
 };
 
 static void changestate(unsigned int state)
@@ -30,11 +30,11 @@ static void changestate(unsigned int state)
 static void updatestates(struct db_package *package)
 {
 
-    view.app->state = 3;
+    view.app->state = 0;
 
     db_saveappstate(view.app);
 
-    package->state = 3;
+    package->state = 0;
 
     db_savepackagestate(package);
 
@@ -51,10 +51,13 @@ static unsigned int checkpackageexist(struct db_package *package)
 
 }
 
-static unsigned int checkexist(struct db_packagelist *packagelist)
+static unsigned int douninstall(struct db_packagelist *packagelist)
 {
 
     unsigned int i;
+
+    if (!packagelist->count)
+        return 0;
 
     for (i = 0; i < packagelist->count; i++)
     {
@@ -63,6 +66,7 @@ static unsigned int checkexist(struct db_packagelist *packagelist)
         {
 
             updatestates(&packagelist->items[i]);
+            file_removepackage(packagelist->items[i].name);
 
             return 1;
 
@@ -74,38 +78,7 @@ static unsigned int checkexist(struct db_packagelist *packagelist)
 
 }
 
-static unsigned int doinstall(struct db_packagelist *packagelist)
-{
-
-    if (!packagelist->count)
-        return 0;
-
-    if (checkexist(packagelist))
-        return 1;
-
-    if (!file_downloadpackage(packagelist->items[0].name))
-    {
-
-        file_removepackage(packagelist->items[0].name);
-
-        return 0;
-
-    }
-
-    if (checkpackageexist(&packagelist->items[0]))
-    {
-
-        updatestates(&packagelist->items[0]);
-
-        return 1;
-
-    }
-
-    return 0;
-
-}
-
-static int install(void *arg)
+static int uninstall(void *arg)
 {
 
     struct db_packagelist packagelist;
@@ -113,7 +86,7 @@ static int install(void *arg)
     changestate(1);
     db_loadpackagesfromapp(&packagelist, view.app);
 
-    if (doinstall(&packagelist))
+    if (douninstall(&packagelist))
         changestate(2);
     else
         changestate(3);
@@ -127,16 +100,9 @@ static int install(void *arg)
 static void load()
 {
 
-    void *installthread;
-
     view.onload();
 
     changestate(0);
-
-    installthread = backend_createthread(install, NULL);
-
-    if (!installthread)
-        changestate(3);
 
 }
 
@@ -145,13 +111,20 @@ static void render()
 
     view.status.text.content = status[view.state];
 
-    if (view.state == 1)
-        menu_enable(&view.menu, 0);
-    else
-        menu_disable(&view.menu, 0);
+    if (view.state == 0)
+        menu_render(&view.menu);
 
     text_renderbox(&view.status, TEXT_COLOR_NORMAL);
-    menu_render(&view.menu);
+
+}
+
+static void confirm()
+{
+
+    void *uninstallthread = backend_createthread(uninstall, NULL);
+
+    if (!uninstallthread)
+        changestate(3);
 
 }
 
@@ -169,6 +142,8 @@ static void keydown(unsigned int key)
         {
 
         case 0:
+            confirm();
+
             break;
 
         }
@@ -184,15 +159,14 @@ static void keydown(unsigned int key)
 
 }
 
-struct view_install *view_install_setup(unsigned int w, unsigned int h)
+struct view_uninstall *view_uninstall_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, load, render, keydown);
     text_init(&view.status.text, status[0]);
     box_init(&view.status.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 1);
-    menu_inititem(&view.menuitems[0], "Cancel");
-    menu_disable(&view.menu, 0);
+    menu_inititem(&view.menuitems[0], "Yes, I am sure");
     menu_setrow(&view.menu, 0);
     box_init(&view.menu.box, 0, h - (view.menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (view.menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
 

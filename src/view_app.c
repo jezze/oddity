@@ -9,6 +9,7 @@
 #include "view.h"
 #include "view_app.h"
 #include "view_install.h"
+#include "view_uninstall.h"
 #include "ztore.h"
 
 static struct view_app view;
@@ -109,6 +110,11 @@ static void keydown(unsigned int key)
 
             break;
 
+        case 2:
+            ztore_load(&view.uninstallview->base);
+
+            break;
+
         }
 
         break;
@@ -122,7 +128,7 @@ static void keydown(unsigned int key)
 
 }
 
-static void installview_onquit()
+static void xinstallview_onquit()
 {
 
     ztore_load(&view.base);
@@ -133,6 +139,13 @@ static void installview_onload()
 {
 
     view.installview->app = view.app;
+
+}
+
+static void uninstallview_onload()
+{
+
+    view.uninstallview->app = view.app;
 
 }
 
@@ -150,8 +163,11 @@ struct view_app *view_app_setup(unsigned int w, unsigned int h)
     box_init(&view.menu.box, 0, h - (view.menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (view.menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
 
     view.installview = view_install_setup(w, h);
-    view.installview->base.onquit = installview_onquit;
+    view.installview->base.onquit = xinstallview_onquit;
     view.installview->onload = installview_onload;
+    view.uninstallview = view_uninstall_setup(w, h);
+    view.uninstallview->base.onquit = xinstallview_onquit;
+    view.uninstallview->onload = uninstallview_onload;
 
     return &view;
 
