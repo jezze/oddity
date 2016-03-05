@@ -42,6 +42,7 @@ static int sync(void *arg)
 
         file_downloadremote(remotelist.items[i].url, remotelist.items[i].id);
         db_sync(&remotelist.items[i]);
+        file_removeremote(remotelist.items[i].id);
         db_freeremote(&remotelist.items[i]);
 
     }

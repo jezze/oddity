@@ -69,6 +69,37 @@ unsigned int file_copy(char *from, char *to)
 
 }
 
+unsigned int file_remove(char *name)
+{
+
+    FILE *file;
+    char command[128];
+
+    snprintf(command, 128, "rm %s", name);
+
+    file = popen(command, "r");
+
+    if (!file)
+        return 0;
+
+    pclose(file);
+
+    return 1;
+
+}
+
+unsigned int file_removeremote(unsigned int id)
+{
+
+    char remotedatapath[64];
+
+    file_getremotedatabasepath(remotedatapath, 64, id);
+    file_remove(remotedatapath);
+
+    return 1;
+
+}
+
 unsigned int file_download(char *url, char *to)
 {
 
