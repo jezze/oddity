@@ -27,7 +27,7 @@ static void changestate(unsigned int state)
 
 }
 
-static unsigned int  installcheck()
+static unsigned int installcheck()
 {
 
     unsigned int i;
@@ -41,6 +41,9 @@ static unsigned int  installcheck()
 
         if (file_exist(path) && file_matchsha1(path, view.packagelist.items[i].sha1))
         {
+
+            db_saveappstate(&view.app, 3);
+            db_savepackagestate(&view.packagelist.items[i], 3);
 
             return 1;
 

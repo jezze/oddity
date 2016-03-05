@@ -60,7 +60,7 @@ static void keydown(unsigned int key)
         switch (view.menu.currentitem)
         {
 
-        case 0:
+        case 1:
             ztore_load(&view.installview->base);
 
             break;
@@ -100,10 +100,11 @@ struct view_app *view_app_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, load, render, keydown);
-    menu_init(&view.menu, view.menuitems, 2);
-    menu_inititem(&view.menuitems[0], "Install");
-    menu_inititem(&view.menuitems[1], "Uninstall");
-    menu_disable(&view.menu, 1);
+    menu_init(&view.menu, view.menuitems, 3);
+    menu_inititem(&view.menuitems[0], "Run");
+    menu_inititem(&view.menuitems[1], "Install");
+    menu_inititem(&view.menuitems[2], "Uninstall");
+    menu_disable(&view.menu, 0);
     menu_setrow(&view.menu, 0);
     box_init(&view.title.box, 0, 0, w, (1 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     box_init(&view.shortdescription.box, 0, (1 * RENDER_ROWHEIGHT), w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
