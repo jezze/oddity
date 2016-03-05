@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include "define.h"
 #include "box.h"
 #include "text.h"
@@ -84,6 +85,17 @@ static void installview_onquit()
 
 }
 
+static unsigned int installview_onload(struct db_app *app, struct db_packagelist *packagelist)
+{
+
+    memcpy(app, &view.app, sizeof (struct db_app));
+
+    db_loadpackagesfromapp(packagelist, app);
+
+    return 1;
+
+}
+
 struct view_app *view_app_setup(unsigned int w, unsigned int h)
 {
 
@@ -99,6 +111,7 @@ struct view_app *view_app_setup(unsigned int w, unsigned int h)
 
     view.installview = view_install_setup(w, h);
     view.installview->base.onquit = installview_onquit;
+    view.installview->onload = installview_onload;
 
     return &view;
 

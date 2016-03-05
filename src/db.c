@@ -312,6 +312,59 @@ int db_loadapps(struct db_applist *list)
 
 }
 
+static unsigned int countappsfromremote(sqlite3 *db, struct db_remote *remote)
+{
+
+    sqlite3_stmt *res;
+    unsigned int count;
+
+    if (sqlite3_prepare_v2(db, "SELECT COUNT(*) AS count FROM apps WHERE remotes_id = ?", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    sqlite3_bind_int(res, 1, remote->id);
+
+    if (sqlite3_step(res) == SQLITE_ROW)
+        count = sqlite3_column_int(res, 0);
+
+    if (sqlite3_step(res) != SQLITE_DONE)
+        exit(EXIT_FAILURE);
+
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    return count;
+
+}
+
+int db_loadappsfromremote(struct db_applist *list, struct db_remote *remote)
+{
+
+    sqlite3 *db;
+    sqlite3_stmt *res;
+    unsigned int i;
+
+    opendatabase(&db);
+
+    list->count = countappsfromremote(db, remote);
+    list->items = malloc(sizeof (struct db_app) * list->count);
+
+    if (sqlite3_prepare_v2(db, "SELECT id, name, short FROM apps ORDER BY name WHERE remotes_id = ?", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    sqlite3_bind_int(res, 1, remote->id);
+
+    for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
+        db_createapp(&list->items[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2));
+
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    closedatabase(db);
+
+    return 1;
+
+}
+
 void db_createpackage(struct db_package *package, unsigned int id, char *name, char *date, char *sha1)
 {
 
@@ -366,7 +419,7 @@ int db_loadpackage(struct db_package *package, unsigned int id)
 
 }
 
-static unsigned int countapppackages(sqlite3 *db, struct db_app *app)
+static unsigned int countpackagesfromapp(sqlite3 *db, struct db_app *app)
 {
 
     sqlite3_stmt *res;
@@ -390,7 +443,7 @@ static unsigned int countapppackages(sqlite3 *db, struct db_app *app)
 
 }
 
-int db_loadapppackages(struct db_packagelist *list, struct db_app *app)
+int db_loadpackagesfromapp(struct db_packagelist *list, struct db_app *app)
 {
 
     sqlite3 *db;
@@ -399,13 +452,68 @@ int db_loadapppackages(struct db_packagelist *list, struct db_app *app)
 
     opendatabase(&db);
 
-    list->count = countapppackages(db, app);
+    list->count = countpackagesfromapp(db, app);
     list->items = malloc(sizeof (struct db_package) * list->count);
 
     if (sqlite3_prepare_v2(db, "SELECT id, name, date, sha1 FROM packages WHERE apps_id = ? ORDER BY date", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
     sqlite3_bind_int(res, 1, app->id);
+
+    for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
+        db_createpackage(&list->items[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2), (char *)sqlite3_column_text(res, 3));
+
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    closedatabase(db);
+
+    return 1;
+
+}
+
+static unsigned int countpackagesfromremoteapp(sqlite3 *db, struct db_remote *remote, struct db_app *app)
+{
+
+    sqlite3_stmt *res;
+    unsigned int count;
+
+    if (sqlite3_prepare_v2(db, "SELECT COUNT(*) AS count FROM packages WHERE remotes_id = ? AND apps_id = ?", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    sqlite3_bind_int(res, 1, remote->id);
+    sqlite3_bind_int(res, 2, app->id);
+
+    if (sqlite3_step(res) == SQLITE_ROW)
+        count = sqlite3_column_int(res, 0);
+
+    if (sqlite3_step(res) != SQLITE_DONE)
+        exit(EXIT_FAILURE);
+
+    if (sqlite3_finalize(res) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    return count;
+
+}
+
+int db_loadpackagesfromremoteapp(struct db_packagelist *list, struct db_remote *remote, struct db_app *app)
+{
+
+    sqlite3 *db;
+    sqlite3_stmt *res;
+    unsigned int i;
+
+    opendatabase(&db);
+
+    list->count = countpackagesfromremoteapp(db, remote, app);
+    list->items = malloc(sizeof (struct db_package) * list->count);
+
+    if (sqlite3_prepare_v2(db, "SELECT id, name, date, sha1 FROM packages WHERE remotes_id = ? AND apps_id = ? ORDER BY date", -1, &res, 0) != SQLITE_OK)
+        exit(EXIT_FAILURE);
+
+    sqlite3_bind_int(res, 1, remote->id);
+    sqlite3_bind_int(res, 2, app->id);
 
     for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
         db_createpackage(&list->items[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2), (char *)sqlite3_column_text(res, 3));
