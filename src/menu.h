@@ -17,6 +17,7 @@ struct menu
     unsigned int total;
     unsigned int currentitem;
     struct box box;
+    void (*onselect)();
 
 };
 
@@ -28,6 +29,7 @@ void menu_nextrow(struct menu *menu);
 void menu_prevrow(struct menu *menu);
 void menu_nextpage(struct menu *menu);
 void menu_prevpage(struct menu *menu);
+void menu_keydown(struct menu *menu, unsigned int key);
 void menu_renderitem(struct menuitem *menuitem, int x, int y, int w, int h);
 void menu_render(struct menu *menu);
 void menu_inititem(struct menuitem *menuitem, char *label);

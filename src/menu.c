@@ -80,6 +80,44 @@ void menu_prevpage(struct menu *menu)
 
 }
 
+void menu_keydown(struct menu *menu, unsigned int key)
+{
+
+    switch (key)
+    {
+
+    case KEY_UP:
+        menu_prevrow(menu);
+
+        break;
+
+    case KEY_DOWN:
+        menu_nextrow(menu);
+
+        break;
+
+    case KEY_LEFT:
+        if (menu->total > 8)
+            menu_prevpage(menu);
+
+        break;
+
+    case KEY_RIGHT:
+        if (menu->total > 8)
+            menu_nextpage(menu);
+
+        break;
+
+    case KEY_A:
+        if (menu_isactive(menu, menu->currentitem) && menu->onselect)
+            menu->onselect();
+
+        break;
+
+    }
+
+}
+
 void menu_renderitem(struct menuitem *menuitem, int x, int y, int w, int h)
 {
 

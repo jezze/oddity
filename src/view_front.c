@@ -27,42 +27,28 @@ static void render()
 static void keydown(unsigned int key)
 {
 
-    switch (key)
+    menu_keydown(&view.menu, key);
+
+}
+
+static void menu_onselect()
+{
+
+    switch (view.menu.currentitem)
     {
 
-    case KEY_UP:
-        menu_prevrow(&view.menu);
+    case 0:
+        ztore_load(&view.repolistview->base);
 
         break;
 
-    case KEY_DOWN:
-        menu_nextrow(&view.menu);
+    case 1:
+        ztore_load(&view.syncview->base);
 
         break;
 
-    case KEY_A:
-        if (!menu_isactive(&view.menu, view.menu.currentitem))
-            break;
-
-        switch (view.menu.currentitem)
-        {
-
-        case 0:
-            ztore_load(&view.repolistview->base);
-
-            break;
-
-        case 1:
-            ztore_load(&view.syncview->base);
-
-            break;
-
-        case 3:
-            ztore_quit();
-
-            break;
-
-        }
+    case 3:
+        ztore_quit();
 
         break;
 
@@ -99,6 +85,7 @@ struct view_front *view_front_setup(unsigned int w, unsigned int h)
     menu_setrow(&view.menu, 0);
     box_init(&view.menu.box, 0, h - (view.menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (view.menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
 
+    view.menu.onselect = menu_onselect;
     view.repolistview = view_repolist_setup(w, h);
     view.repolistview->base.onquit = repolistview_onquit;
     view.syncview = view_sync_setup(w, h);
