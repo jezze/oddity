@@ -27,66 +27,93 @@ static void changestate(unsigned int state)
 
 }
 
-static unsigned int installcheck()
+static void updatestates(struct db_package *package)
 {
 
-    struct db_packagelist packagelist;
-    unsigned int changed = 0;
+    view.app->state = 3;
+
+    db_saveappstate(view.app);
+
+    package->state = 3;
+
+    db_savepackagestate(package);
+
+}
+
+static unsigned int checkpackageexist(struct db_package *package)
+{
+
+    char path[64];
+
+    file_getpackagepath(path, 64, package->name);
+
+    return file_exist(path) && file_matchsha1(path, package->sha1);
+
+}
+
+static unsigned int checkexist(struct db_packagelist *packagelist)
+{
+
     unsigned int i;
 
-    db_loadpackagesfromapp(&packagelist, view.app);
-
-    for (i = 0; i < packagelist.count; i++)
+    for (i = 0; i < packagelist->count; i++)
     {
 
-        char path[64];
-
-        file_getpackagepath(path, 64, packagelist.items[i].name);
-
-        if (file_exist(path) && file_matchsha1(path, packagelist.items[i].sha1))
+        if (checkpackageexist(&packagelist->items[i]))
         {
 
-            view.app->state = 3;
+            updatestates(&packagelist->items[i]);
 
-            db_saveappstate(view.app);
-
-            packagelist.items[i].state = 3;
-
-            db_savepackagestate(&packagelist.items[i]);
-
-            changed = 1;
+            return 1;
 
         }
 
     }
 
-    db_freepackages(&packagelist);
+    return 0;
 
-    return changed;
+}
+
+static unsigned int doinstall(struct db_packagelist *packagelist)
+{
+
+    if (!packagelist->count)
+        return 0;
+
+    if (checkexist(packagelist))
+        return 1;
+
+/*
+    file_downloadpackage(&packagelist->items[0]);
+
+    if (checkpackageexist(&packagelist->items[0]))
+    {
+
+        updatestates(&packagelist->items[0]);
+
+        return 1;
+
+    }
+*/
+
+    return 0;
 
 }
 
 static int install(void *arg)
 {
 
-    menu_enable(&view.menu, 0);
+    struct db_packagelist packagelist;
+
     changestate(1);
+    db_loadpackagesfromapp(&packagelist, view.app);
 
-    if (installcheck())
-    {
-
-        menu_disable(&view.menu, 0);
+    if (doinstall(&packagelist))
         changestate(2);
-
-    }
-
     else
-    {
-
-        menu_disable(&view.menu, 0);
         changestate(3);
 
-    }
+    db_freepackages(&packagelist);
 
     return 0;
 
@@ -112,6 +139,11 @@ static void render()
 {
 
     view.status.text.content = status[view.state];
+
+    if (view.state == 1)
+        menu_enable(&view.menu, 0);
+    else
+        menu_disable(&view.menu, 0);
 
     text_renderbox(&view.status, TEXT_COLOR_NORMAL);
     menu_render(&view.menu);

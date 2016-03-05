@@ -33,7 +33,6 @@ static int sync(void *arg)
     struct db_remotelist remotelist;
     unsigned int i;
 
-    menu_enable(&view.menu, 0);
     changestate(1);
     db_loadremotes(&remotelist);
 
@@ -46,9 +45,8 @@ static int sync(void *arg)
 
     }
 
-    db_freeremotes(&remotelist);
-    menu_disable(&view.menu, 0);
     changestate(2);
+    db_freeremotes(&remotelist);
 
     return 0;
 
@@ -72,6 +70,11 @@ static void render()
 {
 
     view.status.text.content = status[view.state];
+
+    if (view.state == 1)
+        menu_enable(&view.menu, 0);
+    else
+        menu_disable(&view.menu, 0);
 
     text_renderbox(&view.status, TEXT_COLOR_NORMAL);
     menu_render(&view.menu);
