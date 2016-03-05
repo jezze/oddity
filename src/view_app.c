@@ -132,7 +132,6 @@ static void installview_onquit()
 static void installview_onload(struct db_app *app, struct db_packagelist *packagelist)
 {
 
-    view.onload(&view.app);
     db_freeapp(app);
     db_loadapp(app, view.app.id);
     db_freepackages(packagelist);
