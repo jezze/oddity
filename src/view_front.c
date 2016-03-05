@@ -11,6 +11,11 @@
 
 static struct view_front view;
 
+static void setmode(unsigned int mode)
+{
+
+}
+
 static void load()
 {
 
@@ -87,7 +92,7 @@ static void syncview_onquit()
 struct view_front *view_front_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, load, render, keydown);
+    view_init(&view.base, setmode, load, render, keydown);
     text_init(&view.text.text, "Welcome to Ztore!");
     box_init(&view.text.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 4);

@@ -7,6 +7,7 @@ struct view
 {
 
     unsigned int state;
+    void (*setmode)(unsigned int mode);
     void (*load)();
     void (*render)();
     void (*keydown)(unsigned int key);
@@ -15,4 +16,4 @@ struct view
 };
 
 void view_quit(struct view *view);
-void view_init(struct view *view, void (*load)(), void (*render)(), void (*keydown)(unsigned int key));
+void view_init(struct view *view, void (*setmode)(unsigned int mode), void (*load)(), void (*render)(), void (*keydown)(unsigned int key));

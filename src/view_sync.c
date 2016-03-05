@@ -18,10 +18,10 @@ static char *status[4] = {
     "Sync failed!"
 };
 
-static void changestate(unsigned int state)
+static void setmode(unsigned int mode)
 {
 
-    view.state = state;
+    view.state = mode;
 
     ztore_redraw();
 
@@ -33,7 +33,7 @@ static int sync(void *arg)
     struct db_remotelist remotelist;
     unsigned int i;
 
-    changestate(1);
+    setmode(1);
     db_loadremotes(&remotelist);
 
     for (i = 0; i < remotelist.count; i++)
@@ -48,7 +48,7 @@ static int sync(void *arg)
 
     }
 
-    changestate(2);
+    setmode(2);
     db_freeremotes(&remotelist);
 
     return 0;
@@ -60,12 +60,12 @@ static void load()
 
     void *syncthread;
 
-    changestate(0);
+    setmode(0);
 
     syncthread = backend_createthread(sync, NULL);
 
     if (!syncthread)
-        changestate(3);
+        setmode(3);
 
 }
 
@@ -116,7 +116,7 @@ static void keydown(unsigned int key)
 struct view_sync *view_sync_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, load, render, keydown);
+    view_init(&view.base, setmode, load, render, keydown);
     text_init(&view.status.text, status[0]);
     box_init(&view.status.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 1);

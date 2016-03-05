@@ -18,10 +18,10 @@ static char *status[4] = {
     "Uninstall failed!"
 };
 
-static void changestate(unsigned int state)
+static void setmode(unsigned int mode)
 {
 
-    view.state = state;
+    view.state = mode;
 
     ztore_redraw();
 
@@ -83,13 +83,13 @@ static int uninstall(void *arg)
 
     struct db_packagelist packagelist;
 
-    changestate(1);
+    setmode(1);
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (douninstall(&packagelist))
-        changestate(2);
+        setmode(2);
     else
-        changestate(3);
+        setmode(3);
 
     db_freepackages(&packagelist);
 
@@ -102,7 +102,7 @@ static void load()
 
     view.onload();
 
-    changestate(0);
+    setmode(0);
 
 }
 
@@ -124,7 +124,7 @@ static void confirm()
     void *uninstallthread = backend_createthread(uninstall, NULL);
 
     if (!uninstallthread)
-        changestate(3);
+        setmode(3);
 
 }
 
@@ -162,7 +162,7 @@ static void keydown(unsigned int key)
 struct view_uninstall *view_uninstall_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, load, render, keydown);
+    view_init(&view.base, setmode, load, render, keydown);
     text_init(&view.status.text, status[0]);
     box_init(&view.status.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 1);
