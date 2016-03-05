@@ -66,6 +66,11 @@ static void keydowndefault(unsigned int key)
 
 }
 
+static void keydownworking(unsigned int key)
+{
+
+}
+
 static void keydown(unsigned int key)
 {
 
@@ -137,7 +142,7 @@ static int uninstall(void *arg)
 
     struct db_packagelist packagelist;
 
-    ztore_setmode(renderworking, keydown);
+    ztore_setmode(renderworking, keydownworking);
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (douninstall(&packagelist))
