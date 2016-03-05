@@ -3,7 +3,6 @@ struct view_install
 
     struct view base;
     struct db_app *app;
-    struct db_packagelist packagelist;
     unsigned int state;
     struct textbox status;
     struct menu menu;

@@ -134,9 +134,6 @@ static void installview_onload()
 
     view.installview->app = view.app;
 
-    db_freepackages(&view.installview->packagelist);
-    db_loadpackagesfromapp(&view.installview->packagelist, view.installview->app);
-
 }
 
 struct view_app *view_app_setup(unsigned int w, unsigned int h)

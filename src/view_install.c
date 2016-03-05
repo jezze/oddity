@@ -30,33 +30,39 @@ static void changestate(unsigned int state)
 static unsigned int installcheck()
 {
 
+    struct db_packagelist packagelist;
+    unsigned int changed = 0;
     unsigned int i;
 
-    for (i = 0; i < view.packagelist.count; i++)
+    db_loadpackagesfromapp(&packagelist, view.app);
+
+    for (i = 0; i < packagelist.count; i++)
     {
 
         char path[64];
 
-        file_getpackagepath(path, 64, view.packagelist.items[i].name);
+        file_getpackagepath(path, 64, packagelist.items[i].name);
 
-        if (file_exist(path) && file_matchsha1(path, view.packagelist.items[i].sha1))
+        if (file_exist(path) && file_matchsha1(path, packagelist.items[i].sha1))
         {
 
             view.app->state = 3;
 
             db_saveappstate(view.app);
 
-            view.packagelist.items[i].state = 3;
+            packagelist.items[i].state = 3;
 
-            db_savepackagestate(&view.packagelist.items[i]);
+            db_savepackagestate(&packagelist.items[i]);
 
-            return 1;
+            changed = 1;
 
         }
 
     }
 
-    return 0;
+    db_freepackages(&packagelist);
+
+    return changed;
 
 }
 
