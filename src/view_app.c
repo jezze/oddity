@@ -52,6 +52,29 @@ static void render()
 
 }
 
+static void runpackage()
+{
+
+    struct db_packagelist packagelist;
+    unsigned int i;
+
+    db_loadpackagesfromapp(&packagelist, &view.app);
+
+    for (i = 0; i < packagelist.count; i++)
+    {
+
+        if (packagelist.items[i].state != 3)
+            continue;
+
+        ztore_exec(packagelist.items[i].name);
+        db_freepackage(&packagelist.items[i]);
+
+        break;
+
+    }
+
+}
+
 static void keydown(unsigned int key)
 {
 
@@ -76,7 +99,7 @@ static void keydown(unsigned int key)
         {
 
         case 0:
-            ztore_exec();
+            runpackage();
 
             break;
 

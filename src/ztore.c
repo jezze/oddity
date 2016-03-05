@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "box.h"
 #include "text.h"
 #include "menu.h"
@@ -16,13 +17,16 @@
 static struct view *currentview;
 static unsigned int quit;
 
-void ztore_exec()
+void ztore_exec(char *name)
 {
 
+    char command[64];
+
+    snprintf(command, 64, "opkrun /media/data/apps/%s", name);
     backend_unloadfont();
     backend_unloadbackground();
     backend_destroy();
-    system("opkrun /media/data/apps/griffon.opk");
+    system(command);
     backend_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
     backend_loadbackground("back.png");
     backend_loadfont("habbo.ttf");
