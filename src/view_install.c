@@ -3,6 +3,7 @@
 #include "box.h"
 #include "text.h"
 #include "menu.h"
+#include "file.h"
 #include "db.h"
 #include "view.h"
 #include "view_install.h"
@@ -26,16 +27,52 @@ static void changestate(unsigned int state)
 
 }
 
+static unsigned int  installcheck()
+{
+
+    unsigned int i;
+
+    for (i = 0; i < view.packagelist.count; i++)
+    {
+
+        char path[64];
+
+        file_getpackagepath(path, 64, view.packagelist.items[i].name);
+
+        if (file_exist(path) && file_matchsha1(path, view.packagelist.items[i].sha1))
+        {
+
+            return 1;
+
+        }
+
+    }
+
+    return 0;
+
+}
+
 static int install(void *arg)
 {
 
     menu_enable(&view.menu, 0);
     changestate(1);
 
-    /* Install */
+    if (installcheck())
+    {
 
-    menu_disable(&view.menu, 0);
-    changestate(2);
+        menu_disable(&view.menu, 0);
+        changestate(2);
+
+    }
+
+    else
+    {
+
+        menu_disable(&view.menu, 0);
+        changestate(3);
+
+    }
 
     return 0;
 
