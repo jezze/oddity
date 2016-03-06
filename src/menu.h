@@ -21,14 +21,9 @@ struct menu
 
 };
 
-unsigned int menu_isactive(struct menu *menu, unsigned int index);
 void menu_setrow(struct menu *menu, unsigned int index);
 void menu_enable(struct menu *menu, unsigned int index);
 void menu_disable(struct menu *menu, unsigned int index);
-void menu_nextrow(struct menu *menu);
-void menu_prevrow(struct menu *menu);
-void menu_nextpage(struct menu *menu);
-void menu_prevpage(struct menu *menu);
 void menu_keydown(struct menu *menu, unsigned int key);
 void menu_renderitem(struct menuitem *menuitem, int x, int y, int w, int h);
 void menu_render(struct menu *menu);

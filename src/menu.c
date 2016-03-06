@@ -6,7 +6,7 @@
 #include "view.h"
 #include "backend.h"
 
-unsigned int menu_isactive(struct menu *menu, unsigned int index)
+static unsigned int iscurrent(struct menu *menu, unsigned int index)
 {
 
     return menu->currentitem == index && !(menu->items[menu->currentitem].flag & MENUITEM_FLAG_DISABLED);
@@ -36,7 +36,7 @@ void menu_disable(struct menu *menu, unsigned int index)
 
 }
 
-void menu_nextrow(struct menu *menu)
+static void setnextrow(struct menu *menu)
 {
 
     if (menu->total)
@@ -44,7 +44,7 @@ void menu_nextrow(struct menu *menu)
 
 }
 
-void menu_prevrow(struct menu *menu)
+static void setprevrow(struct menu *menu)
 {
 
     if (menu->total)
@@ -52,7 +52,7 @@ void menu_prevrow(struct menu *menu)
 
 }
 
-void menu_nextpage(struct menu *menu)
+static void setnextpage(struct menu *menu)
 {
 
     unsigned int pagerows = (menu->box.h - 2 * RENDER_PADDING) / RENDER_ROWHEIGHT;
@@ -66,7 +66,7 @@ void menu_nextpage(struct menu *menu)
 
 }
 
-void menu_prevpage(struct menu *menu)
+static void setprevpage(struct menu *menu)
 {
 
     unsigned int pagerows = (menu->box.h - 2 * RENDER_PADDING) / RENDER_ROWHEIGHT;
@@ -87,29 +87,29 @@ void menu_keydown(struct menu *menu, unsigned int key)
     {
 
     case KEY_UP:
-        menu_prevrow(menu);
+        setprevrow(menu);
 
         break;
 
     case KEY_DOWN:
-        menu_nextrow(menu);
+        setnextrow(menu);
 
         break;
 
     case KEY_LEFT:
         if (menu->total > 8)
-            menu_prevpage(menu);
+            setprevpage(menu);
 
         break;
 
     case KEY_RIGHT:
         if (menu->total > 8)
-            menu_nextpage(menu);
+            setnextpage(menu);
 
         break;
 
     case KEY_A:
-        if (menu_isactive(menu, menu->currentitem) && menu->onselect)
+        if (iscurrent(menu, menu->currentitem) && menu->onselect)
             menu->onselect();
 
         break;
