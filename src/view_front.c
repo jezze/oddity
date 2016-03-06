@@ -14,7 +14,7 @@ static struct view_front view;
 static void render()
 {
 
-    text_renderbox(&view.text, TEXT_COLOR_NORMAL, "Welcome to Ztore!");
+    text_renderbox(&view.text, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "Welcome to Ztore!");
     menu_render(&view.menu);
 
 }

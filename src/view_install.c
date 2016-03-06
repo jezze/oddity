@@ -16,14 +16,14 @@ static struct view_install view;
 static void renderdefault()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Please wait...");
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Please wait...");
 
 }
 
 static void renderpreparing()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Preparing...");
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Preparing...");
 
 }
 
@@ -34,7 +34,7 @@ static void renderdownloading()
 
     snprintf(progress, 128, "Downloading...\n\nProgress: %d%%\nTotal bytes: %dKB", view.percentage, view.totalbytes);
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, progress);
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, progress);
     menu_render(&view.menu);
 
 }
@@ -42,21 +42,21 @@ static void renderdownloading()
 static void renderinstalling()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Installing...");
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installing...");
 
 }
 
 static void rendercomplete()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Installation complete!\n\nPress B to go back.");
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installation complete!\n\nPress B to go back.");
 
 }
 
 static void renderfail()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Installation failed!\n\nPress B to go back.");
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installation failed!\n\nPress B to go back.");
 
 }
 

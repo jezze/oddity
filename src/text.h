@@ -4,6 +4,8 @@
 #define TEXT_COLOR_TITLE                0xFFE0E0E0
 #define TEXT_COLOR_SELECT               0xFFE06020
 #define TEXT_COLOR_DISABLE              0xFF406060
+#define TEXT_ALIGN_LEFT                 0
+#define TEXT_ALIGN_RIGHT                1
 
 struct text
 {
@@ -20,6 +22,6 @@ struct textbox
 
 };
 
-void text_render(struct text *text, int x, int y, int w, int h, unsigned int color);
-void text_renderbox(struct textbox *textbox, unsigned int color, char *content);
+void text_render(struct text *text, int x, int y, int w, int h, unsigned int color, unsigned int align);
+void text_renderbox(struct textbox *textbox, unsigned int color, unsigned int align, char *content);
 void text_init(struct text *text, char *content);

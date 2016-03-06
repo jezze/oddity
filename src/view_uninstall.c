@@ -15,7 +15,7 @@ static struct view_uninstall view;
 static void renderconfirm()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Are you sure you want to uninstall?");
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Are you sure you want to uninstall?");
     menu_render(&view.menu);
 
 }
@@ -23,21 +23,21 @@ static void renderconfirm()
 static void renderuninstalling()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Uninstalling...");
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Uninstalling...");
 
 }
 
 static void rendercomplete()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Uninstall complete!\n\nPress B to go back.");
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Uninstall complete!\n\nPress B to go back.");
 
 }
 
 static void renderfail()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Uninstall failed!\n\nPress B to go back.");
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Uninstall failed!\n\nPress B to go back.");
 
 }
 

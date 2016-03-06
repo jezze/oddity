@@ -17,8 +17,8 @@ static struct view_app view;
 static void render()
 {
 
-    text_renderbox(&view.title, TEXT_COLOR_TITLE, view.app->name);
-    text_renderbox(&view.shortdescription, TEXT_COLOR_NORMAL, view.app->shortdescription);
+    text_renderbox(&view.title, TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, view.app->name);
+    text_renderbox(&view.shortdescription, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, view.app->shortdescription);
     menu_render(&view.menu);
 
 }

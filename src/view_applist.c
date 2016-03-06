@@ -17,7 +17,7 @@ static void render()
     if (view.applist.count)
         menu_render(&view.menu);
     else
-        text_renderbox(&view.emptytextbox, TEXT_COLOR_NORMAL, "No items found.");
+        text_renderbox(&view.emptytextbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "No items found.");
 
 }
 

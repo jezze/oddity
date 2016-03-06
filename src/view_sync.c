@@ -15,14 +15,14 @@ static struct view_sync view;
 static void renderdefault()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Please wait...");
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Please wait...");
 
 }
 
 static void rendersyncing()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Syncing...");
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Syncing...");
     menu_render(&view.menu);
 
 }
@@ -30,14 +30,14 @@ static void rendersyncing()
 static void rendercomplete()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Sync complete!\n\nPress B to go back.");
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Sync complete!\n\nPress B to go back.");
 
 }
 
 static void renderfail()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Sync failed!\n\nPress B to go back.");
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Sync failed!\n\nPress B to go back.");
 
 }
 

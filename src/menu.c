@@ -125,9 +125,9 @@ void menu_renderitem(struct menuitem *menuitem, int x, int y, int w, int h)
         backend_rect(x, y, w, h);
 
     if (menuitem->flag & MENUITEM_FLAG_DISABLED)
-        text_render(&menuitem->text, x, y, w, h, TEXT_COLOR_DISABLE);
+        text_render(&menuitem->text, x, y, w, h, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT);
     else
-        text_render(&menuitem->text, x, y, w, h, TEXT_COLOR_SELECT);
+        text_render(&menuitem->text, x, y, w, h, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT);
 
 }
 

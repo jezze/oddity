@@ -6,7 +6,24 @@
 #include "view.h"
 #include "backend.h"
 
-static unsigned int getwordlength(char *text, unsigned int count)
+static unsigned int rtrim(char *text, unsigned int count)
+{
+
+    unsigned int i;
+
+    for (i = count; i > 0; i--)
+    {
+
+        if (text[i - 1] == ' ')
+            break;
+
+    }
+
+    return i - 1;
+
+}
+
+static unsigned int textw(char *text, unsigned int count)
 {
 
     unsigned int i;
@@ -16,9 +33,6 @@ static unsigned int getwordlength(char *text, unsigned int count)
     {
 
         int advance;
-
-        if (text[i] == ' ' || text[i] == '\n')
-            break;
 
         backend_getmetrics(text[i], NULL, NULL, NULL, NULL, &advance);
 
@@ -30,7 +44,61 @@ static unsigned int getwordlength(char *text, unsigned int count)
 
 }
 
-void text_render(struct text *text, int x, int y, int w, int h, unsigned int color)
+static unsigned int maxfit(char *text, unsigned int count, unsigned int width)
+{
+
+    unsigned int i;
+    unsigned int total = 0;
+
+    for (i = 0; i < count; i++)
+    {
+
+        int advance;
+
+        if (text[i] == '\n')
+            break;
+
+        backend_getmetrics(text[i], NULL, NULL, NULL, NULL, &advance);
+
+        total += advance;
+
+        if (total >= width)
+            return rtrim(text, i);
+
+    }
+
+    return i;
+
+}
+
+static void renderline(char *text, unsigned int count, unsigned int ascent, unsigned int offsety, unsigned int gx, unsigned int gy, unsigned int gw, unsigned int gh, unsigned int color)
+{
+
+    unsigned int i;
+
+    for (i = 0; i < count; i++)
+    {
+
+        int minx;
+        int maxx;
+        int miny;
+        int maxy;
+        int advance;
+
+        backend_getmetrics(text[i], &minx, &maxx, &miny, &maxy, &advance);
+
+        gy = offsety + ascent - maxy;
+        gw = advance;
+
+        backend_glyph(text[i], gx, gy, gw, gh, color);
+
+        gx += advance;
+
+    }
+
+}
+
+void text_render(struct text *text, int x, int y, int w, int h, unsigned int color, unsigned int align)
 {
 
     int ascent = backend_getascent();
@@ -44,72 +112,48 @@ void text_render(struct text *text, int x, int y, int w, int h, unsigned int col
     unsigned int gw = rw;
     unsigned int gh = rh;
     unsigned int offsety = ry;
-    unsigned int i;
 
-    for (i = 0; i < totallength; i++)
+    unsigned int linecount;
+    char *ptext = text->content;
+    unsigned int pcount = totallength;
+
+    while (pcount)
     {
 
-        int minx;
-        int maxx;
-        int miny;
-        int maxy;
-        int advance;
+        linecount = maxfit(ptext, pcount, rw);
 
-        if (text->content[i] == '\n')
+        if (align == TEXT_ALIGN_RIGHT)
         {
 
-            gx = rx;
-            offsety += 16;
+            unsigned int w = textw(ptext, linecount);
+            
+            gx += gw - w;
 
-            continue;
+            renderline(ptext, linecount, ascent, offsety, gx, gy, gw, gh, color);
 
         }
 
-        if (gx == rx && text->content[i] == ' ')
-            continue;
+        else
+            renderline(ptext, linecount, ascent, offsety, gx, gy, gw, gh, color);
 
-        if (text->content[i] != ' ')
-        {
+        while (ptext[linecount] == ' ' || ptext[linecount] == '\n')
+            linecount++;
 
-            int x = getwordlength(&text->content[i], totallength - i - 1);
-
-            if (gx + x > rx + rw)
-            {
-
-                gx = rx;
-                offsety += 16;
-
-            }
-
-        }
-
-        backend_getmetrics(text->content[i], &minx, &maxx, &miny, &maxy, &advance);
-
-        gy = offsety + ascent - maxy;
-        gw = advance;
-
-        backend_glyph(text->content[i], gx, gy, gw, gh, color);
-
-        gx += advance;
-
-        if (gx + gw > rx + rw)
-        {
-
-            gx = rx;
-            offsety += 16;
-
-        }
+        gx = rx;
+        offsety += 16;
+        ptext += linecount;
+        pcount -= linecount;
 
     }
 
 }
 
-void text_renderbox(struct textbox *textbox, unsigned int color, char *content)
+void text_renderbox(struct textbox *textbox, unsigned int color, unsigned int align, char *content)
 {
 
     textbox->text.content = content;
 
-    text_render(&textbox->text, textbox->box.x + RENDER_PADDING, textbox->box.y + RENDER_PADDING, textbox->box.w - (2 * RENDER_PADDING), textbox->box.h - (2 * RENDER_PADDING), color);
+    text_render(&textbox->text, textbox->box.x + RENDER_PADDING, textbox->box.y + RENDER_PADDING, textbox->box.w - (2 * RENDER_PADDING), textbox->box.h - (2 * RENDER_PADDING), color, align);
 
 }
 
