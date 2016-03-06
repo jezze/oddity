@@ -108,7 +108,7 @@ void backend_rect(int x, int y, int w, int h)
 
 }
 
-static void handleevent(struct view *view, SDL_Event *event)
+static void handleevent(SDL_Event *event, void (*quit)(), void (*keydown)(unsigned int key))
 {
 
     switch (event->type)
@@ -119,72 +119,72 @@ static void handleevent(struct view *view, SDL_Event *event)
         {
 
         case SDLK_LEFT:
-            view->keydown(KEY_LEFT);
+            keydown(KEY_LEFT);
 
             break;
 
         case SDLK_RIGHT:
-            view->keydown(KEY_RIGHT);
+            keydown(KEY_RIGHT);
 
             break;
 
         case SDLK_UP:
-            view->keydown(KEY_UP);
+            keydown(KEY_UP);
 
             break;
 
         case SDLK_DOWN:
-            view->keydown(KEY_DOWN);
+            keydown(KEY_DOWN);
 
             break;
 
         case SDLK_LCTRL:
-            view->keydown(KEY_A);
+            keydown(KEY_A);
 
             break;
 
         case SDLK_LALT:
-            view->keydown(KEY_B);
+            keydown(KEY_B);
 
             break;
 
         case SDLK_LSHIFT:
-            view->keydown(KEY_X);
+            keydown(KEY_X);
 
             break;
 
         case SDLK_SPACE:
-            view->keydown(KEY_Y);
+            keydown(KEY_Y);
 
             break;
 
         case SDLK_TAB:
-            view->keydown(KEY_L);
+            keydown(KEY_L);
 
             break;
 
         case SDLK_BACKSPACE:
-            view->keydown(KEY_R);
+            keydown(KEY_R);
 
             break;
 
         case SDLK_ESCAPE:
-            view->keydown(KEY_SELECT);
+            keydown(KEY_SELECT);
 
             break;
 
         case SDLK_RETURN:
-            view->keydown(KEY_START);
+            keydown(KEY_START);
 
             break;
 
         case SDLK_PAUSE:
-            view->keydown(KEY_LOCKDOWN);
+            keydown(KEY_LOCKDOWN);
 
             break;
 
         case SDLK_HOME:
-            view->keydown(KEY_LOCKUP);
+            keydown(KEY_LOCKUP);
 
             break;
 
@@ -196,7 +196,7 @@ static void handleevent(struct view *view, SDL_Event *event)
         break;
 
     case SDL_QUIT:
-        ztore_quit();
+        quit();
 
         break;
 
@@ -204,36 +204,31 @@ static void handleevent(struct view *view, SDL_Event *event)
 
 }
 
-void backend_pollevent(struct view *view)
+void backend_pollevent(void (*quit)(), void (*keydown)(unsigned int key))
 {
 
     SDL_Event event;
 
     while (SDL_PollEvent(&event))
-        handleevent(view, &event);
+        handleevent(&event, quit, keydown);
 
 }
 
-void backend_waitevent(struct view *view)
+void backend_waitevent(void (*quit)(), void (*keydown)(unsigned int key))
 {
 
     SDL_Event event;
 
     SDL_WaitEvent(&event);
-    handleevent(view, &event);
+    handleevent(&event, quit, keydown);
 
 }
 
-void backend_prerender()
+void backend_render(void (*render)())
 {
 
     SDL_BlitSurface(background, NULL, display, NULL);
-
-}
-
-void backend_postrender()
-{
-
+    render();
     SDL_Flip(display);
 
 }

@@ -17,16 +17,21 @@
 static struct view *currentview;
 static unsigned int quit;
 
+void ztore_quit()
+{
+
+    quit = 1;
+
+}
+
 void ztore_setmode(struct view *view, void (*render)(), void (*keydown)())
 {
 
     view->render = render;
     view->keydown = keydown;
 
-    backend_pollevent(view);
-    backend_prerender();
-    currentview->render();
-    backend_postrender();
+    backend_pollevent(ztore_quit, view->keydown);
+    backend_render(view->render);
 
 }
 
@@ -43,13 +48,6 @@ void ztore_exec(char *name)
     backend_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
     backend_loadbackground("back.png");
     backend_loadfont("habbo.ttf");
-
-}
-
-void ztore_quit()
-{
-
-    quit = 1;
 
 }
 
@@ -74,19 +72,15 @@ int main(int argc, char **argv)
     backend_loadfont("habbo.ttf");
 
     front = view_front_setup(SCREEN_WIDTH, SCREEN_HEIGHT);
-    currentview = &front->base;
 
-    backend_prerender();
-    currentview->render();
-    backend_postrender();
+    ztore_load(&front->base);
+    backend_render(currentview->render);
 
     while (!quit)
     {
 
-        backend_waitevent(currentview);
-        backend_prerender();
-        currentview->render();
-        backend_postrender();
+        backend_waitevent(ztore_quit, currentview->keydown);
+        backend_render(currentview->render);
 
     }
 
