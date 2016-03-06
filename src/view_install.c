@@ -100,18 +100,28 @@ static void updatestates(struct db_package *package)
 
 }
 
-static unsigned int checkpackageexist(struct db_package *package)
+static unsigned int verifypackage(struct db_package *package)
 {
 
     char path[64];
 
     file_getpackagepath(path, 64, package->name);
 
-    return file_exist(path) && file_matchsha1(path, package->sha1);
+    if (file_exist(path))
+    {
+
+        if (file_matchsha1(path, package->sha1))
+            return 1;
+
+        file_removepackage(package->name);
+
+    }
+
+    return 0;
 
 }
 
-static unsigned int checkexist(struct db_packagelist *packagelist)
+static unsigned int verifypackages(struct db_packagelist *packagelist)
 {
 
     unsigned int i;
@@ -119,7 +129,7 @@ static unsigned int checkexist(struct db_packagelist *packagelist)
     for (i = 0; i < packagelist->count; i++)
     {
 
-        if (checkpackageexist(&packagelist->items[i]))
+        if (verifypackage(&packagelist->items[i]))
         {
 
             updatestates(&packagelist->items[i]);
@@ -152,7 +162,7 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
 
     ztore_setmode(&view.base, renderpreparing, keydownoff);
 
-    if (checkexist(packagelist))
+    if (verifypackages(packagelist))
         return 1;
 
     downloadnotify(0, 0);
@@ -168,7 +178,7 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
 
     ztore_setmode(&view.base, renderinstalling, keydownoff);
 
-    if (checkpackageexist(&packagelist->items[0]))
+    if (verifypackage(&packagelist->items[0]))
     {
 
         updatestates(&packagelist->items[0]);

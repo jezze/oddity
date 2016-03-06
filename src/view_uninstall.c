@@ -91,41 +91,25 @@ static void updatestates(struct db_package *package)
 
 }
 
-static unsigned int checkpackageexist(struct db_package *package)
-{
-
-    char path[64];
-
-    file_getpackagepath(path, 64, package->name);
-
-    return file_exist(path) && file_matchsha1(path, package->sha1);
-
-}
-
 static unsigned int douninstall(struct db_packagelist *packagelist)
 {
 
     unsigned int i;
 
-    if (!packagelist->count)
-        return 0;
-
     for (i = 0; i < packagelist->count; i++)
     {
 
-        if (checkpackageexist(&packagelist->items[i]))
-        {
+        char path[64];
 
-            updatestates(&packagelist->items[i]);
+        updatestates(&packagelist->items[i]);
+        file_getpackagepath(path, 64, packagelist->items[i].name);
+
+        if (file_exist(path))
             file_removepackage(packagelist->items[i].name);
-
-            return 1;
-
-        }
 
     }
 
-    return 0;
+    return 1;
 
 }
 
