@@ -30,14 +30,14 @@ static void renderworking()
 static void rendercomplete()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Uninstall complete!");
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Uninstall complete!\n\nPress B to go back.");
 
 }
 
 static void renderfail()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Uninstall failed!");
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Uninstall failed!\n\nPress B to go back.");
 
 }
 

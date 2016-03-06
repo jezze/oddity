@@ -16,8 +16,6 @@ static void renderdefault()
 {
 
     text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Please wait...");
-    menu_disable(&view.menu, 0);
-    menu_render(&view.menu);
 
 }
 
@@ -25,7 +23,6 @@ static void renderworking()
 {
 
     text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Syncing...");
-    menu_enable(&view.menu, 0);
     menu_render(&view.menu);
 
 }
@@ -33,18 +30,14 @@ static void renderworking()
 static void rendercomplete()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Sync complete!");
-    menu_disable(&view.menu, 0);
-    menu_render(&view.menu);
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Sync complete!\n\nPress B to go back.");
 
 }
 
 static void renderfail()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Sync failed!");
-    menu_disable(&view.menu, 0);
-    menu_render(&view.menu);
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Sync failed!\n\nPress B to go back.");
 
 }
 
@@ -133,7 +126,6 @@ struct view_sync *view_sync_setup(unsigned int w, unsigned int h)
     box_init(&view.status.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 1);
     menu_inititem(&view.menuitems[0], "Cancel");
-    menu_disable(&view.menu, 0);
     menu_setrow(&view.menu, 0);
     box_init(&view.menu.box, 0, h - (view.menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (view.menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
 
