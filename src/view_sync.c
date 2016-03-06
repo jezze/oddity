@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "define.h"
 #include "box.h"
 #include "text.h"
@@ -19,10 +20,14 @@ static void renderdefault()
 
 }
 
-static void rendersyncing()
+static void renderdownloading()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Syncing...");
+    char progress[128];
+
+    snprintf(progress, 128, "Downloading...\n\nProgress: %d%%\nTotal bytes: %dKB", view.percentage, view.totalbytes);
+
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, progress);
     menu_render(&view.menu);
 
 }
@@ -61,10 +66,22 @@ static void keydownback(unsigned int key)
 
 }
 
-static void keydownsyncing(unsigned int key)
+static void keydowndownloading(unsigned int key)
 {
 
     menu_keydown(&view.menu, key);
+
+}
+
+static unsigned int downloadnotify(unsigned int totalbytes, unsigned int percentage)
+{
+
+    view.totalbytes = totalbytes;
+    view.percentage = percentage;
+
+    ztore_setmode(&view.base, renderdownloading, keydowndownloading);
+
+    return !view.abortdownload;
 
 }
 
@@ -75,15 +92,18 @@ static void sync()
     unsigned int status = 0;
     unsigned int i;
 
-    ztore_setmode(&view.base, rendersyncing, keydownsyncing);
     db_loadremotes(&remotelist);
+
+    downloadnotify(0, 0);
 
     for (i = 0; i < remotelist.count; i++)
     {
 
         struct db_remote *remote = &remotelist.items[i];
 
-        if (file_downloadremote(remote->url, remote->id, 0))
+        ztore_setmode(&view.base, renderdownloading, keydowndownloading);
+
+        if (file_downloadremote(remote->url, remote->id, downloadnotify))
             status = db_sync(remote);
 
         file_removeremote(remote->id);
@@ -102,6 +122,8 @@ static void sync()
 static void load()
 {
 
+    view.abortdownload = 0;
+
     ztore_setmode(&view.base, renderdefault, keydownoff);
     sync();
 
@@ -114,6 +136,8 @@ static void menu_onselect()
     {
 
     case 0:
+        view.abortdownload = 1;
+
         break;
 
     }

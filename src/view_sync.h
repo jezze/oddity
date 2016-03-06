@@ -5,6 +5,9 @@ struct view_sync
     struct textbox status;
     struct menu menu;
     struct menuitem menuitems[1];
+    unsigned int percentage;
+    unsigned int totalbytes;
+    unsigned int abortdownload;
 
 };
 
