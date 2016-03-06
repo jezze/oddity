@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "define.h"
 #include "box.h"
 #include "text.h"
@@ -21,11 +22,33 @@ static void renderdefault()
 
 }
 
-static void renderworking()
+static void renderpreparing()
+{
+
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Preparing...");
+    menu_disable(&view.menu, 0);
+    menu_render(&view.menu);
+
+}
+
+static void renderdownloading()
+{
+
+    char progress[128];
+
+    snprintf(progress, 128, "Downloading...\nPercentage: %d%%\nTotal bytes: %dB", view.percentage, view.totalbytes);
+
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, progress);
+    menu_enable(&view.menu, 0);
+    menu_render(&view.menu);
+
+}
+
+static void renderinstalling()
 {
 
     text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Installing...");
-    menu_enable(&view.menu, 0);
+    menu_disable(&view.menu, 0);
     menu_render(&view.menu);
 
 }
@@ -48,7 +71,7 @@ static void renderfail()
 
 }
 
-static void keydownworking(unsigned int key)
+static void keydowndownloading(unsigned int key)
 {
 
     menu_keydown(&view.menu, key);
@@ -123,8 +146,12 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
     if (!packagelist->count)
         return 0;
 
+    ztore_setmode(renderpreparing, keydown);
+
     if (checkexist(packagelist))
         return 1;
+
+    ztore_setmode(renderdownloading, keydowndownloading);
 
     if (!file_downloadpackage(packagelist->items[0].name))
     {
@@ -134,6 +161,8 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
         return 0;
 
     }
+
+    ztore_setmode(renderinstalling, keydown);
 
     if (checkpackageexist(&packagelist->items[0]))
     {
@@ -153,7 +182,6 @@ static int install(void *arg)
 
     struct db_packagelist packagelist;
 
-    ztore_setmode(renderworking, keydownworking);
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (doinstall(&packagelist))

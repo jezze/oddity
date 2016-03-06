@@ -6,6 +6,8 @@ struct view_install
     struct textbox status;
     struct menu menu;
     struct menuitem menuitems[1];
+    unsigned int percentage;
+    unsigned int totalbytes;
     void (*onload)();
 
 };
