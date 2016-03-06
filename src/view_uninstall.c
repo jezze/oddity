@@ -12,7 +12,7 @@
 
 static struct view_uninstall view;
 
-static void renderdefault()
+static void renderconfirm()
 {
 
     text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Are you sure you want to uninstall?");
@@ -20,7 +20,7 @@ static void renderdefault()
 
 }
 
-static void renderworking()
+static void renderuninstalling()
 {
 
     text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Uninstalling...");
@@ -41,10 +41,13 @@ static void renderfail()
 
 }
 
-static void keydowndefault(unsigned int key)
+static void keydownoff(unsigned int key)
 {
 
-    menu_keydown(&view.menu, key);
+}
+
+static void keydownback(unsigned int key)
+{
 
     switch (key)
     {
@@ -58,13 +61,10 @@ static void keydowndefault(unsigned int key)
 
 }
 
-static void keydownworking(unsigned int key)
+static void keydownconfirm(unsigned int key)
 {
 
-}
-
-static void keydown(unsigned int key)
-{
+    menu_keydown(&view.menu, key);
 
     switch (key)
     {
@@ -129,22 +129,20 @@ static unsigned int douninstall(struct db_packagelist *packagelist)
 
 }
 
-static int uninstall(void *arg)
+static void uninstall()
 {
 
     struct db_packagelist packagelist;
 
-    ztore_setmode(renderworking, keydownworking);
+    ztore_setmode(&view.base, renderuninstalling, keydownoff);
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (douninstall(&packagelist))
-        ztore_setmode(rendercomplete, keydown);
+        ztore_setmode(&view.base, rendercomplete, keydownback);
     else
-        ztore_setmode(renderfail, keydown);
+        ztore_setmode(&view.base, renderfail, keydownback);
 
     db_freepackages(&packagelist);
-
-    return 0;
 
 }
 
@@ -153,17 +151,7 @@ static void load()
 
     view.onload();
 
-    ztore_setmode(renderdefault, keydowndefault);
-
-}
-
-static void confirm()
-{
-
-    void *uninstallthread = backend_createthread(uninstall, NULL);
-
-    if (!uninstallthread)
-        ztore_setmode(renderfail, keydown);
+    ztore_setmode(&view.base, renderconfirm, keydownconfirm);
 
 }
 
@@ -174,7 +162,7 @@ static void menu_onselect()
     {
 
     case 0:
-        confirm();
+        uninstall();
 
         break;
 
@@ -185,7 +173,7 @@ static void menu_onselect()
 struct view_uninstall *view_uninstall_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, load, renderdefault, keydowndefault);
+    view_init(&view.base, load, renderconfirm, keydownconfirm);
     text_init(&view.status.text, 0);
     box_init(&view.status.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 1);

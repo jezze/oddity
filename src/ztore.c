@@ -17,13 +17,16 @@
 static struct view *currentview;
 static unsigned int quit;
 
-void ztore_setmode(void (*render)(), void (*keydown)())
+void ztore_setmode(struct view *view, void (*render)(), void (*keydown)())
 {
 
-    currentview->render = render;
-    currentview->keydown = keydown;
+    view->render = render;
+    view->keydown = keydown;
 
-    backend_redraw();
+    backend_pollevent(view);
+    backend_prerender();
+    currentview->render();
+    backend_postrender();
 
 }
 

@@ -60,14 +60,12 @@ static void renderfail()
 
 }
 
-static void keydowndownloading(unsigned int key)
+static void keydownoff(unsigned int key)
 {
-
-    menu_keydown(&view.menu, key);
 
 }
 
-static void keydown(unsigned int key)
+static void keydownback(unsigned int key)
 {
 
     switch (key)
@@ -79,6 +77,13 @@ static void keydown(unsigned int key)
         break;
 
     }
+
+}
+
+static void keydowndownloading(unsigned int key)
+{
+
+    menu_keydown(&view.menu, key);
 
 }
 
@@ -135,7 +140,7 @@ static void downloadnotify(unsigned int totalbytes, unsigned int percentage)
     view.totalbytes = totalbytes;
     view.percentage = percentage;
 
-    ztore_setmode(renderdownloading, keydowndownloading);
+    ztore_setmode(&view.base, renderdownloading, keydowndownloading);
 
 }
 
@@ -145,7 +150,7 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
     if (!packagelist->count)
         return 0;
 
-    ztore_setmode(renderpreparing, keydown);
+    ztore_setmode(&view.base, renderpreparing, keydownoff);
 
     if (checkexist(packagelist))
         return 1;
@@ -161,7 +166,7 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
 
     }
 
-    ztore_setmode(renderinstalling, keydown);
+    ztore_setmode(&view.base, renderinstalling, keydownoff);
 
     if (checkpackageexist(&packagelist->items[0]))
     {
@@ -176,7 +181,7 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
 
 }
 
-static int install(void *arg)
+static void install()
 {
 
     struct db_packagelist packagelist;
@@ -184,29 +189,21 @@ static int install(void *arg)
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (doinstall(&packagelist))
-        ztore_setmode(rendercomplete, keydown);
+        ztore_setmode(&view.base, rendercomplete, keydownback);
     else
-        ztore_setmode(renderfail, keydown);
+        ztore_setmode(&view.base, renderfail, keydownback);
 
     db_freepackages(&packagelist);
-
-    return 0;
 
 }
 
 static void load()
 {
 
-    void *installthread;
-
     view.onload();
 
-    ztore_setmode(renderdefault, keydown);
-
-    installthread = backend_createthread(install, NULL);
-
-    if (!installthread)
-        ztore_setmode(renderfail, keydown);
+    ztore_setmode(&view.base, renderdefault, keydownoff);
+    install();
 
 }
 
@@ -226,7 +223,7 @@ static void menu_onselect()
 struct view_install *view_install_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, load, renderdefault, keydown);
+    view_init(&view.base, load, renderdefault, keydownoff);
     text_init(&view.status.text, 0);
     box_init(&view.status.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 1);

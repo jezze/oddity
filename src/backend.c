@@ -108,18 +108,14 @@ void backend_rect(int x, int y, int w, int h)
 
 }
 
-void backend_waitevent(struct view *view)
+static void handleevent(struct view *view, SDL_Event *event)
 {
 
-    SDL_Event event;
-
-    SDL_WaitEvent(&event);
-
-    switch (event.type)
+    switch (event->type)
     {
 
     case SDL_KEYDOWN:
-        switch (event.key.keysym.sym)
+        switch (event->key.keysym.sym)
         {
 
         case SDLK_LEFT:
@@ -208,6 +204,26 @@ void backend_waitevent(struct view *view)
 
 }
 
+void backend_pollevent(struct view *view)
+{
+
+    SDL_Event event;
+
+    while (SDL_PollEvent(&event))
+        handleevent(view, &event);
+
+}
+
+void backend_waitevent(struct view *view)
+{
+
+    SDL_Event event;
+
+    SDL_WaitEvent(&event);
+    handleevent(view, &event);
+
+}
+
 void backend_prerender()
 {
 
@@ -230,13 +246,6 @@ void backend_redraw()
     sdlevent.type = 0;
 
     SDL_PushEvent(&sdlevent);
-
-}
-
-void *backend_createthread(int (*fun)(void *data), void *data)
-{
-
-    return SDL_CreateThread(fun, data);
 
 }
 

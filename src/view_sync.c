@@ -19,7 +19,7 @@ static void renderdefault()
 
 }
 
-static void renderworking()
+static void rendersyncing()
 {
 
     text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Syncing...");
@@ -34,21 +34,21 @@ static void rendercomplete()
 
 }
 
+/*
 static void renderfail()
 {
 
     text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Sync failed!\n\nPress B to go back.");
 
 }
+*/
 
-static void keydownworking(unsigned int key)
+static void keydownoff(unsigned int key)
 {
-
-    menu_keydown(&view.menu, key);
 
 }
 
-static void keydown(unsigned int key)
+static void keydownback(unsigned int key)
 {
 
     switch (key)
@@ -63,13 +63,20 @@ static void keydown(unsigned int key)
 
 }
 
-static int sync(void *arg)
+static void keydownsyncing(unsigned int key)
+{
+
+    menu_keydown(&view.menu, key);
+
+}
+
+static void sync()
 {
 
     struct db_remotelist remotelist;
     unsigned int i;
 
-    ztore_setmode(renderworking, keydownworking);
+    ztore_setmode(&view.base, rendersyncing, keydownsyncing);
     db_loadremotes(&remotelist);
 
     for (i = 0; i < remotelist.count; i++)
@@ -84,24 +91,16 @@ static int sync(void *arg)
 
     }
 
-    ztore_setmode(rendercomplete, keydown);
+    ztore_setmode(&view.base, rendercomplete, keydownback);
     db_freeremotes(&remotelist);
-
-    return 0;
 
 }
 
 static void load()
 {
 
-    void *syncthread;
-
-    ztore_setmode(renderdefault, keydown);
-
-    syncthread = backend_createthread(sync, NULL);
-
-    if (!syncthread)
-        ztore_setmode(renderfail, keydown);
+    ztore_setmode(&view.base, renderdefault, keydownoff);
+    sync();
 
 }
 
@@ -121,7 +120,7 @@ static void menu_onselect()
 struct view_sync *view_sync_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, load, renderdefault, keydown);
+    view_init(&view.base, load, renderdefault, keydownoff);
     text_init(&view.status.text, 0);
     box_init(&view.status.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 1);
