@@ -36,7 +36,7 @@ static void renderdownloading()
 
     char progress[128];
 
-    snprintf(progress, 128, "Downloading...\nPercentage: %d%%\nTotal bytes: %dKB", view.percentage, view.totalbytes);
+    snprintf(progress, 128, "Downloading...\n\nProgress: %d%%\nTotal bytes: %dKB", view.percentage, view.totalbytes);
 
     text_renderbox(&view.status, TEXT_COLOR_NORMAL, progress);
     menu_enable(&view.menu, 0);
