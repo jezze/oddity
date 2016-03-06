@@ -103,6 +103,7 @@ unsigned int file_download(char *url, char *to, void (*notify)(unsigned int tota
     FILE *fd;
     char command[256];
     char line[1024];
+    unsigned int start = 0;
 
     snprintf(command, 256, "wget --progress=dot %s -O %s 2>&1", url, to);
 
@@ -114,10 +115,22 @@ unsigned int file_download(char *url, char *to, void (*notify)(unsigned int tota
     while (fgets(line, 1024, fd))
     {
 
+        if (strlen(line) == 0)
+            return 0;
+
         if (strlen(line) == 1)
+        {
+
+            start = 1;
+
             break;
 
+        }
+
     }
+
+    if (!start)
+        return 0;
 
     while (fgets(line, 1024, fd))
     {

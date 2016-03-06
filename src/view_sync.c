@@ -34,14 +34,12 @@ static void rendercomplete()
 
 }
 
-/*
 static void renderfail()
 {
 
     text_renderbox(&view.status, TEXT_COLOR_NORMAL, "Sync failed!\n\nPress B to go back.");
 
 }
-*/
 
 static void keydownoff(unsigned int key)
 {
@@ -74,6 +72,7 @@ static void sync()
 {
 
     struct db_remotelist remotelist;
+    unsigned int status = 0;
     unsigned int i;
 
     ztore_setmode(&view.base, rendersyncing, keydownsyncing);
@@ -85,15 +84,19 @@ static void sync()
         struct db_remote *remote = &remotelist.items[i];
 
         if (file_downloadremote(remote->url, remote->id, 0))
-            db_sync(remote);
+            status = db_sync(remote);
 
         file_removeremote(remote->id);
 
     }
 
-    ztore_setmode(&view.base, rendercomplete, keydownback);
     db_freeremotes(&remotelist);
 
+    if (status)
+        ztore_setmode(&view.base, rendercomplete, keydownback);
+    else
+        ztore_setmode(&view.base, renderfail, keydownback);
+ 
 }
 
 static void load()

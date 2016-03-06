@@ -279,7 +279,7 @@ void backend_loadbackground(char *name)
 void backend_loadfont(char *name)
 {
 
-    font = TTF_OpenFont("habbo.ttf", 16);
+    font = TTF_OpenFont(name, 16);
 
     if (!font)
         exit(EXIT_FAILURE);
