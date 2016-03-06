@@ -161,7 +161,7 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
     if (checkexist(packagelist))
         return 1;
 
-    ztore_setmode(renderdownloading, keydowndownloading);
+    downloadnotify(0, 0);
 
     if (!file_downloadpackage(packagelist->items[0].name, downloadnotify))
     {
