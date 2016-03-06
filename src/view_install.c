@@ -36,7 +36,7 @@ static void renderdownloading()
 
     char progress[128];
 
-    snprintf(progress, 128, "Downloading...\nPercentage: %d%%\nTotal bytes: %dB", view.percentage, view.totalbytes);
+    snprintf(progress, 128, "Downloading...\nPercentage: %d%%\nTotal bytes: %dKB", view.percentage, view.totalbytes);
 
     text_renderbox(&view.status, TEXT_COLOR_NORMAL, progress);
     menu_enable(&view.menu, 0);
@@ -140,6 +140,16 @@ static unsigned int checkexist(struct db_packagelist *packagelist)
 
 }
 
+static void downloadnotify(unsigned int totalbytes, unsigned int percentage)
+{
+
+    view.totalbytes = totalbytes;
+    view.percentage = percentage;
+
+    ztore_setmode(renderdownloading, keydowndownloading);
+
+}
+
 static unsigned int doinstall(struct db_packagelist *packagelist)
 {
 
@@ -153,7 +163,7 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
 
     ztore_setmode(renderdownloading, keydowndownloading);
 
-    if (!file_downloadpackage(packagelist->items[0].name))
+    if (!file_downloadpackage(packagelist->items[0].name, downloadnotify))
     {
 
         file_removepackage(packagelist->items[0].name);

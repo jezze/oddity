@@ -97,29 +97,60 @@ unsigned int file_removepackage(char *name)
 
 }
 
-unsigned int file_download(char *url, char *to)
+unsigned int file_download(char *url, char *to, void (*notify)(unsigned int totalbytes, unsigned int percentage))
 {
 
-    char command[128];
+    FILE *fd;
+    char command[256];
+    char line[1024];
 
-    snprintf(command, 128, "wget %s -O %s", url, to);
+    snprintf(command, 256, "wget --progress=dot %s -O %s 2>&1", url, to);
 
-    return system(command) == 0;
+    fd = popen(command, "r");
+
+    if (!fd)
+        return 0;
+
+    while (fgets(line, 1024, fd))
+    {
+
+        if (strlen(line) == 1)
+            break;
+
+    }
+
+    while (fgets(line, 1024, fd))
+    {
+
+        unsigned int totalbytes;
+        unsigned int percentage;
+
+        sscanf(line, "%u", &totalbytes);
+        sscanf(line + 62, "%u", &percentage);
+
+        if (notify)
+            notify(totalbytes, percentage);
+
+    }
+
+    pclose(fd);
+
+    return 1;
 
 }
 
-unsigned int file_downloadremote(char *url, unsigned int id)
+unsigned int file_downloadremote(char *url, unsigned int id, void (*notify)(unsigned int totalbytes, unsigned int percentage))
 {
 
     char remotedatapath[64];
 
     file_getremotedatabasepath(remotedatapath, 64, id);
 
-    return file_download(url, remotedatapath);
+    return file_download(url, remotedatapath, notify);
 
 }
 
-unsigned int file_downloadpackage(char *name)
+unsigned int file_downloadpackage(char *name, void (*notify)(unsigned int totalbytes, unsigned int percentage))
 {
 
     char packagepath[64];
@@ -128,7 +159,7 @@ unsigned int file_downloadpackage(char *name)
     file_getpackagepath(packagepath, 64, name);
     file_getremotepackagepath(remotepackagepath, 64, name);
 
-    return file_download(remotepackagepath, packagepath);
+    return file_download(remotepackagepath, packagepath, notify);
 
 }
 
