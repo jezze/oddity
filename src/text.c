@@ -102,7 +102,8 @@ void text_render(struct text *text, int x, int y, int w, int h, unsigned int col
 {
 
     int ascent = backend_getascent();
-    int totallength = strlen(text->content);
+    char *ptext = text->content;
+    unsigned int pcount = strlen(text->content);
     unsigned int rx = x + TEXT_XPADDING;
     unsigned int ry = y + TEXT_YPADDING;
     unsigned int rw = w - TEXT_XPADDING * 2;
@@ -113,33 +114,31 @@ void text_render(struct text *text, int x, int y, int w, int h, unsigned int col
     unsigned int gh = rh;
     unsigned int offsety = ry;
 
-    unsigned int linecount;
-    char *ptext = text->content;
-    unsigned int pcount = totallength;
-
     while (pcount)
     {
 
-        linecount = maxfit(ptext, pcount, rw);
+        unsigned int linecount = maxfit(ptext, pcount, rw);
 
-        if (align == TEXT_ALIGN_RIGHT)
+        switch (align)
         {
 
-            unsigned int w = textw(ptext, linecount);
-            
-            gx += gw - w;
+        case TEXT_ALIGN_LEFT:
+            gx = rx;
 
-            renderline(ptext, linecount, ascent, offsety, gx, gy, gw, gh, color);
+            break;
+
+        case TEXT_ALIGN_RIGHT:
+            gx = rx + gw - textw(ptext, linecount);
+
+            break;
 
         }
 
-        else
-            renderline(ptext, linecount, ascent, offsety, gx, gy, gw, gh, color);
+        renderline(ptext, linecount, ascent, offsety, gx, gy, gw, gh, color);
 
         while (ptext[linecount] == ' ' || ptext[linecount] == '\n')
             linecount++;
 
-        gx = rx;
         offsety += 16;
         ptext += linecount;
         pcount -= linecount;
