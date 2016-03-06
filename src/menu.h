@@ -5,7 +5,8 @@
 struct menuitem
 {
 
-    struct text text;
+    struct text label;
+    struct text info;
     unsigned int flag;
 
 };
@@ -27,5 +28,5 @@ void menu_disable(struct menu *menu, unsigned int index);
 void menu_keydown(struct menu *menu, unsigned int key);
 void menu_renderitem(struct menuitem *menuitem, int x, int y, int w, int h);
 void menu_render(struct menu *menu);
-void menu_inititem(struct menuitem *menuitem, char *label);
+void menu_inititem(struct menuitem *menuitem, char *label, char *info);
 void menu_init(struct menu *menu, struct menuitem *items, unsigned int total);

@@ -127,7 +127,7 @@ struct view_sync *view_sync_setup(unsigned int w, unsigned int h)
     text_init(&view.status.text, 0);
     box_init(&view.status.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 1);
-    menu_inititem(&view.menuitems[0], "Cancel");
+    menu_inititem(&view.menuitems[0], "Cancel", 0);
     menu_setrow(&view.menu, 0);
     box_init(&view.menu.box, 0, h - (view.menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (view.menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
 

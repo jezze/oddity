@@ -80,10 +80,10 @@ struct view_front *view_front_setup(unsigned int w, unsigned int h)
     text_init(&view.text.text, 0);
     box_init(&view.text.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 4);
-    menu_inititem(&view.menuitems[0], "Browse");
-    menu_inititem(&view.menuitems[1], "Sync");
-    menu_inititem(&view.menuitems[2], "Settings");
-    menu_inititem(&view.menuitems[3], "Exit");
+    menu_inititem(&view.menuitems[0], "Browse", 0);
+    menu_inititem(&view.menuitems[1], "Sync", 0);
+    menu_inititem(&view.menuitems[2], "Settings", 0);
+    menu_inititem(&view.menuitems[3], "Exit", 0);
     menu_disable(&view.menu, 2);
     menu_setrow(&view.menu, 0);
     box_init(&view.menu.box, 0, h - (view.menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (view.menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));

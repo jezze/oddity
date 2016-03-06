@@ -42,6 +42,7 @@ static void load()
 {
 
     unsigned int i;
+    char *stateinfo[] = {0, "New", "Updated", "Installed"};
 
     view.onload();
 
@@ -51,7 +52,7 @@ static void load()
     view.menu.total = view.applist.count;
 
     for (i = 0; i < view.menu.total; i++)
-        menu_inititem(&view.menu.items[i], view.applist.items[i].name);
+        menu_inititem(&view.menu.items[i], view.applist.items[i].name, stateinfo[view.applist.items[i].state]);
 
     menu_setrow(&view.menu, 0);
 

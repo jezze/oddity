@@ -94,8 +94,8 @@ struct view_repolist *view_repolist_setup(unsigned int w, unsigned int h)
 
     view_init(&view.base, load, render, keydown);
     menu_init(&view.menu, view.menuitems, 2);
-    menu_inititem(&view.menuitems[0], "All");
-    menu_inititem(&view.menuitems[1], "Installed");
+    menu_inititem(&view.menuitems[0], "All", "0 items");
+    menu_inititem(&view.menuitems[1], "Installed", "0 items");
     menu_setrow(&view.menu, 0);
     box_init(&view.menu.box, 0, 0, w, h);
 

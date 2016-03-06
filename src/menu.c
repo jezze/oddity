@@ -125,9 +125,24 @@ void menu_renderitem(struct menuitem *menuitem, int x, int y, int w, int h)
         backend_rect(x, y, w, h);
 
     if (menuitem->flag & MENUITEM_FLAG_DISABLED)
-        text_render(&menuitem->text, x, y, w, h, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT);
+    {
+
+        text_render(&menuitem->label, x, y, w, h, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT);
+
+        if (menuitem->info.content)
+            text_render(&menuitem->info, x, y, w, h, TEXT_COLOR_DISABLE, TEXT_ALIGN_RIGHT);
+
+    }
+
     else
-        text_render(&menuitem->text, x, y, w, h, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT);
+    {
+
+        text_render(&menuitem->label, x, y, w, h, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT);
+
+        if (menuitem->info.content)
+            text_render(&menuitem->info, x, y, w, h, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT);
+
+    }
 
 }
 
@@ -145,10 +160,11 @@ void menu_render(struct menu *menu)
 
 }
 
-void menu_inititem(struct menuitem *menuitem, char *label)
+void menu_inititem(struct menuitem *menuitem, char *label, char *info)
 {
 
-    menuitem->text.content = label;
+    menuitem->label.content = label;
+    menuitem->info.content = info;
     menuitem->flag = MENUITEM_FLAG_NORMAL;
 
 }

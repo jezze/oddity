@@ -40,6 +40,20 @@ static void keydown(unsigned int key)
 
 }
 
+static void updatestate()
+{
+
+    if (view.app->state == 1 || view.app->state == 2)
+    {
+
+        view.app->state = 0;
+
+        db_saveappstate(view.app);
+
+    }
+
+}
+
 static void load()
 {
 
@@ -64,6 +78,8 @@ static void load()
         menu_setrow(&view.menu, 1);
 
     }
+
+    updatestate();
 
 }
 
@@ -142,9 +158,9 @@ struct view_app *view_app_setup(unsigned int w, unsigned int h)
 
     view_init(&view.base, load, render, keydown);
     menu_init(&view.menu, view.menuitems, 3);
-    menu_inititem(&view.menuitems[0], "Run");
-    menu_inititem(&view.menuitems[1], "Install");
-    menu_inititem(&view.menuitems[2], "Uninstall");
+    menu_inititem(&view.menuitems[0], "Run", 0);
+    menu_inititem(&view.menuitems[1], "Install", 0);
+    menu_inititem(&view.menuitems[2], "Uninstall", 0);
     menu_setrow(&view.menu, 0);
     box_init(&view.title.box, 0, 0, w, (1 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     box_init(&view.shortdescription.box, 0, (1 * RENDER_ROWHEIGHT), w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
