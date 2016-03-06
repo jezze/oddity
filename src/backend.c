@@ -238,17 +238,6 @@ void backend_postrender()
 
 }
 
-void backend_redraw()
-{
-
-    SDL_Event sdlevent;
-
-    sdlevent.type = 0;
-
-    SDL_PushEvent(&sdlevent);
-
-}
-
 void backend_init(unsigned int w, unsigned int h, unsigned int bpp)
 {
 

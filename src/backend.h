@@ -6,7 +6,6 @@ void backend_pollevent(struct view *view);
 void backend_waitevent(struct view *view);
 void backend_prerender();
 void backend_postrender();
-void backend_redraw();
 void backend_init();
 void backend_destroy();
 void backend_loadbackground(char *name);
