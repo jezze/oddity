@@ -44,9 +44,9 @@ static void detach(sqlite3 *db, char *alias)
 static void opendatabase(sqlite3 **db)
 {
 
-    char datapath[64];
+    char datapath[128];
 
-    file_getdatabasepath(datapath, 64);
+    file_getdatabasepath(datapath, 128);
 
     if (sqlite3_open(datapath, db) != SQLITE_OK)
         exit(EXIT_FAILURE);
@@ -64,9 +64,9 @@ static void closedatabase(sqlite3 *db)
 void db_init()
 {
 
-    char datapath[64];
+    char datapath[128];
 
-    file_getdatabasepath(datapath, 64);
+    file_getdatabasepath(datapath, 128);
 
     if (!file_exist(datapath))
         file_copy("db/data.db", datapath);
@@ -78,9 +78,9 @@ int db_sync(struct db_remote *remote)
 
     sqlite3 *db;
     sqlite3_stmt *res;
-    char remotedatapath[64];
+    char remotedatapath[128];
 
-    file_getremotedatabasepath(remotedatapath, 64, remote->id);
+    file_getremotedatabasepath(remotedatapath, 128, remote->id);
     opendatabase(&db);
 
     attach(db, "external", remotedatapath);

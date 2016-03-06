@@ -103,9 +103,9 @@ static void updatestates(struct db_package *package)
 static unsigned int verifypackage(struct db_package *package)
 {
 
-    char path[64];
+    char path[128];
 
-    file_getpackagepath(path, 64, package->name);
+    file_getpackagepath(path, 128, package->name);
 
     if (file_exist(path))
     {

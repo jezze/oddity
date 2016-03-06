@@ -78,9 +78,9 @@ unsigned int file_remove(char *name)
 unsigned int file_removeremote(unsigned int id)
 {
 
-    char remotedatapath[64];
+    char remotedatapath[128];
 
-    file_getremotedatabasepath(remotedatapath, 64, id);
+    file_getremotedatabasepath(remotedatapath, 128, id);
 
     return file_remove(remotedatapath);
 
@@ -89,9 +89,9 @@ unsigned int file_removeremote(unsigned int id)
 unsigned int file_removepackage(char *name)
 {
 
-    char remotedatapath[64];
+    char remotedatapath[128];
 
-    file_getpackagepath(remotedatapath, 64, name);
+    file_getpackagepath(remotedatapath, 128, name);
 
     return file_remove(remotedatapath);
 
@@ -155,9 +155,9 @@ unsigned int file_download(char *url, char *to, void (*notify)(unsigned int tota
 unsigned int file_downloadremote(char *url, unsigned int id, void (*notify)(unsigned int totalbytes, unsigned int percentage))
 {
 
-    char remotedatapath[64];
+    char remotedatapath[128];
 
-    file_getremotedatabasepath(remotedatapath, 64, id);
+    file_getremotedatabasepath(remotedatapath, 128, id);
 
     return file_download(url, remotedatapath, notify);
 
@@ -166,11 +166,11 @@ unsigned int file_downloadremote(char *url, unsigned int id, void (*notify)(unsi
 unsigned int file_downloadpackage(char *name, void (*notify)(unsigned int totalbytes, unsigned int percentage))
 {
 
-    char packagepath[64];
-    char remotepackagepath[64];
+    char packagepath[128];
+    char remotepackagepath[128];
 
-    file_getpackagepath(packagepath, 64, name);
-    file_getremotepackagepath(remotepackagepath, 64, name);
+    file_getpackagepath(packagepath, 128, name);
+    file_getremotepackagepath(remotepackagepath, 128, name);
 
     return file_download(remotepackagepath, packagepath, notify);
 

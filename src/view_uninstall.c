@@ -99,10 +99,10 @@ static unsigned int douninstall(struct db_packagelist *packagelist)
     for (i = 0; i < packagelist->count; i++)
     {
 
-        char path[64];
+        char path[128];
 
         updatestates(&packagelist->items[i]);
-        file_getpackagepath(path, 64, packagelist->items[i].name);
+        file_getpackagepath(path, 128, packagelist->items[i].name);
 
         if (file_exist(path))
             file_removepackage(packagelist->items[i].name);
