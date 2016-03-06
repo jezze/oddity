@@ -144,13 +144,15 @@ static unsigned int verifypackages(struct db_packagelist *packagelist)
 
 }
 
-static void downloadnotify(unsigned int totalbytes, unsigned int percentage)
+static unsigned int downloadnotify(unsigned int totalbytes, unsigned int percentage)
 {
 
     view.totalbytes = totalbytes;
     view.percentage = percentage;
 
     ztore_setmode(&view.base, renderdownloading, keydowndownloading);
+
+    return !view.abortdownload;
 
 }
 
@@ -211,6 +213,7 @@ static void load()
 {
 
     view.onload();
+    view.abortdownload = 0;
 
     ztore_setmode(&view.base, renderdefault, keydownoff);
     install();
@@ -224,6 +227,8 @@ static void menu_onselect()
     {
 
     case 0:
+        view.abortdownload = 1;
+
         break;
 
     }

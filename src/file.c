@@ -97,7 +97,7 @@ unsigned int file_removepackage(char *name)
 
 }
 
-unsigned int file_download(char *url, char *to, void (*notify)(unsigned int totalbytes, unsigned int percentage))
+unsigned int file_download(char *url, char *to, unsigned int (*notify)(unsigned int totalbytes, unsigned int percentage))
 {
 
     FILE *fd;
@@ -141,8 +141,14 @@ unsigned int file_download(char *url, char *to, void (*notify)(unsigned int tota
         sscanf(line, "%u", &totalbytes);
         sscanf(line + 62, "%u", &percentage);
 
-        if (notify)
-            notify(totalbytes, percentage);
+        if (notify && !notify(totalbytes, percentage))
+        {
+
+            pclose(fd);
+
+            return 0;
+
+        }
 
     }
 
@@ -152,7 +158,7 @@ unsigned int file_download(char *url, char *to, void (*notify)(unsigned int tota
 
 }
 
-unsigned int file_downloadremote(char *url, unsigned int id, void (*notify)(unsigned int totalbytes, unsigned int percentage))
+unsigned int file_downloadremote(char *url, unsigned int id, unsigned int (*notify)(unsigned int totalbytes, unsigned int percentage))
 {
 
     char remotedatapath[128];
@@ -163,7 +169,7 @@ unsigned int file_downloadremote(char *url, unsigned int id, void (*notify)(unsi
 
 }
 
-unsigned int file_downloadpackage(char *name, void (*notify)(unsigned int totalbytes, unsigned int percentage))
+unsigned int file_downloadpackage(char *name, unsigned int  (*notify)(unsigned int totalbytes, unsigned int percentage))
 {
 
     char packagepath[128];
