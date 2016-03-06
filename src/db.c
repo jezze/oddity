@@ -335,6 +335,22 @@ static unsigned int countapps(sqlite3 *db)
 
 }
 
+unsigned int db_countapps()
+{
+
+    sqlite3 *db;
+    unsigned int count;
+
+    opendatabase(&db);
+
+    count = countapps(db);
+
+    closedatabase(db);
+
+    return count;
+
+}
+
 int db_loadapps(struct db_applist *list)
 {
 
@@ -379,6 +395,22 @@ static unsigned int countinstalledapps(sqlite3 *db)
 
     if (sqlite3_finalize(res) != SQLITE_OK)
         exit(EXIT_FAILURE);
+
+    return count;
+
+}
+
+unsigned int db_countinstalledapps()
+{
+
+    sqlite3 *db;
+    unsigned int count;
+
+    opendatabase(&db);
+
+    count = countinstalledapps(db);
+
+    closedatabase(db);
 
     return count;
 

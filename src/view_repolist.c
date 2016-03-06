@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "define.h"
 #include "box.h"
 #include "text.h"
@@ -10,6 +11,8 @@
 #include "ztore.h"
 
 static struct view_repolist view;
+static char all[16];
+static char installed[16];
 
 static void render()
 {
@@ -37,6 +40,12 @@ static void keydown(unsigned int key)
 
 static void load()
 {
+
+    snprintf(all, 16, "%u items", db_countapps());
+    snprintf(installed, 16, "%u items", db_countinstalledapps());
+
+    view.menu.items[0].info.content = all;
+    view.menu.items[1].info.content = installed;
 
 }
 
