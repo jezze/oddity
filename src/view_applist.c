@@ -61,7 +61,8 @@ static void load()
 static void menu_onselect()
 {
 
-    ztore_load(&view.appview->base);
+    if (view.applist.count)
+        ztore_load(&view.appview->base);
 
 }
 
