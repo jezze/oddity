@@ -175,7 +175,7 @@ unsigned int file_downloadremote(char *url, unsigned int id, unsigned int (*noti
 
 }
 
-unsigned int file_downloadpackage(char *name, unsigned int  (*notify)(unsigned int totalbytes, unsigned int percentage))
+unsigned int file_downloadpackage(char *name, unsigned int (*notify)(unsigned int totalbytes, unsigned int percentage))
 {
 
     char packagepath[128];
