@@ -8,7 +8,6 @@
 #include "db.h"
 #include "view.h"
 #include "view_install.h"
-#include "backend.h"
 #include "ztore.h"
 
 static struct view_install view;
