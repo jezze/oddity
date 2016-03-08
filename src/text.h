@@ -6,6 +6,7 @@
 #define TEXT_COLOR_DISABLE              0xFF406060
 #define TEXT_ALIGN_LEFT                 0
 #define TEXT_ALIGN_RIGHT                1
+#define TEXT_ALIGN_CENTER               2
 
 struct text
 {

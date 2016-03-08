@@ -71,7 +71,7 @@ static unsigned int maxfit(char *text, unsigned int count, unsigned int width)
 
 }
 
-static void renderline(char *text, unsigned int count, unsigned int ascent, unsigned int offsety, unsigned int gx, unsigned int gy, unsigned int gw, unsigned int gh, unsigned int color)
+static void renderline(char *text, unsigned int count, unsigned int gx, unsigned int gy, unsigned int gw, unsigned int gh, unsigned int color)
 {
 
     unsigned int i;
@@ -86,11 +86,7 @@ static void renderline(char *text, unsigned int count, unsigned int ascent, unsi
         int advance;
 
         backend_getmetrics(text[i], &minx, &maxx, &miny, &maxy, &advance);
-
-        gy = offsety + ascent - maxy;
-        gw = advance;
-
-        backend_glyph(text[i], gx, gy, gw, gh, color);
+        backend_glyph(text[i], gx + minx, gy - maxy, maxx - minx, maxy - miny, color);
 
         gx += advance;
 
@@ -101,46 +97,47 @@ static void renderline(char *text, unsigned int count, unsigned int ascent, unsi
 void text_render(struct text *text, int x, int y, int w, int h, unsigned int color, unsigned int align)
 {
 
-    int ascent = backend_getascent();
     char *ptext = text->content;
     unsigned int pcount = strlen(text->content);
     unsigned int rx = x + TEXT_XPADDING;
     unsigned int ry = y + TEXT_YPADDING;
     unsigned int rw = w - TEXT_XPADDING * 2;
     unsigned int rh = h - TEXT_YPADDING * 2;
-    unsigned int gx = rx;
-    unsigned int gy = ry;
-    unsigned int gw = rw;
-    unsigned int gh = rh;
-    unsigned int offsety = ry;
+    unsigned int liney = ry + backend_getascent();
 
     while (pcount)
     {
 
         unsigned int linecount = maxfit(ptext, pcount, rw);
+        unsigned int linex;
 
         switch (align)
         {
 
         case TEXT_ALIGN_LEFT:
-            gx = rx;
+            linex = rx;
 
             break;
 
         case TEXT_ALIGN_RIGHT:
-            gx = rx + gw - textw(ptext, linecount);
+            linex = rx + rw - textw(ptext, linecount);
+
+            break;
+
+        case TEXT_ALIGN_CENTER:
+            linex = rx + (rw - textw(ptext, linecount)) / 2;
 
             break;
 
         }
 
-        renderline(ptext, linecount, ascent, offsety, gx, gy, gw, gh, color);
+        renderline(ptext, linecount, linex, liney, rw, rh, color);
 
         while (ptext[linecount] == ' ' || ptext[linecount] == '\n')
         {
 
             if (ptext[linecount] == '\n')
-                offsety += 16;
+                liney += 16;
 
             linecount++;
 
