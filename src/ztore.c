@@ -71,13 +71,12 @@ int main(int argc, char **argv)
     front = view_front_setup(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     ztore_load(&front->base);
-    backend_render(currentview->render);
 
     while (!quit)
     {
 
-        backend_waitevent(ztore_quit, currentview->keydown);
         backend_render(currentview->render);
+        backend_waitevent(ztore_quit, currentview->keydown);
 
     }
 
