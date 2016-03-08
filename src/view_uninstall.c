@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "define.h"
 #include "box.h"
 #include "text.h"
@@ -23,7 +24,10 @@ static void renderconfirm()
 static void renderuninstalling()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Uninstalling...");
+    char progress[128];
+
+    snprintf(progress, 128, "Uninstalling %s...", view.app->name);
+    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, progress);
 
 }
 
