@@ -137,9 +137,15 @@ void text_render(struct text *text, int x, int y, int w, int h, unsigned int col
         renderline(ptext, linecount, ascent, offsety, gx, gy, gw, gh, color);
 
         while (ptext[linecount] == ' ' || ptext[linecount] == '\n')
+        {
+
+            if (ptext[linecount] == '\n')
+                offsety += 16;
+
             linecount++;
 
-        offsety += 16;
+        }
+
         ptext += linecount;
         pcount -= linecount;
 
