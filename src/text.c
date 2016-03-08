@@ -71,7 +71,7 @@ static unsigned int maxfit(char *text, unsigned int count, unsigned int width)
 
 }
 
-static void renderline(char *text, unsigned int count, unsigned int gx, unsigned int gy, unsigned int gw, unsigned int gh, unsigned int color)
+static void renderline(char *text, unsigned int count, unsigned int gx, unsigned int gy, unsigned int color)
 {
 
     unsigned int i;
@@ -131,7 +131,7 @@ void text_render(struct text *text, int x, int y, int w, int h, unsigned int col
 
         }
 
-        renderline(ptext, linecount, linex, liney, rw, rh, color);
+        renderline(ptext, linecount, linex, liney, color);
 
         while (ptext[linecount] == ' ' || ptext[linecount] == '\n')
         {
@@ -145,6 +145,9 @@ void text_render(struct text *text, int x, int y, int w, int h, unsigned int col
 
         ptext += linecount;
         pcount -= linecount;
+
+        if (liney > ry + rh)
+            break;
 
     }
 
