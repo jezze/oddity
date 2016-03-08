@@ -137,9 +137,7 @@ unsigned int file_download(char *url, char *to, unsigned int (*notify)(unsigned 
 
         }
 
-        fgets(line, 1024, fd);
-
-        if (strlen(line) == 0)
+        if (!fgets(line, 1024, fd))
             break;
 
         if (row == 6 && strlen(line) != 1)
