@@ -71,7 +71,7 @@ static unsigned int maxfit(char *text, unsigned int count, unsigned int width)
 
 }
 
-static void renderline(char *text, unsigned int count, unsigned int gx, unsigned int gy, unsigned int color)
+static void renderline(char *text, unsigned int count, unsigned int x, unsigned int y, unsigned int color)
 {
 
     unsigned int i;
@@ -86,9 +86,9 @@ static void renderline(char *text, unsigned int count, unsigned int gx, unsigned
         int advance;
 
         backend_getmetrics(text[i], &minx, &maxx, &miny, &maxy, &advance);
-        backend_glyph(text[i], gx + minx, gy - maxy, maxx - minx, maxy - miny, color);
+        backend_glyph(text[i], x + minx, y - maxy, maxx - minx, maxy - miny, color);
 
-        gx += advance;
+        x += advance;
 
     }
 
@@ -99,33 +99,35 @@ void text_render(struct text *text, int x, int y, int w, int h, unsigned int col
 
     char *ptext = text->content;
     unsigned int pcount = strlen(text->content);
-    unsigned int rx = x + TEXT_XPADDING;
-    unsigned int ry = y + TEXT_YPADDING;
-    unsigned int rw = w - TEXT_XPADDING * 2;
-    unsigned int rh = h - TEXT_YPADDING * 2;
-    unsigned int liney = ry + backend_getascent();
+    unsigned int liney;
+
+    x += TEXT_XPADDING;
+    y += TEXT_YPADDING;
+    w -= TEXT_XPADDING * 2;
+    h -= TEXT_YPADDING * 2;
+    liney = y + backend_getascent();
 
     while (pcount)
     {
 
-        unsigned int linecount = maxfit(ptext, pcount, rw);
+        unsigned int linecount = maxfit(ptext, pcount, w);
         unsigned int linex;
 
         switch (align)
         {
 
         case TEXT_ALIGN_LEFT:
-            linex = rx;
+            linex = x;
 
             break;
 
         case TEXT_ALIGN_RIGHT:
-            linex = rx + rw - textw(ptext, linecount);
+            linex = x + w - textw(ptext, linecount);
 
             break;
 
         case TEXT_ALIGN_CENTER:
-            linex = rx + (rw - textw(ptext, linecount)) / 2;
+            linex = x + (w - textw(ptext, linecount)) / 2;
 
             break;
 
@@ -146,7 +148,7 @@ void text_render(struct text *text, int x, int y, int w, int h, unsigned int col
         ptext += linecount;
         pcount -= linecount;
 
-        if (liney > ry + rh)
+        if (liney > y + h)
             break;
 
     }
