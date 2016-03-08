@@ -24,14 +24,11 @@ void ztore_quit()
 
 }
 
-void ztore_setmode(struct view *view, void (*render)(), void (*keydown)())
+void ztore_redraw()
 {
 
-    view->render = render;
-    view->keydown = keydown;
-
-    backend_pollevent(ztore_quit, view->keydown);
-    backend_render(view->render);
+    backend_pollevent(ztore_quit, currentview->keydown);
+    backend_render(currentview->render);
 
 }
 

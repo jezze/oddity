@@ -79,7 +79,7 @@ static unsigned int downloadnotify(unsigned int totalbytes, unsigned int percent
     view.totalbytes = totalbytes;
     view.percentage = percentage;
 
-    ztore_setmode(&view.base, renderdownloading, keydowndownloading);
+    ztore_redraw();
 
     return !view.abortdownload;
 
@@ -94,6 +94,7 @@ static void sync()
 
     db_loadremotes(&remotelist);
 
+    view_setmode(&view.base, renderdownloading, keydowndownloading);
     downloadnotify(0, 0);
 
     for (i = 0; i < remotelist.count; i++)
@@ -101,7 +102,6 @@ static void sync()
 
         struct db_remote *remote = &remotelist.items[i];
 
-        ztore_setmode(&view.base, renderdownloading, keydowndownloading);
 
         if (file_downloadremote(remote->url, remote->id, downloadnotify))
             status = db_sync(remote);
@@ -113,10 +113,12 @@ static void sync()
     db_freeremotes(&remotelist);
 
     if (status)
-        ztore_setmode(&view.base, rendercomplete, keydownback);
+        view_setmode(&view.base, rendercomplete, keydownback);
     else
-        ztore_setmode(&view.base, renderfail, keydownback);
+        view_setmode(&view.base, renderfail, keydownback);
  
+    ztore_redraw();
+
 }
 
 static void load()
@@ -124,7 +126,7 @@ static void load()
 
     view.abortdownload = 0;
 
-    ztore_setmode(&view.base, renderdefault, keydownoff);
+    view_setmode(&view.base, renderdefault, keydownoff);
     sync();
 
 }

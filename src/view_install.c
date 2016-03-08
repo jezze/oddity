@@ -150,7 +150,7 @@ static unsigned int downloadnotify(unsigned int totalbytes, unsigned int percent
     view.totalbytes = totalbytes;
     view.percentage = percentage;
 
-    ztore_setmode(&view.base, renderdownloading, keydowndownloading);
+    ztore_redraw();
 
     return !view.abortdownload;
 
@@ -162,11 +162,13 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
     if (!packagelist->count)
         return 0;
 
-    ztore_setmode(&view.base, renderpreparing, keydownoff);
+    view_setmode(&view.base, renderpreparing, keydownoff);
+    ztore_redraw();
 
     if (verifypackages(packagelist))
         return 1;
 
+    view_setmode(&view.base, renderdownloading, keydowndownloading);
     downloadnotify(0, 0);
 
     if (!file_downloadpackage(packagelist->items[0].name, downloadnotify))
@@ -178,7 +180,8 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
 
     }
 
-    ztore_setmode(&view.base, renderinstalling, keydownoff);
+    view_setmode(&view.base, renderinstalling, keydownoff);
+    ztore_redraw();
 
     if (verifypackage(&packagelist->items[0]))
     {
@@ -201,10 +204,11 @@ static void install()
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (doinstall(&packagelist))
-        ztore_setmode(&view.base, rendercomplete, keydownback);
+        view_setmode(&view.base, rendercomplete, keydownback);
     else
-        ztore_setmode(&view.base, renderfail, keydownback);
+        view_setmode(&view.base, renderfail, keydownback);
 
+    ztore_redraw();
     db_freepackages(&packagelist);
 
 }
@@ -215,7 +219,7 @@ static void load()
     view.onload();
     view.abortdownload = 0;
 
-    ztore_setmode(&view.base, renderdefault, keydownoff);
+    view_setmode(&view.base, renderdefault, keydownoff);
     install();
 
 }

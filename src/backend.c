@@ -4,9 +4,7 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
 #include "define.h"
-#include "view.h"
 #include "backend.h"
-#include "ztore.h"
 
 SDL_Surface *display;
 SDL_Surface *background;

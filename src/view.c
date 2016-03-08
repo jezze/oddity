@@ -1,6 +1,14 @@
 #include <stdlib.h>
 #include "view.h"
 
+void view_setmode(struct view *view, void (*render)(), void (*keydown)())
+{
+
+    view->render = render;
+    view->keydown = keydown;
+
+}
+
 void view_quit(struct view *view)
 {
 

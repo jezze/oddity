@@ -118,14 +118,17 @@ static void uninstall()
 
     struct db_packagelist packagelist;
 
-    ztore_setmode(&view.base, renderuninstalling, keydownoff);
+    view_setmode(&view.base, renderuninstalling, keydownoff);
+    ztore_redraw();
+
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (douninstall(&packagelist))
-        ztore_setmode(&view.base, rendercomplete, keydownback);
+        view_setmode(&view.base, rendercomplete, keydownback);
     else
-        ztore_setmode(&view.base, renderfail, keydownback);
+        view_setmode(&view.base, renderfail, keydownback);
 
+    ztore_redraw();
     db_freepackages(&packagelist);
 
 }
@@ -135,7 +138,7 @@ static void load()
 
     view.onload();
 
-    ztore_setmode(&view.base, renderconfirm, keydownconfirm);
+    view_setmode(&view.base, renderconfirm, keydownconfirm);
 
 }
 
