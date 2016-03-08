@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/poll.h>
 #include "file.h"
 
 static char *home;
@@ -103,7 +104,10 @@ unsigned int file_download(char *url, char *to, unsigned int (*notify)(unsigned 
     FILE *fd;
     char command[256];
     char line[1024];
-    unsigned int start = 0;
+    struct pollfd udfs[1];
+    unsigned int row = 0;
+    unsigned int totalbytes = 0;
+    unsigned int percentage = 0;
 
     snprintf(command, 256, "wget --progress=dot %s -O %s 2>&1", url, to);
 
@@ -112,49 +116,53 @@ unsigned int file_download(char *url, char *to, unsigned int (*notify)(unsigned 
     if (!fd)
         return 0;
 
-    while (fgets(line, 1024, fd))
+    udfs[0].fd = fileno(fd);
+    udfs[0].events = POLLIN;
+
+    while (percentage < 100)
     {
 
-        if (strlen(line) == 0)
-            return 0;
+        int rv = poll(udfs, 1, 1000);
 
-        if (strlen(line) == 1)
-        {
-
-            start = 1;
-
+        if (rv == -1)
             break;
 
-        }
-
-    }
-
-    if (!start)
-        return 0;
-
-    while (fgets(line, 1024, fd))
-    {
-
-        unsigned int totalbytes;
-        unsigned int percentage;
-
-        sscanf(line, "%u", &totalbytes);
-        sscanf(line + 62, "%u", &percentage);
-
-        if (notify && !notify(totalbytes, percentage))
+        if (!rv)
         {
 
-            pclose(fd);
+            if (!notify(totalbytes, percentage))
+                break;
 
-            return 0;
+            continue;
 
         }
+
+        fgets(line, 1024, fd);
+
+        if (strlen(line) == 0)
+            break;
+
+        if (row == 6 && strlen(line) != 1)
+            break;
+
+        if (row > 6)
+        {
+
+            sscanf(line, "%u", &totalbytes);
+            sscanf(line + 62, "%u", &percentage);
+
+            if (!notify(totalbytes, percentage))
+                break;
+
+        }
+
+        row++;
 
     }
 
     pclose(fd);
 
-    return 1;
+    return percentage == 100;
 
 }
 
