@@ -17,9 +17,9 @@ static struct view_app view;
 static void render()
 {
 
-    text_renderbox(&view.title, view.titlebox.x, view.titlebox.y, view.titlebox.w, view.titlebox.h, TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, view.app->name);
-    text_renderbox(&view.shortdescription, view.shortbox.x, view.shortbox.y, view.shortbox.w, view.shortbox.h, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, view.app->shortdescription);
-    menu_render(&view.menu);
+    text_render(&view.titlebox, TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, view.app->name);
+    text_render(&view.shortbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, view.app->shortdescription);
+    menu_render(&view.menu, &view.menubox);
 
 }
 
@@ -157,14 +157,14 @@ struct view_app *view_app_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, load, render, keydown);
+    box_init(&view.titlebox, 0, 0, w, (1 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+    box_init(&view.shortbox, 0, (0 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING), w, (5 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+    box_init(&view.menubox, 0, (5 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING), w, (3 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 3);
     menu_inititem(&view.menuitems[0], "Run", 0);
     menu_inititem(&view.menuitems[1], "Install", 0);
     menu_inititem(&view.menuitems[2], "Uninstall", 0);
     menu_setrow(&view.menu, 0);
-    box_init(&view.titlebox, 0, 0, w, (1 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
-    box_init(&view.shortbox, 0, (1 * RENDER_ROWHEIGHT), w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
-    box_init(&view.menu.box, 0, h - (view.menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (view.menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
 
     view.menu.onselect = menu_onselect;
     view.installview = view_install_setup(w, h);

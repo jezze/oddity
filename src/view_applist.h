@@ -5,7 +5,7 @@ struct view_applist
     struct view_app *appview;
     struct db_applist applist;
     struct menu menu;
-    struct textbox emptytext;
+    struct box menubox;
     struct box emptytextbox;
     void (*onload)();
 

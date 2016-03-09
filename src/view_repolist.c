@@ -17,7 +17,7 @@ static char installed[16];
 static void render()
 {
 
-    menu_render(&view.menu);
+    menu_render(&view.menu, &view.menubox);
 
 }
 
@@ -44,8 +44,8 @@ static void load()
     snprintf(all, 16, "%u items", db_countapps());
     snprintf(installed, 16, "%u items", db_countinstalledapps());
 
-    view.menu.items[0].info.content = all;
-    view.menu.items[1].info.content = installed;
+    view.menu.items[0].info = all;
+    view.menu.items[1].info = installed;
 
 }
 
@@ -102,11 +102,11 @@ struct view_repolist *view_repolist_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, load, render, keydown);
+    box_init(&view.menubox, 0, 0, w, h);
     menu_init(&view.menu, view.menuitems, 2);
     menu_inititem(&view.menuitems[0], "All", "0 items");
     menu_inititem(&view.menuitems[1], "Installed", "0 items");
     menu_setrow(&view.menu, 0);
-    box_init(&view.menu.box, 0, 0, w, h);
 
     view.menu.onselect = menu_onselect;
     view.applistview = view_applist_setup(w, h);

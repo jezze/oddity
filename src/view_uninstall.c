@@ -15,8 +15,8 @@ static struct view_uninstall view;
 static void renderconfirm()
 {
 
-    text_renderbox(&view.status, view.statusbox.x, view.statusbox.y, view.statusbox.w, view.statusbox.h, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Are you sure you want to uninstall?");
-    menu_render(&view.menu);
+    text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Are you sure you want to uninstall?");
+    menu_render(&view.menu, &view.menubox);
 
 }
 
@@ -26,21 +26,21 @@ static void renderuninstalling()
     char progress[128];
 
     snprintf(progress, 128, "Uninstalling %s...", view.app->name);
-    text_renderbox(&view.status, view.statusbox.x, view.statusbox.y, view.statusbox.w, view.statusbox.h, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, progress);
+    text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, progress);
 
 }
 
 static void rendercomplete()
 {
 
-    text_renderbox(&view.status, view.statusbox.x, view.statusbox.y, view.statusbox.w, view.statusbox.h, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Uninstall complete!\n\nPress B to go back.");
+    text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Uninstall complete!\n\nPress B to go back.");
 
 }
 
 static void renderfail()
 {
 
-    text_renderbox(&view.status, view.statusbox.x, view.statusbox.y, view.statusbox.w, view.statusbox.h, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Uninstall failed!\n\nPress B to go back.");
+    text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Uninstall failed!\n\nPress B to go back.");
 
 }
 
@@ -164,12 +164,11 @@ struct view_uninstall *view_uninstall_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, load, renderconfirm, keydownconfirm);
-    text_init(&view.status.text);
-    box_init(&view.statusbox, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+    box_init(&view.statusbox, 0, 0, w, (7 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+    box_init(&view.menubox, 0, (7 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING), w, (1 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 1);
     menu_inititem(&view.menuitems[0], "Yes, I am sure", 0);
     menu_setrow(&view.menu, 0);
-    box_init(&view.menu.box, 0, h - (view.menu.total * RENDER_ROWHEIGHT) - (2 * RENDER_PADDING), w, (view.menu.total * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
 
     view.menu.onselect = menu_onselect;
 

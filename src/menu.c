@@ -55,7 +55,7 @@ static void setprevrow(struct menu *menu)
 static void setnextpage(struct menu *menu)
 {
 
-    unsigned int pagerows = (menu->box.h - 2 * RENDER_PADDING) / RENDER_ROWHEIGHT;
+    unsigned int pagerows = 9;
     unsigned int pagetotal = (menu->total / pagerows) + 1;
     unsigned int pageoffset = (pagetotal + (menu->currentitem / pagerows) + 1) % pagetotal;
     unsigned int rowoffset = menu->currentitem % pagerows;
@@ -69,7 +69,7 @@ static void setnextpage(struct menu *menu)
 static void setprevpage(struct menu *menu)
 {
 
-    unsigned int pagerows = (menu->box.h - 2 * RENDER_PADDING) / RENDER_ROWHEIGHT;
+    unsigned int pagerows = 9;
     unsigned int pagetotal = (menu->total / pagerows) + 1;
     unsigned int pageoffset = (pagetotal + (menu->currentitem / pagerows) - 1) % pagetotal;
     unsigned int rowoffset = menu->currentitem % pagerows;
@@ -118,53 +118,64 @@ void menu_keydown(struct menu *menu, unsigned int key)
 
 }
 
-void menu_renderitem(struct menuitem *menuitem, int x, int y, int w, int h)
+void menu_renderitem(struct menuitem *menuitem, struct box *box)
 {
 
     if (menuitem->flag & MENUITEM_FLAG_SELECTED)
-        backend_rect(x, y, w, h);
+        backend_rect(box->x, box->y, box->w, box->h);
 
     if (menuitem->flag & MENUITEM_FLAG_DISABLED)
     {
 
-        text_render(&menuitem->label, x, y, w, h, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, menuitem->label.content);
+        text_render(box, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, menuitem->label);
 
-        if (menuitem->info.content)
-            text_render(&menuitem->info, x, y, w, h, TEXT_COLOR_DISABLE, TEXT_ALIGN_RIGHT, menuitem->info.content);
+        if (menuitem->info)
+            text_render(box, TEXT_COLOR_DISABLE, TEXT_ALIGN_RIGHT, menuitem->info);
 
     }
 
     else
     {
 
-        text_render(&menuitem->label, x, y, w, h, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, menuitem->label.content);
+        text_render(box, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, menuitem->label);
 
-        if (menuitem->info.content)
-            text_render(&menuitem->info, x, y, w, h, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, menuitem->info.content);
+        if (menuitem->info)
+            text_render(box, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, menuitem->info);
 
     }
 
 }
 
-void menu_render(struct menu *menu)
+void menu_render(struct menu *menu, struct box *box)
 {
 
-    unsigned int pagerows = (menu->box.h - 2 * RENDER_PADDING) / RENDER_ROWHEIGHT;
+    unsigned int pagerows = 9;
     unsigned int page = (menu->currentitem / pagerows);
     unsigned int rowstart = page * pagerows;
     unsigned int rowend = (rowstart + pagerows) > menu->total ? menu->total : rowstart + pagerows;
     unsigned int row;
 
     for (row = rowstart; row < rowend; row++)
-        menu_renderitem(&menu->items[row], menu->box.x + RENDER_PADDING, menu->box.y + RENDER_PADDING + (row - rowstart) * RENDER_ROWHEIGHT, menu->box.w - (2 * RENDER_PADDING), RENDER_ROWHEIGHT);
+    {
+
+        struct box rowbox;
+
+        rowbox.x = box->x;
+        rowbox.y = box->y + (row - rowstart) * RENDER_ROWHEIGHT;
+        rowbox.w = box->w;
+        rowbox.h = RENDER_ROWHEIGHT;
+
+        menu_renderitem(&menu->items[row], &rowbox);
+
+    }
 
 }
 
 void menu_inititem(struct menuitem *menuitem, char *label, char *info)
 {
 
-    menuitem->label.content = label;
-    menuitem->info.content = info;
+    menuitem->label = label;
+    menuitem->info = info;
     menuitem->flag = MENUITEM_FLAG_NORMAL;
 
 }

@@ -4,9 +4,9 @@ struct view_front
     struct view base;
     struct view_repolist *repolistview;
     struct view_sync *syncview;
-    struct textbox greeting;
     struct box greetingbox;
     struct menu menu;
+    struct box menubox;
     struct menuitem menuitems[4];
 
 };

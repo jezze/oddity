@@ -94,18 +94,16 @@ static void renderline(char *text, unsigned int count, unsigned int x, unsigned 
 
 }
 
-void text_render(struct text *text, int x, int y, int w, int h, unsigned int color, unsigned int align, char *content)
+void text_render(struct box *box, unsigned int color, unsigned int align, char *content)
 {
 
     char *ptext = content;
     unsigned int pcount = strlen(content);
-    unsigned int liney;
-
-    x += TEXT_XPADDING;
-    y += TEXT_YPADDING;
-    w -= TEXT_XPADDING * 2;
-    h -= TEXT_YPADDING * 2;
-    liney = y + backend_getascent();
+    unsigned int x = box->x + TEXT_XPADDING;
+    unsigned int y = box->y + TEXT_YPADDING;
+    unsigned int w = box->w - TEXT_XPADDING * 2;
+    unsigned int h = box->h - TEXT_YPADDING * 2;
+    unsigned int liney = y + backend_getascent();
 
     while (pcount)
     {
@@ -152,18 +150,6 @@ void text_render(struct text *text, int x, int y, int w, int h, unsigned int col
             break;
 
     }
-
-}
-
-void text_renderbox(struct textbox *textbox, int x, int y, int w, int h, unsigned int color, unsigned int align, char *content)
-{
-
-    text_render(&textbox->text, x + RENDER_PADDING, y + RENDER_PADDING, w - (2 * RENDER_PADDING), h - (2 * RENDER_PADDING), color, align, content);
-
-}
-
-void text_init(struct text *text)
-{
 
 }
 

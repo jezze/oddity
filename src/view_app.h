@@ -5,11 +5,10 @@ struct view_app
     struct view_install *installview;
     struct view_uninstall *uninstallview;
     struct db_app *app;
-    struct textbox title;
     struct box titlebox;
-    struct textbox shortdescription;
     struct box shortbox;
     struct menu menu;
+    struct box menubox;
     struct menuitem menuitems[3];
     void (*onload)();
 

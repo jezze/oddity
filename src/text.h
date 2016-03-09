@@ -8,20 +8,4 @@
 #define TEXT_ALIGN_RIGHT                1
 #define TEXT_ALIGN_CENTER               2
 
-struct text
-{
-
-    char *content;
-
-};
-
-struct textbox
-{
-
-    struct text text;
-
-};
-
-void text_render(struct text *text, int x, int y, int w, int h, unsigned int color, unsigned int align, char *content);
-void text_renderbox(struct textbox *textbox, int x, int y, int w, int h, unsigned int color, unsigned int align, char *content);
-void text_init(struct text *text);
+void text_render(struct box *box, unsigned int color, unsigned int align, char *content);
