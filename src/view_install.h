@@ -4,6 +4,7 @@ struct view_install
     struct view base;
     struct db_app *app;
     struct textbox status;
+    struct box statusbox;
     struct menu menu;
     struct menuitem menuitems[1];
     unsigned int percentage;

@@ -19,10 +19,9 @@ struct textbox
 {
 
     struct text text;
-    struct box box;
 
 };
 
-void text_render(struct text *text, int x, int y, int w, int h, unsigned int color, unsigned int align);
-void text_renderbox(struct textbox *textbox, unsigned int color, unsigned int align, char *content);
-void text_init(struct text *text, char *content);
+void text_render(struct text *text, int x, int y, int w, int h, unsigned int color, unsigned int align, char *content);
+void text_renderbox(struct textbox *textbox, int x, int y, int w, int h, unsigned int color, unsigned int align, char *content);
+void text_init(struct text *text);

@@ -15,14 +15,14 @@ static struct view_install view;
 static void renderdefault()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Please wait...");
+    text_renderbox(&view.status, view.statusbox.x, view.statusbox.y, view.statusbox.w, view.statusbox.h, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Please wait...");
 
 }
 
 static void renderpreparing()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Preparing...");
+    text_renderbox(&view.status, view.statusbox.x, view.statusbox.y, view.statusbox.w, view.statusbox.h, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Preparing...");
 
 }
 
@@ -32,7 +32,7 @@ static void renderdownloading()
     char progress[128];
 
     snprintf(progress, 128, "Downloading %s...\n\nProgress: %d%%\nTotal bytes: %dKB", view.app->name, view.percentage, view.totalbytes);
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, progress);
+    text_renderbox(&view.status, view.statusbox.x, view.statusbox.y, view.statusbox.w, view.statusbox.h, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, progress);
     menu_render(&view.menu);
 
 }
@@ -40,21 +40,21 @@ static void renderdownloading()
 static void renderinstalling()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installing...");
+    text_renderbox(&view.status, view.statusbox.x, view.statusbox.y, view.statusbox.w, view.statusbox.h, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installing...");
 
 }
 
 static void rendercomplete()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installation complete!\n\nPress B to go back.");
+    text_renderbox(&view.status, view.statusbox.x, view.statusbox.y, view.statusbox.w, view.statusbox.h, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installation complete!\n\nPress B to go back.");
 
 }
 
 static void renderfail()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installation failed!\n\nPress B to go back.");
+    text_renderbox(&view.status, view.statusbox.x, view.statusbox.y, view.statusbox.w, view.statusbox.h, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installation failed!\n\nPress B to go back.");
 
 }
 
@@ -241,8 +241,8 @@ struct view_install *view_install_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, load, renderdefault, keydownoff);
-    text_init(&view.status.text, 0);
-    box_init(&view.status.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+    text_init(&view.status.text);
+    box_init(&view.statusbox, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 1);
     menu_inititem(&view.menuitems[0], "Cancel", 0);
     menu_setrow(&view.menu, 0);

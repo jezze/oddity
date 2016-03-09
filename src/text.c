@@ -94,11 +94,11 @@ static void renderline(char *text, unsigned int count, unsigned int x, unsigned 
 
 }
 
-void text_render(struct text *text, int x, int y, int w, int h, unsigned int color, unsigned int align)
+void text_render(struct text *text, int x, int y, int w, int h, unsigned int color, unsigned int align, char *content)
 {
 
-    char *ptext = text->content;
-    unsigned int pcount = strlen(text->content);
+    char *ptext = content;
+    unsigned int pcount = strlen(content);
     unsigned int liney;
 
     x += TEXT_XPADDING;
@@ -155,19 +155,15 @@ void text_render(struct text *text, int x, int y, int w, int h, unsigned int col
 
 }
 
-void text_renderbox(struct textbox *textbox, unsigned int color, unsigned int align, char *content)
+void text_renderbox(struct textbox *textbox, int x, int y, int w, int h, unsigned int color, unsigned int align, char *content)
 {
 
-    textbox->text.content = content;
-
-    text_render(&textbox->text, textbox->box.x + RENDER_PADDING, textbox->box.y + RENDER_PADDING, textbox->box.w - (2 * RENDER_PADDING), textbox->box.h - (2 * RENDER_PADDING), color, align);
+    text_render(&textbox->text, x + RENDER_PADDING, y + RENDER_PADDING, w - (2 * RENDER_PADDING), h - (2 * RENDER_PADDING), color, align, content);
 
 }
 
-void text_init(struct text *text, char *content)
+void text_init(struct text *text)
 {
-
-    text->content = content;
 
 }
 

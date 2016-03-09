@@ -15,7 +15,7 @@ static struct view_sync view;
 static void renderdefault()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Please wait...");
+    text_renderbox(&view.status, view.statusbox.x, view.statusbox.y, view.statusbox.w, view.statusbox.h, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Please wait...");
 
 }
 
@@ -25,7 +25,7 @@ static void renderdownloading()
     char progress[128];
 
     snprintf(progress, 128, "Downloading...\n\nProgress: %d%%\nTotal bytes: %dKB", view.percentage, view.totalbytes);
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, progress);
+    text_renderbox(&view.status, view.statusbox.x, view.statusbox.y, view.statusbox.w, view.statusbox.h, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, progress);
     menu_render(&view.menu);
 
 }
@@ -33,14 +33,14 @@ static void renderdownloading()
 static void rendercomplete()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Sync complete!\n\nPress B to go back.");
+    text_renderbox(&view.status, view.statusbox.x, view.statusbox.y, view.statusbox.w, view.statusbox.h, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Sync complete!\n\nPress B to go back.");
 
 }
 
 static void renderfail()
 {
 
-    text_renderbox(&view.status, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Sync failed!\n\nPress B to go back.");
+    text_renderbox(&view.status, view.statusbox.x, view.statusbox.y, view.statusbox.w, view.statusbox.h, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Sync failed!\n\nPress B to go back.");
 
 }
 
@@ -148,8 +148,8 @@ struct view_sync *view_sync_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, load, renderdefault, keydownoff);
-    text_init(&view.status.text, 0);
-    box_init(&view.status.box, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+    text_init(&view.status.text);
+    box_init(&view.statusbox, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
     menu_init(&view.menu, view.menuitems, 1);
     menu_inititem(&view.menuitems[0], "Cancel", 0);
     menu_setrow(&view.menu, 0);

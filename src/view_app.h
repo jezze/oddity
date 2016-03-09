@@ -6,7 +6,9 @@ struct view_app
     struct view_uninstall *uninstallview;
     struct db_app *app;
     struct textbox title;
+    struct box titlebox;
     struct textbox shortdescription;
+    struct box shortbox;
     struct menu menu;
     struct menuitem menuitems[3];
     void (*onload)();

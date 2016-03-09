@@ -4,6 +4,7 @@ struct view_uninstall
     struct view base;
     struct db_app *app;
     struct textbox status;
+    struct box statusbox;
     struct menu menu;
     struct menuitem menuitems[1];
     void (*onload)();
