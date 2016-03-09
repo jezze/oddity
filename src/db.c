@@ -402,14 +402,16 @@ int db_loadapps(struct db_applist *list)
 
 }
 
-static unsigned int countinstalledapps(sqlite3 *db)
+static unsigned int countappswithstate(sqlite3 *db, unsigned int state)
 {
 
     sqlite3_stmt *res;
     unsigned int count;
 
-    if (sqlite3_prepare_v2(db, "SELECT COUNT(*) AS count FROM apps WHERE state = 3", -1, &res, 0) != SQLITE_OK)
+    if (sqlite3_prepare_v2(db, "SELECT COUNT(*) AS count FROM apps WHERE state = ?", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
+
+    sqlite3_bind_int(res, 1, state);
 
     if (sqlite3_step(res) == SQLITE_ROW)
         count = sqlite3_column_int(res, 0);
@@ -424,7 +426,7 @@ static unsigned int countinstalledapps(sqlite3 *db)
 
 }
 
-unsigned int db_countinstalledapps()
+unsigned int db_countappswithstate(unsigned int state)
 {
 
     sqlite3 *db;
@@ -432,7 +434,7 @@ unsigned int db_countinstalledapps()
 
     opendatabase(&db);
 
-    count = countinstalledapps(db);
+    count = countappswithstate(db, state);
 
     closedatabase(db);
 
@@ -440,7 +442,7 @@ unsigned int db_countinstalledapps()
 
 }
 
-int db_loadinstalledapps(struct db_applist *list)
+int db_loadappswithstate(struct db_applist *list, unsigned int state)
 {
 
     sqlite3 *db;
@@ -449,11 +451,13 @@ int db_loadinstalledapps(struct db_applist *list)
 
     opendatabase(&db);
 
-    list->count = countinstalledapps(db);
+    list->count = countappswithstate(db, state);
     list->items = malloc(sizeof (struct db_app) * list->count);
 
-    if (sqlite3_prepare_v2(db, "SELECT id, name, short, state FROM apps WHERE state = 3 ORDER BY name", -1, &res, 0) != SQLITE_OK)
+    if (sqlite3_prepare_v2(db, "SELECT id, name, short, state FROM apps WHERE state = ? ORDER BY name", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
+
+    sqlite3_bind_int(res, 1, state);
 
     for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
         db_createapp(&list->items[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2), sqlite3_column_int(res, 3));

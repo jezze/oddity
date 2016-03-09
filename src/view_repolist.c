@@ -42,7 +42,7 @@ static void load()
 {
 
     snprintf(all, 16, "%u items", db_countapps());
-    snprintf(installed, 16, "%u items", db_countinstalledapps());
+    snprintf(installed, 16, "%u items", db_countappswithstate(3));
 
     view.menu.items[0].info = all;
     view.menu.items[1].info = installed;
@@ -90,7 +90,7 @@ static void applistview_onload()
         break;
 
     case 1:
-        db_loadinstalledapps(&view.applistview->applist);
+        db_loadappswithstate(&view.applistview->applist, 3);
 
         break;
 
