@@ -56,12 +56,12 @@ static void menu_onselect()
     {
 
     case 0:
-        ztore_load(&view.applistview->base);
+        view_load(&view.applistview->base);
 
         break;
 
     case 1:
-        ztore_load(&view.applistview->base);
+        view_load(&view.applistview->base);
 
         break;
 
@@ -72,7 +72,7 @@ static void menu_onselect()
 static void applistview_onquit()
 {
 
-    ztore_load(&view.base);
+    view_load(&view.base);
 
 }
 

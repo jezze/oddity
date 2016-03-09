@@ -119,12 +119,12 @@ static void menu_onselect()
         break;
 
     case 1:
-        ztore_load(&view.installview->base);
+        view_load(&view.installview->base);
 
         break;
 
     case 2:
-        ztore_load(&view.uninstallview->base);
+        view_load(&view.uninstallview->base);
 
         break;
 
@@ -135,7 +135,7 @@ static void menu_onselect()
 static void xinstallview_onquit()
 {
 
-    ztore_load(&view.base);
+    view_load(&view.base);
 
 }
 

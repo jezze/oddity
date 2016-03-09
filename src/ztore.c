@@ -14,24 +14,6 @@
 #define SCREEN_HEIGHT                   240
 #define SCREEN_BPP                      32
 
-static struct view *currentview;
-static unsigned int quit;
-
-void ztore_quit()
-{
-
-    quit = 1;
-
-}
-
-void ztore_redraw()
-{
-
-    backend_pollevent(ztore_quit, currentview->keydown);
-    backend_render(currentview->render);
-
-}
-
 void ztore_exec(char *name)
 {
 
@@ -48,38 +30,18 @@ void ztore_exec(char *name)
 
 }
 
-void ztore_load(struct view *view)
-{
-
-    currentview = view;
-
-    currentview->load();
-
-}
-
 int main(int argc, char **argv)
 {
 
-    struct view_front *front;
+    struct view_front *front = view_front_setup(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     file_init();
     db_init();
     backend_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
     backend_loadbackground("back.png");
     backend_loadfont("habbo.ttf");
-
-    front = view_front_setup(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-    ztore_load(&front->base);
-
-    while (!quit)
-    {
-
-        backend_render(currentview->render);
-        backend_waitevent(ztore_quit, currentview->keydown);
-
-    }
-
+    view_load(&front->base);
+    view_loop();
     backend_unloadfont();
     backend_unloadbackground();
     backend_destroy();

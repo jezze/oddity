@@ -13,6 +13,10 @@ struct view
 
 };
 
+void view_quitloop();
+void view_redraw();
+void view_load(struct view *view);
+void view_loop();
 void view_setmode(struct view *view, void (*render)(), void (*keydown)());
 void view_quit(struct view *view);
 void view_init(struct view *view, void (*load)(), void (*render)(), void (*keydown)(unsigned int key));

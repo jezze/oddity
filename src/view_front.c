@@ -38,12 +38,12 @@ static void menu_onselect()
     {
 
     case 0:
-        ztore_load(&view.repolistview->base);
+        view_load(&view.repolistview->base);
 
         break;
 
     case 1:
-        ztore_load(&view.syncview->base);
+        view_load(&view.syncview->base);
 
         break;
 
@@ -51,7 +51,7 @@ static void menu_onselect()
         break;
 
     case 3:
-        ztore_quit();
+        view_quitloop();
 
         break;
 
@@ -62,14 +62,14 @@ static void menu_onselect()
 static void repolistview_onquit()
 {
 
-    ztore_load(&view.base);
+    view_load(&view.base);
 
 }
 
 static void syncview_onquit()
 {
 
-    ztore_load(&view.base);
+    view_load(&view.base);
 
 }
 

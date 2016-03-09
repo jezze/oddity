@@ -62,14 +62,14 @@ static void menu_onselect()
 {
 
     if (view.applist.count)
-        ztore_load(&view.appview->base);
+        view_load(&view.appview->base);
 
 }
 
 static void appview_onquit()
 {
 
-    ztore_load(&view.base);
+    view_load(&view.base);
 
 }
 
