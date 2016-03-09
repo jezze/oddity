@@ -84,8 +84,10 @@ struct view_applist *view_applist_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, load, render, keydown);
-    box_init(&view.emptytextbox, 0, 0, w, (1 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
-    box_init(&view.menubox, 0, 0, w, h);
+    box_init(&view.emptytextbox);
+    box_init(&view.menubox);
+    box_setpartsize(&view.emptytextbox, w, h, 0, 0, 1, 1);
+    box_setpartsize(&view.menubox, w, h, 0, 0, 1, 1);
     menu_init(&view.menu, 0, 0);
 
     view.menu.onselect = menu_onselect;

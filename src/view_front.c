@@ -77,8 +77,10 @@ struct view_front *view_front_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, load, render, keydown);
-    box_init(&view.greetingbox, 0, 0, w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
-    box_init(&view.menubox, 0, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING), w, (4 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+    box_init(&view.greetingbox);
+    box_init(&view.menubox);
+    box_setpartsize(&view.greetingbox, w / 10, h / 10, 0, 0, 10, 5);
+    box_setpartsize(&view.menubox, w / 10, h / 10, 0, 5, 10, 5);
     menu_init(&view.menu, view.menuitems, 4);
     menu_inititem(&view.menuitems[0], "Browse", 0);
     menu_inititem(&view.menuitems[1], "Sync", 0);

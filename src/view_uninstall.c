@@ -164,8 +164,10 @@ struct view_uninstall *view_uninstall_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, load, renderconfirm, keydownconfirm);
-    box_init(&view.statusbox, 0, 0, w, (7 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
-    box_init(&view.menubox, 0, (7 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING), w, (1 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+    box_init(&view.statusbox);
+    box_init(&view.menubox);
+    box_setpartsize(&view.statusbox, w / 10, h / 10, 0, 0, 10, 8);
+    box_setpartsize(&view.menubox, w / 10, h / 10, 0, 8, 10, 2);
     menu_init(&view.menu, view.menuitems, 1);
     menu_inititem(&view.menuitems[0], "Yes, I am sure", 0);
     menu_setrow(&view.menu, 0);

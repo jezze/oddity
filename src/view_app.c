@@ -157,9 +157,12 @@ struct view_app *view_app_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, load, render, keydown);
-    box_init(&view.titlebox, 0, 0, w, (1 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
-    box_init(&view.shortbox, 0, (0 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING), w, (5 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
-    box_init(&view.menubox, 0, (5 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING), w, (3 * RENDER_ROWHEIGHT) + (2 * RENDER_PADDING));
+    box_init(&view.titlebox);
+    box_init(&view.shortbox);
+    box_init(&view.menubox);
+    box_setpartsize(&view.titlebox, w / 10, h / 10, 0, 0, 10, 2);
+    box_setpartsize(&view.shortbox, w / 10, h / 10, 0, 1, 10, 6);
+    box_setpartsize(&view.menubox, w / 10, h / 10, 0, 6, 10, 4);
     menu_init(&view.menu, view.menuitems, 3);
     menu_inititem(&view.menuitems[0], "Run", 0);
     menu_inititem(&view.menuitems[1], "Install", 0);
