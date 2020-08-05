@@ -3,7 +3,6 @@
 #include "define.h"
 #include "box.h"
 #include "text.h"
-#include "view.h"
 #include "backend.h"
 
 static unsigned int rtrim(char *text, unsigned int count)

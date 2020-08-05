@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include "backend.h"
 #include "view.h"
 
 void view_load(struct view *view, struct view *parent)

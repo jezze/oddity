@@ -3,7 +3,6 @@
 #include "box.h"
 #include "text.h"
 #include "menu.h"
-#include "view.h"
 #include "backend.h"
 
 static unsigned int iscurrent(struct menu *menu, unsigned int index)
