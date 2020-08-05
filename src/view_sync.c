@@ -26,6 +26,14 @@ struct view_sync
 
 static struct view_sync view;
 
+static void place(unsigned int w, unsigned int h)
+{
+
+    box_setpartsize(&view.statusbox, w / 10, h / 10, 0, 0, 10, 8);
+    box_setpartsize(&view.menubox, w / 10, h / 10, 0, 8, 10, 2);
+
+}
+
 static void renderdefault(void)
 {
 
@@ -106,7 +114,7 @@ static void sync(void)
 
     db_loadremotes(&remotelist);
 
-    ztore_setview(renderdownloading, buttondownloading);
+    ztore_setview(place, renderdownloading, buttondownloading);
     downloadnotify(0, 0);
 
     for (i = 0; i < remotelist.count; i++)
@@ -125,9 +133,9 @@ static void sync(void)
     db_freeremotes(&remotelist);
 
     if (status)
-        ztore_setview(rendercomplete, buttonback);
+        ztore_setview(place, rendercomplete, buttonback);
     else
-        ztore_setview(renderfail, buttonback);
+        ztore_setview(place, renderfail, buttonback);
  
     ztore_redraw();
 
@@ -138,7 +146,7 @@ static void load(void)
 
     view.abortdownload = 0;
 
-    ztore_setview(renderdefault, buttonoff);
+    ztore_setview(place, renderdefault, buttonoff);
     sync();
 
 }
@@ -158,14 +166,12 @@ static void menu_onselect(void)
 
 }
 
-struct view *view_sync_setup(unsigned int w, unsigned int h)
+struct view *view_sync_setup(void)
 {
 
     view_init(&view.base, load);
     box_init(&view.statusbox);
     box_init(&view.menubox);
-    box_setpartsize(&view.statusbox, w / 10, h / 10, 0, 0, 10, 8);
-    box_setpartsize(&view.menubox, w / 10, h / 10, 0, 8, 10, 2);
     menu_init(&view.menu, view.menuitems, 1);
     menu_inititem(&view.menuitems[0], "Cancel", 0);
     menu_setrow(&view.menu, 0);

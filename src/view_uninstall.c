@@ -10,7 +10,27 @@
 #include "view_uninstall.h"
 #include "ztore.h"
 
+struct view_uninstall
+{
+
+    struct view base;
+    struct db_app *app;
+    struct box statusbox;
+    struct menu menu;
+    struct box menubox;
+    struct menuitem menuitems[1];
+
+};
+
 static struct view_uninstall view;
+
+static void place(unsigned int w, unsigned int h)
+{
+
+    box_setpartsize(&view.statusbox, w / 10, h / 10, 0, 0, 10, 8);
+    box_setpartsize(&view.menubox, w / 10, h / 10, 0, 8, 10, 2);
+
+}
 
 static void renderconfirm(void)
 {
@@ -121,15 +141,15 @@ static void uninstall(void)
 
     struct db_packagelist packagelist;
 
-    ztore_setview(renderuninstalling, buttonoff);
+    ztore_setview(place, renderuninstalling, buttonoff);
     ztore_redraw();
 
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (douninstall(&packagelist))
-        ztore_setview(rendercomplete, buttonback);
+        ztore_setview(place, rendercomplete, buttonback);
     else
-        ztore_setview(renderfail, buttonback);
+        ztore_setview(place, renderfail, buttonback);
 
     ztore_redraw();
     db_freepackages(&packagelist);
@@ -139,7 +159,7 @@ static void uninstall(void)
 static void load(void)
 {
 
-    ztore_setview(renderconfirm, buttonconfirm);
+    ztore_setview(place, renderconfirm, buttonconfirm);
 
 }
 
@@ -158,21 +178,19 @@ static void menu_onselect(void)
 
 }
 
-struct view_uninstall *view_uninstall_setup(unsigned int w, unsigned int h)
+struct view *view_uninstall_setup(void)
 {
 
     view_init(&view.base, load);
     box_init(&view.statusbox);
     box_init(&view.menubox);
-    box_setpartsize(&view.statusbox, w / 10, h / 10, 0, 0, 10, 8);
-    box_setpartsize(&view.menubox, w / 10, h / 10, 0, 8, 10, 2);
     menu_init(&view.menu, view.menuitems, 1);
     menu_inititem(&view.menuitems[0], "Yes, I am sure", 0);
     menu_setrow(&view.menu, 0);
 
     view.menu.onselect = menu_onselect;
 
-    return &view;
+    return &view.base;
 
 }
 

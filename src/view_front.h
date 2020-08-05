@@ -1,1 +1,1 @@
-struct view *view_front_setup(unsigned int w, unsigned int h);
+struct view *view_front_setup(void);

@@ -16,6 +16,14 @@ static struct box menubox;
 static struct box emptytextbox;
 static struct db_applist *applist;
 
+static void place(unsigned int w, unsigned int h)
+{
+
+    box_setpartsize(&emptytextbox, w, h, 0, 0, 1, 1);
+    box_setpartsize(&menubox, w, h, 0, 0, 1, 1);
+
+}
+
 static void render(void)
 {
 
@@ -58,7 +66,7 @@ static void load(void)
         menu_inititem(&menu.items[i], applist->items[i].name, stateinfo[applist->items[i].state]);
 
     menu_setrow(&menu, 0);
-    ztore_setview(render, button);
+    ztore_setview(place, render, button);
 
 }
 
@@ -82,18 +90,16 @@ void view_applist_setlist(struct db_applist *list)
 
 }
 
-struct view *view_applist_setup(unsigned int w, unsigned int h)
+struct view *view_applist_setup(void)
 {
 
     view_init(&view, load);
     box_init(&emptytextbox);
     box_init(&menubox);
-    box_setpartsize(&emptytextbox, w, h, 0, 0, 1, 1);
-    box_setpartsize(&menubox, w, h, 0, 0, 1, 1);
     menu_init(&menu, 0, 0);
 
     menu.onselect = menu_onselect;
-    appview = view_app_setup(w, h);
+    appview = view_app_setup();
 
     return &view;
 

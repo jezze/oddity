@@ -16,6 +16,7 @@
 
 static unsigned int quit;
 
+static void (*_place)(unsigned int w, unsigned int h);
 static void (*_render)(void);
 static void (*_button)(unsigned int key);
 
@@ -26,9 +27,10 @@ void ztore_quit(void)
 
 }
 
-void ztore_setview(void (*render)(void), void (*button)(unsigned int key))
+void ztore_setview(void (*place)(unsigned int w, unsigned int h), void (*render)(void), void (*button)(unsigned int key))
 {
 
+    _place = place;
     _render = render;
     _button = button;
 
@@ -40,6 +42,7 @@ static void ztore_loop(void)
     while (!quit)
     {
 
+        _place(SCREEN_WIDTH, SCREEN_HEIGHT);
         backend_render(_render);
         backend_waitevent(ztore_quit, _button);
 
@@ -88,7 +91,7 @@ void ztore_redraw(void)
 int main(int argc, char **argv)
 {
 
-    struct view *front = view_front_setup(SCREEN_WIDTH, SCREEN_HEIGHT);
+    struct view *front = view_front_setup();
 
     file_init();
     db_init();

@@ -21,6 +21,13 @@ static char updated[16];
 static char installed[16];
 static struct db_applist applist;
 
+static void place(unsigned int w, unsigned int h)
+{
+
+    box_setpartsize(&menubox, w, h, 0, 0, 1, 1);
+
+}
+
 static void render(void)
 {
 
@@ -58,7 +65,7 @@ static void load(void)
     menu.items[2].info = new;
     menu.items[3].info = updated;
 
-    ztore_setview(render, button);
+    ztore_setview(place, render, button);
 
 }
 
@@ -97,12 +104,11 @@ static void menu_onselect(void)
 
 }
 
-struct view *view_repolist_setup(unsigned int w, unsigned int h)
+struct view *view_repolist_setup(void)
 {
 
     view_init(&view, load);
     box_init(&menubox);
-    box_setpartsize(&menubox, w, h, 0, 0, 1, 1);
     menu_init(&menu, menuitems, 4);
     menu_inititem(&menuitems[0], "All", "0 items");
     menu_inititem(&menuitems[1], "Installed", "0 items");
@@ -111,7 +117,7 @@ struct view *view_repolist_setup(unsigned int w, unsigned int h)
     menu_setrow(&menu, 0);
 
     menu.onselect = menu_onselect;
-    applistview = view_applist_setup(w, h);
+    applistview = view_applist_setup();
 
     return &view;
 

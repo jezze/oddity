@@ -13,14 +13,23 @@
 #include "ztore.h"
 
 static struct view view;
-static struct view_install *installview;
-static struct view_uninstall *uninstallview;
+static struct view *installview;
+static struct view *uninstallview;
 static struct box titlebox;
 static struct box shortbox;
 static struct menu menu;
 static struct box menubox;
 static struct menuitem menuitems[3];
 static struct db_app *app;
+
+static void place(unsigned int w, unsigned int h)
+{
+
+    box_setpartsize(&titlebox, w / 10, h / 10, 0, 0, 10, 2);
+    box_setpartsize(&shortbox, w / 10, h / 10, 0, 1, 10, 6);
+    box_setpartsize(&menubox, w / 10, h / 10, 0, 6, 10, 4);
+
+}
 
 static void render(void)
 {
@@ -86,7 +95,7 @@ static void load(void)
     }
 
     updatestate();
-    ztore_setview(render, button);
+    ztore_setview(place, render, button);
 
 }
 
@@ -126,12 +135,12 @@ static void menu_onselect(void)
         break;
 
     case 1:
-        view_load(&installview->base, &view);
+        view_load(installview, &view);
 
         break;
 
     case 2:
-        view_load(&uninstallview->base, &view);
+        view_load(uninstallview, &view);
 
         break;
 
@@ -146,16 +155,13 @@ void view_app_set(struct db_app *item)
 
 }
 
-struct view *view_app_setup(unsigned int w, unsigned int h)
+struct view *view_app_setup(void)
 {
 
     view_init(&view, load);
     box_init(&titlebox);
     box_init(&shortbox);
     box_init(&menubox);
-    box_setpartsize(&titlebox, w / 10, h / 10, 0, 0, 10, 2);
-    box_setpartsize(&shortbox, w / 10, h / 10, 0, 1, 10, 6);
-    box_setpartsize(&menubox, w / 10, h / 10, 0, 6, 10, 4);
     menu_init(&menu, menuitems, 3);
     menu_inititem(&menuitems[0], "Run", 0);
     menu_inititem(&menuitems[1], "Install", 0);
@@ -163,8 +169,8 @@ struct view *view_app_setup(unsigned int w, unsigned int h)
     menu_setrow(&menu, 0);
 
     menu.onselect = menu_onselect;
-    installview = view_install_setup(w, h);
-    uninstallview = view_uninstall_setup(w, h);
+    installview = view_install_setup();
+    uninstallview = view_uninstall_setup();
 
     return &view;
 

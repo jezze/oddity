@@ -17,6 +17,14 @@ static struct menu menu;
 static struct box menubox;
 static struct menuitem menuitems[4];
 
+static void place(unsigned int w, unsigned int h)
+{
+
+    box_setpartsize(&greetingbox, w / 10, h / 10, 0, 0, 10, 5);
+    box_setpartsize(&menubox, w / 10, h / 10, 0, 5, 10, 5);
+
+}
+
 static void render(void)
 {
 
@@ -35,7 +43,7 @@ static void button(unsigned int key)
 static void load(void)
 {
 
-    ztore_setview(render, button);
+    ztore_setview(place, render, button);
 
 }
 
@@ -67,14 +75,12 @@ static void menu_onselect(void)
 
 }
 
-struct view *view_front_setup(unsigned int w, unsigned int h)
+struct view *view_front_setup(void)
 {
 
     view_init(&view, load);
     box_init(&greetingbox);
     box_init(&menubox);
-    box_setpartsize(&greetingbox, w / 10, h / 10, 0, 0, 10, 5);
-    box_setpartsize(&menubox, w / 10, h / 10, 0, 5, 10, 5);
     menu_init(&menu, menuitems, 4);
     menu_inititem(&menuitems[0], "Browse", 0);
     menu_inititem(&menuitems[1], "Sync", 0);
@@ -84,8 +90,8 @@ struct view *view_front_setup(unsigned int w, unsigned int h)
     menu_setrow(&menu, 0);
 
     menu.onselect = menu_onselect;
-    repolistview = view_repolist_setup(w, h);
-    syncview = view_sync_setup(w, h);
+    repolistview = view_repolist_setup();
+    syncview = view_sync_setup();
 
     return &view;
 

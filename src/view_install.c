@@ -10,7 +10,30 @@
 #include "view_install.h"
 #include "ztore.h"
 
+struct view_install
+{
+
+    struct view base;
+    struct db_app *app;
+    struct box statusbox;
+    struct menu menu;
+    struct box menubox;
+    struct menuitem menuitems[1];
+    unsigned int percentage;
+    unsigned int totalbytes;
+    unsigned int abortdownload;
+
+};
+
 static struct view_install view;
+
+static void place(unsigned int w, unsigned int h)
+{
+
+    box_setpartsize(&view.statusbox, w / 10, h / 10, 0, 0, 10, 6);
+    box_setpartsize(&view.menubox, w / 10, h / 10, 0, 6, 10, 4);
+
+}
 
 static void renderdefault(void)
 {
@@ -160,13 +183,13 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
     if (!packagelist->count)
         return 0;
 
-    ztore_setview(renderpreparing, buttonoff);
+    ztore_setview(place, renderpreparing, buttonoff);
     ztore_redraw();
 
     if (verifypackages(packagelist))
         return 1;
 
-    ztore_setview(renderdownloading, buttondownloading);
+    ztore_setview(place, renderdownloading, buttondownloading);
     downloadnotify(0, 0);
 
     if (!file_downloadpackage(packagelist->items[0].name, downloadnotify))
@@ -178,7 +201,7 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
 
     }
 
-    ztore_setview(renderinstalling, buttonoff);
+    ztore_setview(place, renderinstalling, buttonoff);
     ztore_redraw();
 
     if (verifypackage(&packagelist->items[0]))
@@ -202,9 +225,9 @@ static void install(void)
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (doinstall(&packagelist))
-        ztore_setview(rendercomplete, buttonback);
+        ztore_setview(place, rendercomplete, buttonback);
     else
-        ztore_setview(renderfail, buttonback);
+        ztore_setview(place, renderfail, buttonback);
 
     ztore_redraw();
     db_freepackages(&packagelist);
@@ -216,7 +239,7 @@ static void load(void)
 
     view.abortdownload = 0;
 
-    ztore_setview(renderdefault, buttonoff);
+    ztore_setview(place, renderdefault, buttonoff);
     install();
 
 }
@@ -236,21 +259,19 @@ static void menu_onselect(void)
 
 }
 
-struct view_install *view_install_setup(unsigned int w, unsigned int h)
+struct view *view_install_setup(void)
 {
 
     view_init(&view.base, load);
     box_init(&view.statusbox);
     box_init(&view.menubox);
-    box_setpartsize(&view.statusbox, w / 10, h / 10, 0, 0, 10, 6);
-    box_setpartsize(&view.menubox, w / 10, h / 10, 0, 6, 10, 4);
     menu_init(&view.menu, view.menuitems, 1);
     menu_inititem(&view.menuitems[0], "Cancel", 0);
     menu_setrow(&view.menu, 0);
 
     view.menu.onselect = menu_onselect;
 
-    return &view;
+    return &view.base;
 
 }
 
