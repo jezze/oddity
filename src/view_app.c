@@ -139,20 +139,6 @@ static void menu_onselect(void)
 
 }
 
-static void installview_preload(void)
-{
-
-    installview->app = app;
-
-}
-
-static void uninstallview_preload(void)
-{
-
-    uninstallview->app = app;
-
-}
-
 void view_app_set(struct db_app *item)
 {
 
@@ -178,9 +164,7 @@ struct view *view_app_setup(unsigned int w, unsigned int h)
 
     menu.onselect = menu_onselect;
     installview = view_install_setup(w, h);
-    installview->base.preload = installview_preload;
     uninstallview = view_uninstall_setup(w, h);
-    uninstallview->base.preload = uninstallview_preload;
 
     return &view;
 

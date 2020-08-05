@@ -7,7 +7,6 @@ struct view
 {
 
     struct view *parent;
-    void (*preload)(void);
     void (*load)(void);
 
 };

@@ -7,9 +7,6 @@ void view_load(struct view *view, struct view *parent)
 
     view->parent = parent;
 
-    if (view->preload)
-        view->preload();
-
     if (view->load)
         view->load();
 
