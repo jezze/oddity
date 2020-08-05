@@ -34,7 +34,7 @@ void ztore_setview(void (*render)(void), void (*keydown)(unsigned int key))
 
 }
 
-static void ztore_loop(struct view *view)
+static void ztore_loop(void)
 {
 
     while (!quit)
@@ -77,7 +77,7 @@ void ztore_exec(char *name)
 
 }
 
-void ztore_redraw(struct view *view)
+void ztore_redraw(void)
 {
 
     backend_pollevent(ztore_quit, _keydown);
@@ -94,7 +94,7 @@ int main(int argc, char **argv)
     db_init();
     ztore_init();
     view_load(front, 0);
-    ztore_loop(front);
+    ztore_loop();
     view_quit(front);
     ztore_destroy();
 

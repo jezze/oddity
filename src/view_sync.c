@@ -91,7 +91,7 @@ static unsigned int downloadnotify(unsigned int totalbytes, unsigned int percent
     view.totalbytes = totalbytes;
     view.percentage = percentage;
 
-    ztore_redraw(&view.base);
+    ztore_redraw();
 
     return !view.abortdownload;
 
@@ -129,7 +129,7 @@ static void sync(void)
     else
         ztore_setview(renderfail, keydownback);
  
-    ztore_redraw(&view.base);
+    ztore_redraw();
 
 }
 

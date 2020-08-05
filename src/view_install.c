@@ -148,7 +148,7 @@ static unsigned int downloadnotify(unsigned int totalbytes, unsigned int percent
     view.totalbytes = totalbytes;
     view.percentage = percentage;
 
-    ztore_redraw(&view.base);
+    ztore_redraw();
 
     return !view.abortdownload;
 
@@ -161,7 +161,7 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
         return 0;
 
     ztore_setview(renderpreparing, keydownoff);
-    ztore_redraw(&view.base);
+    ztore_redraw();
 
     if (verifypackages(packagelist))
         return 1;
@@ -179,7 +179,7 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
     }
 
     ztore_setview(renderinstalling, keydownoff);
-    ztore_redraw(&view.base);
+    ztore_redraw();
 
     if (verifypackage(&packagelist->items[0]))
     {
@@ -206,7 +206,7 @@ static void install(void)
     else
         ztore_setview(renderfail, keydownback);
 
-    ztore_redraw(&view.base);
+    ztore_redraw();
     db_freepackages(&packagelist);
 
 }

@@ -122,7 +122,7 @@ static void uninstall(void)
     struct db_packagelist packagelist;
 
     ztore_setview(renderuninstalling, keydownoff);
-    ztore_redraw(&view.base);
+    ztore_redraw();
 
     db_loadpackagesfromapp(&packagelist, view.app);
 
@@ -131,7 +131,7 @@ static void uninstall(void)
     else
         ztore_setview(renderfail, keydownback);
 
-    ztore_redraw(&view.base);
+    ztore_redraw();
     db_freepackages(&packagelist);
 
 }
