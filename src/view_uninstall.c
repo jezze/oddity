@@ -12,7 +12,7 @@
 
 static struct view_uninstall view;
 
-static void renderconfirm()
+static void renderconfirm(void)
 {
 
     text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Are you sure you want to uninstall?");
@@ -20,7 +20,7 @@ static void renderconfirm()
 
 }
 
-static void renderuninstalling()
+static void renderuninstalling(void)
 {
 
     char progress[128];
@@ -30,14 +30,14 @@ static void renderuninstalling()
 
 }
 
-static void rendercomplete()
+static void rendercomplete(void)
 {
 
     text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Uninstall complete!\n\nPress B to go back.");
 
 }
 
-static void renderfail()
+static void renderfail(void)
 {
 
     text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Uninstall failed!\n\nPress B to go back.");
@@ -116,7 +116,7 @@ static unsigned int douninstall(struct db_packagelist *packagelist)
 
 }
 
-static void uninstall()
+static void uninstall(void)
 {
 
     struct db_packagelist packagelist;
@@ -136,16 +136,14 @@ static void uninstall()
 
 }
 
-static void load()
+static void load(void)
 {
-
-    view.onload();
 
     view_setmode(&view.base, renderconfirm, keydownconfirm);
 
 }
 
-static void menu_onselect()
+static void menu_onselect(void)
 {
 
     switch (view.menu.currentitem)

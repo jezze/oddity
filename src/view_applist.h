@@ -7,7 +7,6 @@ struct view_applist
     struct menu menu;
     struct box menubox;
     struct box emptytextbox;
-    void (*onload)();
 
 };
 

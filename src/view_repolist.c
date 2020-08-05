@@ -10,13 +10,24 @@
 #include "view_repolist.h"
 #include "ztore.h"
 
+struct view_repolist
+{
+
+    struct view base;
+    struct view_applist *applistview;
+    struct menu menu;
+    struct box menubox;
+    struct menuitem menuitems[4];
+
+};
+
 static struct view_repolist view;
 static char all[16];
 static char new[16];
 static char updated[16];
 static char installed[16];
 
-static void render()
+static void render(void)
 {
 
     menu_render(&view.menu, &view.menubox);
@@ -40,7 +51,7 @@ static void keydown(unsigned int key)
 
 }
 
-static void load()
+static void load(void)
 {
 
     snprintf(all, 16, "%u items", db_countapps());
@@ -55,7 +66,7 @@ static void load()
 
 }
 
-static void menu_onselect()
+static void menu_onselect(void)
 {
 
     switch (view.menu.currentitem)
@@ -85,14 +96,14 @@ static void menu_onselect()
 
 }
 
-static void applistview_onquit()
+static void applistview_onquit(void)
 {
 
     view_load(&view.base);
 
 }
 
-static void applistview_onload()
+static void applistview_preload(void)
 {
 
     db_freeapps(&view.applistview->applist);
@@ -124,7 +135,7 @@ static void applistview_onload()
 
 }
 
-struct view_repolist *view_repolist_setup(unsigned int w, unsigned int h)
+struct view *view_repolist_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, load, render, keydown);
@@ -139,10 +150,10 @@ struct view_repolist *view_repolist_setup(unsigned int w, unsigned int h)
 
     view.menu.onselect = menu_onselect;
     view.applistview = view_applist_setup(w, h);
-    view.applistview->onload = applistview_onload;
+    view.applistview->base.preload = applistview_preload;
     view.applistview->base.onquit = applistview_onquit;
 
-    return &view;
+    return &view.base;
 
 }
 

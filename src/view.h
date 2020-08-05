@@ -6,17 +6,18 @@
 struct view
 {
 
-    void (*load)();
-    void (*render)();
+    void (*preload)(void);
+    void (*load)(void);
+    void (*render)(void);
     void (*keydown)(unsigned int key);
-    void (*onquit)();
+    void (*onquit)(void);
 
 };
 
-void view_quitloop();
-void view_redraw();
+void view_quitloop(void);
+void view_redraw(void);
 void view_load(struct view *view);
-void view_loop();
-void view_setmode(struct view *view, void (*render)(), void (*keydown)());
+void view_loop(void);
+void view_setmode(struct view *view, void (*render)(void), void (*keydown)(unsigned int key));
 void view_quit(struct view *view);
-void view_init(struct view *view, void (*load)(), void (*render)(), void (*keydown)(unsigned int key));
+void view_init(struct view *view, void (*load)(void), void (*render)(void), void (*keydown)(unsigned int key));

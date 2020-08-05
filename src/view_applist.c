@@ -11,7 +11,7 @@
 
 static struct view_applist view;
 
-static void render()
+static void render(void)
 {
 
     if (view.applist.count)
@@ -38,13 +38,11 @@ static void keydown(unsigned int key)
 
 }
 
-static void load()
+static void load(void)
 {
 
     unsigned int i;
     char *stateinfo[] = {0, "New", "Updated", "Installed"};
-
-    view.onload();
 
     free(view.menu.items);
 
@@ -58,7 +56,7 @@ static void load()
 
 }
 
-static void menu_onselect()
+static void menu_onselect(void)
 {
 
     if (view.applist.count)
@@ -66,14 +64,14 @@ static void menu_onselect()
 
 }
 
-static void appview_onquit()
+static void appview_onquit(void)
 {
 
     view_load(&view.base);
 
 }
 
-static void appview_onload()
+static void appview_preload(void)
 {
 
     view.appview->app = &view.applist.items[view.menu.currentitem];
@@ -92,7 +90,7 @@ struct view_applist *view_applist_setup(unsigned int w, unsigned int h)
 
     view.menu.onselect = menu_onselect;
     view.appview = view_app_setup(w, h);
-    view.appview->onload = appview_onload;
+    view.appview->base.preload = appview_preload;
     view.appview->base.onquit = appview_onquit;
 
     return &view;

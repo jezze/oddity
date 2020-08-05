@@ -7,7 +7,7 @@
 
 static char *home;
 
-void file_init()
+void file_init(void)
 {
 
     char command[128];

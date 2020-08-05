@@ -14,7 +14,7 @@
 
 static struct view_app view;
 
-static void render()
+static void render(void)
 {
 
     text_render(&view.titlebox, TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, view.app->name);
@@ -40,7 +40,7 @@ static void keydown(unsigned int key)
 
 }
 
-static void updatestate()
+static void updatestate(void)
 {
 
     if (view.app->state == 1 || view.app->state == 2)
@@ -54,10 +54,8 @@ static void updatestate()
 
 }
 
-static void load()
+static void load(void)
 {
-
-    view.onload();
 
     if (view.app->state == 3)
     {
@@ -83,7 +81,7 @@ static void load()
 
 }
 
-static void runpackage()
+static void runpackage(void)
 {
 
     struct db_packagelist packagelist;
@@ -107,7 +105,7 @@ static void runpackage()
 
 }
 
-static void menu_onselect()
+static void menu_onselect(void)
 {
 
     switch (view.menu.currentitem)
@@ -132,21 +130,21 @@ static void menu_onselect()
 
 }
 
-static void xinstallview_onquit()
+static void xinstallview_onquit(void)
 {
 
     view_load(&view.base);
 
 }
 
-static void installview_onload()
+static void installview_preload(void)
 {
 
     view.installview->app = view.app;
 
 }
 
-static void uninstallview_onload()
+static void uninstallview_preload(void)
 {
 
     view.uninstallview->app = view.app;
@@ -172,10 +170,10 @@ struct view_app *view_app_setup(unsigned int w, unsigned int h)
     view.menu.onselect = menu_onselect;
     view.installview = view_install_setup(w, h);
     view.installview->base.onquit = xinstallview_onquit;
-    view.installview->onload = installview_onload;
+    view.installview->base.preload = installview_preload;
     view.uninstallview = view_uninstall_setup(w, h);
     view.uninstallview->base.onquit = xinstallview_onquit;
-    view.uninstallview->onload = uninstallview_onload;
+    view.uninstallview->base.preload = uninstallview_preload;
 
     return &view;
 

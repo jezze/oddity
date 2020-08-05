@@ -10,7 +10,6 @@ struct view_install
     unsigned int percentage;
     unsigned int totalbytes;
     unsigned int abortdownload;
-    void (*onload)();
 
 };
 

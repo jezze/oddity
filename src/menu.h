@@ -17,7 +17,7 @@ struct menu
     struct menuitem *items;
     unsigned int total;
     unsigned int currentitem;
-    void (*onselect)();
+    void (*onselect)(void);
 
 };
 

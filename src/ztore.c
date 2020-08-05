@@ -47,12 +47,12 @@ void ztore_exec(char *name)
 int main(int argc, char **argv)
 {
 
-    struct view_front *front = view_front_setup(SCREEN_WIDTH, SCREEN_HEIGHT);
+    struct view *front = view_front_setup(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     file_init();
     db_init();
     ztore_init();
-    view_load(&front->base);
+    view_load(front);
     view_loop();
     ztore_destroy();
 

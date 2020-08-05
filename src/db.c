@@ -61,7 +61,7 @@ static void closedatabase(sqlite3 *db)
 
 }
 
-void db_init()
+void db_init(void)
 {
 
     char datapath[128];
@@ -359,7 +359,7 @@ static unsigned int countapps(sqlite3 *db)
 
 }
 
-unsigned int db_countapps()
+unsigned int db_countapps(void)
 {
 
     sqlite3 *db;

@@ -1,4 +1,4 @@
-void file_init();
+void file_init(void);
 void file_getdatabasepath(char *path, unsigned int count);
 void file_getremotedatabasepath(char *path, unsigned int count, unsigned int id);
 void file_getpackagepath(char *path, unsigned int count, char *name);

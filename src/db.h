@@ -52,7 +52,7 @@ struct db_packagelist
 
 };
 
-void db_init();
+void db_init(void);
 int db_sync(struct db_remote *remote);
 void db_createremote(struct db_remote *remote, unsigned int id, char *name, char *url);
 void db_freeremote(struct db_remote *remote);
@@ -64,7 +64,7 @@ void db_freeapp(struct db_app *app);
 void db_freeapps(struct db_applist *list);
 int db_loadapp(struct db_app *app, unsigned int id);
 int db_saveappstate(struct db_app *app);
-unsigned int db_countapps();
+unsigned int db_countapps(void);
 int db_loadapps(struct db_applist *list);
 unsigned int db_countappswithstate(unsigned int state);
 int db_loadappswithstate(struct db_applist *list, unsigned int state);

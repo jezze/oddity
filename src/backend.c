@@ -25,7 +25,7 @@ static void blit(SDL_Surface *surface, int x, int y, int w, int h)
 
 }
 
-int backend_getascent()
+int backend_getascent(void)
 {
 
     return TTF_FontAscent(font);
@@ -106,7 +106,7 @@ void backend_rect(int x, int y, int w, int h)
 
 }
 
-static void handleevent(SDL_Event *event, void (*quit)(), void (*keydown)(unsigned int key))
+static void handleevent(SDL_Event *event, void (*quit)(void), void (*keydown)(unsigned int key))
 {
 
     switch (event->type)
@@ -202,7 +202,7 @@ static void handleevent(SDL_Event *event, void (*quit)(), void (*keydown)(unsign
 
 }
 
-void backend_pollevent(void (*quit)(), void (*keydown)(unsigned int key))
+void backend_pollevent(void (*quit)(void), void (*keydown)(unsigned int key))
 {
 
     SDL_Event event;
@@ -212,7 +212,7 @@ void backend_pollevent(void (*quit)(), void (*keydown)(unsigned int key))
 
 }
 
-void backend_waitevent(void (*quit)(), void (*keydown)(unsigned int key))
+void backend_waitevent(void (*quit)(void), void (*keydown)(unsigned int key))
 {
 
     SDL_Event event;
@@ -222,7 +222,7 @@ void backend_waitevent(void (*quit)(), void (*keydown)(unsigned int key))
 
 }
 
-void backend_render(void (*render)())
+void backend_render(void (*render)(void))
 {
 
     SDL_BlitSurface(background, NULL, display, NULL);
@@ -249,7 +249,7 @@ void backend_init(unsigned int w, unsigned int h, unsigned int bpp)
 
 }
 
-void backend_destroy()
+void backend_destroy(void)
 {
 
     TTF_Quit();
@@ -284,7 +284,7 @@ void backend_loadfont(char *name)
 
 }
 
-void backend_unloadbackground()
+void backend_unloadbackground(void)
 {
 
     SDL_FreeSurface(background);
@@ -292,7 +292,7 @@ void backend_unloadbackground()
 
 }
 
-void backend_unloadfont()
+void backend_unloadfont(void)
 {
 
     TTF_CloseFont(font);

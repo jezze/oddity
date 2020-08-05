@@ -12,21 +12,21 @@
 
 static struct view_install view;
 
-static void renderdefault()
+static void renderdefault(void)
 {
 
     text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Please wait...");
 
 }
 
-static void renderpreparing()
+static void renderpreparing(void)
 {
 
     text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Preparing...");
 
 }
 
-static void renderdownloading()
+static void renderdownloading(void)
 {
 
     char progress[128];
@@ -37,21 +37,21 @@ static void renderdownloading()
 
 }
 
-static void renderinstalling()
+static void renderinstalling(void)
 {
 
     text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installing...");
 
 }
 
-static void rendercomplete()
+static void rendercomplete(void)
 {
 
     text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installation complete!\n\nPress B to go back.");
 
 }
 
-static void renderfail()
+static void renderfail(void)
 {
 
     text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installation failed!\n\nPress B to go back.");
@@ -194,7 +194,7 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
 
 }
 
-static void install()
+static void install(void)
 {
 
     struct db_packagelist packagelist;
@@ -211,10 +211,9 @@ static void install()
 
 }
 
-static void load()
+static void load(void)
 {
 
-    view.onload();
     view.abortdownload = 0;
 
     view_setmode(&view.base, renderdefault, keydownoff);
@@ -222,7 +221,7 @@ static void load()
 
 }
 
-static void menu_onselect()
+static void menu_onselect(void)
 {
 
     switch (view.menu.currentitem)

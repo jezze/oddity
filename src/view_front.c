@@ -9,41 +9,47 @@
 #include "view_front.h"
 #include "ztore.h"
 
-static struct view_front view;
+static struct view view;
+static struct view *repolistview;
+static struct view *syncview;
+static struct box greetingbox;
+static struct menu menu;
+static struct box menubox;
+static struct menuitem menuitems[4];
 
-static void render()
+static void render(void)
 {
 
-    text_render(&view.greetingbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Welcome to Ztore!");
-    menu_render(&view.menu, &view.menubox);
+    text_render(&greetingbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Welcome to Ztore!");
+    menu_render(&menu, &menubox);
 
 }
 
 static void keydown(unsigned int key)
 {
 
-    menu_keydown(&view.menu, key);
+    menu_keydown(&menu, key);
 
 }
 
-static void load()
+static void load(void)
 {
 
 }
 
-static void menu_onselect()
+static void menu_onselect(void)
 {
 
-    switch (view.menu.currentitem)
+    switch (menu.currentitem)
     {
 
     case 0:
-        view_load(&view.repolistview->base);
+        view_load(repolistview);
 
         break;
 
     case 1:
-        view_load(&view.syncview->base);
+        view_load(syncview);
 
         break;
 
@@ -59,41 +65,41 @@ static void menu_onselect()
 
 }
 
-static void repolistview_onquit()
+static void repolistview_onquit(void)
 {
 
-    view_load(&view.base);
+    view_load(&view);
 
 }
 
-static void syncview_onquit()
+static void syncview_onquit(void)
 {
 
-    view_load(&view.base);
+    view_load(&view);
 
 }
 
-struct view_front *view_front_setup(unsigned int w, unsigned int h)
+struct view *view_front_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, load, render, keydown);
-    box_init(&view.greetingbox);
-    box_init(&view.menubox);
-    box_setpartsize(&view.greetingbox, w / 10, h / 10, 0, 0, 10, 5);
-    box_setpartsize(&view.menubox, w / 10, h / 10, 0, 5, 10, 5);
-    menu_init(&view.menu, view.menuitems, 4);
-    menu_inititem(&view.menuitems[0], "Browse", 0);
-    menu_inititem(&view.menuitems[1], "Sync", 0);
-    menu_inititem(&view.menuitems[2], "Settings", 0);
-    menu_inititem(&view.menuitems[3], "Exit", 0);
-    menu_disable(&view.menu, 2);
-    menu_setrow(&view.menu, 0);
+    view_init(&view, load, render, keydown);
+    box_init(&greetingbox);
+    box_init(&menubox);
+    box_setpartsize(&greetingbox, w / 10, h / 10, 0, 0, 10, 5);
+    box_setpartsize(&menubox, w / 10, h / 10, 0, 5, 10, 5);
+    menu_init(&menu, menuitems, 4);
+    menu_inititem(&menuitems[0], "Browse", 0);
+    menu_inititem(&menuitems[1], "Sync", 0);
+    menu_inititem(&menuitems[2], "Settings", 0);
+    menu_inititem(&menuitems[3], "Exit", 0);
+    menu_disable(&menu, 2);
+    menu_setrow(&menu, 0);
 
-    view.menu.onselect = menu_onselect;
-    view.repolistview = view_repolist_setup(w, h);
-    view.repolistview->base.onquit = repolistview_onquit;
-    view.syncview = view_sync_setup(w, h);
-    view.syncview->base.onquit = syncview_onquit;
+    menu.onselect = menu_onselect;
+    repolistview = view_repolist_setup(w, h);
+    repolistview->onquit = repolistview_onquit;
+    syncview = view_sync_setup(w, h);
+    syncview->onquit = syncview_onquit;
 
     return &view;
 

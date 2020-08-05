@@ -5,14 +5,14 @@
 static struct view *currentview;
 static unsigned int quit;
 
-void view_quitloop()
+void view_quitloop(void)
 {
 
     quit = 1;
 
 }
 
-void view_redraw()
+void view_redraw(void)
 {
 
     backend_pollevent(view_quitloop, currentview->keydown);
@@ -23,13 +23,16 @@ void view_redraw()
 void view_load(struct view *view)
 {
 
+    if (view->preload)
+        view->preload();
+
     currentview = view;
 
     currentview->load();
 
 }
 
-void view_loop()
+void view_loop(void)
 {
 
     while (!quit)
@@ -42,7 +45,7 @@ void view_loop()
 
 }
 
-void view_setmode(struct view *view, void (*render)(), void (*keydown)())
+void view_setmode(struct view *view, void (*render)(void), void (*keydown)(unsigned int key))
 {
 
     view->render = render;
@@ -58,7 +61,7 @@ void view_quit(struct view *view)
 
 }
 
-void view_init(struct view *view, void (*load)(), void (*render)(), void (*keydown)(unsigned int key))
+void view_init(struct view *view, void (*load)(void), void (*render)(void), void (*keydown)(unsigned int key))
 {
 
     view->load = load;

@@ -7,7 +7,6 @@ struct view_uninstall
     struct menu menu;
     struct box menubox;
     struct menuitem menuitems[1];
-    void (*onload)();
 
 };
 

@@ -10,7 +10,6 @@ struct view_app
     struct menu menu;
     struct box menubox;
     struct menuitem menuitems[3];
-    void (*onload)();
 
 };
 

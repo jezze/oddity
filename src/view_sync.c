@@ -10,16 +10,30 @@
 #include "view_sync.h"
 #include "ztore.h"
 
+struct view_sync
+{
+
+    struct view base;
+    struct box statusbox;
+    struct menu menu;
+    struct box menubox;
+    struct menuitem menuitems[1];
+    unsigned int percentage;
+    unsigned int totalbytes;
+    unsigned int abortdownload;
+
+};
+
 static struct view_sync view;
 
-static void renderdefault()
+static void renderdefault(void)
 {
 
     text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Please wait...");
 
 }
 
-static void renderdownloading()
+static void renderdownloading(void)
 {
 
     char progress[128];
@@ -30,14 +44,14 @@ static void renderdownloading()
 
 }
 
-static void rendercomplete()
+static void rendercomplete(void)
 {
 
     text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Sync complete!\n\nPress B to go back.");
 
 }
 
-static void renderfail()
+static void renderfail(void)
 {
 
     text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Sync failed!\n\nPress B to go back.");
@@ -83,7 +97,7 @@ static unsigned int downloadnotify(unsigned int totalbytes, unsigned int percent
 
 }
 
-static void sync()
+static void sync(void)
 {
 
     struct db_remotelist remotelist;
@@ -119,7 +133,7 @@ static void sync()
 
 }
 
-static void load()
+static void load(void)
 {
 
     view.abortdownload = 0;
@@ -129,7 +143,7 @@ static void load()
 
 }
 
-static void menu_onselect()
+static void menu_onselect(void)
 {
 
     switch (view.menu.currentitem)
@@ -144,7 +158,7 @@ static void menu_onselect()
 
 }
 
-struct view_sync *view_sync_setup(unsigned int w, unsigned int h)
+struct view *view_sync_setup(unsigned int w, unsigned int h)
 {
 
     view_init(&view.base, load, renderdefault, keydownoff);
@@ -158,7 +172,7 @@ struct view_sync *view_sync_setup(unsigned int w, unsigned int h)
 
     view.menu.onselect = menu_onselect;
 
-    return &view;
+    return &view.base;
 
 }
 
