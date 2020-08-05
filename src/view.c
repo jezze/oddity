@@ -2,71 +2,31 @@
 #include "backend.h"
 #include "view.h"
 
-static struct view *currentview;
-static unsigned int quit;
-
-void view_quitloop(void)
+void view_load(struct view *view, struct view *parent)
 {
 
-    quit = 1;
-
-}
-
-void view_redraw(void)
-{
-
-    backend_pollevent(view_quitloop, currentview->keydown);
-    backend_render(currentview->render);
-
-}
-
-void view_load(struct view *view)
-{
+    view->parent = parent;
 
     if (view->preload)
         view->preload();
 
-    currentview = view;
-
-    currentview->load();
-
-}
-
-void view_loop(void)
-{
-
-    while (!quit)
-    {
-
-        backend_render(currentview->render);
-        backend_waitevent(view_quitloop, currentview->keydown);
-
-    }
-
-}
-
-void view_setmode(struct view *view, void (*render)(void), void (*keydown)(unsigned int key))
-{
-
-    view->render = render;
-    view->keydown = keydown;
+    if (view->load)
+        view->load();
 
 }
 
 void view_quit(struct view *view)
 {
 
-    if (view->onquit)
-        view->onquit();
+    if (view->parent)
+        view_load(view->parent, view->parent->parent);
 
 }
 
-void view_init(struct view *view, void (*load)(void), void (*render)(void), void (*keydown)(unsigned int key))
+void view_init(struct view *view, void (*load)(void))
 {
 
     view->load = load;
-    view->render = render;
-    view->keydown = keydown;
 
 }
 

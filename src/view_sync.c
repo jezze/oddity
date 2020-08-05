@@ -91,7 +91,7 @@ static unsigned int downloadnotify(unsigned int totalbytes, unsigned int percent
     view.totalbytes = totalbytes;
     view.percentage = percentage;
 
-    view_redraw();
+    ztore_redraw(&view.base);
 
     return !view.abortdownload;
 
@@ -106,7 +106,7 @@ static void sync(void)
 
     db_loadremotes(&remotelist);
 
-    view_setmode(&view.base, renderdownloading, keydowndownloading);
+    ztore_setview(renderdownloading, keydowndownloading);
     downloadnotify(0, 0);
 
     for (i = 0; i < remotelist.count; i++)
@@ -125,11 +125,11 @@ static void sync(void)
     db_freeremotes(&remotelist);
 
     if (status)
-        view_setmode(&view.base, rendercomplete, keydownback);
+        ztore_setview(rendercomplete, keydownback);
     else
-        view_setmode(&view.base, renderfail, keydownback);
+        ztore_setview(renderfail, keydownback);
  
-    view_redraw();
+    ztore_redraw(&view.base);
 
 }
 
@@ -138,7 +138,7 @@ static void load(void)
 
     view.abortdownload = 0;
 
-    view_setmode(&view.base, renderdefault, keydownoff);
+    ztore_setview(renderdefault, keydownoff);
     sync();
 
 }
@@ -161,7 +161,7 @@ static void menu_onselect(void)
 struct view *view_sync_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, load, renderdefault, keydownoff);
+    view_init(&view.base, load);
     box_init(&view.statusbox);
     box_init(&view.menubox);
     box_setpartsize(&view.statusbox, w / 10, h / 10, 0, 0, 10, 8);

@@ -35,6 +35,8 @@ static void keydown(unsigned int key)
 static void load(void)
 {
 
+    ztore_setview(render, keydown);
+
 }
 
 static void menu_onselect(void)
@@ -44,12 +46,12 @@ static void menu_onselect(void)
     {
 
     case 0:
-        view_load(repolistview);
+        view_load(repolistview, &view);
 
         break;
 
     case 1:
-        view_load(syncview);
+        view_load(syncview, &view);
 
         break;
 
@@ -57,7 +59,7 @@ static void menu_onselect(void)
         break;
 
     case 3:
-        view_quitloop();
+        ztore_quit();
 
         break;
 
@@ -65,24 +67,10 @@ static void menu_onselect(void)
 
 }
 
-static void repolistview_onquit(void)
-{
-
-    view_load(&view);
-
-}
-
-static void syncview_onquit(void)
-{
-
-    view_load(&view);
-
-}
-
 struct view *view_front_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view, load, render, keydown);
+    view_init(&view, load);
     box_init(&greetingbox);
     box_init(&menubox);
     box_setpartsize(&greetingbox, w / 10, h / 10, 0, 0, 10, 5);
@@ -97,9 +85,7 @@ struct view *view_front_setup(unsigned int w, unsigned int h)
 
     menu.onselect = menu_onselect;
     repolistview = view_repolist_setup(w, h);
-    repolistview->onquit = repolistview_onquit;
     syncview = view_sync_setup(w, h);
-    syncview->onquit = syncview_onquit;
 
     return &view;
 

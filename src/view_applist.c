@@ -9,28 +9,33 @@
 #include "view_applist.h"
 #include "ztore.h"
 
-static struct view_applist view;
+static struct view view;
+static struct view *appview;
+static struct menu menu;
+static struct box menubox;
+static struct box emptytextbox;
+static struct db_applist *applist;
 
 static void render(void)
 {
 
-    if (view.applist.count)
-        menu_render(&view.menu, &view.menubox);
+    if (applist->count)
+        menu_render(&menu, &menubox);
     else
-        text_render(&view.emptytextbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "No items found.");
+        text_render(&emptytextbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "No items found.");
 
 }
 
 static void keydown(unsigned int key)
 {
 
-    menu_keydown(&view.menu, key);
+    menu_keydown(&menu, key);
 
     switch (key)
     {
 
     case KEY_B:
-        view_quit(&view.base);
+        view_quit(&view);
 
         break;
 
@@ -44,54 +49,51 @@ static void load(void)
     unsigned int i;
     char *stateinfo[] = {0, "New", "Updated", "Installed"};
 
-    free(view.menu.items);
+    free(menu.items);
 
-    view.menu.items = malloc(sizeof (struct menuitem) * view.applist.count);
-    view.menu.total = view.applist.count;
+    menu.items = malloc(sizeof (struct menuitem) * applist->count);
+    menu.total = applist->count;
 
-    for (i = 0; i < view.menu.total; i++)
-        menu_inititem(&view.menu.items[i], view.applist.items[i].name, stateinfo[view.applist.items[i].state]);
+    for (i = 0; i < menu.total; i++)
+        menu_inititem(&menu.items[i], applist->items[i].name, stateinfo[applist->items[i].state]);
 
-    menu_setrow(&view.menu, 0);
+    menu_setrow(&menu, 0);
+    ztore_setview(render, keydown);
 
 }
 
 static void menu_onselect(void)
 {
 
-    if (view.applist.count)
-        view_load(&view.appview->base);
+    if (applist->count)
+    {
+
+        view_app_set(&applist->items[menu.currentitem]);
+        view_load(appview, &view);
+
+    }
 
 }
 
-static void appview_onquit(void)
+void view_applist_setlist(struct db_applist *list)
 {
 
-    view_load(&view.base);
+    applist = list;
 
 }
 
-static void appview_preload(void)
+struct view *view_applist_setup(unsigned int w, unsigned int h)
 {
 
-    view.appview->app = &view.applist.items[view.menu.currentitem];
+    view_init(&view, load);
+    box_init(&emptytextbox);
+    box_init(&menubox);
+    box_setpartsize(&emptytextbox, w, h, 0, 0, 1, 1);
+    box_setpartsize(&menubox, w, h, 0, 0, 1, 1);
+    menu_init(&menu, 0, 0);
 
-}
-
-struct view_applist *view_applist_setup(unsigned int w, unsigned int h)
-{
-
-    view_init(&view.base, load, render, keydown);
-    box_init(&view.emptytextbox);
-    box_init(&view.menubox);
-    box_setpartsize(&view.emptytextbox, w, h, 0, 0, 1, 1);
-    box_setpartsize(&view.menubox, w, h, 0, 0, 1, 1);
-    menu_init(&view.menu, 0, 0);
-
-    view.menu.onselect = menu_onselect;
-    view.appview = view_app_setup(w, h);
-    view.appview->base.preload = appview_preload;
-    view.appview->base.onquit = appview_onquit;
+    menu.onselect = menu_onselect;
+    appview = view_app_setup(w, h);
 
     return &view;
 

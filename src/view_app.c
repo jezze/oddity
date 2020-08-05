@@ -12,27 +12,35 @@
 #include "view_uninstall.h"
 #include "ztore.h"
 
-static struct view_app view;
+static struct view view;
+static struct view_install *installview;
+static struct view_uninstall *uninstallview;
+static struct box titlebox;
+static struct box shortbox;
+static struct menu menu;
+static struct box menubox;
+static struct menuitem menuitems[3];
+static struct db_app *app;
 
 static void render(void)
 {
 
-    text_render(&view.titlebox, TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, view.app->name);
-    text_render(&view.shortbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, view.app->shortdescription);
-    menu_render(&view.menu, &view.menubox);
+    text_render(&titlebox, TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, app->name);
+    text_render(&shortbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, app->shortdescription);
+    menu_render(&menu, &menubox);
 
 }
 
 static void keydown(unsigned int key)
 {
 
-    menu_keydown(&view.menu, key);
+    menu_keydown(&menu, key);
 
     switch (key)
     {
 
     case KEY_B:
-        view_quit(&view.base);
+        view_quit(&view);
 
         break;
 
@@ -43,12 +51,12 @@ static void keydown(unsigned int key)
 static void updatestate(void)
 {
 
-    if (view.app->state == 1 || view.app->state == 2)
+    if (app->state == 1 || app->state == 2)
     {
 
-        view.app->state = 0;
+        app->state = 0;
 
-        db_saveappstate(view.app);
+        db_saveappstate(app);
 
     }
 
@@ -57,27 +65,28 @@ static void updatestate(void)
 static void load(void)
 {
 
-    if (view.app->state == 3)
+    if (app->state == 3)
     {
 
-        menu_enable(&view.menu, 0);
-        menu_disable(&view.menu, 1);
-        menu_enable(&view.menu, 2);
-        menu_setrow(&view.menu, 0);
+        menu_enable(&menu, 0);
+        menu_disable(&menu, 1);
+        menu_enable(&menu, 2);
+        menu_setrow(&menu, 0);
 
     }
 
     else
     {
 
-        menu_disable(&view.menu, 0);
-        menu_enable(&view.menu, 1);
-        menu_disable(&view.menu, 2);
-        menu_setrow(&view.menu, 1);
+        menu_disable(&menu, 0);
+        menu_enable(&menu, 1);
+        menu_disable(&menu, 2);
+        menu_setrow(&menu, 1);
 
     }
 
     updatestate();
+    ztore_setview(render, keydown);
 
 }
 
@@ -87,7 +96,7 @@ static void runpackage(void)
     struct db_packagelist packagelist;
     unsigned int i;
 
-    db_loadpackagesfromapp(&packagelist, view.app);
+    db_loadpackagesfromapp(&packagelist, app);
 
     for (i = 0; i < packagelist.count; i++)
     {
@@ -108,7 +117,7 @@ static void runpackage(void)
 static void menu_onselect(void)
 {
 
-    switch (view.menu.currentitem)
+    switch (menu.currentitem)
     {
 
     case 0:
@@ -117,12 +126,12 @@ static void menu_onselect(void)
         break;
 
     case 1:
-        view_load(&view.installview->base);
+        view_load(&installview->base, &view);
 
         break;
 
     case 2:
-        view_load(&view.uninstallview->base);
+        view_load(&uninstallview->base, &view);
 
         break;
 
@@ -130,50 +139,48 @@ static void menu_onselect(void)
 
 }
 
-static void xinstallview_onquit(void)
-{
-
-    view_load(&view.base);
-
-}
-
 static void installview_preload(void)
 {
 
-    view.installview->app = view.app;
+    installview->app = app;
 
 }
 
 static void uninstallview_preload(void)
 {
 
-    view.uninstallview->app = view.app;
+    uninstallview->app = app;
 
 }
 
-struct view_app *view_app_setup(unsigned int w, unsigned int h)
+void view_app_set(struct db_app *item)
 {
 
-    view_init(&view.base, load, render, keydown);
-    box_init(&view.titlebox);
-    box_init(&view.shortbox);
-    box_init(&view.menubox);
-    box_setpartsize(&view.titlebox, w / 10, h / 10, 0, 0, 10, 2);
-    box_setpartsize(&view.shortbox, w / 10, h / 10, 0, 1, 10, 6);
-    box_setpartsize(&view.menubox, w / 10, h / 10, 0, 6, 10, 4);
-    menu_init(&view.menu, view.menuitems, 3);
-    menu_inititem(&view.menuitems[0], "Run", 0);
-    menu_inititem(&view.menuitems[1], "Install", 0);
-    menu_inititem(&view.menuitems[2], "Uninstall", 0);
-    menu_setrow(&view.menu, 0);
+    app = item;
 
-    view.menu.onselect = menu_onselect;
-    view.installview = view_install_setup(w, h);
-    view.installview->base.onquit = xinstallview_onquit;
-    view.installview->base.preload = installview_preload;
-    view.uninstallview = view_uninstall_setup(w, h);
-    view.uninstallview->base.onquit = xinstallview_onquit;
-    view.uninstallview->base.preload = uninstallview_preload;
+}
+
+struct view *view_app_setup(unsigned int w, unsigned int h)
+{
+
+    view_init(&view, load);
+    box_init(&titlebox);
+    box_init(&shortbox);
+    box_init(&menubox);
+    box_setpartsize(&titlebox, w / 10, h / 10, 0, 0, 10, 2);
+    box_setpartsize(&shortbox, w / 10, h / 10, 0, 1, 10, 6);
+    box_setpartsize(&menubox, w / 10, h / 10, 0, 6, 10, 4);
+    menu_init(&menu, menuitems, 3);
+    menu_inititem(&menuitems[0], "Run", 0);
+    menu_inititem(&menuitems[1], "Install", 0);
+    menu_inititem(&menuitems[2], "Uninstall", 0);
+    menu_setrow(&menu, 0);
+
+    menu.onselect = menu_onselect;
+    installview = view_install_setup(w, h);
+    installview->base.preload = installview_preload;
+    uninstallview = view_uninstall_setup(w, h);
+    uninstallview->base.preload = uninstallview_preload;
 
     return &view;
 

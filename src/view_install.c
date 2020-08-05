@@ -148,7 +148,7 @@ static unsigned int downloadnotify(unsigned int totalbytes, unsigned int percent
     view.totalbytes = totalbytes;
     view.percentage = percentage;
 
-    view_redraw();
+    ztore_redraw(&view.base);
 
     return !view.abortdownload;
 
@@ -160,13 +160,13 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
     if (!packagelist->count)
         return 0;
 
-    view_setmode(&view.base, renderpreparing, keydownoff);
-    view_redraw();
+    ztore_setview(renderpreparing, keydownoff);
+    ztore_redraw(&view.base);
 
     if (verifypackages(packagelist))
         return 1;
 
-    view_setmode(&view.base, renderdownloading, keydowndownloading);
+    ztore_setview(renderdownloading, keydowndownloading);
     downloadnotify(0, 0);
 
     if (!file_downloadpackage(packagelist->items[0].name, downloadnotify))
@@ -178,8 +178,8 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
 
     }
 
-    view_setmode(&view.base, renderinstalling, keydownoff);
-    view_redraw();
+    ztore_setview(renderinstalling, keydownoff);
+    ztore_redraw(&view.base);
 
     if (verifypackage(&packagelist->items[0]))
     {
@@ -202,11 +202,11 @@ static void install(void)
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (doinstall(&packagelist))
-        view_setmode(&view.base, rendercomplete, keydownback);
+        ztore_setview(rendercomplete, keydownback);
     else
-        view_setmode(&view.base, renderfail, keydownback);
+        ztore_setview(renderfail, keydownback);
 
-    view_redraw();
+    ztore_redraw(&view.base);
     db_freepackages(&packagelist);
 
 }
@@ -216,7 +216,7 @@ static void load(void)
 
     view.abortdownload = 0;
 
-    view_setmode(&view.base, renderdefault, keydownoff);
+    ztore_setview(renderdefault, keydownoff);
     install();
 
 }
@@ -239,7 +239,7 @@ static void menu_onselect(void)
 struct view_install *view_install_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, load, renderdefault, keydownoff);
+    view_init(&view.base, load);
     box_init(&view.statusbox);
     box_init(&view.menubox);
     box_setpartsize(&view.statusbox, w / 10, h / 10, 0, 0, 10, 6);

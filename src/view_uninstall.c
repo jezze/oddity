@@ -121,17 +121,17 @@ static void uninstall(void)
 
     struct db_packagelist packagelist;
 
-    view_setmode(&view.base, renderuninstalling, keydownoff);
-    view_redraw();
+    ztore_setview(renderuninstalling, keydownoff);
+    ztore_redraw(&view.base);
 
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (douninstall(&packagelist))
-        view_setmode(&view.base, rendercomplete, keydownback);
+        ztore_setview(rendercomplete, keydownback);
     else
-        view_setmode(&view.base, renderfail, keydownback);
+        ztore_setview(renderfail, keydownback);
 
-    view_redraw();
+    ztore_redraw(&view.base);
     db_freepackages(&packagelist);
 
 }
@@ -139,7 +139,7 @@ static void uninstall(void)
 static void load(void)
 {
 
-    view_setmode(&view.base, renderconfirm, keydownconfirm);
+    ztore_setview(renderconfirm, keydownconfirm);
 
 }
 
@@ -161,7 +161,7 @@ static void menu_onselect(void)
 struct view_uninstall *view_uninstall_setup(unsigned int w, unsigned int h)
 {
 
-    view_init(&view.base, load, renderconfirm, keydownconfirm);
+    view_init(&view.base, load);
     box_init(&view.statusbox);
     box_init(&view.menubox);
     box_setpartsize(&view.statusbox, w / 10, h / 10, 0, 0, 10, 8);

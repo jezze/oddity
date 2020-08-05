@@ -14,6 +14,39 @@
 #define SCREEN_HEIGHT                   240
 #define SCREEN_BPP                      32
 
+static unsigned int quit;
+
+static void (*_render)(void);
+static void (*_keydown)(unsigned int key);
+
+void ztore_quit(void)
+{
+
+    quit = 1;
+
+}
+
+void ztore_setview(void (*render)(void), void (*keydown)(unsigned int key))
+{
+
+    _render = render;
+    _keydown = keydown;
+
+}
+
+static void ztore_loop(struct view *view)
+{
+
+    while (!quit)
+    {
+
+        backend_render(_render);
+        backend_waitevent(ztore_quit, _keydown);
+
+    }
+
+}
+
 static void ztore_init(void)
 {
 
@@ -44,6 +77,14 @@ void ztore_exec(char *name)
 
 }
 
+void ztore_redraw(struct view *view)
+{
+
+    backend_pollevent(ztore_quit, _keydown);
+    backend_render(_render);
+
+}
+
 int main(int argc, char **argv)
 {
 
@@ -52,8 +93,9 @@ int main(int argc, char **argv)
     file_init();
     db_init();
     ztore_init();
-    view_load(front);
-    view_loop();
+    view_load(front, 0);
+    ztore_loop(front);
+    view_quit(front);
     ztore_destroy();
 
     return 0;

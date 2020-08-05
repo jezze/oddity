@@ -1,13 +1,2 @@
-struct view_applist
-{
-
-    struct view base;
-    struct view_app *appview;
-    struct db_applist applist;
-    struct menu menu;
-    struct box menubox;
-    struct box emptytextbox;
-
-};
-
-struct view_applist *view_applist_setup(unsigned int w, unsigned int h);
+void view_applist_setlist(struct db_applist *list);
+struct view *view_applist_setup(unsigned int w, unsigned int h);
