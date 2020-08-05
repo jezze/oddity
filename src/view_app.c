@@ -31,10 +31,10 @@ static void render(void)
 
 }
 
-static void keydown(unsigned int key)
+static void button(unsigned int key)
 {
 
-    menu_keydown(&menu, key);
+    menu_button(&menu, key);
 
     switch (key)
     {
@@ -86,7 +86,7 @@ static void load(void)
     }
 
     updatestate();
-    ztore_setview(render, keydown);
+    ztore_setview(render, button);
 
 }
 

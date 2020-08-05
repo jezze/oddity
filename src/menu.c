@@ -80,7 +80,7 @@ static void setprevpage(struct menu *menu)
 
 }
 
-void menu_keydown(struct menu *menu, unsigned int key)
+void menu_button(struct menu *menu, unsigned int key)
 {
 
     switch (key)

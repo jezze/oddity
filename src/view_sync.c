@@ -58,12 +58,12 @@ static void renderfail(void)
 
 }
 
-static void keydownoff(unsigned int key)
+static void buttonoff(unsigned int key)
 {
 
 }
 
-static void keydownback(unsigned int key)
+static void buttonback(unsigned int key)
 {
 
     switch (key)
@@ -78,10 +78,10 @@ static void keydownback(unsigned int key)
 
 }
 
-static void keydowndownloading(unsigned int key)
+static void buttondownloading(unsigned int key)
 {
 
-    menu_keydown(&view.menu, key);
+    menu_button(&view.menu, key);
 
 }
 
@@ -106,7 +106,7 @@ static void sync(void)
 
     db_loadremotes(&remotelist);
 
-    ztore_setview(renderdownloading, keydowndownloading);
+    ztore_setview(renderdownloading, buttondownloading);
     downloadnotify(0, 0);
 
     for (i = 0; i < remotelist.count; i++)
@@ -125,9 +125,9 @@ static void sync(void)
     db_freeremotes(&remotelist);
 
     if (status)
-        ztore_setview(rendercomplete, keydownback);
+        ztore_setview(rendercomplete, buttonback);
     else
-        ztore_setview(renderfail, keydownback);
+        ztore_setview(renderfail, buttonback);
  
     ztore_redraw();
 
@@ -138,7 +138,7 @@ static void load(void)
 
     view.abortdownload = 0;
 
-    ztore_setview(renderdefault, keydownoff);
+    ztore_setview(renderdefault, buttonoff);
     sync();
 
 }

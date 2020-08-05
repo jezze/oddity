@@ -26,10 +26,10 @@ static void render(void)
 
 }
 
-static void keydown(unsigned int key)
+static void button(unsigned int key)
 {
 
-    menu_keydown(&menu, key);
+    menu_button(&menu, key);
 
     switch (key)
     {
@@ -58,7 +58,7 @@ static void load(void)
         menu_inititem(&menu.items[i], applist->items[i].name, stateinfo[applist->items[i].state]);
 
     menu_setrow(&menu, 0);
-    ztore_setview(render, keydown);
+    ztore_setview(render, button);
 
 }
 

@@ -17,7 +17,7 @@
 static unsigned int quit;
 
 static void (*_render)(void);
-static void (*_keydown)(unsigned int key);
+static void (*_button)(unsigned int key);
 
 void ztore_quit(void)
 {
@@ -26,11 +26,11 @@ void ztore_quit(void)
 
 }
 
-void ztore_setview(void (*render)(void), void (*keydown)(unsigned int key))
+void ztore_setview(void (*render)(void), void (*button)(unsigned int key))
 {
 
     _render = render;
-    _keydown = keydown;
+    _button = button;
 
 }
 
@@ -41,7 +41,7 @@ static void ztore_loop(void)
     {
 
         backend_render(_render);
-        backend_waitevent(ztore_quit, _keydown);
+        backend_waitevent(ztore_quit, _button);
 
     }
 
@@ -80,7 +80,7 @@ void ztore_exec(char *name)
 void ztore_redraw(void)
 {
 
-    backend_pollevent(ztore_quit, _keydown);
+    backend_pollevent(ztore_quit, _button);
     backend_render(_render);
 
 }

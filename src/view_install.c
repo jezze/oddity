@@ -58,12 +58,12 @@ static void renderfail(void)
 
 }
 
-static void keydownoff(unsigned int key)
+static void buttonoff(unsigned int key)
 {
 
 }
 
-static void keydownback(unsigned int key)
+static void buttonback(unsigned int key)
 {
 
     switch (key)
@@ -78,10 +78,10 @@ static void keydownback(unsigned int key)
 
 }
 
-static void keydowndownloading(unsigned int key)
+static void buttondownloading(unsigned int key)
 {
 
-    menu_keydown(&view.menu, key);
+    menu_button(&view.menu, key);
 
 }
 
@@ -160,13 +160,13 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
     if (!packagelist->count)
         return 0;
 
-    ztore_setview(renderpreparing, keydownoff);
+    ztore_setview(renderpreparing, buttonoff);
     ztore_redraw();
 
     if (verifypackages(packagelist))
         return 1;
 
-    ztore_setview(renderdownloading, keydowndownloading);
+    ztore_setview(renderdownloading, buttondownloading);
     downloadnotify(0, 0);
 
     if (!file_downloadpackage(packagelist->items[0].name, downloadnotify))
@@ -178,7 +178,7 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
 
     }
 
-    ztore_setview(renderinstalling, keydownoff);
+    ztore_setview(renderinstalling, buttonoff);
     ztore_redraw();
 
     if (verifypackage(&packagelist->items[0]))
@@ -202,9 +202,9 @@ static void install(void)
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (doinstall(&packagelist))
-        ztore_setview(rendercomplete, keydownback);
+        ztore_setview(rendercomplete, buttonback);
     else
-        ztore_setview(renderfail, keydownback);
+        ztore_setview(renderfail, buttonback);
 
     ztore_redraw();
     db_freepackages(&packagelist);
@@ -216,7 +216,7 @@ static void load(void)
 
     view.abortdownload = 0;
 
-    ztore_setview(renderdefault, keydownoff);
+    ztore_setview(renderdefault, buttonoff);
     install();
 
 }

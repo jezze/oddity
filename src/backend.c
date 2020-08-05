@@ -106,7 +106,7 @@ void backend_rect(int x, int y, int w, int h)
 
 }
 
-static void handleevent(SDL_Event *event, void (*quit)(void), void (*keydown)(unsigned int key))
+static void handleevent(SDL_Event *event, void (*quit)(void), void (*button)(unsigned int key))
 {
 
     switch (event->type)
@@ -117,72 +117,72 @@ static void handleevent(SDL_Event *event, void (*quit)(void), void (*keydown)(un
         {
 
         case SDLK_LEFT:
-            keydown(KEY_LEFT);
+            button(KEY_LEFT);
 
             break;
 
         case SDLK_RIGHT:
-            keydown(KEY_RIGHT);
+            button(KEY_RIGHT);
 
             break;
 
         case SDLK_UP:
-            keydown(KEY_UP);
+            button(KEY_UP);
 
             break;
 
         case SDLK_DOWN:
-            keydown(KEY_DOWN);
+            button(KEY_DOWN);
 
             break;
 
         case SDLK_LCTRL:
-            keydown(KEY_A);
+            button(KEY_A);
 
             break;
 
         case SDLK_LALT:
-            keydown(KEY_B);
+            button(KEY_B);
 
             break;
 
         case SDLK_LSHIFT:
-            keydown(KEY_X);
+            button(KEY_X);
 
             break;
 
         case SDLK_SPACE:
-            keydown(KEY_Y);
+            button(KEY_Y);
 
             break;
 
         case SDLK_TAB:
-            keydown(KEY_L);
+            button(KEY_L);
 
             break;
 
         case SDLK_BACKSPACE:
-            keydown(KEY_R);
+            button(KEY_R);
 
             break;
 
         case SDLK_ESCAPE:
-            keydown(KEY_SELECT);
+            button(KEY_SELECT);
 
             break;
 
         case SDLK_RETURN:
-            keydown(KEY_START);
+            button(KEY_START);
 
             break;
 
         case SDLK_PAUSE:
-            keydown(KEY_LOCKDOWN);
+            button(KEY_LOCKDOWN);
 
             break;
 
         case SDLK_HOME:
-            keydown(KEY_LOCKUP);
+            button(KEY_LOCKUP);
 
             break;
 
@@ -202,23 +202,23 @@ static void handleevent(SDL_Event *event, void (*quit)(void), void (*keydown)(un
 
 }
 
-void backend_pollevent(void (*quit)(void), void (*keydown)(unsigned int key))
+void backend_pollevent(void (*quit)(void), void (*button)(unsigned int key))
 {
 
     SDL_Event event;
 
     while (SDL_PollEvent(&event))
-        handleevent(&event, quit, keydown);
+        handleevent(&event, quit, button);
 
 }
 
-void backend_waitevent(void (*quit)(void), void (*keydown)(unsigned int key))
+void backend_waitevent(void (*quit)(void), void (*button)(unsigned int key))
 {
 
     SDL_Event event;
 
     SDL_WaitEvent(&event);
-    handleevent(&event, quit, keydown);
+    handleevent(&event, quit, button);
 
 }
 

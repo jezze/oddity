@@ -44,12 +44,12 @@ static void renderfail(void)
 
 }
 
-static void keydownoff(unsigned int key)
+static void buttonoff(unsigned int key)
 {
 
 }
 
-static void keydownback(unsigned int key)
+static void buttonback(unsigned int key)
 {
 
     switch (key)
@@ -64,10 +64,10 @@ static void keydownback(unsigned int key)
 
 }
 
-static void keydownconfirm(unsigned int key)
+static void buttonconfirm(unsigned int key)
 {
 
-    menu_keydown(&view.menu, key);
+    menu_button(&view.menu, key);
 
     switch (key)
     {
@@ -121,15 +121,15 @@ static void uninstall(void)
 
     struct db_packagelist packagelist;
 
-    ztore_setview(renderuninstalling, keydownoff);
+    ztore_setview(renderuninstalling, buttonoff);
     ztore_redraw();
 
     db_loadpackagesfromapp(&packagelist, view.app);
 
     if (douninstall(&packagelist))
-        ztore_setview(rendercomplete, keydownback);
+        ztore_setview(rendercomplete, buttonback);
     else
-        ztore_setview(renderfail, keydownback);
+        ztore_setview(renderfail, buttonback);
 
     ztore_redraw();
     db_freepackages(&packagelist);
@@ -139,7 +139,7 @@ static void uninstall(void)
 static void load(void)
 {
 
-    ztore_setview(renderconfirm, keydownconfirm);
+    ztore_setview(renderconfirm, buttonconfirm);
 
 }
 
