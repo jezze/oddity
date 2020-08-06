@@ -10,6 +10,7 @@ SDL_Surface *display;
 SDL_Surface *background;
 SDL_Surface *blur;
 TTF_Font *font;
+TTF_Font *ofont;
 
 static void blit(SDL_Surface *surface, int x, int y, int w, int h)
 {
@@ -43,8 +44,11 @@ void backend_glyph(char c, unsigned int x, unsigned int y, unsigned int w, unsig
 {
 
     SDL_Surface *surface;
+    SDL_Surface *osurface;
     SDL_Rect rect;
+    SDL_Rect orect;
     SDL_Color color;
+    SDL_Color ocolor;
 
     rect.x = x;
     rect.y = y;
@@ -54,7 +58,17 @@ void backend_glyph(char c, unsigned int x, unsigned int y, unsigned int w, unsig
     color.g = col >> 8;
     color.b = col >> 0;
     surface = TTF_RenderGlyph_Solid(font, c, color);
+    orect.x = x - 1;
+    orect.y = y - 1;
+    orect.w = w;
+    orect.h = h;
+    ocolor.r = 10;
+    ocolor.g = 10;
+    ocolor.b = 10;
+    osurface = TTF_RenderGlyph_Solid(ofont, c, ocolor);
 
+    SDL_BlitSurface(osurface, NULL, display, &orect);
+    SDL_FreeSurface(osurface);
     SDL_BlitSurface(surface, NULL, display, &rect);
     SDL_FreeSurface(surface);
 
@@ -282,6 +296,13 @@ void backend_loadfont(char *name)
     if (!font)
         exit(EXIT_FAILURE);
 
+    ofont = TTF_OpenFont(name, 16);
+
+    if (!ofont)
+        exit(EXIT_FAILURE);
+
+    TTF_SetFontOutline(ofont, 1);
+
 }
 
 void backend_unloadbackground(void)
@@ -296,6 +317,7 @@ void backend_unloadfont(void)
 {
 
     TTF_CloseFont(font);
+    TTF_CloseFont(ofont);
 
 }
 
