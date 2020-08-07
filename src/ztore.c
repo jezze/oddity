@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 #include "box.h"
 #include "text.h"
 #include "menu.h"
@@ -71,12 +72,17 @@ static void ztore_destroy(void)
 void ztore_exec(char *name)
 {
 
-    char command[64];
+    char *opkrun = "opkrun";
+    char opk[64];
+    char *argv[3];
 
-    snprintf(command, 64, "opkrun /media/data/apps/%s", name);
+    argv[0] = "opkrun";
+    argv[1] = opk;
+    argv[2] = 0;
+
+    snprintf(opk, 64, "/media/data/apps/%s", name);
     ztore_destroy();
-    system(command);
-    ztore_init();
+    execvp(opkrun, argv);
 
 }
 
