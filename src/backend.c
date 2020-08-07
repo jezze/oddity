@@ -118,6 +118,8 @@ void backend_rect(int x, int y, int w, int h)
     doborderrectangle(surface, w, h, 0x40FFFFFF);
     blit(surface, x, y, w, h);
 
+    SDL_FreeSurface(surface);
+
 }
 
 static void handleevent(SDL_Event *event, void (*quit)(void), void (*button)(unsigned int key))
