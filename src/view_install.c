@@ -10,42 +10,35 @@
 #include "view_install.h"
 #include "ztore.h"
 
-struct view_install
-{
-
-    struct view base;
-    struct db_app *app;
-    struct box statusbox;
-    struct menu menu;
-    struct box menubox;
-    struct menuitem menuitems[1];
-    unsigned int percentage;
-    unsigned int totalbytes;
-    unsigned int abortdownload;
-
-};
-
-static struct view_install view;
+static struct view view;
+static struct db_app *app;
+static struct box statusbox;
+static struct menu menu;
+static struct box menubox;
+static struct menuitem menuitems[1];
+static unsigned int percentage;
+static unsigned int totalbytes;
+static unsigned int abortdownload;
 
 static void place(unsigned int w, unsigned int h)
 {
 
-    box_setpartsize(&view.statusbox, w / 10, h / 10, 0, 0, 10, 6);
-    box_setpartsize(&view.menubox, w / 10, h / 10, 0, 6, 10, 4);
+    box_setpartsize(&statusbox, w / 10, h / 10, 0, 0, 10, 6);
+    box_setpartsize(&menubox, w / 10, h / 10, 0, 6, 10, 4);
 
 }
 
 static void renderdefault(void)
 {
 
-    text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Please wait...");
+    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Please wait...");
 
 }
 
 static void renderpreparing(void)
 {
 
-    text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Preparing...");
+    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Preparing...");
 
 }
 
@@ -54,30 +47,30 @@ static void renderdownloading(void)
 
     char progress[128];
 
-    snprintf(progress, 128, "Downloading %s...\n\nProgress: %d%%\nTotal bytes: %dKB", view.app->name, view.percentage, view.totalbytes);
-    text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, progress);
-    menu_render(&view.menu, &view.menubox);
+    snprintf(progress, 128, "Downloading %s...\n\nProgress: %d%%\nTotal bytes: %dKB", app->name, percentage, totalbytes);
+    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, progress);
+    menu_render(&menu, &menubox);
 
 }
 
 static void renderinstalling(void)
 {
 
-    text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installing...");
+    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installing...");
 
 }
 
 static void rendercomplete(void)
 {
 
-    text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installation complete!\n\nPress B to go back.");
+    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installation complete!\n\nPress B to go back.");
 
 }
 
 static void renderfail(void)
 {
 
-    text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installation failed!\n\nPress B to go back.");
+    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installation failed!\n\nPress B to go back.");
 
 }
 
@@ -93,7 +86,7 @@ static void buttonback(unsigned int key)
     {
 
     case KEY_B:
-        view_quit(&view.base);
+        view_quit(&view);
 
         break;
 
@@ -104,16 +97,16 @@ static void buttonback(unsigned int key)
 static void buttondownloading(unsigned int key)
 {
 
-    menu_button(&view.menu, key);
+    menu_button(&menu, key);
 
 }
 
 static void updatestates(struct db_package *package)
 {
 
-    view.app->state = 3;
+    app->state = 3;
 
-    db_saveappstate(view.app);
+    db_saveappstate(app);
 
     package->state = 3;
 
@@ -165,15 +158,15 @@ static unsigned int verifypackages(struct db_packagelist *packagelist)
 
 }
 
-static unsigned int downloadnotify(unsigned int totalbytes, unsigned int percentage)
+static unsigned int downloadnotify(unsigned int t, unsigned int p)
 {
 
-    view.totalbytes = totalbytes;
-    view.percentage = percentage;
+    totalbytes = t;
+    percentage = p;
 
     ztore_redraw();
 
-    return !view.abortdownload;
+    return !abortdownload;
 
 }
 
@@ -222,7 +215,7 @@ static void install(void)
 
     struct db_packagelist packagelist;
 
-    db_loadpackagesfromapp(&packagelist, view.app);
+    db_loadpackagesfromapp(&packagelist, app);
 
     if (doinstall(&packagelist))
         ztore_setview(place, rendercomplete, buttonback);
@@ -237,7 +230,7 @@ static void install(void)
 static void load(void)
 {
 
-    view.abortdownload = 0;
+    abortdownload = 0;
 
     ztore_setview(place, renderdefault, buttonoff);
     install();
@@ -247,11 +240,11 @@ static void load(void)
 static void menu_onselect(void)
 {
 
-    switch (view.menu.currentitem)
+    switch (menu.currentitem)
     {
 
     case 0:
-        view.abortdownload = 1;
+        abortdownload = 1;
 
         break;
 
@@ -262,16 +255,16 @@ static void menu_onselect(void)
 struct view *view_install_setup(void)
 {
 
-    view_init(&view.base, load);
-    box_init(&view.statusbox);
-    box_init(&view.menubox);
-    menu_init(&view.menu, view.menuitems, 1);
-    menu_inititem(&view.menuitems[0], "Cancel", 0);
-    menu_setrow(&view.menu, 0);
+    view_init(&view, load);
+    box_init(&statusbox);
+    box_init(&menubox);
+    menu_init(&menu, menuitems, 1);
+    menu_inititem(&menuitems[0], "Cancel", 0);
+    menu_setrow(&menu, 0);
 
-    view.menu.onselect = menu_onselect;
+    menu.onselect = menu_onselect;
 
-    return &view.base;
+    return &view;
 
 }
 

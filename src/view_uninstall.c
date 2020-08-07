@@ -10,33 +10,26 @@
 #include "view_uninstall.h"
 #include "ztore.h"
 
-struct view_uninstall
-{
-
-    struct view base;
-    struct db_app *app;
-    struct box statusbox;
-    struct menu menu;
-    struct box menubox;
-    struct menuitem menuitems[1];
-
-};
-
-static struct view_uninstall view;
+static struct view view;
+static struct db_app *app;
+static struct box statusbox;
+static struct menu menu;
+static struct box menubox;
+static struct menuitem menuitems[1];
 
 static void place(unsigned int w, unsigned int h)
 {
 
-    box_setpartsize(&view.statusbox, w / 10, h / 10, 0, 0, 10, 8);
-    box_setpartsize(&view.menubox, w / 10, h / 10, 0, 8, 10, 2);
+    box_setpartsize(&statusbox, w / 10, h / 10, 0, 0, 10, 8);
+    box_setpartsize(&menubox, w / 10, h / 10, 0, 8, 10, 2);
 
 }
 
 static void renderconfirm(void)
 {
 
-    text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Are you sure you want to uninstall?");
-    menu_render(&view.menu, &view.menubox);
+    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Are you sure you want to uninstall?");
+    menu_render(&menu, &menubox);
 
 }
 
@@ -45,22 +38,22 @@ static void renderuninstalling(void)
 
     char progress[128];
 
-    snprintf(progress, 128, "Uninstalling %s...", view.app->name);
-    text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, progress);
+    snprintf(progress, 128, "Uninstalling %s...", app->name);
+    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, progress);
 
 }
 
 static void rendercomplete(void)
 {
 
-    text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Uninstall complete!\n\nPress B to go back.");
+    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Uninstall complete!\n\nPress B to go back.");
 
 }
 
 static void renderfail(void)
 {
 
-    text_render(&view.statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Uninstall failed!\n\nPress B to go back.");
+    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Uninstall failed!\n\nPress B to go back.");
 
 }
 
@@ -76,7 +69,7 @@ static void buttonback(unsigned int key)
     {
 
     case KEY_B:
-        view_quit(&view.base);
+        view_quit(&view);
 
         break;
 
@@ -87,13 +80,13 @@ static void buttonback(unsigned int key)
 static void buttonconfirm(unsigned int key)
 {
 
-    menu_button(&view.menu, key);
+    menu_button(&menu, key);
 
     switch (key)
     {
 
     case KEY_B:
-        view_quit(&view.base);
+        view_quit(&view);
 
         break;
 
@@ -104,9 +97,9 @@ static void buttonconfirm(unsigned int key)
 static void updatestates(struct db_package *package)
 {
 
-    view.app->state = 0;
+    app->state = 0;
 
-    db_saveappstate(view.app);
+    db_saveappstate(app);
 
     package->state = 0;
 
@@ -144,7 +137,7 @@ static void uninstall(void)
     ztore_setview(place, renderuninstalling, buttonoff);
     ztore_redraw();
 
-    db_loadpackagesfromapp(&packagelist, view.app);
+    db_loadpackagesfromapp(&packagelist, app);
 
     if (douninstall(&packagelist))
         ztore_setview(place, rendercomplete, buttonback);
@@ -166,7 +159,7 @@ static void load(void)
 static void menu_onselect(void)
 {
 
-    switch (view.menu.currentitem)
+    switch (menu.currentitem)
     {
 
     case 0:
@@ -181,16 +174,16 @@ static void menu_onselect(void)
 struct view *view_uninstall_setup(void)
 {
 
-    view_init(&view.base, load);
-    box_init(&view.statusbox);
-    box_init(&view.menubox);
-    menu_init(&view.menu, view.menuitems, 1);
-    menu_inititem(&view.menuitems[0], "Yes, I am sure", 0);
-    menu_setrow(&view.menu, 0);
+    view_init(&view, load);
+    box_init(&statusbox);
+    box_init(&menubox);
+    menu_init(&menu, menuitems, 1);
+    menu_inititem(&menuitems[0], "Yes, I am sure", 0);
+    menu_setrow(&menu, 0);
 
-    view.menu.onselect = menu_onselect;
+    menu.onselect = menu_onselect;
 
-    return &view.base;
+    return &view;
 
 }
 
