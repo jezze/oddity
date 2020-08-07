@@ -76,7 +76,7 @@ static void menu_onselect(void)
     if (applist->count)
     {
 
-        view_app_set(&applist->items[menu.currentitem]);
+        view_app_setapp(&applist->items[menu.currentitem]);
         view_load(appview, &view);
 
     }

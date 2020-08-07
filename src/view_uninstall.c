@@ -171,6 +171,13 @@ static void menu_onselect(void)
 
 }
 
+void view_uninstall_setapp(struct db_app *item)
+{
+
+    app = item;
+
+}
+
 struct view *view_uninstall_setup(void)
 {
 

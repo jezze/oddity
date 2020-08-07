@@ -135,11 +135,13 @@ static void menu_onselect(void)
         break;
 
     case 1:
+        view_install_setapp(app);
         view_load(installview, &view);
 
         break;
 
     case 2:
+        view_uninstall_setapp(app);
         view_load(uninstallview, &view);
 
         break;
@@ -148,7 +150,7 @@ static void menu_onselect(void)
 
 }
 
-void view_app_set(struct db_app *item)
+void view_app_setapp(struct db_app *item)
 {
 
     app = item;
