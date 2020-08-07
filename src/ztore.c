@@ -83,6 +83,7 @@ void ztore_exec(char *name)
 void ztore_redraw(void)
 {
 
+    _place(SCREEN_WIDTH, SCREEN_HEIGHT);
     backend_pollevent(ztore_quit, _button);
     backend_render(_render);
 
