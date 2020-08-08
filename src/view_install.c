@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 #include "define.h"
 #include "box.h"
@@ -7,7 +8,6 @@
 #include "file.h"
 #include "db.h"
 #include "view.h"
-#include "view_install.h"
 #include "ztore.h"
 
 static struct view view;
@@ -86,7 +86,7 @@ static void buttonback(unsigned int key)
     {
 
     case KEY_B:
-        view_quit(&view);
+        view_quit("install");
 
         break;
 
@@ -232,6 +232,14 @@ static void load(void)
 
 }
 
+static void event(char *key, void *value)
+{
+
+    if (!strcmp(key, "app"))
+        app = value;
+
+}
+
 static void menu_onselect(unsigned int index)
 {
 
@@ -247,17 +255,10 @@ static void menu_onselect(unsigned int index)
 
 }
 
-void view_install_setapp(struct db_app *item)
+void view_install_setup(void)
 {
 
-    app = item;
-
-}
-
-struct view *view_install_setup(void)
-{
-
-    view_init(&view, load);
+    view_init(&view, load, event);
     box_init(&statusbox);
     box_init(&menubox);
     menu_init(&menu, menuitems, 1);
@@ -266,7 +267,7 @@ struct view *view_install_setup(void)
 
     menu.onselect = menu_onselect;
 
-    return &view;
+    view_register("install", &view);
 
 }
 

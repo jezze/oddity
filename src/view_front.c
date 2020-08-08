@@ -4,14 +4,9 @@
 #include "text.h"
 #include "menu.h"
 #include "view.h"
-#include "view_repolist.h"
-#include "view_sync.h"
-#include "view_front.h"
 #include "ztore.h"
 
 static struct view view;
-static struct view *repolistview;
-static struct view *syncview;
 static struct box greetingbox;
 static struct menu menu;
 static struct box menubox;
@@ -47,6 +42,11 @@ static void load(void)
 
 }
 
+static void event(char *key, void *value)
+{
+
+}
+
 static void menu_onselect(unsigned int index)
 {
 
@@ -54,12 +54,12 @@ static void menu_onselect(unsigned int index)
     {
 
     case 0:
-        view_load(repolistview, &view);
+        view_load("repolist", "front");
 
         break;
 
     case 1:
-        view_load(syncview, &view);
+        view_load("sync", "front");
 
         break;
 
@@ -75,10 +75,10 @@ static void menu_onselect(unsigned int index)
 
 }
 
-struct view *view_front_setup(void)
+void view_front_setup(void)
 {
 
-    view_init(&view, load);
+    view_init(&view, load, event);
     box_init(&greetingbox);
     box_init(&menubox);
     menu_init(&menu, menuitems, 4);
@@ -90,10 +90,8 @@ struct view *view_front_setup(void)
     menu_setrow(&menu, 0);
 
     menu.onselect = menu_onselect;
-    repolistview = view_repolist_setup();
-    syncview = view_sync_setup();
 
-    return &view;
+    view_register("front", &view);
 
 }
 

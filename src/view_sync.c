@@ -7,7 +7,6 @@
 #include "file.h"
 #include "db.h"
 #include "view.h"
-#include "view_sync.h"
 #include "ztore.h"
 
 static struct view view;
@@ -94,7 +93,7 @@ static void buttondownloading(unsigned int key)
     {
 
     case KEY_B:
-        view_quit(&view);
+        view_quit("sync");
 
         break;
 
@@ -159,6 +158,11 @@ static void load(void)
 
 }
 
+static void event(char *key, void *value)
+{
+
+}
+
 static void menu_onselect(unsigned int index)
 {
 
@@ -168,7 +172,7 @@ static void menu_onselect(unsigned int index)
     case 0:
         abortdownload = 1;
 
-        view_quit(&view);
+        view_quit("sync");
 
         break;
 
@@ -176,10 +180,10 @@ static void menu_onselect(unsigned int index)
 
 }
 
-struct view *view_sync_setup(void)
+void view_sync_setup(void)
 {
 
-    view_init(&view, load);
+    view_init(&view, load, event);
     box_init(&statusbox);
     box_init(&menubox);
     menu_init(&menu, menuitems, 1);
@@ -188,7 +192,7 @@ struct view *view_sync_setup(void)
 
     menu.onselect = menu_onselect;
 
-    return &view;
+    view_register("sync", &view);
 
 }
 

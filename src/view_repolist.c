@@ -6,12 +6,9 @@
 #include "menu.h"
 #include "db.h"
 #include "view.h"
-#include "view_applist.h"
-#include "view_repolist.h"
 #include "ztore.h"
 
 static struct view view;
-static struct view *applistview;
 static struct menu menu;
 static struct box menubox;
 static struct menuitem menuitems[4];
@@ -44,7 +41,7 @@ static void button(unsigned int key)
     {
 
     case KEY_B:
-        view_quit(&view);
+        view_quit("repolist");
 
         break;
 
@@ -66,6 +63,11 @@ static void load(void)
     menu.items[3].info = updated;
 
     ztore_setview(place, render, button);
+
+}
+
+static void event(char *key, void *value)
+{
 
 }
 
@@ -99,15 +101,15 @@ static void menu_onselect(unsigned int index)
 
     }
 
-    view_applist_setlist(&applist);
-    view_load(applistview, &view);
+    view_send("applist", "list", &applist);
+    view_load("applist", "repolist");
 
 }
 
-struct view *view_repolist_setup(void)
+void view_repolist_setup(void)
 {
 
-    view_init(&view, load);
+    view_init(&view, load, event);
     box_init(&menubox);
     menu_init(&menu, menuitems, 4);
     menu_inititem(&menuitems[0], "All", "0 items");
@@ -117,9 +119,8 @@ struct view *view_repolist_setup(void)
     menu_setrow(&menu, 0);
 
     menu.onselect = menu_onselect;
-    applistview = view_applist_setup();
 
-    return &view;
+    view_register("repolist", &view);
 
 }
 

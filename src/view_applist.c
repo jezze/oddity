@@ -1,16 +1,14 @@
 #include <stdlib.h>
+#include <string.h>
 #include "define.h"
 #include "box.h"
 #include "text.h"
 #include "menu.h"
 #include "db.h"
 #include "view.h"
-#include "view_app.h"
-#include "view_applist.h"
 #include "ztore.h"
 
 static struct view view;
-static struct view *appview;
 static struct menu menu;
 static struct box menubox;
 static struct box emptytextbox;
@@ -43,7 +41,7 @@ static void button(unsigned int key)
     {
 
     case KEY_B:
-        view_quit(&view);
+        view_quit("applist");
 
         break;
 
@@ -70,38 +68,38 @@ static void load(void)
 
 }
 
+static void event(char *key, void *value)
+{
+
+    if (!strcmp(key, "list"))
+        applist = value;
+
+}
+
 static void menu_onselect(unsigned int index)
 {
 
     if (applist->count)
     {
 
-        view_app_setapp(&applist->items[index]);
-        view_load(appview, &view);
+        view_send("app", "app", &applist->items[index]);
+        view_load("app", "applist");
 
     }
 
 }
 
-void view_applist_setlist(struct db_applist *list)
+void view_applist_setup(void)
 {
 
-    applist = list;
-
-}
-
-struct view *view_applist_setup(void)
-{
-
-    view_init(&view, load);
+    view_init(&view, load, event);
     box_init(&emptytextbox);
     box_init(&menubox);
     menu_init(&menu, 0, 0);
 
     menu.onselect = menu_onselect;
-    appview = view_app_setup();
 
-    return &view;
+    view_register("applist", &view);
 
 }
 

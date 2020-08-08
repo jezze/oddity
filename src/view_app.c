@@ -7,14 +7,9 @@
 #include "file.h"
 #include "db.h"
 #include "view.h"
-#include "view_app.h"
-#include "view_install.h"
-#include "view_uninstall.h"
 #include "ztore.h"
 
 static struct view view;
-static struct view *installview;
-static struct view *uninstallview;
 static struct box titlebox;
 static struct box shortbox;
 static struct menu menu;
@@ -49,7 +44,7 @@ static void button(unsigned int key)
     {
 
     case KEY_B:
-        view_quit(&view);
+        view_quit("app");
 
         break;
 
@@ -99,6 +94,14 @@ static void load(void)
 
 }
 
+static void event(char *key, void *value)
+{
+
+    if (!strcmp(key, "app"))
+        app = value;
+
+}
+
 static void runpackage(void)
 {
 
@@ -135,14 +138,14 @@ static void menu_onselect(unsigned int index)
         break;
 
     case 1:
-        view_install_setapp(app);
-        view_load(installview, &view);
+        view_send("install", "app", app);
+        view_load("install", "app");
 
         break;
 
     case 2:
-        view_uninstall_setapp(app);
-        view_load(uninstallview, &view);
+        view_send("uninstall", "app", app);
+        view_load("uninstall", "app");
 
         break;
 
@@ -150,17 +153,10 @@ static void menu_onselect(unsigned int index)
 
 }
 
-void view_app_setapp(struct db_app *item)
+void view_app_setup(void)
 {
 
-    app = item;
-
-}
-
-struct view *view_app_setup(void)
-{
-
-    view_init(&view, load);
+    view_init(&view, load, event);
     box_init(&titlebox);
     box_init(&shortbox);
     box_init(&menubox);
@@ -171,10 +167,8 @@ struct view *view_app_setup(void)
     menu_setrow(&menu, 0);
 
     menu.onselect = menu_onselect;
-    installview = view_install_setup();
-    uninstallview = view_uninstall_setup();
 
-    return &view;
+    view_register("app", &view);
 
 }
 

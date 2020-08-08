@@ -7,7 +7,6 @@
 #include "file.h"
 #include "db.h"
 #include "view.h"
-#include "view_front.h"
 #include "backend.h"
 #include "ztore.h"
 
@@ -15,11 +14,18 @@
 #define SCREEN_HEIGHT                   240
 #define SCREEN_BPP                      32
 
-static unsigned int quit;
+void view_app_setup(void);
+void view_applist_setup(void);
+void view_front_setup(void);
+void view_install_setup(void);
+void view_repolist_setup(void);
+void view_sync_setup(void);
+void view_uninstall_setup(void);
 
 static void (*_place)(unsigned int w, unsigned int h);
 static void (*_render)(void);
 static void (*_button)(unsigned int key);
+static unsigned int quit;
 
 void ztore_quit(void)
 {
@@ -90,14 +96,19 @@ void ztore_exec(char *name)
 int main(int argc, char **argv)
 {
 
-    struct view *front = view_front_setup();
-
     file_init();
     db_init();
     ztore_init();
-    view_load(front, 0);
+    view_app_setup();
+    view_applist_setup();
+    view_front_setup();
+    view_install_setup();
+    view_repolist_setup();
+    view_sync_setup();
+    view_uninstall_setup();
+    view_load("front", 0);
     ztore_loop();
-    view_quit(front);
+    view_quit("front");
     ztore_destroy();
 
     return 0;
