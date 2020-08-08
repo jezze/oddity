@@ -92,8 +92,6 @@ static unsigned int downloadnotify(unsigned int t, unsigned int p)
     totalbytes = t;
     percentage = p;
 
-    ztore_redraw();
-
     return !abortdownload;
 
 }
@@ -105,16 +103,15 @@ static void sync(void)
     unsigned int status = 0;
     unsigned int i;
 
-    db_loadremotes(&remotelist);
-
-    ztore_setview(place, renderdownloading, buttondownloading);
     downloadnotify(0, 0);
+    ztore_setview(place, renderdownloading, buttondownloading);
+
+    db_loadremotes(&remotelist);
 
     for (i = 0; i < remotelist.count; i++)
     {
 
         struct db_remote *remote = &remotelist.items[i];
-
 
         if (file_downloadremote(remote->url, remote->id, downloadnotify))
             status = db_sync(remote);
@@ -130,8 +127,6 @@ static void sync(void)
     else
         ztore_setview(place, renderfail, buttonback);
  
-    ztore_redraw();
-
 }
 
 static void load(void)

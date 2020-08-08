@@ -43,9 +43,9 @@ static void ztore_loop(void)
     while (!quit)
     {
 
+        backend_pollevent(ztore_quit, _button);
         _place(SCREEN_WIDTH, SCREEN_HEIGHT);
         backend_render(_render);
-        backend_waitevent(ztore_quit, _button);
 
     }
 
@@ -83,15 +83,6 @@ void ztore_exec(char *name)
     snprintf(opk, 64, "/media/data/apps/%s", name);
     ztore_destroy();
     execvp(opkrun, argv);
-
-}
-
-void ztore_redraw(void)
-{
-
-    _place(SCREEN_WIDTH, SCREEN_HEIGHT);
-    backend_pollevent(ztore_quit, _button);
-    backend_render(_render);
 
 }
 
