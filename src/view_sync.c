@@ -15,9 +15,9 @@ static struct box statusbox;
 static struct menu menu;
 static struct box menubox;
 static struct menuitem menuitems[1];
-unsigned int percentage;
-unsigned int totalbytes;
-unsigned int abortdownload;
+static unsigned int percentage;
+static unsigned int totalbytes;
+static unsigned int abortdownload;
 
 static void place(unsigned int w, unsigned int h)
 {
