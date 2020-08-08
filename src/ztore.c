@@ -46,6 +46,7 @@ static void ztore_loop(void)
         backend_pollevent(ztore_quit, _button);
         _place(SCREEN_WIDTH, SCREEN_HEIGHT);
         backend_render(_render);
+        backend_sleep(1000 / 60);
 
     }
 

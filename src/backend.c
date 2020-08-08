@@ -247,6 +247,13 @@ void backend_render(void (*render)(void))
 
 }
 
+void backend_sleep(unsigned int ms)
+{
+
+    SDL_Delay(ms);
+
+}
+
 void backend_init(unsigned int w, unsigned int h, unsigned int bpp)
 {
 

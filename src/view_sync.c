@@ -27,12 +27,14 @@ static void place(unsigned int w, unsigned int h)
 
 }
 
+/*
 static void renderdefault(void)
 {
 
     text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Please wait...");
 
 }
+*/
 
 static void renderdownloading(void)
 {
@@ -43,8 +45,11 @@ static void renderdownloading(void)
     text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, progress);
     menu_render(&menu, &menubox);
 
+    totalbytes++;
+
 }
 
+/*
 static void rendercomplete(void)
 {
 
@@ -78,11 +83,22 @@ static void buttonback(unsigned int key)
     }
 
 }
+*/
 
 static void buttondownloading(unsigned int key)
 {
 
     menu_button(&menu, key);
+
+    switch (key)
+    {
+
+    case KEY_B:
+        view_quit(&view);
+
+        break;
+
+    }
 
 }
 
@@ -96,6 +112,7 @@ static unsigned int downloadnotify(unsigned int t, unsigned int p)
 
 }
 
+/*
 static void sync(void)
 {
 
@@ -103,7 +120,6 @@ static void sync(void)
     unsigned int status = 0;
     unsigned int i;
 
-    downloadnotify(0, 0);
     ztore_setview(place, renderdownloading, buttondownloading);
 
     db_loadremotes(&remotelist);
@@ -128,14 +144,18 @@ static void sync(void)
         ztore_setview(place, renderfail, buttonback);
  
 }
+*/
 
 static void load(void)
 {
 
     abortdownload = 0;
 
-    ztore_setview(place, renderdefault, buttonoff);
+    downloadnotify(0, 0);
+    ztore_setview(place, renderdownloading, buttondownloading);
+    /*
     sync();
+    */
 
 }
 
@@ -147,6 +167,8 @@ static void menu_onselect(unsigned int index)
 
     case 0:
         abortdownload = 1;
+
+        view_quit(&view);
 
         break;
 
