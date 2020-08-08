@@ -6,6 +6,10 @@
 #include "define.h"
 #include "backend.h"
 
+#define SCREEN_WIDTH                    320
+#define SCREEN_HEIGHT                   240
+#define SCREEN_BPP                      32
+
 SDL_Surface *display;
 SDL_Surface *background;
 SDL_Surface *blur;
@@ -238,9 +242,10 @@ void backend_waitevent(void (*quit)(void), void (*button)(unsigned int key))
 
 }
 
-void backend_render(void (*render)(void))
+void backend_render(void (*place)(unsigned int w, unsigned int h), void (*render)(void))
 {
 
+    place(SCREEN_WIDTH, SCREEN_HEIGHT);
     SDL_BlitSurface(background, NULL, display, NULL);
     render();
     SDL_Flip(display);
@@ -254,13 +259,13 @@ void backend_sleep(unsigned int ms)
 
 }
 
-void backend_init(unsigned int w, unsigned int h, unsigned int bpp)
+void backend_init(void)
 {
 
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
         exit(EXIT_FAILURE);
 
-    display = SDL_SetVideoMode(w, h, bpp, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    display = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
     if (!display)
         exit(EXIT_FAILURE);

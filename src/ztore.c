@@ -10,10 +10,6 @@
 #include "backend.h"
 #include "ztore.h"
 
-#define SCREEN_WIDTH                    320
-#define SCREEN_HEIGHT                   240
-#define SCREEN_BPP                      32
-
 void view_app_setup(void);
 void view_applist_setup(void);
 void view_front_setup(void);
@@ -50,8 +46,7 @@ static void ztore_loop(void)
     {
 
         backend_pollevent(ztore_quit, _button);
-        _place(SCREEN_WIDTH, SCREEN_HEIGHT);
-        backend_render(_render);
+        backend_render(_place, _render);
         backend_sleep(1000 / 60);
 
     }
@@ -61,7 +56,7 @@ static void ztore_loop(void)
 static void ztore_init(void)
 {
 
-    backend_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
+    backend_init();
     backend_loadbackground("back.png");
     backend_loadfont("habbo.ttf");
 
