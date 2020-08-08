@@ -253,7 +253,7 @@ void backend_init(unsigned int w, unsigned int h, unsigned int bpp)
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
         exit(EXIT_FAILURE);
 
-    display = SDL_SetVideoMode(w, h, bpp, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    display = SDL_SetVideoMode(w, h, bpp, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
 
     if (!display)
         exit(EXIT_FAILURE);

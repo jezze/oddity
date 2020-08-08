@@ -70,13 +70,13 @@ static void load(void)
 
 }
 
-static void menu_onselect(void)
+static void menu_onselect(unsigned int index)
 {
 
     if (applist->count)
     {
 
-        view_app_setapp(&applist->items[menu.currentitem]);
+        view_app_setapp(&applist->items[index]);
         view_load(appview, &view);
 
     }

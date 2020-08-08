@@ -8,16 +8,16 @@
 static unsigned int iscurrent(struct menu *menu, unsigned int index)
 {
 
-    return menu->currentitem == index && !(menu->items[menu->currentitem].flag & MENUITEM_FLAG_DISABLED);
+    return menu->index == index && !(menu->items[menu->index].flag & MENUITEM_FLAG_DISABLED);
 
 }
 
 void menu_setrow(struct menu *menu, unsigned int index)
 {
 
-    menu->items[menu->currentitem].flag &= ~MENUITEM_FLAG_SELECTED;
-    menu->currentitem = index;
-    menu->items[menu->currentitem].flag |= MENUITEM_FLAG_SELECTED;
+    menu->items[menu->index].flag &= ~MENUITEM_FLAG_SELECTED;
+    menu->index = index;
+    menu->items[menu->index].flag |= MENUITEM_FLAG_SELECTED;
 
 }
 
@@ -39,7 +39,7 @@ static void setnextrow(struct menu *menu)
 {
 
     if (menu->total)
-        menu_setrow(menu, (menu->total + menu->currentitem + 1) % menu->total);
+        menu_setrow(menu, (menu->total + menu->index + 1) % menu->total);
 
 }
 
@@ -47,7 +47,7 @@ static void setprevrow(struct menu *menu)
 {
 
     if (menu->total)
-        menu_setrow(menu, (menu->total + menu->currentitem - 1) % menu->total);
+        menu_setrow(menu, (menu->total + menu->index - 1) % menu->total);
 
 }
 
@@ -56,8 +56,8 @@ static void setnextpage(struct menu *menu)
 
     unsigned int pagerows = 9;
     unsigned int pagetotal = (menu->total / pagerows) + 1;
-    unsigned int pageoffset = (pagetotal + (menu->currentitem / pagerows) + 1) % pagetotal;
-    unsigned int rowoffset = menu->currentitem % pagerows;
+    unsigned int pageoffset = (pagetotal + (menu->index / pagerows) + 1) % pagetotal;
+    unsigned int rowoffset = menu->index % pagerows;
     unsigned int rowstart = pageoffset * pagerows;
     unsigned int rowtotal = (menu->total - rowstart);
 
@@ -70,8 +70,8 @@ static void setprevpage(struct menu *menu)
 
     unsigned int pagerows = 9;
     unsigned int pagetotal = (menu->total / pagerows) + 1;
-    unsigned int pageoffset = (pagetotal + (menu->currentitem / pagerows) - 1) % pagetotal;
-    unsigned int rowoffset = menu->currentitem % pagerows;
+    unsigned int pageoffset = (pagetotal + (menu->index / pagerows) - 1) % pagetotal;
+    unsigned int rowoffset = menu->index % pagerows;
     unsigned int rowstart = pageoffset * pagerows;
     unsigned int rowtotal = (menu->total - rowstart);
 
@@ -108,8 +108,8 @@ void menu_button(struct menu *menu, unsigned int key)
         break;
 
     case KEY_A:
-        if (iscurrent(menu, menu->currentitem) && menu->onselect)
-            menu->onselect();
+        if (iscurrent(menu, menu->index) && menu->onselect)
+            menu->onselect(menu->index);
 
         break;
 
@@ -149,7 +149,7 @@ void menu_render(struct menu *menu, struct box *box)
 {
 
     unsigned int pagerows = 9;
-    unsigned int page = (menu->currentitem / pagerows);
+    unsigned int page = (menu->index / pagerows);
     unsigned int rowstart = page * pagerows;
     unsigned int rowend = (rowstart + pagerows) > menu->total ? menu->total : rowstart + pagerows;
     unsigned int row;

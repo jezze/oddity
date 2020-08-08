@@ -123,10 +123,10 @@ static void runpackage(void)
 
 }
 
-static void menu_onselect(void)
+static void menu_onselect(unsigned int index)
 {
 
-    switch (menu.currentitem)
+    switch (index)
     {
 
     case 0:
