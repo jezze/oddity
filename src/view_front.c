@@ -81,16 +81,13 @@ void view_front_setup(void)
     view_init(&view, load, event);
     box_init(&greetingbox);
     box_init(&menubox);
-    menu_init(&menu, menuitems, 4);
+    menu_init(&menu, menuitems, 4, menu_onselect);
     menu_inititem(&menuitems[0], "Browse", 0);
     menu_inititem(&menuitems[1], "Sync", 0);
     menu_inititem(&menuitems[2], "Settings", 0);
     menu_inititem(&menuitems[3], "Exit", 0);
     menu_disable(&menu, 2);
     menu_setrow(&menu, 0);
-
-    menu.onselect = menu_onselect;
-
     view_register("front", &view);
 
 }

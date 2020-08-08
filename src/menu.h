@@ -28,4 +28,4 @@ void menu_button(struct menu *menu, unsigned int key);
 void menu_renderitem(struct menuitem *menuitem, struct box *box);
 void menu_render(struct menu *menu, struct box *box);
 void menu_inititem(struct menuitem *menuitem, char *label, char *info);
-void menu_init(struct menu *menu, struct menuitem *items, unsigned int total);
+void menu_init(struct menu *menu, struct menuitem *items, unsigned int total, void (*onselect)(unsigned int index));

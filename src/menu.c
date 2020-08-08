@@ -179,11 +179,12 @@ void menu_inititem(struct menuitem *menuitem, char *label, char *info)
 
 }
 
-void menu_init(struct menu *menu, struct menuitem *items, unsigned int total)
+void menu_init(struct menu *menu, struct menuitem *items, unsigned int total, void (*onselect)(unsigned int index))
 {
 
     menu->items = items;
     menu->total = total;
+    menu->onselect = onselect;
 
 }
 

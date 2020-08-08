@@ -186,12 +186,9 @@ void view_sync_setup(void)
     view_init(&view, load, event);
     box_init(&statusbox);
     box_init(&menubox);
-    menu_init(&menu, menuitems, 1);
+    menu_init(&menu, menuitems, 1, menu_onselect);
     menu_inititem(&menuitems[0], "Cancel", 0);
     menu_setrow(&menu, 0);
-
-    menu.onselect = menu_onselect;
-
     view_register("sync", &view);
 
 }

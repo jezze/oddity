@@ -160,14 +160,11 @@ void view_app_setup(void)
     box_init(&titlebox);
     box_init(&shortbox);
     box_init(&menubox);
-    menu_init(&menu, menuitems, 3);
+    menu_init(&menu, menuitems, 3, menu_onselect);
     menu_inititem(&menuitems[0], "Run", 0);
     menu_inititem(&menuitems[1], "Install", 0);
     menu_inititem(&menuitems[2], "Uninstall", 0);
     menu_setrow(&menu, 0);
-
-    menu.onselect = menu_onselect;
-
     view_register("app", &view);
 
 }

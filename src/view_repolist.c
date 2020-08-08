@@ -111,15 +111,12 @@ void view_repolist_setup(void)
 
     view_init(&view, load, event);
     box_init(&menubox);
-    menu_init(&menu, menuitems, 4);
+    menu_init(&menu, menuitems, 4, menu_onselect);
     menu_inititem(&menuitems[0], "All", "0 items");
     menu_inititem(&menuitems[1], "Installed", "0 items");
     menu_inititem(&menuitems[2], "New", "0 items");
     menu_inititem(&menuitems[3], "Updated", "0 items");
     menu_setrow(&menu, 0);
-
-    menu.onselect = menu_onselect;
-
     view_register("repolist", &view);
 
 }

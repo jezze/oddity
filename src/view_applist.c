@@ -95,10 +95,7 @@ void view_applist_setup(void)
     view_init(&view, load, event);
     box_init(&emptytextbox);
     box_init(&menubox);
-    menu_init(&menu, 0, 0);
-
-    menu.onselect = menu_onselect;
-
+    menu_init(&menu, 0, 0, menu_onselect);
     view_register("applist", &view);
 
 }
