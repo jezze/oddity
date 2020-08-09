@@ -15,6 +15,9 @@ SDL_Surface *background;
 TTF_Font *font;
 TTF_Font *ofont;
 
+unsigned int ssw;
+unsigned int ssh;
+
 static void blit(SDL_Surface *surface, int x, int y, int w, int h)
 {
 
@@ -241,11 +244,30 @@ void backend_waitevent(void (*quit)(void), void (*button)(unsigned int key))
 
 }
 
+static void renderbackground(unsigned int ticks)
+{
+
+    SDL_Rect src;
+    SDL_Rect dst;
+
+    src.x = ticks % ssw;
+    src.y = ticks % ssh;
+    src.w = SCREEN_WIDTH;
+    src.h = SCREEN_HEIGHT;
+    dst.x = 0;
+    dst.y = 0;
+    dst.w = SCREEN_WIDTH;
+    dst.h = SCREEN_HEIGHT;
+
+    SDL_BlitSurface(background, &src, display, &dst);
+
+}
+
 void backend_render(unsigned int ticks, void (*place)(unsigned int w, unsigned int h), void (*render)(unsigned int ticks))
 {
 
     place(SCREEN_WIDTH, SCREEN_HEIGHT);
-    SDL_BlitSurface(background, NULL, display, NULL);
+    renderbackground(ticks);
     render(ticks);
     SDL_Flip(display);
 
@@ -334,6 +356,9 @@ void backend_loadbackground(char *name)
 
     if (!background)
         exit(EXIT_FAILURE);
+
+    ssw = image->w;
+    ssh = image->h;
 
     loadastiles(image);
     SDL_FreeSurface(image);
