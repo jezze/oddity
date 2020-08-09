@@ -42,12 +42,19 @@ void ztore_setview(void (*place)(unsigned int w, unsigned int h), void (*render)
 static void ztore_loop(void)
 {
 
+    unsigned int limit = 1000 / 60;
+    unsigned int frametime;
+
     while (!quit)
     {
 
+        frametime = backend_ticks();
+
         backend_pollevent(ztore_quit, _button);
         backend_render(_place, _render);
-        backend_sleep(1000 / 60);
+
+        if (backend_ticks() - frametime < limit)
+            backend_delay(limit - (backend_ticks() - frametime));
 
     }
 

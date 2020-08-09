@@ -252,7 +252,14 @@ void backend_render(void (*place)(unsigned int w, unsigned int h), void (*render
 
 }
 
-void backend_sleep(unsigned int ms)
+unsigned int backend_ticks(void)
+{
+
+    return SDL_GetTicks();
+
+}
+
+void backend_delay(unsigned int ms)
 {
 
     SDL_Delay(ms);
