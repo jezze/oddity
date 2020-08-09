@@ -12,7 +12,6 @@
 
 SDL_Surface *display;
 SDL_Surface *background;
-SDL_Surface *blur;
 TTF_Font *font;
 TTF_Font *ofont;
 
@@ -292,20 +291,50 @@ void backend_destroy(void)
 
 }
 
+static void loadastiles(SDL_Surface *surface)
+{
+
+    SDL_Rect src;
+    SDL_Rect dst;
+
+    src.x = 0;
+    src.y = 0;
+    src.w = surface->w;
+    src.h = surface->h;
+    dst.x = 0;
+    dst.y = 0;
+    dst.w = surface->w;
+    dst.h = surface->h;
+
+    for (dst.y = 0; dst.y < SCREEN_HEIGHT; dst.y += src.h)
+    {
+
+        for (dst.x = 0; dst.x < SCREEN_WIDTH; dst.x += src.w)
+        {
+
+            SDL_BlitSurface(surface, &src, background, &dst);
+
+        }
+
+    }
+
+}
+
 void backend_loadbackground(char *name)
 {
 
-    background = IMG_Load(name);
+    SDL_Surface *image = IMG_Load(name);
+
+    if (!image)
+        exit(EXIT_FAILURE);
+
+    background = SDL_CreateRGBSurface(0, display->w, display->h, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 
     if (!background)
         exit(EXIT_FAILURE);
 
-    blur = SDL_CreateRGBSurface(0, display->w, display->h, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
-
-    if (!blur)
-        exit(EXIT_FAILURE);
-
-    SDL_FillRect(blur, NULL, SDL_MapRGBA(blur->format, 0x00, 0x00, 0x00, 0xE0));
+    loadastiles(image);
+    SDL_FreeSurface(image);
 
 }
 
@@ -330,7 +359,6 @@ void backend_unloadbackground(void)
 {
 
     SDL_FreeSurface(background);
-    SDL_FreeSurface(blur);
 
 }
 
