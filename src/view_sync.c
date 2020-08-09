@@ -158,7 +158,7 @@ static void load(void)
 
 }
 
-static void event(char *key, void *value)
+static void config(char *key, void *value)
 {
 
 }
@@ -183,7 +183,7 @@ static void menu_onselect(unsigned int index)
 void view_sync_setup(void)
 {
 
-    view_init(&view, load, event);
+    view_init(&view, load, config);
     box_init(&statusbox);
     box_init(&menubox);
     menu_init(&menu, menuitems, 1, menu_onselect);

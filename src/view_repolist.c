@@ -66,7 +66,7 @@ static void load(void)
 
 }
 
-static void event(char *key, void *value)
+static void config(char *key, void *value)
 {
 
 }
@@ -101,7 +101,7 @@ static void menu_onselect(unsigned int index)
 
     }
 
-    view_send("applist", "list", &applist);
+    view_config("applist", "list", &applist);
     view_load("applist", "repolist");
 
 }
@@ -109,7 +109,7 @@ static void menu_onselect(unsigned int index)
 void view_repolist_setup(void)
 {
 
-    view_init(&view, load, event);
+    view_init(&view, load, config);
     box_init(&menubox);
     menu_init(&menu, menuitems, 4, menu_onselect);
     menu_inititem(&menuitems[0], "All", "0 items");

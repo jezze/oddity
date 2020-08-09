@@ -42,7 +42,7 @@ static void load(void)
 
 }
 
-static void event(char *key, void *value)
+static void config(char *key, void *value)
 {
 
 }
@@ -78,7 +78,7 @@ static void menu_onselect(unsigned int index)
 void view_front_setup(void)
 {
 
-    view_init(&view, load, event);
+    view_init(&view, load, config);
     box_init(&greetingbox);
     box_init(&menubox);
     menu_init(&menu, menuitems, 4, menu_onselect);

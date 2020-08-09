@@ -13,12 +13,12 @@ struct viewlist
 static struct viewlist views[64];
 static unsigned int viewcount;
 
-void view_send(char *name, char *key, void *value)
+void view_config(char *name, char *key, void *value)
 {
 
     struct view *view = view_find(name);
 
-    view->event(key, value);
+    view->config(key, value);
 
 }
 
@@ -77,11 +77,11 @@ void view_quit(char *name)
 
 }
 
-void view_init(struct view *view, void (*load)(void), void (*event)(char *key, void *value))
+void view_init(struct view *view, void (*load)(void), void (*config)(char *key, void *value))
 {
 
     view->load = load;
-    view->event = event;
+    view->config = config;
 
 }
 

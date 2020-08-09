@@ -94,7 +94,7 @@ static void load(void)
 
 }
 
-static void event(char *key, void *value)
+static void config(char *key, void *value)
 {
 
     if (!strcmp(key, "app"))
@@ -138,13 +138,13 @@ static void menu_onselect(unsigned int index)
         break;
 
     case 1:
-        view_send("install", "app", app);
+        view_config("install", "app", app);
         view_load("install", "app");
 
         break;
 
     case 2:
-        view_send("uninstall", "app", app);
+        view_config("uninstall", "app", app);
         view_load("uninstall", "app");
 
         break;
@@ -156,7 +156,7 @@ static void menu_onselect(unsigned int index)
 void view_app_setup(void)
 {
 
-    view_init(&view, load, event);
+    view_init(&view, load, config);
     box_init(&titlebox);
     box_init(&shortbox);
     box_init(&menubox);
