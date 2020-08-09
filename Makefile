@@ -12,3 +12,6 @@ ztore.opk: opk/ztore
 
 clean:
 	rm -f ztore.opk opk/ztore src/*.o
+
+upload:
+	scp ztore.opk od@10.1.1.2:/media/data/apps/ztore.opk
