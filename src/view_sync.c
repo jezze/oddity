@@ -38,57 +38,19 @@ static void place(unsigned int w, unsigned int h)
 
 }
 
-/*
-static void renderdefault(void)
-{
-
-    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Please wait...");
-
-}
-
-static void renderfail(void)
-{
-
-    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Sync failed!\n\nPress B to go back.");
-
-}
-*/
-
-static void renderdownloading(void)
+static void render(void)
 {
 
     char text[128];
     struct progress *progress = &progresses[0];
 
-    snprintf(text, 128, "Downloading...\n\nProgress: %d%%\nTotal bytes: %dKB", progress->percentage, progress->totalbytes);
+    snprintf(text, 128, "Progress: %d%%\nTotal bytes: %dKB", progress->percentage, progress->totalbytes);
     text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, text);
     menu_render(&menu, &menubox);
 
 }
 
-static void rendercomplete(void)
-{
-
-    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Sync complete!\n\nPress B to go back.");
-
-}
-
-static void buttonback(unsigned int key)
-{
-
-    switch (key)
-    {
-
-    case KEY_B:
-        view_quit("sync");
-
-        break;
-
-    }
-
-}
-
-static void buttondownloading(unsigned int key)
+static void button(unsigned int key)
 {
 
     menu_button(&menu, key);
@@ -163,7 +125,6 @@ static void oncomplete(unsigned int id)
     struct db_remote *remote = &remotelist.items[id];
 
     ondata(id, "\n", 1);
-    ztore_setview(place, rendercomplete, buttonback);
     db_sync(remote);
     file_removeremote(remote->id);
 
@@ -174,7 +135,7 @@ static void load(void)
 
     unsigned int i;
 
-    ztore_setview(place, renderdownloading, buttondownloading);
+    ztore_setview(place, render, button);
     db_freeremotes(&remotelist);
     db_loadremotes(&remotelist);
 
