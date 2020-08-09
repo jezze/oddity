@@ -42,7 +42,12 @@ int backend_getascent(void)
 void backend_getmetrics(char c, int *minx, int *maxx, int *miny, int *maxy, int *advance)
 {
 
-    TTF_GlyphMetrics(font, c, minx, maxx, miny, maxy, advance);
+    int a;
+
+    TTF_GlyphMetrics(font, c, minx, maxx, miny, maxy, &a);
+
+    if (advance)
+        *advance = a + 2;
 
 }
 
