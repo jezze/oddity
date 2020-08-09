@@ -46,7 +46,9 @@ static void render(void)
 
     snprintf(text, 128, "Progress: %d%%\nTotal bytes: %dKB", progress->percentage, progress->totalbytes);
     text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, text);
-    menu_render(&menu, &menubox);
+
+    if (progress->percentage < 100)
+        menu_render(&menu, &menubox);
 
 }
 
@@ -184,9 +186,7 @@ static void menu_onselect(unsigned int index)
     {
 
     case 0:
-        /* Abort download */
-
-        view_quit("sync");
+        /* Cancel */;
 
         break;
 
