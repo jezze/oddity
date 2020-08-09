@@ -70,6 +70,7 @@ static void ztore_init(void)
 {
 
     backend_init();
+    backend_loadaudio();
     backend_loadbackground("back.png");
     backend_loadfont("habbo.ttf");
 
@@ -80,6 +81,7 @@ static void ztore_destroy(void)
 
     backend_unloadfont();
     backend_unloadbackground();
+    backend_unloadaudio();
     backend_destroy();
 
 }

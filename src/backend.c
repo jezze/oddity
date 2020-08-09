@@ -2,6 +2,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_thread.h>
 #include <SDL/SDL_image.h>
+#include <SDL/SDL_mixer.h>
 #include <SDL/SDL_ttf.h>
 #include "define.h"
 #include "backend.h"
@@ -296,12 +297,22 @@ void backend_init(void)
 {
 
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+    {
+
+        fprintf(stderr, "Unable to init SDL: %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
+
+    }
 
     display = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
     if (!display)
+    {
+
+        fprintf(stderr, "Unable to set video mode: %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
+
+    }
 
     SDL_ShowCursor(SDL_DISABLE);
 
@@ -355,12 +366,22 @@ void backend_loadbackground(char *name)
     SDL_Surface *image = IMG_Load(name);
 
     if (!image)
+    {
+
+        fprintf(stderr, "Unable to load image: %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
+
+    }
 
     background = SDL_CreateRGBSurface(0, display->w * 2, display->h * 2, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 
     if (!background)
+    {
+
+        fprintf(stderr, "Unable to create background: %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
+
+    }
 
     ssw = image->w;
     ssh = image->h;
@@ -376,12 +397,22 @@ void backend_loadfont(char *name)
     font = TTF_OpenFont(name, 16);
 
     if (!font)
+    {
+
+        fprintf(stderr, "Unable to load font: %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
+
+    }
 
     ofont = TTF_OpenFont(name, 16);
 
     if (!ofont)
+    {
+
+        fprintf(stderr, "Unable to load font: %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
+
+    }
 
     TTF_SetFontOutline(ofont, 1);
 
@@ -399,6 +430,70 @@ void backend_unloadfont(void)
 
     TTF_CloseFont(font);
     TTF_CloseFont(ofont);
+
+}
+
+static Mix_Chunk *chunk;
+
+void backend_play(void)
+{
+
+    int rc;
+
+    rc = Mix_PlayChannel(-1, chunk, 0);
+
+    if (rc < 0)
+    {
+
+        fprintf(stderr, "Unable to play audio: %s\n", Mix_GetError());
+        exit(EXIT_FAILURE);
+
+    }
+
+}
+
+void backend_loadaudio(void)
+{
+
+    int rc;
+
+    rc = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 512);
+
+    if (rc < 0)
+    {
+
+        fprintf(stderr, "Unable to open audio: %s\n", Mix_GetError());
+        exit(EXIT_FAILURE);
+
+    }
+
+    rc = Mix_AllocateChannels(4);
+
+    if (rc < 0)
+    {
+
+        fprintf(stderr, "Unable to allocate channels: %s\n", Mix_GetError());
+        exit(EXIT_FAILURE);
+
+    }
+
+    chunk = Mix_LoadWAV("menu.wav");
+
+    if (!chunk)
+    {
+
+        fprintf(stderr, "Unable to load chunk: %s\n", Mix_GetError());
+        exit(EXIT_FAILURE);
+
+    }
+
+}
+
+void backend_unloadaudio(void)
+{
+
+    Mix_FreeChunk(chunk);
+    Mix_CloseAudio();
 
 }
 

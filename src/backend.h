@@ -11,5 +11,8 @@ void backend_init(void);
 void backend_destroy(void);
 void backend_loadbackground(char *name);
 void backend_loadfont(char *name);
+void backend_loadaudio(void);
 void backend_unloadbackground(void);
 void backend_unloadfont(void);
+void backend_unloadaudio(void);
+void backend_play(void);

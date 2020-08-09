@@ -87,29 +87,46 @@ void menu_button(struct menu *menu, unsigned int key)
 
     case KEY_UP:
         setprevrow(menu);
+        backend_play();
 
         break;
 
     case KEY_DOWN:
         setnextrow(menu);
+        backend_play();
 
         break;
 
     case KEY_LEFT:
         if (menu->total > 8)
+        {
+
             setprevpage(menu);
+            backend_play();
+
+        }
 
         break;
 
     case KEY_RIGHT:
         if (menu->total > 8)
+        {
+
             setnextpage(menu);
+            backend_play();
+
+        }
 
         break;
 
     case KEY_A:
         if (iscurrent(menu, menu->index) && menu->onselect)
+        {
+
             menu->onselect(menu->index);
+            backend_play();
+
+        }
 
         break;
 
