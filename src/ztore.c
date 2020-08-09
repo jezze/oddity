@@ -20,7 +20,7 @@ void view_sync_setup(void);
 void view_uninstall_setup(void);
 
 static void (*_place)(unsigned int w, unsigned int h);
-static void (*_render)(void);
+static void (*_render)(unsigned int ticks);
 static void (*_button)(unsigned int key);
 static unsigned int quit;
 
@@ -31,7 +31,7 @@ void ztore_quit(void)
 
 }
 
-void ztore_setview(void (*place)(unsigned int w, unsigned int h), void (*render)(void), void (*button)(unsigned int key))
+void ztore_setview(void (*place)(unsigned int w, unsigned int h), void (*render)(unsigned int ticks), void (*button)(unsigned int key))
 {
 
     _place = place;
@@ -39,6 +39,8 @@ void ztore_setview(void (*place)(unsigned int w, unsigned int h), void (*render)
     _button = button;
 
 }
+
+static unsigned int ticks;
 
 static void ztore_loop(void)
 {
@@ -53,10 +55,12 @@ static void ztore_loop(void)
 
         session_poll();
         backend_pollevent(ztore_quit, _button);
-        backend_render(_place, _render);
+        backend_render(ticks, _place, _render);
 
         if (backend_ticks() - frametime < limit)
             backend_delay(limit - (backend_ticks() - frametime));
+
+        ticks++;
 
     }
 

@@ -4,7 +4,7 @@ void backend_glyph(char c, unsigned int x, unsigned int y, unsigned int w, unsig
 void backend_rect(int x, int y, int w, int h);
 void backend_pollevent(void (*quit)(void), void (*button)(unsigned int key));
 void backend_waitevent(void (*quit)(void), void (*button)(unsigned int key));
-void backend_render(void (*place)(unsigned int w, unsigned int h), void (*render)(void));
+void backend_render(unsigned int ticks, void (*place)(unsigned int w, unsigned int h), void (*render)(unsigned int ticks));
 unsigned int backend_ticks(void);
 void backend_delay(unsigned int ms);
 void backend_init(void);

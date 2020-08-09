@@ -20,7 +20,7 @@ static void place(unsigned int w, unsigned int h)
 
 }
 
-static void render(void)
+static void render(unsigned int ticks)
 {
 
     text_render(&greetingbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Welcome to Ztore!");

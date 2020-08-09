@@ -241,12 +241,12 @@ void backend_waitevent(void (*quit)(void), void (*button)(unsigned int key))
 
 }
 
-void backend_render(void (*place)(unsigned int w, unsigned int h), void (*render)(void))
+void backend_render(unsigned int ticks, void (*place)(unsigned int w, unsigned int h), void (*render)(unsigned int ticks))
 {
 
     place(SCREEN_WIDTH, SCREEN_HEIGHT);
     SDL_BlitSurface(background, NULL, display, NULL);
-    render();
+    render(ticks);
     SDL_Flip(display);
 
 }
@@ -299,10 +299,10 @@ static void loadastiles(SDL_Surface *surface)
     int x;
     int y;
 
-    for (y = 0; y < SCREEN_HEIGHT; y += surface->h)
+    for (y = 0; y < SCREEN_HEIGHT * 2; y += surface->h)
     {
 
-        for (x = 0; x < SCREEN_WIDTH; x += surface->w)
+        for (x = 0; x < SCREEN_WIDTH * 2; x += surface->w)
         {
 
             src.x = 0;
@@ -330,7 +330,7 @@ void backend_loadbackground(char *name)
     if (!image)
         exit(EXIT_FAILURE);
 
-    background = SDL_CreateRGBSurface(0, display->w, display->h, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+    background = SDL_CreateRGBSurface(0, display->w * 2, display->h * 2, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 
     if (!background)
         exit(EXIT_FAILURE);

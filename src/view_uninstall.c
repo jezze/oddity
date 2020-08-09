@@ -25,7 +25,7 @@ static void place(unsigned int w, unsigned int h)
 
 }
 
-static void renderconfirm(void)
+static void renderconfirm(unsigned int ticks)
 {
 
     text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Are you sure you want to uninstall?");
@@ -33,7 +33,7 @@ static void renderconfirm(void)
 
 }
 
-static void renderuninstalling(void)
+static void renderuninstalling(unsigned int ticks)
 {
 
     char progress[128];
@@ -43,14 +43,14 @@ static void renderuninstalling(void)
 
 }
 
-static void rendercomplete(void)
+static void rendercomplete(unsigned int ticks)
 {
 
     text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Uninstall complete!\n\nPress B to go back.");
 
 }
 
-static void renderfail(void)
+static void renderfail(unsigned int ticks)
 {
 
     text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Uninstall failed!\n\nPress B to go back.");

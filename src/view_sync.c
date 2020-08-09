@@ -38,7 +38,7 @@ static void place(unsigned int w, unsigned int h)
 
 }
 
-static void render(void)
+static void render(unsigned int ticks)
 {
 
     char text[128];

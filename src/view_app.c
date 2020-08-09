@@ -26,7 +26,7 @@ static void place(unsigned int w, unsigned int h)
 
 }
 
-static void render(void)
+static void render(unsigned int ticks)
 {
 
     text_render(&titlebox, TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, app->name);

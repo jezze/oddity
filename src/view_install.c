@@ -28,21 +28,21 @@ static void place(unsigned int w, unsigned int h)
 
 }
 
-static void renderdefault(void)
+static void renderdefault(unsigned int ticks)
 {
 
     text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Please wait...");
 
 }
 
-static void renderpreparing(void)
+static void renderpreparing(unsigned int ticks)
 {
 
     text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Preparing...");
 
 }
 
-static void renderdownloading(void)
+static void renderdownloading(unsigned int ticks)
 {
 
     char progress[128];
@@ -53,21 +53,21 @@ static void renderdownloading(void)
 
 }
 
-static void renderinstalling(void)
+static void renderinstalling(unsigned int ticks)
 {
 
     text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installing...");
 
 }
 
-static void rendercomplete(void)
+static void rendercomplete(unsigned int ticks)
 {
 
     text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installation complete!\n\nPress B to go back.");
 
 }
 
-static void renderfail(void)
+static void renderfail(unsigned int ticks)
 {
 
     text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Installation failed!\n\nPress B to go back.");
