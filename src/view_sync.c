@@ -53,7 +53,6 @@ static void renderfail(void)
 }
 */
 
-
 static void renderdownloading(void)
 {
 
@@ -147,7 +146,7 @@ static unsigned int parsedata(struct progress *progress, char *buffer, unsigned 
 
 }
 
-static void ondata_download(unsigned int id, void *data, unsigned int count)
+static void ondata(unsigned int id, void *data, unsigned int count)
 {
 
     struct progress *progress = &progresses[id];
@@ -158,10 +157,10 @@ static void ondata_download(unsigned int id, void *data, unsigned int count)
 
 }
 
-static void oncomplete_download(unsigned int id)
+static void oncomplete(unsigned int id)
 {
 
-    ondata_download(id, "\n", 1);
+    ondata(id, "\n", 1);
     ztore_setview(place, rendercomplete, buttonback);
 
 }
@@ -183,7 +182,7 @@ static void load(void)
         char path[128];
 
         file_getremotedatabasepath(path, 128, remote->id);
-        session_create("download1", 1, ondata_download, oncomplete_download);
+        session_create("download1", 1, ondata, oncomplete);
         session_setarg("download1", 0, "wget");
         session_setarg("download1", 1, "-q");
         session_setarg("download1", 2, "--show-progress");
