@@ -296,21 +296,23 @@ static void loadastiles(SDL_Surface *surface)
 
     SDL_Rect src;
     SDL_Rect dst;
+    int x;
+    int y;
 
-    src.x = 0;
-    src.y = 0;
-    src.w = surface->w;
-    src.h = surface->h;
-    dst.x = 0;
-    dst.y = 0;
-    dst.w = surface->w;
-    dst.h = surface->h;
-
-    for (dst.y = 0; dst.y < SCREEN_HEIGHT; dst.y += src.h)
+    for (y = 0; y < SCREEN_HEIGHT; y += surface->h)
     {
 
-        for (dst.x = 0; dst.x < SCREEN_WIDTH; dst.x += src.w)
+        for (x = 0; x < SCREEN_WIDTH; x += surface->w)
         {
+
+            src.x = 0;
+            src.y = 0;
+            src.w = surface->w;
+            src.h = surface->h;
+            dst.x = x;
+            dst.y = y;
+            dst.w = surface->w;
+            dst.h = surface->h;
 
             SDL_BlitSurface(surface, &src, background, &dst);
 
