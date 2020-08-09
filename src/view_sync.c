@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 #include "define.h"
 #include "box.h"
@@ -7,16 +8,26 @@
 #include "file.h"
 #include "db.h"
 #include "view.h"
+#include "session.h"
 #include "ztore.h"
+
+struct progress
+{
+
+    char buffer[1024];
+    unsigned int count;
+    unsigned int totalbytes;
+    unsigned int percentage;
+    unsigned int timeremaining;
+
+};
 
 static struct view view;
 static struct box statusbox;
 static struct menu menu;
 static struct box menubox;
 static struct menuitem menuitems[1];
-static unsigned int percentage;
-static unsigned int totalbytes;
-static unsigned int abortdownload;
+static struct progress progresses[8];
 
 static void place(unsigned int w, unsigned int h)
 {
@@ -33,28 +44,6 @@ static void renderdefault(void)
     text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Please wait...");
 
 }
-*/
-
-static void renderdownloading(void)
-{
-
-    char progress[128];
-
-    snprintf(progress, 128, "Downloading...\n\nProgress: %d%%\nTotal bytes: %dKB", percentage, totalbytes);
-    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, progress);
-    menu_render(&menu, &menubox);
-
-    totalbytes++;
-
-}
-
-/*
-static void rendercomplete(void)
-{
-
-    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Sync complete!\n\nPress B to go back.");
-
-}
 
 static void renderfail(void)
 {
@@ -62,9 +51,26 @@ static void renderfail(void)
     text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Sync failed!\n\nPress B to go back.");
 
 }
+*/
 
-static void buttonoff(unsigned int key)
+
+static void renderdownloading(void)
 {
+
+    char text[128];
+    struct progress *progress = &progresses[1];
+
+    session_poll();
+    snprintf(text, 128, "Downloading...\n\nProgress: %d%%\nTotal bytes: %dKB", progress->percentage, progress->totalbytes);
+    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, text);
+    menu_render(&menu, &menubox);
+
+}
+
+static void rendercomplete(void)
+{
+
+    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Sync complete!\n\nPress B to go back.");
 
 }
 
@@ -75,14 +81,13 @@ static void buttonback(unsigned int key)
     {
 
     case KEY_B:
-        view_quit(&view);
+        view_quit("sync");
 
         break;
 
     }
 
 }
-*/
 
 static void buttondownloading(unsigned int key)
 {
@@ -101,60 +106,101 @@ static void buttondownloading(unsigned int key)
 
 }
 
-static unsigned int downloadnotify(unsigned int t, unsigned int p)
+static unsigned int parsedata(struct progress *progress, char *buffer, unsigned int count)
 {
 
-    totalbytes = t;
-    percentage = p;
+    unsigned int offset = 0;
+    unsigned int i;
 
-    return !abortdownload;
+    for (i = 0; i < count; i++)
+    {
+
+        if (buffer[i] == '\n')
+        {
+
+            if (i - offset > 0)
+            {
+
+                char *end;
+
+                progress->totalbytes = strtol(buffer + offset, &end, 10);
+                progress->percentage = strtol(end + 1, 0, 10);
+
+            }
+
+            offset = i + 1;
+
+        }
+
+    }
+
+    if (count > offset)
+    {
+
+        memcpy(buffer, buffer + offset, count - offset);
+
+        count = count - offset;
+
+    }
+
+    return count;
 
 }
 
-/*
-static void sync(void)
+static void ondata_download(unsigned int id, void *data, unsigned int count)
+{
+
+    struct progress *progress = &progresses[id];
+
+    memcpy(progress->buffer + progress->count, data, count);
+
+    progress->count = parsedata(progress, progress->buffer, progress->count + count);
+
+}
+
+static void oncomplete_download(unsigned int id)
+{
+
+    ondata_download(id, "\n", 1);
+    ztore_setview(place, rendercomplete, buttonback);
+
+}
+
+static void load(void)
 {
 
     struct db_remotelist remotelist;
-    unsigned int status = 0;
     unsigned int i;
 
     ztore_setview(place, renderdownloading, buttondownloading);
 
     db_loadremotes(&remotelist);
-
+ 
     for (i = 0; i < remotelist.count; i++)
     {
 
         struct db_remote *remote = &remotelist.items[i];
+        char path[128];
 
-        if (file_downloadremote(remote->url, remote->id, downloadnotify))
-            status = db_sync(remote);
+        file_getremotedatabasepath(path, 128, remote->id);
+        session_create("download1", 1, ondata_download, oncomplete_download);
+        session_setarg("download1", 0, "wget");
+        session_setarg("download1", 1, "-q");
+        session_setarg("download1", 2, "--show-progress");
+        session_setarg("download1", 3, "--progress=dot");
+        session_setarg("download1", 4, "-o");
+        session_setarg("download1", 5, "/dev/stdout");
+        session_setarg("download1", 6, remote->url);
+        session_setarg("download1", 7, "-O");
+        session_setarg("download1", 8, path);
+        session_setarg("download1", 9, 0);
+        session_run();
 
-        file_removeremote(remote->id);
+        break;
 
     }
-
-    db_freeremotes(&remotelist);
-
-    if (status)
-        ztore_setview(place, rendercomplete, buttonback);
-    else
-        ztore_setview(place, renderfail, buttonback);
  
-}
-*/
-
-static void load(void)
-{
-
-    abortdownload = 0;
-
-    downloadnotify(0, 0);
-    ztore_setview(place, renderdownloading, buttondownloading);
-    /*
-    sync();
-    */
+    db_freeremotes(&remotelist);
 
 }
 
@@ -170,7 +216,7 @@ static void menu_onselect(unsigned int index)
     {
 
     case 0:
-        abortdownload = 1;
+        /* Abort download */
 
         view_quit("sync");
 
