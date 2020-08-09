@@ -78,6 +78,7 @@ static int spawn(struct session *session)
     if (cpid == 0)
     {
 
+        close(STDERR_FILENO);
         close(session->fd[0]);
         dup2(session->fd[1], 1);
 
