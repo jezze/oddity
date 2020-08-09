@@ -28,6 +28,7 @@ static struct menu menu;
 static struct box menubox;
 static struct menuitem menuitems[1];
 static struct progress progresses[8];
+static struct db_remotelist remotelist;
 
 static void place(unsigned int w, unsigned int h)
 {
@@ -57,7 +58,7 @@ static void renderdownloading(void)
 {
 
     char text[128];
-    struct progress *progress = &progresses[1];
+    struct progress *progress = &progresses[0];
 
     snprintf(text, 128, "Downloading...\n\nProgress: %d%%\nTotal bytes: %dKB", progress->percentage, progress->totalbytes);
     text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, text);
@@ -159,29 +160,38 @@ static void ondata(unsigned int id, void *data, unsigned int count)
 static void oncomplete(unsigned int id)
 {
 
+    struct db_remote *remote = &remotelist.items[id];
+
     ondata(id, "\n", 1);
     ztore_setview(place, rendercomplete, buttonback);
+    db_sync(remote);
+    file_removeremote(remote->id);
 
 }
 
 static void load(void)
 {
 
-    struct db_remotelist remotelist;
     unsigned int i;
 
     ztore_setview(place, renderdownloading, buttondownloading);
-
+    db_freeremotes(&remotelist);
     db_loadremotes(&remotelist);
- 
+
     for (i = 0; i < remotelist.count; i++)
     {
 
+        struct progress *progress = &progresses[i];
         struct db_remote *remote = &remotelist.items[i];
         char path[128];
 
+        progress->count = 0;
+        progress->totalbytes = 0;
+        progress->percentage = 0;
+        progress->timeremaining = 0;
+
         file_getremotedatabasepath(path, 128, remote->id);
-        session_create("download1", 1, ondata, oncomplete);
+        session_create("download1", i, ondata, oncomplete);
         session_setarg("download1", 0, "wget");
         session_setarg("download1", 1, "-q");
         session_setarg("download1", 2, "--show-progress");
@@ -192,13 +202,12 @@ static void load(void)
         session_setarg("download1", 7, "-O");
         session_setarg("download1", 8, path);
         session_setarg("download1", 9, 0);
-        session_run();
 
         break;
 
     }
  
-    db_freeremotes(&remotelist);
+    session_run();
 
 }
 
