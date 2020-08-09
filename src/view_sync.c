@@ -59,7 +59,6 @@ static void renderdownloading(void)
     char text[128];
     struct progress *progress = &progresses[1];
 
-    session_poll();
     snprintf(text, 128, "Downloading...\n\nProgress: %d%%\nTotal bytes: %dKB", progress->percentage, progress->totalbytes);
     text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, text);
     menu_render(&menu, &menubox);

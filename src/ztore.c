@@ -4,6 +4,7 @@
 #include "box.h"
 #include "text.h"
 #include "menu.h"
+#include "session.h"
 #include "file.h"
 #include "db.h"
 #include "view.h"
@@ -50,6 +51,7 @@ static void ztore_loop(void)
 
         frametime = backend_ticks();
 
+        session_poll();
         backend_pollevent(ztore_quit, _button);
         backend_render(_place, _render);
 
