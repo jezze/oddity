@@ -134,6 +134,18 @@ void backend_rect(int x, int y, int w, int h)
 
 }
 
+void backend_rect2(int x, int y, int w, int h)
+{
+
+    SDL_Surface *surface = SDL_CreateRGBSurface(0, w, h, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+
+    dofillrectangle(surface, w, h, 0x20FFFFFF);
+    blit(surface, x, y, w, h);
+
+    SDL_FreeSurface(surface);
+
+}
+
 static void handleevent(SDL_Event *event, void (*quit)(void), void (*button)(unsigned int key))
 {
 

@@ -54,9 +54,9 @@ static void place(unsigned int w, unsigned int h)
     area_init(&areas[0], w, h, 0, 0, 6, 1, 1);
     area_init(&areas[1], w, h, 0, 1, 6, 2, 1);
     area_init(&areas[2], w, h, 0, 3, 6, 1, 1);
-    area_init(&areas[3], w, h, 0, 4, 3, 1, 1);
+    area_init(&areas[3], w, h, 0, 4, 3, 2, 1);
     area_init(&areas[4], w, h, 3, 4, 3, 1, 1);
-    area_init(&areas[5], w, h, 0, 5, 6, 1, 1);
+    area_init(&areas[5], w, h, 3, 5, 3, 1, 1);
 
 }
 
@@ -69,10 +69,12 @@ static void render(unsigned int ticks)
     area_draw(&areas[4].box);
     area_draw(&areas[5].box);
 
+    backend_rect2(areas[3].box.x + 10, areas[3].box.y + 10, areas[3].box.w - 20, 18);
+
     text_render2(&areas[0].box, TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, "Hello world!");
     text_render2(&areas[1].box, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Hello world!\nHello world!\nHello world!");
     text_render2(&areas[2].box, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Hello world!");
-    text_render2(&areas[3].box, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Hello world!");
+    text_render2(&areas[3].box, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Hello world!\nHello world!\nHello world!");
     text_render2(&areas[4].box, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Hello world!");
 
 }
