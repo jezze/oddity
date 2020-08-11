@@ -64,6 +64,8 @@ static void menu_onselect(unsigned int index)
         break;
 
     case 2:
+        view_load("settings", "front");
+
         break;
 
     case 3:
@@ -86,7 +88,6 @@ void view_front_setup(void)
     menu_inititem(&menuitems[1], "Sync", 0);
     menu_inititem(&menuitems[2], "Settings", 0);
     menu_inititem(&menuitems[3], "Exit", 0);
-    menu_disable(&menu, 2);
     menu_setrow(&menu, 0);
     view_register("front", &view);
 

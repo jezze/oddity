@@ -16,6 +16,7 @@ void view_applist_setup(void);
 void view_front_setup(void);
 void view_install_setup(void);
 void view_repolist_setup(void);
+void view_settings_setup(void);
 void view_sync_setup(void);
 void view_uninstall_setup(void);
 
@@ -114,6 +115,7 @@ int main(int argc, char **argv)
     view_front_setup();
     view_install_setup();
     view_repolist_setup();
+    view_settings_setup();
     view_sync_setup();
     view_uninstall_setup();
     view_load("front", 0);
