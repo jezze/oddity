@@ -433,22 +433,16 @@ void backend_unloadfont(void)
 
 }
 
-static Mix_Chunk *chunk;
+static Mix_Chunk *chunkclick;
+static Mix_Chunk *chunkselect;
 
-void backend_play(void)
+void backend_play(char *name)
 {
 
-    int rc;
-
-    rc = Mix_PlayChannel(-1, chunk, 0);
-
-    if (rc < 0)
-    {
-
-        fprintf(stderr, "Unable to play audio: %s\n", Mix_GetError());
-        exit(EXIT_FAILURE);
-
-    }
+    if (!strcmp(name, "click"))
+        Mix_PlayChannel(-1, chunkclick, 0);
+    else if (!strcmp(name, "select"))
+        Mix_PlayChannel(-1, chunkselect, 0);
 
 }
 
@@ -477,9 +471,19 @@ void backend_loadaudio(void)
 
     }
 
-    chunk = Mix_LoadWAV("menu.wav");
+    chunkclick = Mix_LoadWAV("click.wav");
 
-    if (!chunk)
+    if (!chunkclick)
+    {
+
+        fprintf(stderr, "Unable to load chunk: %s\n", Mix_GetError());
+        exit(EXIT_FAILURE);
+
+    }
+
+    chunkselect = Mix_LoadWAV("select.wav");
+
+    if (!chunkselect)
     {
 
         fprintf(stderr, "Unable to load chunk: %s\n", Mix_GetError());
@@ -492,7 +496,8 @@ void backend_loadaudio(void)
 void backend_unloadaudio(void)
 {
 
-    Mix_FreeChunk(chunk);
+    Mix_FreeChunk(chunkclick);
+    Mix_FreeChunk(chunkselect);
     Mix_CloseAudio();
 
 }

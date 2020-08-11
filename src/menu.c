@@ -87,13 +87,13 @@ void menu_button(struct menu *menu, unsigned int key)
 
     case KEY_UP:
         setprevrow(menu);
-        backend_play();
+        backend_play("click");
 
         break;
 
     case KEY_DOWN:
         setnextrow(menu);
-        backend_play();
+        backend_play("click");
 
         break;
 
@@ -102,7 +102,7 @@ void menu_button(struct menu *menu, unsigned int key)
         {
 
             setprevpage(menu);
-            backend_play();
+            backend_play("click");
 
         }
 
@@ -113,7 +113,7 @@ void menu_button(struct menu *menu, unsigned int key)
         {
 
             setnextpage(menu);
-            backend_play();
+            backend_play("click");
 
         }
 
@@ -124,9 +124,14 @@ void menu_button(struct menu *menu, unsigned int key)
         {
 
             menu->onselect(menu->index);
-            backend_play();
+            backend_play("select");
 
         }
+
+        break;
+
+    case KEY_B:
+        backend_play("click");
 
         break;
 

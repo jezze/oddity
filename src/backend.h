@@ -15,4 +15,4 @@ void backend_loadaudio(void);
 void backend_unloadbackground(void);
 void backend_unloadfont(void);
 void backend_unloadaudio(void);
-void backend_play(void);
+void backend_play(char *name);
