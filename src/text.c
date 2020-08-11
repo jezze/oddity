@@ -152,3 +152,62 @@ void text_render(struct box *box, unsigned int color, unsigned int align, char *
 
 }
 
+void text_render2(struct box *box, unsigned int color, unsigned int align, char *content)
+{
+
+    char *ptext = content;
+    unsigned int pcount = strlen(content);
+    unsigned int x = box->x + 16;
+    unsigned int y = box->y + 12;
+    unsigned int w = box->w - 16 * 2;
+    unsigned int h = box->h - 12 * 2;
+    unsigned int liney = y + backend_getascent();
+
+    while (pcount)
+    {
+
+        unsigned int linecount = maxfit(ptext, pcount, w);
+        unsigned int linex;
+
+        switch (align)
+        {
+
+        case TEXT_ALIGN_LEFT:
+            linex = x;
+
+            break;
+
+        case TEXT_ALIGN_RIGHT:
+            linex = x + w - textw(ptext, linecount);
+
+            break;
+
+        case TEXT_ALIGN_CENTER:
+            linex = x + (w - textw(ptext, linecount)) / 2;
+
+            break;
+
+        }
+
+        renderline(ptext, linecount, linex, liney, color);
+
+        while (ptext[linecount] == ' ' || ptext[linecount] == '\n')
+        {
+
+            if (ptext[linecount] == '\n')
+                liney += 18;
+
+            linecount++;
+
+        }
+
+        ptext += linecount;
+        pcount -= linecount;
+
+        if (liney > y + h)
+            break;
+
+    }
+
+}
+

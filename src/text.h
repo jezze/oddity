@@ -9,3 +9,4 @@
 #define TEXT_ALIGN_CENTER               2
 
 void text_render(struct box *box, unsigned int color, unsigned int align, char *content);
+void text_render2(struct box *box, unsigned int color, unsigned int align, char *content);

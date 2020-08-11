@@ -37,9 +37,9 @@ static void area_init(struct area *area, int mw, int mh, int x, int y, int w, in
 {
 
     unsigned int ow = 4;
-    unsigned int oh = 4;
-    unsigned int col = (mw - ow) / 6;
-    unsigned int row = (mh - oh) / 6;
+    unsigned int oh = 6;
+    unsigned int col = (mw - ow * 2) / 6;
+    unsigned int row = (mh - oh * 2) / 6;
 
     area->box.x = col * x + ow;
     area->box.y = row * y + oh;
@@ -69,6 +69,9 @@ static void render(unsigned int ticks)
     area_draw(&areas[3].box);
     area_draw(&areas[4].box);
     area_draw(&areas[5].box);
+
+    text_render2(&areas[1].box, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Hello world!\nHello world!\nHello world!");
+    text_render2(&areas[2].box, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Hello world!");
 
 }
 
