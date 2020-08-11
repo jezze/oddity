@@ -64,14 +64,16 @@ static void render(unsigned int ticks)
 {
 
     area_draw(&areas[0].box);
-    area_draw(&areas[1].box);
     area_draw(&areas[2].box);
     area_draw(&areas[3].box);
     area_draw(&areas[4].box);
     area_draw(&areas[5].box);
 
+    text_render2(&areas[0].box, TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, "Hello world!");
     text_render2(&areas[1].box, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Hello world!\nHello world!\nHello world!");
     text_render2(&areas[2].box, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Hello world!");
+    text_render2(&areas[3].box, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Hello world!");
+    text_render2(&areas[4].box, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Hello world!");
 
 }
 
