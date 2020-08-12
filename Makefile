@@ -7,6 +7,7 @@ OBJ= \
     src/db.o \
     src/box.o \
     src/text.o \
+    src/list.o \
     src/menu.o \
     src/backend.o \
     src/session.o \

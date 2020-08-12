@@ -60,8 +60,6 @@ static void place(unsigned int w, unsigned int h)
 
 }
 
-static unsigned int fy;
-
 static void render(unsigned int ticks)
 {
 
@@ -71,7 +69,7 @@ static void render(unsigned int ticks)
     area_draw(&areas[4].box);
     area_draw(&areas[5].box);
 
-    backend_rect2(areas[3].box.x + 10, fy, areas[3].box.w - 20, 18);
+    backend_rect2(areas[3].box.x + 6, areas[3].box.y + 6, areas[3].box.w - 12, 20);
 
     text_render2(&areas[0].box, TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, "Hello world!");
     text_render2(&areas[1].box, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Hello world!\nHello world!\nHello world!");
@@ -93,13 +91,9 @@ static void button(unsigned int key)
         break;
 
     case KEY_UP:
-        fy -= 18;
-
         break;
 
     case KEY_DOWN:
-        fy += 18;
-
         break;
 
     }
@@ -110,8 +104,6 @@ static void load(void)
 {
 
     ztore_setview(place, render, button);
-
-    fy = 169;
 
 }
 
