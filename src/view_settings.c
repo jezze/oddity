@@ -33,12 +33,7 @@ static void place(unsigned int w, unsigned int h)
 static void render(unsigned int ticks)
 {
 
-    widget_area_render(&areas[0]);
     widget_area_render(&areas[1]);
-    widget_area_render(&areas[2]);
-    widget_area_render(&areas[3]);
-    widget_area_render(&areas[4]);
-    widget_area_render(&areas[5]);
     widget_text_render(&texts[0]);
     widget_text_render(&texts[1]);
     widget_text_render(&texts[2]);
