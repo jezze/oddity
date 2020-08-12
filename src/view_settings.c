@@ -12,6 +12,7 @@
 static struct view view;
 static struct widget_area areas[6];
 static struct widget_text texts[5];
+static unsigned int active;
 
 static void place(unsigned int w, unsigned int h)
 {
@@ -33,7 +34,7 @@ static void place(unsigned int w, unsigned int h)
 static void render(unsigned int ticks)
 {
 
-    widget_area_render(&areas[1]);
+    widget_area_render(&areas[active]);
     widget_text_render(&texts[0]);
     widget_text_render(&texts[1]);
     widget_text_render(&texts[2]);
@@ -54,9 +55,15 @@ static void button(unsigned int key)
         break;
 
     case KEY_UP:
+        if (active > 1)
+            active--;
+
         break;
 
     case KEY_DOWN:
+        if (active < 4)
+            active++;
+
         break;
 
     }
@@ -67,6 +74,8 @@ static void load(void)
 {
 
     ztore_setview(place, render, button);
+
+    active = 1;
 
 }
 
@@ -81,16 +90,16 @@ void view_settings_setup(void)
     view_init(&view, load, config);
     view_register("settings", &view);
     widget_area_init(&areas[0], 0, 0, 6, 1);
-    widget_area_init(&areas[1], 0, 1, 6, 2);
-    widget_area_init(&areas[2], 0, 3, 6, 1);
-    widget_area_init(&areas[3], 0, 4, 3, 2);
-    widget_area_init(&areas[4], 3, 4, 3, 1);
-    widget_area_init(&areas[5], 3, 5, 3, 1);
-    widget_text_init(&texts[0], TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, "Hello world!");
-    widget_text_init(&texts[1], TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Hello world!\nHello world!\nHello world!");
-    widget_text_init(&texts[2], TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Hello world!");
-    widget_text_init(&texts[3], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Hello world!\nHello world!\nHello world!");
-    widget_text_init(&texts[4], TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Hello world!");
+    widget_area_init(&areas[1], 0, 1, 6, 1);
+    widget_area_init(&areas[2], 0, 2, 6, 1);
+    widget_area_init(&areas[3], 0, 3, 6, 1);
+    widget_area_init(&areas[4], 0, 4, 6, 1);
+    widget_area_init(&areas[5], 0, 5, 6, 1);
+    widget_text_init(&texts[0], TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, "Settings");
+    widget_text_init(&texts[1], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Video");
+    widget_text_init(&texts[2], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Audio");
+    widget_text_init(&texts[3], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Network");
+    widget_text_init(&texts[4], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "System");
 
 }
 
