@@ -346,10 +346,10 @@ static void loadastiles(SDL_Surface *surface)
     int x;
     int y;
 
-    for (y = 0; y < SCREEN_HEIGHT * 2; y += surface->h)
+    for (y = 0; y < SCREEN_HEIGHT + 36; y += surface->h)
     {
 
-        for (x = 0; x < SCREEN_WIDTH * 2; x += surface->w)
+        for (x = 0; x < SCREEN_WIDTH + 36; x += surface->w)
         {
 
             src.x = 0;
@@ -382,7 +382,7 @@ void backend_loadbackground(char *name)
 
     }
 
-    background = SDL_CreateRGBSurface(0, display->w * 2, display->h * 2, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+    background = SDL_CreateRGBSurface(0, display->w + 36, display->h + 36, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 
     if (!background)
     {
