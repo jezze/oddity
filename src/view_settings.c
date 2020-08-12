@@ -90,16 +90,16 @@ void view_settings_setup(void)
     view_init(&view, load, config);
     view_register("settings", &view);
     widget_area_init(&areas[0], 0, 0, 6, 1);
-    widget_area_init(&areas[1], 0, 1, 6, 1);
-    widget_area_init(&areas[2], 0, 2, 6, 1);
-    widget_area_init(&areas[3], 0, 3, 6, 1);
-    widget_area_init(&areas[4], 0, 4, 6, 1);
-    widget_area_init(&areas[5], 0, 5, 6, 1);
+    widget_area_init(&areas[1], 0, 1, 2, 2);
+    widget_area_init(&areas[2], 2, 1, 2, 2);
+    widget_area_init(&areas[3], 4, 1, 2, 2);
+    widget_area_init(&areas[4], 0, 3, 2, 2);
+    widget_area_init(&areas[5], 2, 3, 2, 2);
     widget_text_init(&texts[0], TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, "Settings");
-    widget_text_init(&texts[1], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Video");
-    widget_text_init(&texts[2], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Audio");
-    widget_text_init(&texts[3], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Network");
-    widget_text_init(&texts[4], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "System");
+    widget_text_init(&texts[1], TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Video");
+    widget_text_init(&texts[2], TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Audio");
+    widget_text_init(&texts[3], TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Network");
+    widget_text_init(&texts[4], TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "System");
 
 }
 
