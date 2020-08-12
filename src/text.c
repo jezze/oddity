@@ -157,10 +157,10 @@ void text_render2(struct box *box, unsigned int color, unsigned int align, char 
 
     char *ptext = content;
     unsigned int pcount = strlen(content);
-    unsigned int x = box->x + 16;
-    unsigned int y = box->y + 12;
-    unsigned int w = box->w - 16 * 2;
-    unsigned int h = box->h - 12 * 2;
+    unsigned int x = box->x + 10;
+    unsigned int y = box->y + 6;
+    unsigned int w = box->w - 10 * 2;
+    unsigned int h = box->h - 6 * 2;
     unsigned int liney = y + backend_getascent();
 
     while (pcount)

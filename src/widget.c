@@ -8,10 +8,10 @@
 void widget_area_place(struct widget_area *area, int x, int y, int w, int h)
 {
 
-    unsigned int ow = 4;
-    unsigned int oh = 6;
-    unsigned int col = (w - ow * 2) / 6;
-    unsigned int row = (h - oh * 2) / 6;
+    unsigned int ow = 12;
+    unsigned int oh = 12;
+    unsigned int col = (w - ow * 2) / 8;
+    unsigned int row = (h - oh * 2) / 8;
 
     area->size.x = col * area->unit.x + ow;
     area->size.y = row * area->unit.y + oh;
@@ -25,10 +25,10 @@ void widget_area_render(struct widget_area *area)
 
     struct box box;
 
-    box.x = area->size.x + 4;
-    box.y = area->size.y + 4;
-    box.w = area->size.w - 8;
-    box.h = area->size.h - 8;
+    box.x = area->size.x;
+    box.y = area->size.y;
+    box.w = area->size.w;
+    box.h = area->size.h;
 
     backend_rect(box.x, box.y, box.w, box.h);
 
