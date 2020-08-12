@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include "list.h"
 #include "view.h"
 
 struct viewlist

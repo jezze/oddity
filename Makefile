@@ -2,6 +2,7 @@ ARCH=host
 BIN=opk/ztore
 PKG=ztore.opk
 OBJ= \
+    src/area.o \
     src/ztore.o \
     src/file.o \
     src/db.o \

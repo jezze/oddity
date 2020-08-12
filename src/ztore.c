@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include "box.h"
 #include "text.h"
+#include "list.h"
 #include "menu.h"
 #include "session.h"
 #include "file.h"

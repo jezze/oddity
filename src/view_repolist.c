@@ -3,6 +3,7 @@
 #include "define.h"
 #include "box.h"
 #include "text.h"
+#include "list.h"
 #include "menu.h"
 #include "db.h"
 #include "view.h"

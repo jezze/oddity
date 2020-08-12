@@ -19,20 +19,6 @@ TTF_Font *ofont;
 unsigned int ssw;
 unsigned int ssh;
 
-static void blit(SDL_Surface *surface, int x, int y, int w, int h)
-{
-
-    SDL_Rect r;
-
-    r.x = x;
-    r.y = y;
-    r.w = w;
-    r.h = h;
-
-    SDL_BlitSurface(surface, NULL, display, &r);
-
-}
-
 int backend_getascent(void)
 {
 
@@ -125,11 +111,16 @@ void backend_rect(int x, int y, int w, int h)
 {
 
     SDL_Surface *surface = SDL_CreateRGBSurface(0, w, h, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+    SDL_Rect r;
+
+    r.x = x;
+    r.y = y;
+    r.w = w;
+    r.h = h;
 
     dofillrectangle(surface, w, h, 0x10FFFFFF);
     doborderrectangle(surface, w, h, 0x40FFFFFF);
-    blit(surface, x, y, w, h);
-
+    SDL_BlitSurface(surface, NULL, display, &r);
     SDL_FreeSurface(surface);
 
 }
@@ -138,11 +129,16 @@ void backend_rect2(int x, int y, int w, int h)
 {
 
     SDL_Surface *surface = SDL_CreateRGBSurface(0, w, h, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+    SDL_Rect r;
+
+    r.x = x;
+    r.y = y;
+    r.w = w;
+    r.h = h;
 
     dofillrectangle(surface, w, h, 0x14FFFFFF);
     doborderrectangle(surface, w, h, 0x20FFFFFF);
-    blit(surface, x, y, w, h);
-
+    SDL_BlitSurface(surface, NULL, display, &r);
     SDL_FreeSurface(surface);
 
 }
