@@ -2,7 +2,6 @@ ARCH=host
 BIN=opk/ztore
 PKG=ztore.opk
 OBJ= \
-    src/area.o \
     src/ztore.o \
     src/file.o \
     src/db.o \
@@ -21,6 +20,7 @@ OBJ= \
     src/view_sync.o \
     src/view_install.o \
     src/view_uninstall.o \
+    src/widget.o \
 
 include ${ARCH}.mk
 
