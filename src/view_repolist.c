@@ -11,13 +11,14 @@
 #include "selection.h"
 
 static struct view view;
-static struct widget_area areas[4];
-static struct widget_text texts[8];
+static struct widget_area areas[6];
+static struct widget_text texts[10];
 static struct selection selection;
 static char all[16];
 static char new[16];
 static char updated[16];
 static char installed[16];
+static char last[32];
 static struct db_applist applist;
 
 static void place(unsigned int w, unsigned int h)
@@ -27,6 +28,8 @@ static void place(unsigned int w, unsigned int h)
     widget_area_place(&areas[1], 0, 0, w, h);
     widget_area_place(&areas[2], 0, 0, w, h);
     widget_area_place(&areas[3], 0, 0, w, h);
+    widget_area_place(&areas[4], 0, 0, w, h);
+    widget_area_place(&areas[5], 0, 0, w, h);
     widget_text_placein(&texts[0], &areas[0].size);
     widget_text_placein(&texts[1], &areas[0].size);
     widget_text_placein(&texts[2], &areas[1].size);
@@ -35,6 +38,8 @@ static void place(unsigned int w, unsigned int h)
     widget_text_placein(&texts[5], &areas[2].size);
     widget_text_placein(&texts[6], &areas[3].size);
     widget_text_placein(&texts[7], &areas[3].size);
+    widget_text_placein(&texts[8], &areas[4].size);
+    widget_text_placein(&texts[9], &areas[5].size);
 
 }
 
@@ -50,6 +55,8 @@ static void render(unsigned int ticks)
     widget_text_render(&texts[5]);
     widget_text_render(&texts[6]);
     widget_text_render(&texts[7]);
+    widget_text_render(&texts[8]);
+    widget_text_render(&texts[9]);
 
 }
 
@@ -98,6 +105,9 @@ static void button(unsigned int key)
 
     }
 
+    if (selection_isactive(&selection, &areas[4].item))
+        selection_select(&selection, key, "repolist", "sync");
+
     selection_return(&selection, key, "repolist");
 
 }
@@ -109,6 +119,7 @@ static void load(void)
     snprintf(new, 16, "%u items", db_countappswithstate(1));
     snprintf(updated, 16, "%u items", db_countappswithstate(2));
     snprintf(installed, 16, "%u items", db_countappswithstate(3));
+    snprintf(last, 32, "Last updated: %s", "Never");
     ztore_setview(place, render, button);
 
     selection.active = selection.list.head;
@@ -124,6 +135,8 @@ void view_repolist_setup(void)
     widget_area_init(&areas[1], 0, 1, 8, 1);
     widget_area_init(&areas[2], 0, 2, 8, 1);
     widget_area_init(&areas[3], 0, 3, 8, 1);
+    widget_area_init(&areas[4], 2, 5, 4, 1);
+    widget_area_init(&areas[5], 0, 6, 8, 2);
     widget_text_init(&texts[0], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "All");
     widget_text_init(&texts[1], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, all);
     widget_text_init(&texts[2], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Installed");
@@ -132,10 +145,13 @@ void view_repolist_setup(void)
     widget_text_init(&texts[5], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, new);
     widget_text_init(&texts[6], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Updated");
     widget_text_init(&texts[7], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, updated);
+    widget_text_init(&texts[8], TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Synchronize");
+    widget_text_init(&texts[9], TEXT_COLOR_NORMAL, TEXT_ALIGN_CENTER, last);
     list_add(&selection.list, &areas[0].item);
     list_add(&selection.list, &areas[1].item);
     list_add(&selection.list, &areas[2].item);
     list_add(&selection.list, &areas[3].item);
+    list_add(&selection.list, &areas[4].item);
 
 }
 
