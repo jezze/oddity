@@ -46,10 +46,18 @@ static void button(unsigned int key)
 {
 
     selection_setclosest(&selection, key);
-    selection_select(&selection, key, "front", &areas[0].item, "repolist");
-    selection_select(&selection, key, "front", &areas[1].item, "sync");
-    selection_select(&selection, key, "front", &areas[2].item, "settings");
-    selection_select(&selection, key, "front", &areas[3].item, "quit");
+
+    if (selection_isactive(&selection, &areas[0].item))
+        selection_select(&selection, key, "front", "repolist");
+
+    if (selection_isactive(&selection, &areas[1].item))
+        selection_select(&selection, key, "front", "sync");
+
+    if (selection_isactive(&selection, &areas[2].item))
+        selection_select(&selection, key, "front", "settings");
+
+    if (selection_isactive(&selection, &areas[3].item))
+        selection_select(&selection, key, "front", "quit");
 
 }
 

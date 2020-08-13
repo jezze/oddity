@@ -114,11 +114,15 @@ struct list_item *selection_setclosest(struct selection *selection, unsigned int
 
 }
 
-void selection_select(struct selection *selection, unsigned int key, char *from, struct list_item *item, char *to)
+unsigned int selection_isactive(struct selection *selection, struct list_item *item)
 {
 
-    if (selection->active != item)
-        return;
+    return selection->active == item;
+
+}
+
+void selection_select(struct selection *selection, unsigned int key, char *from, char *to)
+{
 
     switch (key)
     {
