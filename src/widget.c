@@ -5,6 +5,16 @@
 #include "list.h"
 #include "widget.h"
 
+void widget_area_bounds(struct widget_area *area, struct box *box)
+{
+
+    box->x = area->size.x;
+    box->y = area->size.y;
+    box->w = area->size.w;
+    box->h = area->size.h;
+
+}
+
 void widget_area_place(struct widget_area *area, int x, int y, int w, int h)
 {
 
@@ -23,14 +33,7 @@ void widget_area_place(struct widget_area *area, int x, int y, int w, int h)
 void widget_area_render(struct widget_area *area)
 {
 
-    struct box box;
-
-    box.x = area->size.x;
-    box.y = area->size.y;
-    box.w = area->size.w;
-    box.h = area->size.h;
-
-    backend_rect(box.x, box.y, box.w, box.h);
+    backend_rect(area->size.x, area->size.y, area->size.w, area->size.h);
 
 }
 
@@ -43,6 +46,16 @@ void widget_area_init(struct widget_area *area, int x, int y, int w, int h)
     area->unit.y = y;
     area->unit.w = w;
     area->unit.h = h;
+
+}
+
+void widget_text_bounds(struct widget_text *text, struct box *box)
+{
+
+    box->x = text->size.x;
+    box->y = text->size.y;
+    box->w = text->size.w;
+    box->h = text->size.h;
 
 }
 

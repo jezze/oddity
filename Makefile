@@ -10,6 +10,7 @@ OBJ= \
     src/list.o \
     src/menu.o \
     src/backend.o \
+    src/selection.o \
     src/session.o \
     src/view.o \
     src/view_front.o \

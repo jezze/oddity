@@ -8,6 +8,7 @@
 #include "view.h"
 #include "ztore.h"
 #include "widget.h"
+#include "selection.h"
 
 static struct view view;
 static struct widget_area areas[8];
@@ -18,7 +19,7 @@ static struct widget_text textvolume;
 static struct widget_text textnetwork;
 static struct widget_text textaddress;
 static struct widget_text textsystem;
-static unsigned int active;
+static struct selection selection;
 
 static void place(unsigned int w, unsigned int h)
 {
@@ -44,7 +45,7 @@ static void place(unsigned int w, unsigned int h)
 static void render(unsigned int ticks)
 {
 
-    widget_area_render(&areas[active]);
+    widget_area_render(selection.active->data);
     widget_text_render(&textvideo);
     widget_text_render(&textresolution);
     widget_text_render(&textaudio);
@@ -58,23 +59,13 @@ static void render(unsigned int ticks)
 static void button(unsigned int key)
 {
 
+    selection_setclosest(&selection, key);
+
     switch (key)
     {
 
     case KEY_B:
         view_quit("settings");
-
-        break;
-
-    case KEY_UP:
-        if (active > 0)
-            active--;
-
-        break;
-
-    case KEY_DOWN:
-        if (active < 7)
-            active++;
 
         break;
 
@@ -86,8 +77,12 @@ static void load(void)
 {
 
     ztore_setview(place, render, button);
+    list_add(&selection.list, &areas[0].item);
+    list_add(&selection.list, &areas[1].item);
+    list_add(&selection.list, &areas[2].item);
+    list_add(&selection.list, &areas[3].item);
 
-    active = 0;
+    selection.active = selection.list.head;
 
 }
 
