@@ -130,11 +130,6 @@ void menu_button(struct menu *menu, unsigned int key)
 
         break;
 
-    case KEY_B:
-        backend_play("click");
-
-        break;
-
     }
 
 }

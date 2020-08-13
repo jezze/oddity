@@ -19,7 +19,11 @@ void view_config(char *name, char *key, void *value)
 
     struct view *view = view_find(name);
 
-    view->config(key, value);
+    if (!view)
+        return;
+
+    if (view->config)
+        view->config(key, value);
 
 }
 
@@ -55,6 +59,9 @@ void view_load(char *name, char *parentname)
 
     struct view *view = view_find(name);
 
+    if (!view)
+        return;
+
     view->parentname = parentname;
 
     if (view->load)
@@ -67,10 +74,16 @@ void view_quit(char *name)
 
     struct view *view = view_find(name);
 
+    if (!view)
+        return;
+
     if (view->parentname)
     {
 
         struct view *parent = view_find(view->parentname);
+
+        if (!parent)
+            return;
 
         view_load(view->parentname, parent->parentname);
 

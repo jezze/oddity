@@ -3,14 +3,8 @@
 #include "box.h"
 #include "list.h"
 #include "widget.h"
-
-struct selection
-{
-
-    struct list list;
-    struct list_item *active;
-
-};
+#include "backend.h"
+#include "selection.h"
 
 struct list_item *selection_getclosest(struct selection *selection, unsigned int key)
 {
@@ -107,7 +101,13 @@ struct list_item *selection_setclosest(struct selection *selection, unsigned int
     struct list_item *best = selection_getclosest(selection, key);
 
     if (best)
+    {
+
         selection->active = best;
+
+        backend_play("click");
+
+    }
 
     return selection->active;
 

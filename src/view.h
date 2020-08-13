@@ -1,3 +1,6 @@
+#define VIEW_LOADTYPE_INIT              1
+#define VIEW_LOADTYPE_RESTORE           2
+
 struct view
 {
 

@@ -71,24 +71,15 @@ static void load(void)
 {
 
     ztore_setview(place, render, button);
-    list_add(&selection.list, &areas[0].item);
-    list_add(&selection.list, &areas[1].item);
-    list_add(&selection.list, &areas[2].item);
-    list_add(&selection.list, &areas[3].item);
 
     selection.active = selection.list.head;
-
-}
-
-static void config(char *key, void *value)
-{
 
 }
 
 void view_settings_setup(void)
 {
 
-    view_init(&view, load, config);
+    view_init(&view, load, 0);
     view_register("settings", &view);
     widget_area_init(&areas[0], 0, 0, 8, 1);
     widget_area_init(&areas[1], 0, 1, 8, 1);
@@ -101,6 +92,10 @@ void view_settings_setup(void)
     widget_text_init(&textnetwork, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Network");
     widget_text_init(&textaddress, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "10.1.1.2/30");
     widget_text_init(&textsystem, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "System");
+    list_add(&selection.list, &areas[0].item);
+    list_add(&selection.list, &areas[1].item);
+    list_add(&selection.list, &areas[2].item);
+    list_add(&selection.list, &areas[3].item);
 
 }
 
