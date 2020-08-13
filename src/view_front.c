@@ -82,6 +82,5 @@ void view_front_setup(void)
     list_add(&selection.list, &areas[2].item);
     list_add(&selection.list, &areas[3].item);
 
-
 }
 
