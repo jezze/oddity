@@ -11,7 +11,7 @@
 #include "selection.h"
 
 static struct view view;
-static struct widget_area areas[8];
+static struct widget_area areas[4];
 static struct widget_text textvideo;
 static struct widget_text textresolution;
 static struct widget_text textaudio;
@@ -28,10 +28,6 @@ static void place(unsigned int w, unsigned int h)
     widget_area_place(&areas[1], 0, 0, w, h);
     widget_area_place(&areas[2], 0, 0, w, h);
     widget_area_place(&areas[3], 0, 0, w, h);
-    widget_area_place(&areas[4], 0, 0, w, h);
-    widget_area_place(&areas[5], 0, 0, w, h);
-    widget_area_place(&areas[6], 0, 0, w, h);
-    widget_area_place(&areas[7], 0, 0, w, h);
     widget_text_place(&textvideo, areas[0].size.x, areas[0].size.y, areas[0].size.w, areas[0].size.h);
     widget_text_place(&textresolution, areas[0].size.x, areas[0].size.y, areas[0].size.w, areas[0].size.h);
     widget_text_place(&textaudio, areas[1].size.x, areas[1].size.y, areas[1].size.w, areas[1].size.h);
@@ -100,10 +96,6 @@ void view_settings_setup(void)
     widget_area_init(&areas[1], 0, 1, 8, 1);
     widget_area_init(&areas[2], 0, 2, 8, 1);
     widget_area_init(&areas[3], 0, 3, 8, 1);
-    widget_area_init(&areas[4], 0, 4, 8, 1);
-    widget_area_init(&areas[5], 0, 5, 8, 1);
-    widget_area_init(&areas[6], 0, 6, 8, 1);
-    widget_area_init(&areas[7], 0, 7, 8, 1);
     widget_text_init(&textvideo, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Video");
     widget_text_init(&textresolution, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "320x240");
     widget_text_init(&textaudio, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Audio");
