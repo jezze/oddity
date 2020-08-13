@@ -54,16 +54,7 @@ static void button(unsigned int key)
 {
 
     selection_setclosest(&selection, key);
-
-    switch (key)
-    {
-
-    case KEY_B:
-        view_quit("settings");
-
-        break;
-
-    }
+    selection_return(&selection, key, "settings");
 
 }
 
@@ -79,8 +70,8 @@ static void load(void)
 void view_settings_setup(void)
 {
 
-    view_init(&view, load, 0);
-    view_register("settings", &view);
+    view_init(&view, "settings", load, 0);
+    view_register(&view);
     widget_area_init(&areas[0], 0, 0, 8, 1);
     widget_area_init(&areas[1], 0, 1, 8, 1);
     widget_area_init(&areas[2], 0, 2, 8, 1);

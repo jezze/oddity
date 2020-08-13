@@ -8,6 +8,7 @@
 #include "widget.h"
 #include "selection.h"
 
+static struct view quit;
 static struct view view;
 static struct widget_area areas[4];
 static struct widget_text textbrowse;
@@ -45,26 +46,10 @@ static void button(unsigned int key)
 {
 
     selection_setclosest(&selection, key);
-
-    switch (key)
-    {
-
-    case KEY_A:
-        if (selection.active == &areas[0].item)
-            view_load("repolist", "front");
-
-        if (selection.active == &areas[1].item)
-            view_load("sync", "front");
-
-        if (selection.active == &areas[2].item)
-            view_load("settings", "front");
-
-        if (selection.active == &areas[3].item)
-            ztore_quit();
-
-        break;
-
-    }
+    selection_select(&selection, key, &areas[0].item, "front", "repolist");
+    selection_select(&selection, key, &areas[1].item, "front", "sync");
+    selection_select(&selection, key, &areas[2].item, "front", "settings");
+    selection_select(&selection, key, &areas[3].item, "front", "quit");
 
 }
 
@@ -80,8 +65,10 @@ static void load(void)
 void view_front_setup(void)
 {
 
-    view_init(&view, load, 0);
-    view_register("front", &view);
+    view_init(&quit, "quit", ztore_quit, 0);
+    view_register(&quit);
+    view_init(&view, "front", load, 0);
+    view_register(&view);
     widget_area_init(&areas[0], 0, 4, 8, 1);
     widget_area_init(&areas[1], 0, 5, 8, 1);
     widget_area_init(&areas[2], 0, 6, 8, 1);
@@ -94,6 +81,7 @@ void view_front_setup(void)
     list_add(&selection.list, &areas[1].item);
     list_add(&selection.list, &areas[2].item);
     list_add(&selection.list, &areas[3].item);
+
 
 }
 

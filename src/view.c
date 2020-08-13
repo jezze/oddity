@@ -3,16 +3,7 @@
 #include "list.h"
 #include "view.h"
 
-struct viewlist
-{
-
-    char *name;
-    struct view *view;
-
-};
-
-static struct viewlist views[64];
-static unsigned int viewcount;
+static struct list views;
 
 void view_config(char *name, char *key, void *value)
 {
@@ -27,26 +18,25 @@ void view_config(char *name, char *key, void *value)
 
 }
 
-void view_register(char *name, struct view *view)
+void view_register(struct view *view)
 {
 
-    views[viewcount].name = name;
-    views[viewcount].view = view;
-
-    viewcount++;
+    list_add(&views, &view->item);
 
 }
 
 struct view *view_find(char *name)
 {
 
-    unsigned int i;
+    struct list_item *current;
 
-    for (i = 0; i < 64; i++)
+    for (current = views.head; current; current = current->next)
     {
 
-        if (!strcmp(views[i].name, name))
-            return views[i].view;
+        struct view *view = current->data;
+
+        if (!strcmp(view->name, name))
+            return view;
 
     }
 
@@ -91,11 +81,14 @@ void view_quit(char *name)
 
 }
 
-void view_init(struct view *view, void (*load)(void), void (*config)(char *key, void *value))
+void view_init(struct view *view, char *name, void (*load)(void), void (*config)(char *key, void *value))
 {
 
+    view->name = name;
     view->load = load;
     view->config = config;
+
+    list_inititem(&view->item, view);
 
 }
 

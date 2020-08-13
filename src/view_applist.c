@@ -93,11 +93,11 @@ static void menu_onselect(unsigned int index)
 void view_applist_setup(void)
 {
 
-    view_init(&view, load, config);
+    view_init(&view, "applist", load, config);
     box_init(&emptytextbox);
     box_init(&menubox);
     menu_init(&menu, 0, 0, menu_onselect);
-    view_register("applist", &view);
+    view_register(&view);
 
 }
 

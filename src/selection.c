@@ -4,6 +4,7 @@
 #include "list.h"
 #include "widget.h"
 #include "backend.h"
+#include "view.h"
 #include "selection.h"
 
 struct list_item *selection_getclosest(struct selection *selection, unsigned int key)
@@ -110,6 +111,41 @@ struct list_item *selection_setclosest(struct selection *selection, unsigned int
     }
 
     return selection->active;
+
+}
+
+void selection_select(struct selection *selection, unsigned int key, struct list_item *item, char *from, char *to)
+{
+
+    if (selection->active != item)
+        return;
+
+    switch (key)
+    {
+
+    case KEY_A:
+        view_load(to, from);
+        backend_play("select");
+
+        break;
+
+    }
+
+}
+
+void selection_return(struct selection *selection, unsigned int key, char *from)
+{
+
+    switch (key)
+    {
+
+    case KEY_B:
+        view_quit(from);
+        backend_play("click");
+
+        break;
+
+    }
 
 }
 

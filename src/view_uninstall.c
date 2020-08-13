@@ -181,13 +181,13 @@ static void menu_onselect(unsigned int index)
 void view_uninstall_setup(void)
 {
 
-    view_init(&view, load, config);
+    view_init(&view, "uninstall", load, config);
     box_init(&statusbox);
     box_init(&menubox);
     menu_init(&menu, menuitems, 1, menu_onselect);
     menu_inititem(&menuitems[0], "Yes, I am sure", 0);
     menu_setrow(&menu, 0);
-    view_register("uninstall", &view);
+    view_register(&view);
 
 }
 

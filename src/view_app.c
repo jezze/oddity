@@ -157,7 +157,7 @@ static void menu_onselect(unsigned int index)
 void view_app_setup(void)
 {
 
-    view_init(&view, load, config);
+    view_init(&view, "app", load, config);
     box_init(&titlebox);
     box_init(&shortbox);
     box_init(&menubox);
@@ -166,7 +166,7 @@ void view_app_setup(void)
     menu_inititem(&menuitems[1], "Install", 0);
     menu_inititem(&menuitems[2], "Uninstall", 0);
     menu_setrow(&menu, 0);
-    view_register("app", &view);
+    view_register(&view);
 
 }
 
