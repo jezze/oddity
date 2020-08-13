@@ -26,13 +26,13 @@ static void place(unsigned int w, unsigned int h)
     widget_area_place(&areas[1], 0, 0, w, h);
     widget_area_place(&areas[2], 0, 0, w, h);
     widget_area_place(&areas[3], 0, 0, w, h);
-    widget_text_place(&textvideo, areas[0].size.x, areas[0].size.y, areas[0].size.w, areas[0].size.h);
-    widget_text_place(&textresolution, areas[0].size.x, areas[0].size.y, areas[0].size.w, areas[0].size.h);
-    widget_text_place(&textaudio, areas[1].size.x, areas[1].size.y, areas[1].size.w, areas[1].size.h);
-    widget_text_place(&textvolume, areas[1].size.x, areas[1].size.y, areas[1].size.w, areas[1].size.h);
-    widget_text_place(&textnetwork, areas[2].size.x, areas[2].size.y, areas[2].size.w, areas[2].size.h);
-    widget_text_place(&textaddress, areas[2].size.x, areas[2].size.y, areas[2].size.w, areas[2].size.h);
-    widget_text_place(&textsystem, areas[3].size.x, areas[3].size.y, areas[3].size.w, areas[3].size.h);
+    widget_text_placein(&textvideo, &areas[0].size);
+    widget_text_placein(&textresolution, &areas[0].size);
+    widget_text_placein(&textaudio, &areas[1].size);
+    widget_text_placein(&textvolume, &areas[1].size);
+    widget_text_placein(&textnetwork, &areas[2].size);
+    widget_text_placein(&textaddress, &areas[2].size);
+    widget_text_placein(&textsystem, &areas[3].size);
 
 }
 

@@ -30,6 +30,13 @@ void widget_area_place(struct widget_area *area, int x, int y, int w, int h)
 
 }
 
+void widget_area_placein(struct widget_area *area, struct box *box)
+{
+
+    widget_area_place(area, box->x, box->y, box->w, box->h);
+
+}
+
 void widget_area_render(struct widget_area *area)
 {
 
@@ -66,6 +73,13 @@ void widget_text_place(struct widget_text *text, int x, int y, int w, int h)
     text->size.y = y;
     text->size.w = w;
     text->size.h = h;
+
+}
+
+void widget_text_placein(struct widget_text *text, struct box *box)
+{
+
+    widget_text_place(text, box->x, box->y, box->w, box->h);
 
 }
 

@@ -24,10 +24,10 @@ static void place(unsigned int w, unsigned int h)
     widget_area_place(&areas[1], 0, 0, w, h);
     widget_area_place(&areas[2], 0, 0, w, h);
     widget_area_place(&areas[3], 0, 0, w, h);
-    widget_text_place(&textbrowse, areas[0].size.x, areas[0].size.y, areas[0].size.w, areas[0].size.h);
-    widget_text_place(&textsync, areas[1].size.x, areas[1].size.y, areas[1].size.w, areas[1].size.h);
-    widget_text_place(&textsettings, areas[2].size.x, areas[2].size.y, areas[2].size.w, areas[2].size.h);
-    widget_text_place(&textexit, areas[3].size.x, areas[3].size.y, areas[3].size.w, areas[3].size.h);
+    widget_text_placein(&textbrowse, &areas[0].size);
+    widget_text_placein(&textsync, &areas[1].size);
+    widget_text_placein(&textsettings, &areas[2].size);
+    widget_text_placein(&textexit, &areas[3].size);
 
 }
 
