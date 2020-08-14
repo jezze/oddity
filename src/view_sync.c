@@ -1,16 +1,17 @@
 #include <stdlib.h>
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 #include "define.h"
 #include "box.h"
 #include "text.h"
 #include "list.h"
-#include "menu.h"
+#include "view.h"
+#include "ztore.h"
+#include "widget.h"
+#include "selection.h"
 #include "file.h"
 #include "db.h"
-#include "view.h"
 #include "session.h"
-#include "ztore.h"
 
 struct progress
 {
@@ -24,51 +25,12 @@ struct progress
 };
 
 static struct view view;
-static struct box statusbox;
-static struct menu menu;
-static struct box menubox;
-static struct menuitem menuitems[1];
 static struct progress progresses[8];
+static struct widget_area areas[2];
+static struct widget_text texts[2];
+static struct selection selection;
 static struct db_remotelist remotelist;
-
-static void place(unsigned int w, unsigned int h)
-{
-
-    box_setpartsize(&statusbox, w / 10, h / 10, 0, 0, 10, 8);
-    box_setpartsize(&menubox, w / 10, h / 10, 0, 8, 10, 2);
-
-}
-
-static void render(unsigned int ticks)
-{
-
-    char text[128];
-    struct progress *progress = &progresses[0];
-
-    snprintf(text, 128, "Progress: %d%%\nTotal bytes: %dKB", progress->percentage, progress->totalbytes);
-    text_render(&statusbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, text);
-
-    if (progress->percentage < 100)
-        menu_render(&menu, &menubox);
-
-}
-
-static void button(unsigned int key)
-{
-
-    menu_button(&menu, key);
-
-    switch (key)
-    {
-
-    case KEY_B:
-        view_quit("sync");
-
-        break;
-
-    }
-
-}
+static char text[128];
 
 static unsigned int parsedata(struct progress *progress, char *buffer, unsigned int count)
 {
@@ -133,6 +95,38 @@ static void oncomplete(unsigned int id)
 
 }
 
+static void place(unsigned int w, unsigned int h)
+{
+
+    widget_area_place(&areas[0], 0, 0, w, h);
+    widget_area_place(&areas[1], 0, 0, w, h);
+    widget_text_placein(&texts[0], &areas[0].size);
+    widget_text_placein(&texts[1], &areas[1].size);
+
+}
+
+static void render(unsigned int ticks)
+{
+
+    struct progress *progress = &progresses[0];
+
+    snprintf(text, 128, "Progress: %d%%\nTotal bytes: %dKB", progress->percentage, progress->totalbytes);
+    widget_area_render(selection.active->data);
+    widget_text_render(&texts[0]);
+
+    if (progress->percentage < 100)
+        widget_text_render(&texts[1]);
+
+}
+
+static void button(unsigned int key)
+{
+
+    selection_setclosest(&selection, key);
+    selection_return(&selection, key, "sync");
+
+}
+
 static void load(void)
 {
 
@@ -173,38 +167,20 @@ static void load(void)
  
     session_run();
 
-}
-
-static void config(char *key, void *value)
-{
-
-}
-
-static void menu_onselect(unsigned int index)
-{
-
-    switch (index)
-    {
-
-    case 0:
-        /* Cancel */;
-
-        break;
-
-    }
+    selection.active = selection.list.head;
 
 }
 
 void view_sync_setup(void)
 {
 
-    view_init(&view, "sync", load, config);
-    box_init(&statusbox);
-    box_init(&menubox);
-    menu_init(&menu, menuitems, 1, menu_onselect);
-    menu_inititem(&menuitems[0], "Cancel", 0);
-    menu_setrow(&menu, 0);
+    view_init(&view, "sync", load, 0);
     view_register(&view);
+    widget_area_init(&areas[0], 0, 0, 8, 6);
+    widget_area_init(&areas[1], 0, 7, 8, 1);
+    widget_text_init(&texts[0], TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, text);
+    widget_text_init(&texts[1], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Cancel");
+    list_add(&selection.list, &areas[1].item);
 
 }
 
