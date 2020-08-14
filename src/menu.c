@@ -138,7 +138,7 @@ void menu_renderitem(struct menuitem *menuitem, struct box *box)
 {
 
     if (menuitem->flag & MENUITEM_FLAG_SELECTED)
-        backend_rect(box->x, box->y, box->w, box->h);
+        backend_paint_menu(box->x, box->y, box->w, box->h);
 
     if (menuitem->flag & MENUITEM_FLAG_DISABLED)
     {

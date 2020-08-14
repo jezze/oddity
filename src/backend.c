@@ -11,22 +11,21 @@
 #define SCREEN_HEIGHT                   240
 #define SCREEN_BPP                      32
 
-SDL_Surface *display;
-SDL_Surface *background;
-TTF_Font *font;
-TTF_Font *ofont;
+static SDL_Surface *display;
+static SDL_Surface *background;
+static TTF_Font *font;
+static TTF_Font *ofont;
+static unsigned int ssw;
+static unsigned int ssh;
 
-unsigned int ssw;
-unsigned int ssh;
-
-int backend_getascent(void)
+int backend_font_getascent(void)
 {
 
     return TTF_FontAscent(font);
 
 }
 
-void backend_getmetrics(char c, int *minx, int *maxx, int *miny, int *maxy, int *advance)
+void backend_font_getmetrics(char c, int *minx, int *maxx, int *miny, int *maxy, int *advance)
 {
 
     int a;
@@ -38,7 +37,7 @@ void backend_getmetrics(char c, int *minx, int *maxx, int *miny, int *maxy, int 
 
 }
 
-void backend_glyph(char c, unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int col)
+void backend_font_glyph(char c, unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int col)
 {
 
     SDL_Surface *surface;
@@ -107,7 +106,7 @@ static void doborderrectangle(SDL_Surface *s, int w, int h, unsigned int color)
 
 }
 
-void backend_slider(int x, int y, int w, int h)
+void backend_paint_slider(int x, int y, int w, int h)
 {
 
     SDL_Surface *surface = SDL_CreateRGBSurface(0, w, h, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
@@ -125,8 +124,7 @@ void backend_slider(int x, int y, int w, int h)
 
 }
 
-
-void backend_rect(int x, int y, int w, int h)
+void backend_paint_selection(int x, int y, int w, int h)
 {
 
     SDL_Surface *surface = SDL_CreateRGBSurface(0, w, h, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
@@ -144,7 +142,7 @@ void backend_rect(int x, int y, int w, int h)
 
 }
 
-void backend_rect2(int x, int y, int w, int h)
+void backend_paint_menu(int x, int y, int w, int h)
 {
 
     SDL_Surface *surface = SDL_CreateRGBSurface(0, w, h, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
@@ -155,8 +153,8 @@ void backend_rect2(int x, int y, int w, int h)
     r.w = w;
     r.h = h;
 
-    dofillrectangle(surface, w, h, 0x14FFFFFF);
-    doborderrectangle(surface, w, h, 0x20FFFFFF);
+    dofillrectangle(surface, w, h, 0x10FFFFFF);
+    doborderrectangle(surface, w, h, 0x40FFFFFF);
     SDL_BlitSurface(surface, NULL, display, &r);
     SDL_FreeSurface(surface);
 

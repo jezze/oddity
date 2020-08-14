@@ -40,7 +40,7 @@ void widget_area_placein(struct widget_area *area, struct box *box)
 void widget_area_render(struct widget_area *area)
 {
 
-    backend_rect(area->size.x, area->size.y, area->size.w, area->size.h);
+    backend_paint_selection(area->size.x, area->size.y, area->size.w, area->size.h);
 
 }
 
@@ -93,7 +93,7 @@ void widget_slider_render(struct widget_slider *slider)
     box.w = slider->size.w - 10 * 2;
     box.h = slider->size.h - 10 * 2;
 
-    backend_slider(box.x, box.y, box.w, box.h);
+    backend_paint_slider(box.x, box.y, box.w, box.h);
 
 }
 

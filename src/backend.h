@@ -1,9 +1,9 @@
-int backend_getascent(void);
-void backend_getmetrics(char c, int *minx, int *maxx, int *miny, int *maxy, int *advance);
-void backend_glyph(char c, unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int color);
-void backend_slider(int x, int y, int w, int h);
-void backend_rect(int x, int y, int w, int h);
-void backend_rect2(int x, int y, int w, int h);
+int backend_font_getascent(void);
+void backend_font_getmetrics(char c, int *minx, int *maxx, int *miny, int *maxy, int *advance);
+void backend_font_glyph(char c, unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int color);
+void backend_paint_slider(int x, int y, int w, int h);
+void backend_paint_selection(int x, int y, int w, int h);
+void backend_paint_menu(int x, int y, int w, int h);
 void backend_pollevent(void (*quit)(void), void (*button)(unsigned int key));
 void backend_waitevent(void (*quit)(void), void (*button)(unsigned int key));
 void backend_render(unsigned int ticks, void (*place)(unsigned int w, unsigned int h), void (*render)(unsigned int ticks));
