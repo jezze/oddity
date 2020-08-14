@@ -71,7 +71,7 @@ void view_front_setup(void)
     widget_area_init(&areas[0], 0, 5, 8, 1);
     widget_area_init(&areas[1], 0, 6, 8, 1);
     widget_area_init(&areas[2], 0, 7, 8, 1);
-    widget_text_init(&texts[0], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Browse");
+    widget_text_init(&texts[0], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Library");
     widget_text_init(&texts[1], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Settings");
     widget_text_init(&texts[2], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Exit");
     list_add(&selection.list, &areas[0].item);
