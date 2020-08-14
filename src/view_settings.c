@@ -11,7 +11,10 @@
 static struct view view;
 static struct widget_area areas[5];
 static struct widget_text texts[7];
-static struct widget_slider sliders[1];
+static struct widget_area volume_area_text;
+static struct widget_area volume_area_slider;
+static struct widget_text volume_text;
+static struct widget_slider volume_slider;
 static struct selection selection;
 
 static void place(unsigned int w, unsigned int h)
@@ -29,7 +32,12 @@ static void place(unsigned int w, unsigned int h)
     widget_text_placein(&texts[4], &areas[2].size);
     widget_text_placein(&texts[5], &areas[2].size);
     widget_text_placein(&texts[6], &areas[3].size);
-    widget_slider_placein(&sliders[0], &areas[4].size);
+
+    /* Volume */
+    widget_area_place(&volume_area_text, 0, 0, w, h);
+    widget_area_place(&volume_area_slider, 0, 0, w, h);
+    widget_text_placein(&volume_text, &volume_area_text.size);
+    widget_slider_placein(&volume_slider, &volume_area_slider.size);
 
 }
 
@@ -44,7 +52,8 @@ static void render(unsigned int ticks)
     widget_text_render(&texts[4]);
     widget_text_render(&texts[5]);
     widget_text_render(&texts[6]);
-    widget_slider_render(&sliders[0]);
+    widget_text_render(&volume_text);
+    widget_slider_render(&volume_slider);
 
 }
 
@@ -75,6 +84,11 @@ void view_settings_setup(void)
     widget_area_init(&areas[2], 0, 2, 8, 1);
     widget_area_init(&areas[3], 0, 3, 8, 1);
     widget_area_init(&areas[4], 0, 4, 8, 1);
+    list_add(&selection.list, &areas[0].item);
+    list_add(&selection.list, &areas[1].item);
+    list_add(&selection.list, &areas[2].item);
+    list_add(&selection.list, &areas[3].item);
+    list_add(&selection.list, &areas[4].item);
     widget_text_init(&texts[0], TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, "Video");
     widget_text_init(&texts[1], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "320x240");
     widget_text_init(&texts[2], TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, "Audio");
@@ -82,12 +96,12 @@ void view_settings_setup(void)
     widget_text_init(&texts[4], TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, "Network");
     widget_text_init(&texts[5], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "10.1.1.2/30");
     widget_text_init(&texts[6], TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, "System");
-    widget_slider_init(&sliders[0], 0, 31, 26);
-    list_add(&selection.list, &areas[0].item);
-    list_add(&selection.list, &areas[1].item);
-    list_add(&selection.list, &areas[2].item);
-    list_add(&selection.list, &areas[3].item);
-    list_add(&selection.list, &areas[4].item);
+
+    /* Volume */
+    widget_area_init(&volume_area_text, 0, 4, 5, 1);
+    widget_area_init(&volume_area_slider, 5, 4, 3, 1);
+    widget_text_init(&volume_text, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, "Volume");
+    widget_slider_init(&volume_slider, 0, 31, 26);
 
 }
 
