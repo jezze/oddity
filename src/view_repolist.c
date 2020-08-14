@@ -135,8 +135,8 @@ void view_repolist_setup(void)
     widget_area_init(&areas[1], 0, 1, 8, 1);
     widget_area_init(&areas[2], 0, 2, 8, 1);
     widget_area_init(&areas[3], 0, 3, 8, 1);
-    widget_area_init(&areas[4], 2, 5, 4, 1);
-    widget_area_init(&areas[5], 0, 6, 8, 2);
+    widget_area_init(&areas[4], 2, 6, 4, 1);
+    widget_area_init(&areas[5], 0, 7, 8, 1);
     widget_text_init(&texts[0], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "All");
     widget_text_init(&texts[1], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, all);
     widget_text_init(&texts[2], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Installed");
