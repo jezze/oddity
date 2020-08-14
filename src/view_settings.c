@@ -75,13 +75,13 @@ void view_settings_setup(void)
     widget_area_init(&areas[2], 0, 2, 8, 1);
     widget_area_init(&areas[3], 0, 3, 8, 1);
     widget_area_init(&areas[4], 0, 4, 8, 1);
-    widget_text_init(&texts[0], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Video");
+    widget_text_init(&texts[0], TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, "Video");
     widget_text_init(&texts[1], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "320x240");
-    widget_text_init(&texts[2], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Audio");
+    widget_text_init(&texts[2], TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, "Audio");
     widget_text_init(&texts[3], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "60%");
-    widget_text_init(&texts[4], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Network");
+    widget_text_init(&texts[4], TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, "Network");
     widget_text_init(&texts[5], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "10.1.1.2/30");
-    widget_text_init(&texts[6], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "System");
+    widget_text_init(&texts[6], TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, "System");
     widget_slider_init(&sliders[0], 0, 31, 26);
     list_add(&selection.list, &areas[0].item);
     list_add(&selection.list, &areas[1].item);
