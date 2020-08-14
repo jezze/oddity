@@ -5,6 +5,9 @@
 #include "text.h"
 #include "backend.h"
 
+#define TEXT_XPADDING                   12
+#define TEXT_YPADDING                   4
+
 static unsigned int rtrim(char *text, unsigned int count)
 {
 
@@ -157,33 +160,29 @@ void text_render2(struct box *box, unsigned int color, unsigned int align, char 
 
     char *ptext = content;
     unsigned int pcount = strlen(content);
-    unsigned int x = box->x + 10;
-    unsigned int y = box->y + 6;
-    unsigned int w = box->w - 10 * 2;
-    unsigned int h = box->h - 6 * 2;
-    unsigned int liney = y + backend_getascent();
+    unsigned int liney = box->y + backend_getascent();
 
     while (pcount)
     {
 
-        unsigned int linecount = maxfit(ptext, pcount, w);
+        unsigned int linecount = maxfit(ptext, pcount, box->w);
         unsigned int linex;
 
         switch (align)
         {
 
         case TEXT_ALIGN_LEFT:
-            linex = x;
+            linex = box->x;
 
             break;
 
         case TEXT_ALIGN_RIGHT:
-            linex = x + w - textw(ptext, linecount);
+            linex = box->x + box->w - textw(ptext, linecount);
 
             break;
 
         case TEXT_ALIGN_CENTER:
-            linex = x + (w - textw(ptext, linecount)) / 2;
+            linex = box->x + (box->w - textw(ptext, linecount)) / 2;
 
             break;
 
@@ -204,7 +203,7 @@ void text_render2(struct box *box, unsigned int color, unsigned int align, char 
         ptext += linecount;
         pcount -= linecount;
 
-        if (liney > y + h)
+        if (liney > box->y + box->h)
             break;
 
     }

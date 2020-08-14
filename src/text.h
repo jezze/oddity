@@ -1,5 +1,3 @@
-#define TEXT_XPADDING                   12
-#define TEXT_YPADDING                   4
 #define TEXT_COLOR_NORMAL               0xFFA0C0C0
 #define TEXT_COLOR_TITLE                0xFFE0E0E0
 #define TEXT_COLOR_SELECT               0xFFE06020

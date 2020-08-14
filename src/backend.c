@@ -107,6 +107,25 @@ static void doborderrectangle(SDL_Surface *s, int w, int h, unsigned int color)
 
 }
 
+void backend_slider(int x, int y, int w, int h)
+{
+
+    SDL_Surface *surface = SDL_CreateRGBSurface(0, w, h, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+    SDL_Rect r;
+
+    r.x = x;
+    r.y = y;
+    r.w = w;
+    r.h = h;
+
+    dofillrectangle(surface, w, h, 0x40FFFFFF);
+    doborderrectangle(surface, w, h, 0xC0FFFFFF);
+    SDL_BlitSurface(surface, NULL, display, &r);
+    SDL_FreeSurface(surface);
+
+}
+
+
 void backend_rect(int x, int y, int w, int h)
 {
 

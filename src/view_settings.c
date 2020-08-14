@@ -9,8 +9,9 @@
 #include "selection.h"
 
 static struct view view;
-static struct widget_area areas[4];
+static struct widget_area areas[5];
 static struct widget_text texts[7];
+static struct widget_slider sliders[1];
 static struct selection selection;
 
 static void place(unsigned int w, unsigned int h)
@@ -20,6 +21,7 @@ static void place(unsigned int w, unsigned int h)
     widget_area_place(&areas[1], 0, 0, w, h);
     widget_area_place(&areas[2], 0, 0, w, h);
     widget_area_place(&areas[3], 0, 0, w, h);
+    widget_area_place(&areas[4], 0, 0, w, h);
     widget_text_placein(&texts[0], &areas[0].size);
     widget_text_placein(&texts[1], &areas[0].size);
     widget_text_placein(&texts[2], &areas[1].size);
@@ -27,6 +29,7 @@ static void place(unsigned int w, unsigned int h)
     widget_text_placein(&texts[4], &areas[2].size);
     widget_text_placein(&texts[5], &areas[2].size);
     widget_text_placein(&texts[6], &areas[3].size);
+    widget_slider_placein(&sliders[0], &areas[4].size);
 
 }
 
@@ -41,6 +44,7 @@ static void render(unsigned int ticks)
     widget_text_render(&texts[4]);
     widget_text_render(&texts[5]);
     widget_text_render(&texts[6]);
+    widget_slider_render(&sliders[0]);
 
 }
 
@@ -70,6 +74,7 @@ void view_settings_setup(void)
     widget_area_init(&areas[1], 0, 1, 8, 1);
     widget_area_init(&areas[2], 0, 2, 8, 1);
     widget_area_init(&areas[3], 0, 3, 8, 1);
+    widget_area_init(&areas[4], 0, 4, 8, 1);
     widget_text_init(&texts[0], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Video");
     widget_text_init(&texts[1], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "320x240");
     widget_text_init(&texts[2], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Audio");
@@ -77,10 +82,12 @@ void view_settings_setup(void)
     widget_text_init(&texts[4], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Network");
     widget_text_init(&texts[5], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "10.1.1.2/30");
     widget_text_init(&texts[6], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "System");
+    widget_slider_init(&sliders[0], 0, 31, 26);
     list_add(&selection.list, &areas[0].item);
     list_add(&selection.list, &areas[1].item);
     list_add(&selection.list, &areas[2].item);
     list_add(&selection.list, &areas[3].item);
+    list_add(&selection.list, &areas[4].item);
 
 }
 

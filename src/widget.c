@@ -56,6 +56,58 @@ void widget_area_init(struct widget_area *area, int x, int y, int w, int h)
 
 }
 
+void widget_slider_bounds(struct widget_slider *slider, struct box *box)
+{
+
+    box->x = slider->size.x;
+    box->y = slider->size.y;
+    box->w = slider->size.w;
+    box->h = slider->size.h;
+
+}
+
+void widget_slider_place(struct widget_slider *slider, int x, int y, int w, int h)
+{
+
+    slider->size.x = x;
+    slider->size.y = y;
+    slider->size.w = w;
+    slider->size.h = h;
+
+}
+
+void widget_slider_placein(struct widget_slider *slider, struct box *box)
+{
+
+    widget_slider_place(slider, box->x, box->y, box->w, box->h);
+
+}
+
+void widget_slider_render(struct widget_slider *slider)
+{
+
+    struct box box;
+
+    box.x = slider->size.x + 10;
+    box.y = slider->size.y + 10;
+    box.w = slider->size.w - 10 * 2;
+    box.h = slider->size.h - 10 * 2;
+
+    backend_slider(box.x, box.y, box.w, box.h);
+
+}
+
+void widget_slider_init(struct widget_slider *slider, int min, int max, int value)
+{
+
+    list_inititem(&slider->item, slider);
+
+    slider->min = min;
+    slider->max = max;
+    slider->value = value;
+
+}
+
 void widget_text_bounds(struct widget_text *text, struct box *box)
 {
 
@@ -86,7 +138,14 @@ void widget_text_placein(struct widget_text *text, struct box *box)
 void widget_text_render(struct widget_text *text)
 {
 
-    text_render2(&text->size, text->color, text->align, text->data);
+    struct box box;
+
+    box.x = text->size.x + 10;
+    box.y = text->size.y + 6;
+    box.w = text->size.w - 10 * 2;
+    box.h = text->size.h - 6 * 2;
+
+    text_render2(&box, text->color, text->align, text->data);
 
 }
 
