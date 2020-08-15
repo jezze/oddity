@@ -104,7 +104,7 @@ static void button(unsigned int key)
     unsigned int maxpages = applist->count / 8;
 
     selection_setclosest(&selection, key);
-    selection_return(&selection, key, "applist");
+    selection_unselect(&selection, key, "applist");
 
     switch (key)
     {

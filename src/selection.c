@@ -137,7 +137,7 @@ void selection_select(struct selection *selection, unsigned int key, char *from,
 
 }
 
-void selection_return(struct selection *selection, unsigned int key, char *from)
+void selection_unselect(struct selection *selection, unsigned int key, char *from)
 {
 
     switch (key)

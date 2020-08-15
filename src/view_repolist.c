@@ -108,7 +108,7 @@ static void button(unsigned int key)
     if (selection_isactive(&selection, &areas[4].item))
         selection_select(&selection, key, "repolist", "sync");
 
-    selection_return(&selection, key, "repolist");
+    selection_unselect(&selection, key, "repolist");
 
 }
 

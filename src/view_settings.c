@@ -46,7 +46,7 @@ static void button(unsigned int key)
 {
 
     selection_setclosest(&selection, key);
-    selection_return(&selection, key, "settings");
+    selection_unselect(&selection, key, "settings");
 
 }
 

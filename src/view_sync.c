@@ -123,7 +123,7 @@ static void button(unsigned int key)
 {
 
     selection_setclosest(&selection, key);
-    selection_return(&selection, key, "sync");
+    selection_unselect(&selection, key, "sync");
 
 }
 
