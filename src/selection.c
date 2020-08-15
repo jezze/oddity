@@ -145,7 +145,7 @@ void selection_return(struct selection *selection, unsigned int key, char *from)
 
     case KEY_B:
         view_quit(from);
-        backend_play("click");
+        backend_play("unselect");
 
         break;
 
