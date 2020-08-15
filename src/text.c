@@ -5,8 +5,8 @@
 #include "text.h"
 #include "backend.h"
 
-#define TEXT_XPADDING                   12
-#define TEXT_YPADDING                   4
+#define XPADDING                        12
+#define YPADDING                        4
 
 static unsigned int rtrim(char *text, unsigned int count)
 {
@@ -101,10 +101,10 @@ void text_render(struct box *box, unsigned int color, unsigned int align, char *
 
     char *ptext = content;
     unsigned int pcount = strlen(content);
-    unsigned int x = box->x + TEXT_XPADDING;
-    unsigned int y = box->y + TEXT_YPADDING;
-    unsigned int w = box->w - TEXT_XPADDING * 2;
-    unsigned int h = box->h - TEXT_YPADDING * 2;
+    unsigned int x = box->x + XPADDING;
+    unsigned int y = box->y + YPADDING;
+    unsigned int w = box->w - XPADDING * 2;
+    unsigned int h = box->h - YPADDING * 2;
     unsigned int liney = y + backend_font_getascent();
 
     while (pcount)

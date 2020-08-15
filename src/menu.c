@@ -5,6 +5,8 @@
 #include "menu.h"
 #include "backend.h"
 
+#define ROWHEIGHT                       24
+
 static unsigned int iscurrent(struct menu *menu, unsigned int index)
 {
 
@@ -177,9 +179,9 @@ void menu_render(struct menu *menu, struct box *box)
         struct box rowbox;
 
         rowbox.x = box->x;
-        rowbox.y = box->y + (row - rowstart) * RENDER_ROWHEIGHT;
+        rowbox.y = box->y + (row - rowstart) * ROWHEIGHT;
         rowbox.w = box->w;
-        rowbox.h = RENDER_ROWHEIGHT;
+        rowbox.h = ROWHEIGHT;
 
         menu_renderitem(&menu->items[row], &rowbox);
 
