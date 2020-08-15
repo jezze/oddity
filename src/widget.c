@@ -37,7 +37,7 @@ void widget_area_placein(struct widget_area *area, struct box *box)
 
 }
 
-void widget_area_render(struct widget_area *area)
+void widget_area_render(struct widget_area *area, unsigned int ticks)
 {
 
     backend_paint_selection(area->size.x, area->size.y, area->size.w, area->size.h);
@@ -84,7 +84,7 @@ void widget_slider_placein(struct widget_slider *slider, struct box *box)
 
 }
 
-void widget_slider_render(struct widget_slider *slider)
+void widget_slider_render(struct widget_slider *slider, unsigned int ticks)
 {
 
     struct box box;
@@ -99,14 +99,14 @@ void widget_slider_render(struct widget_slider *slider)
 
         unsigned int ws = box.w * ((float)slider->value / (float)100);
 
-        backend_paint_slider(box.x, box.y, box.w, box.h, ws);
+        backend_paint_slider(box.x, box.y, box.w, box.h, ws, ticks);
 
     }
 
     else
     {
 
-        backend_paint_slider(box.x, box.y, box.w, box.h, -1);
+        backend_paint_slider(box.x, box.y, box.w, box.h, -1, ticks);
 
     }
 
@@ -150,7 +150,7 @@ void widget_text_placein(struct widget_text *text, struct box *box)
 
 }
 
-void widget_text_render(struct widget_text *text)
+void widget_text_render(struct widget_text *text, unsigned int ticks)
 {
 
     struct box box;

@@ -55,7 +55,7 @@ static void loadastiles(SDL_Surface *surface)
 
 }
 
-static void dofillstripes(SDL_Surface *s, int w, int h, unsigned int color)
+static void dofillstripes(SDL_Surface *s, int w, int h, unsigned int color, unsigned int ticks)
 {
 
     unsigned int *p = s->pixels;
@@ -69,7 +69,7 @@ static void dofillstripes(SDL_Surface *s, int w, int h, unsigned int color)
         for (x = 0; x < w; x++)
         {
 
-            if ((i % 10) > 5)
+            if (((i + ticks) % 10) > 5)
                 p[i] = color;
 
             i++;
@@ -321,7 +321,7 @@ void backend_paint_glyph(char c, unsigned int x, unsigned int y, unsigned int w,
 
 }
 
-void backend_paint_slider(int x, int y, int w, int h, int ws)
+void backend_paint_slider(int x, int y, int w, int h, int ws, unsigned int ticks)
 {
 
     SDL_Surface *surface = SDL_CreateRGBSurface(0, w, h, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
@@ -344,7 +344,7 @@ void backend_paint_slider(int x, int y, int w, int h, int ws)
     else
     {
 
-        dofillstripes(surface, w, h, 0x60FFFFFF);
+        dofillstripes(surface, w, h, 0x60FFFFFF, ticks);
 
     }
 

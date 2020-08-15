@@ -38,12 +38,12 @@ static void place(unsigned int w, unsigned int h)
 static void render(unsigned int ticks)
 {
 
-    selection_render(&selection);
-    widget_text_render(&titletext);
-    widget_text_render(&descriptiontext);
-    widget_text_render(&texts[0]);
-    widget_text_render(&texts[1]);
-    widget_text_render(&texts[2]);
+    selection_render(&selection, ticks);
+    widget_text_render(&titletext, ticks);
+    widget_text_render(&descriptiontext, ticks);
+    widget_text_render(&texts[0], ticks);
+    widget_text_render(&texts[1], ticks);
+    widget_text_render(&texts[2], ticks);
 
 }
 

@@ -17,20 +17,14 @@ static struct widget_area volume_master_area_text;
 static struct widget_area volume_master_area_slider;
 static struct widget_text volume_master_text;
 static struct widget_slider volume_master_slider;
-static struct widget_area testarea_master;
-static struct widget_text testtext_master;
 static struct widget_area volume_pcm_area_text;
 static struct widget_area volume_pcm_area_slider;
 static struct widget_text volume_pcm_text;
 static struct widget_slider volume_pcm_slider;
-static struct widget_area testarea_pcm;
-static struct widget_text testtext_pcm;
 static struct widget_area volume_headphones_area_text;
 static struct widget_area volume_headphones_area_slider;
 static struct widget_text volume_headphones_text;
 static struct widget_slider volume_headphones_slider;
-static struct widget_area testarea_headphones;
-static struct widget_text testtext_headphones;
 static struct selection selection;
 static char volume_percentage_master[8];
 static char volume_percentage_pcm[8];
@@ -46,7 +40,6 @@ static void place(unsigned int w, unsigned int h)
     widget_area_place(&areas[1], 0, 0, w, h);
     widget_area_place(&areas[2], 0, 0, w, h);
 
-    /* Volume */
     widget_area_place(&volume_master_area_text, 0, 0, w, h);
     widget_area_place(&volume_master_area_slider, 0, 0, w, h);
     widget_text_placein(&volume_master_text, &volume_master_area_text.size);
@@ -62,37 +55,23 @@ static void place(unsigned int w, unsigned int h)
     widget_text_placein(&volume_headphones_text, &volume_headphones_area_text.size);
     widget_slider_placein(&volume_headphones_slider, &volume_headphones_area_slider.size);
 
-    /* Test */
-    widget_area_place(&testarea_master, 0, 0, w, h);
-    widget_text_placein(&testtext_master, &testarea_master.size);
-
-    widget_area_place(&testarea_pcm, 0, 0, w, h);
-    widget_text_placein(&testtext_pcm, &testarea_pcm.size);
-
-    widget_area_place(&testarea_headphones, 0, 0, w, h);
-    widget_text_placein(&testtext_headphones, &testarea_headphones.size);
-
 }
 
 static void render(unsigned int ticks)
 {
 
-    selection_render(&selection);
+    selection_render(&selection, ticks);
 
-    widget_text_render(&audio_text);
+    widget_text_render(&audio_text, ticks);
 
-    widget_text_render(&volume_master_text);
-    widget_slider_render(&volume_master_slider);
+    widget_text_render(&volume_master_text, ticks);
+    widget_slider_render(&volume_master_slider, ticks);
 
-    widget_text_render(&volume_pcm_text);
-    widget_slider_render(&volume_pcm_slider);
+    widget_text_render(&volume_pcm_text, ticks);
+    widget_slider_render(&volume_pcm_slider, ticks);
 
-    widget_text_render(&volume_headphones_text);
-    widget_slider_render(&volume_headphones_slider);
-
-    widget_text_render(&testtext_master);
-    widget_text_render(&testtext_pcm);
-    widget_text_render(&testtext_headphones);
+    widget_text_render(&volume_headphones_text, ticks);
+    widget_slider_render(&volume_headphones_slider, ticks);
 
 }
 
@@ -229,7 +208,6 @@ void view_settings_setup(void)
     widget_area_init(&areas[2], 0, 3, 8, 1);
     selection_add(&selection, &areas[2].item);
 
-    /* Volume */
     widget_area_init(&volume_master_area_text, 0, 1, 5, 1);
     widget_area_init(&volume_master_area_slider, 5, 1, 3, 1);
     widget_text_init(&volume_master_text, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Volume (Master)");
@@ -244,16 +222,6 @@ void view_settings_setup(void)
     widget_area_init(&volume_headphones_area_slider, 5, 3, 3, 1);
     widget_text_init(&volume_headphones_text, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Volume (Headphones)");
     widget_slider_init(&volume_headphones_slider, 0, 100, -1);
-
-    /* Test */
-    widget_area_init(&testarea_master, 0, 5, 8, 1);
-    widget_text_init(&testtext_master, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, volume_percentage_master);
-
-    widget_area_init(&testarea_pcm, 0, 6, 8, 1);
-    widget_text_init(&testtext_pcm, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, volume_percentage_pcm);
-
-    widget_area_init(&testarea_headphones, 0, 7, 8, 1);
-    widget_text_init(&testtext_headphones, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, volume_percentage_headphones);
 
 }
 

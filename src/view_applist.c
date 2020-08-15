@@ -62,7 +62,7 @@ static void render(unsigned int ticks)
     if (max)
     {
 
-        selection_render(&selection);
+        selection_render(&selection, ticks);
 
         for (i = 0; i < max; i++)
         {
@@ -70,8 +70,8 @@ static void render(unsigned int ticks)
             texts[i * 2].data = applist->items[start + i].name;
             texts[i * 2 + 1].data = stateinfo[applist->items[start + i].state];
 
-            widget_text_render(&texts[i * 2]);
-            widget_text_render(&texts[i * 2 + 1]);
+            widget_text_render(&texts[i * 2], ticks);
+            widget_text_render(&texts[i * 2 + 1], ticks);
 
         }
 
@@ -80,7 +80,7 @@ static void render(unsigned int ticks)
     else
     {
 
-        widget_text_render(&texts[16]);
+        widget_text_render(&texts[16], ticks);
 
     }
 

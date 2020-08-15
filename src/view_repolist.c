@@ -45,17 +45,17 @@ static void place(unsigned int w, unsigned int h)
 static void render(unsigned int ticks)
 {
 
-    selection_render(&selection);
-    widget_text_render(&texts[0]);
-    widget_text_render(&texts[1]);
-    widget_text_render(&texts[2]);
-    widget_text_render(&texts[3]);
-    widget_text_render(&texts[4]);
-    widget_text_render(&texts[5]);
-    widget_text_render(&texts[6]);
-    widget_text_render(&texts[7]);
-    widget_text_render(&texts[8]);
-    widget_text_render(&texts[9]);
+    selection_render(&selection, ticks);
+    widget_text_render(&texts[0], ticks);
+    widget_text_render(&texts[1], ticks);
+    widget_text_render(&texts[2], ticks);
+    widget_text_render(&texts[3], ticks);
+    widget_text_render(&texts[4], ticks);
+    widget_text_render(&texts[5], ticks);
+    widget_text_render(&texts[6], ticks);
+    widget_text_render(&texts[7], ticks);
+    widget_text_render(&texts[8], ticks);
+    widget_text_render(&texts[9], ticks);
 
 }
 

@@ -63,11 +63,11 @@ static void render(unsigned int ticks)
     struct download *download = &downloads[0];
 
     snprintf(text, 128, "Progress: %d%%\nTotal bytes: %dKB", download->percentage, download->totalbytes);
-    selection_render(&selection);
-    widget_text_render(&texts[0]);
+    selection_render(&selection, ticks);
+    widget_text_render(&texts[0], ticks);
 
     if (download->percentage < 100)
-        widget_text_render(&texts[1]);
+        widget_text_render(&texts[1], ticks);
 
 }
 

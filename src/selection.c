@@ -163,7 +163,7 @@ void selection_add(struct selection *selection, struct list_item *item)
 
 }
 
-void selection_render(struct selection *selection)
+void selection_render(struct selection *selection, unsigned int ticks)
 {
 
     if (selection->active)
@@ -172,7 +172,7 @@ void selection_render(struct selection *selection)
         struct widget_area *a = selection->active->data;
 
         if (a->selectable)
-            widget_area_render(selection->active->data);
+            widget_area_render(selection->active->data, ticks);
 
     }
 
