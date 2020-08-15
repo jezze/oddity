@@ -11,12 +11,22 @@
 #define SCREEN_HEIGHT                   240
 #define SCREEN_BPP                      32
 
+struct sample
+{
+
+    char *name;
+    Mix_Chunk *chunk;
+
+};
+
 static SDL_Surface *display;
 static SDL_Surface *background;
 static TTF_Font *font;
 static TTF_Font *ofont;
 static unsigned int ssw;
 static unsigned int ssh;
+static struct sample samples[8];
+static unsigned int nsamples;
 
 int backend_font_getascent(void)
 {
@@ -459,16 +469,38 @@ void backend_unloadfont(void)
 
 }
 
-static Mix_Chunk *chunkclick;
-static Mix_Chunk *chunkselect;
-
 void backend_play(char *name)
 {
 
-    if (!strcmp(name, "click"))
-        Mix_PlayChannel(-1, chunkclick, 0);
-    else if (!strcmp(name, "select"))
-        Mix_PlayChannel(-1, chunkselect, 0);
+    unsigned int i;
+
+    for (i = 0; i < nsamples; i++)
+    {
+
+        struct sample *sample = &samples[i];
+
+        if (!strcmp(sample->name, name))
+            Mix_PlayChannel(-1, sample->chunk, 0);
+
+    }
+
+}
+
+void backend_loadsample(char *name, char *path)
+{
+
+    struct sample *sample = &samples[nsamples++];
+
+    sample->name = name;
+    sample->chunk = Mix_LoadWAV(path);
+
+    if (!sample->chunk)
+    {
+
+        fprintf(stderr, "Unable to load chunk: %s\n", Mix_GetError());
+        exit(EXIT_FAILURE);
+
+    }
 
 }
 
@@ -497,33 +529,22 @@ void backend_loadaudio(void)
 
     }
 
-    chunkclick = Mix_LoadWAV("click.wav");
-
-    if (!chunkclick)
-    {
-
-        fprintf(stderr, "Unable to load chunk: %s\n", Mix_GetError());
-        exit(EXIT_FAILURE);
-
-    }
-
-    chunkselect = Mix_LoadWAV("select.wav");
-
-    if (!chunkselect)
-    {
-
-        fprintf(stderr, "Unable to load chunk: %s\n", Mix_GetError());
-        exit(EXIT_FAILURE);
-
-    }
-
 }
 
 void backend_unloadaudio(void)
 {
 
-    Mix_FreeChunk(chunkclick);
-    Mix_FreeChunk(chunkselect);
+    unsigned int i;
+
+    for (i = 0; i < nsamples; i++)
+    {
+
+        struct sample *sample = &samples[i];
+
+        Mix_FreeChunk(sample->chunk);
+
+    }
+
     Mix_CloseAudio();
 
 }

@@ -73,6 +73,8 @@ static void ztore_init(void)
 
     backend_init();
     backend_loadaudio();
+    backend_loadsample("select", "select.wav");
+    backend_loadsample("click", "click.wav");
     backend_loadbackground("back.png");
     backend_loadfont("habbo.ttf");
 

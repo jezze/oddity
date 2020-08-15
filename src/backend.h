@@ -13,6 +13,7 @@ void backend_init(void);
 void backend_destroy(void);
 void backend_loadbackground(char *name);
 void backend_loadfont(char *name);
+void backend_loadsample(char *name, char *path);
 void backend_loadaudio(void);
 void backend_unloadbackground(void);
 void backend_unloadfont(void);
