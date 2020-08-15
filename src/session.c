@@ -66,17 +66,15 @@ static struct session *findname(char *name)
 static int spawn(struct session *session)
 {
 
-    pid_t cpid;
-
     if (pipe2(session->fd, O_NONBLOCK) == -1)
         return -1;
 
-    cpid = fork();
+    session->cpid = fork();
 
-    if (cpid == -1)
+    if (session->cpid == -1)
         return -1;
 
-    if (cpid == 0)
+    if (session->cpid == 0)
     {
 
         close(session->fd[0]);
@@ -92,8 +90,6 @@ static int spawn(struct session *session)
 
         close(session->fd[1]);
 
-        session->cpid = cpid;
-
         return 0;
 
     }
@@ -106,9 +102,8 @@ void session_poll(void)
 {
 
     struct timeval val;
-    char buf[1024];
     unsigned int i;
-    int n, maxfd = 0;
+    int maxfd = 0;
     fd_set rfds;
 
     val.tv_sec = 0;
@@ -122,9 +117,6 @@ void session_poll(void)
         struct session *session = &sessions[i];
 
         if (session->state != STATE_RUNNING)
-            continue;
-
-        if (session->fd[0] < 0)
             continue;
 
         FD_SET(session->fd[0], &rfds);
@@ -143,6 +135,8 @@ void session_poll(void)
     {
 
         struct session *session = &sessions[i];
+        char buffer[1024];
+        int count;
 
         if (session->state != STATE_RUNNING)
             continue;
@@ -150,10 +144,12 @@ void session_poll(void)
         if (!FD_ISSET(session->fd[0], &rfds))
             continue;
 
-        if ((n = read(session->fd[0], buf, 1024)) > 0)
+        count = read(session->fd[0], buffer, 1024);
+
+        if (count > 0)
         {
 
-            session->ondata(session->id, buf, n);
+            session->ondata(session->id, buffer, count);
 
         }
 
@@ -174,7 +170,6 @@ void session_poll(void)
                 else
                     session->onfailure(session->id);
 
-                session->fd[0] = -1;
                 session->name = 0;
                 session->id = 0;
                 session->state = STATE_NONE;
