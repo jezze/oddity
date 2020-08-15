@@ -6,7 +6,7 @@
 #include "text.h"
 #include "list.h"
 #include "view.h"
-#include "ztore.h"
+#include "main.h"
 #include "widget.h"
 #include "selection.h"
 #include "file.h"
@@ -97,7 +97,7 @@ static void load(void)
     }
 
     download_run();
-    ztore_setview(place, render, button);
+    main_setview(place, render, button);
 
     selection.active = selection.list.head;
 

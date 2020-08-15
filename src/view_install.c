@@ -9,7 +9,7 @@
 #include "file.h"
 #include "db.h"
 #include "view.h"
-#include "ztore.h"
+#include "main.h"
 
 static struct view view;
 static struct db_app *app;
@@ -175,12 +175,12 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
     if (!packagelist->count)
         return 0;
 
-    ztore_setview(place, renderpreparing, buttonoff);
+    main_setview(place, renderpreparing, buttonoff);
 
     if (verifypackages(packagelist))
         return 1;
 
-    ztore_setview(place, renderdownloading, buttondownloading);
+    main_setview(place, renderdownloading, buttondownloading);
     downloadnotify(0, 0);
 
     if (!file_downloadpackage(packagelist->items[0].name, downloadnotify))
@@ -192,7 +192,7 @@ static unsigned int doinstall(struct db_packagelist *packagelist)
 
     }
 
-    ztore_setview(place, renderinstalling, buttonoff);
+    main_setview(place, renderinstalling, buttonoff);
 
     if (verifypackage(&packagelist->items[0]))
     {
@@ -215,9 +215,9 @@ static void install(void)
     db_loadpackagesfromapp(&packagelist, app);
 
     if (doinstall(&packagelist))
-        ztore_setview(place, rendercomplete, buttonback);
+        main_setview(place, rendercomplete, buttonback);
     else
-        ztore_setview(place, renderfail, buttonback);
+        main_setview(place, renderfail, buttonback);
 
     db_freepackages(&packagelist);
 
@@ -228,7 +228,7 @@ static void load(void)
 
     abortdownload = 0;
 
-    ztore_setview(place, renderdefault, buttonoff);
+    main_setview(place, renderdefault, buttonoff);
     install();
 
 }

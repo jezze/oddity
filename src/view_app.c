@@ -8,7 +8,7 @@
 #include "file.h"
 #include "db.h"
 #include "view.h"
-#include "ztore.h"
+#include "main.h"
 
 static struct view view;
 static struct box titlebox;
@@ -91,7 +91,7 @@ static void load(void)
     }
 
     updatestate();
-    ztore_setview(place, render, button);
+    main_setview(place, render, button);
 
 }
 
@@ -117,7 +117,7 @@ static void runpackage(void)
         if (packagelist.items[i].state != 3)
             continue;
 
-        ztore_exec(packagelist.items[i].name);
+        main_exec(packagelist.items[i].name);
 
         break;
 

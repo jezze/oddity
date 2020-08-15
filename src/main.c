@@ -10,7 +10,7 @@
 #include "db.h"
 #include "view.h"
 #include "backend.h"
-#include "ztore.h"
+#include "main.h"
 
 void view_app_setup(void);
 void view_applist_setup(void);
@@ -26,14 +26,14 @@ static void (*_render)(unsigned int ticks);
 static void (*_button)(unsigned int key);
 static unsigned int quit;
 
-void ztore_quit(void)
+void main_quit(void)
 {
 
     quit = 1;
 
 }
 
-void ztore_setview(void (*place)(unsigned int w, unsigned int h), void (*render)(unsigned int ticks), void (*button)(unsigned int key))
+void main_setview(void (*place)(unsigned int w, unsigned int h), void (*render)(unsigned int ticks), void (*button)(unsigned int key))
 {
 
     _place = place;
@@ -44,7 +44,7 @@ void ztore_setview(void (*place)(unsigned int w, unsigned int h), void (*render)
 
 static unsigned int ticks;
 
-static void ztore_loop(void)
+static void main_loop(void)
 {
 
     unsigned int limit = 1000 / 60;
@@ -56,7 +56,7 @@ static void ztore_loop(void)
         frametime = backend_ticks();
 
         session_poll();
-        backend_pollevent(ztore_quit, _button);
+        backend_pollevent(main_quit, _button);
         backend_render(ticks, _place, _render);
 
         if (backend_ticks() - frametime < limit)
@@ -68,7 +68,7 @@ static void ztore_loop(void)
 
 }
 
-static void ztore_init(void)
+static void main_init(void)
 {
 
     backend_init();
@@ -80,7 +80,7 @@ static void ztore_init(void)
 
 }
 
-static void ztore_destroy(void)
+static void main_destroy(void)
 {
 
     backend_unloadfont();
@@ -92,7 +92,7 @@ static void ztore_destroy(void)
 
 }
 
-void ztore_exec(char *name)
+void main_exec(char *name)
 {
 
     char *opkrun = "opkrun";
@@ -104,7 +104,7 @@ void ztore_exec(char *name)
     argv[2] = 0;
 
     snprintf(opk, 64, "/media/data/apps/%s", name);
-    ztore_destroy();
+    main_destroy();
     execvp(opkrun, argv);
 
 }
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
 
     file_init();
     db_init();
-    ztore_init();
+    main_init();
     view_app_setup();
     view_applist_setup();
     view_front_setup();
@@ -124,9 +124,9 @@ int main(int argc, char **argv)
     view_sync_setup();
     view_uninstall_setup();
     view_load("front", 0);
-    ztore_loop();
+    main_loop();
     view_quit("front");
-    ztore_destroy();
+    main_destroy();
 
     return 0;
 

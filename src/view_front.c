@@ -4,7 +4,7 @@
 #include "text.h"
 #include "list.h"
 #include "view.h"
-#include "ztore.h"
+#include "main.h"
 #include "widget.h"
 #include "selection.h"
 
@@ -55,7 +55,7 @@ static void button(unsigned int key)
 static void load(void)
 {
 
-    ztore_setview(place, render, button);
+    main_setview(place, render, button);
 
     selection.active = selection.list.head;
 
@@ -64,7 +64,7 @@ static void load(void)
 void view_front_setup(void)
 {
 
-    view_init(&quit, "quit", ztore_quit, 0);
+    view_init(&quit, "quit", main_quit, 0);
     view_register(&quit);
     view_init(&view, "front", load, 0);
     view_register(&view);

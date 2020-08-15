@@ -9,7 +9,7 @@
 #include "file.h"
 #include "db.h"
 #include "view.h"
-#include "ztore.h"
+#include "main.h"
 
 static struct view view;
 static struct db_app *app;
@@ -135,14 +135,14 @@ static void uninstall(void)
 
     struct db_packagelist packagelist;
 
-    ztore_setview(place, renderuninstalling, buttonoff);
+    main_setview(place, renderuninstalling, buttonoff);
 
     db_loadpackagesfromapp(&packagelist, app);
 
     if (douninstall(&packagelist))
-        ztore_setview(place, rendercomplete, buttonback);
+        main_setview(place, rendercomplete, buttonback);
     else
-        ztore_setview(place, renderfail, buttonback);
+        main_setview(place, renderfail, buttonback);
 
     db_freepackages(&packagelist);
 
@@ -151,7 +151,7 @@ static void uninstall(void)
 static void load(void)
 {
 
-    ztore_setview(place, renderconfirm, buttonconfirm);
+    main_setview(place, renderconfirm, buttonconfirm);
 
 }
 

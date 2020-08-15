@@ -8,6 +8,7 @@ OBJ= \
     src/download.o \
     src/file.o \
     src/list.o \
+    src/main.o \
     src/menu.o \
     src/selection.o \
     src/session.o \
@@ -22,7 +23,6 @@ OBJ= \
     src/view_install.o \
     src/view_uninstall.o \
     src/widget.o \
-    src/ztore.o \
 
 include ${ARCH}.mk
 

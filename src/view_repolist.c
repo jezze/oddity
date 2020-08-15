@@ -6,7 +6,7 @@
 #include "list.h"
 #include "view.h"
 #include "db.h"
-#include "ztore.h"
+#include "main.h"
 #include "widget.h"
 #include "selection.h"
 
@@ -120,7 +120,7 @@ static void load(void)
     snprintf(updated, 16, "%u items", db_countappswithstate(2));
     snprintf(installed, 16, "%u items", db_countappswithstate(3));
     snprintf(last, 32, "Last updated: %s", "Never");
-    ztore_setview(place, render, button);
+    main_setview(place, render, button);
 
     selection.active = selection.list.head;
 
