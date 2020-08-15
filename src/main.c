@@ -12,6 +12,8 @@
 #include "backend.h"
 #include "main.h"
 
+#define TIMELIMIT                       (1000 / 60)
+
 void view_app_setup(void);
 void view_applist_setup(void);
 void view_front_setup(void);
@@ -20,7 +22,6 @@ void view_repolist_setup(void);
 void view_settings_setup(void);
 void view_sync_setup(void);
 void view_uninstall_setup(void);
-
 static void (*_place)(unsigned int w, unsigned int h);
 static void (*_render)(unsigned int ticks);
 static void (*_button)(unsigned int key);
@@ -44,7 +45,6 @@ static void setup(void)
 static void run(void)
 {
 
-    unsigned int limit = 1000 / 60;
     unsigned int frametime;
 
     while (!quit)
@@ -56,8 +56,8 @@ static void run(void)
         backend_pollevent(main_quit, _button);
         backend_render(ticks, _place, _render);
 
-        if (backend_ticks() - frametime < limit)
-            backend_delay(limit - (backend_ticks() - frametime));
+        if (backend_ticks() - frametime < TIMELIMIT)
+            backend_delay(TIMELIMIT - (backend_ticks() - frametime));
 
         ticks++;
 
