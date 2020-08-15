@@ -55,14 +55,57 @@ static void loadastiles(SDL_Surface *surface)
 
 }
 
+static void dofillstripes(SDL_Surface *s, int w, int h, unsigned int color)
+{
+
+    unsigned int *p = s->pixels;
+    unsigned int i = 0;
+    unsigned int x;
+    unsigned int y;
+
+    for (y = 0; y < h; y++)
+    {
+
+        for (x = 0; x < w; x++)
+        {
+
+            if ((i % 10) > 5)
+                p[i] = color;
+
+            i++;
+
+        }
+
+        i += (s->w - w);
+
+    }
+
+}
+
+
 static void dofillrectangle(SDL_Surface *s, int w, int h, unsigned int color)
 {
 
     unsigned int *p = s->pixels;
-    unsigned int i;
+    unsigned int i = 0;
+    unsigned int x;
+    unsigned int y;
 
-    for (i = 0; i < w * h; i++)
-        p[i] = color;
+    for (y = 0; y < h; y++)
+    {
+
+        for (x = 0; x < w; x++)
+        {
+
+            p[i] = color;
+
+            i++;
+
+        }
+
+        i += (s->w - w);
+
+    }
 
 }
 
@@ -278,7 +321,7 @@ void backend_paint_glyph(char c, unsigned int x, unsigned int y, unsigned int w,
 
 }
 
-void backend_paint_slider(int x, int y, int w, int h)
+void backend_paint_slider(int x, int y, int w, int h, int ws)
 {
 
     SDL_Surface *surface = SDL_CreateRGBSurface(0, w, h, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
@@ -290,6 +333,21 @@ void backend_paint_slider(int x, int y, int w, int h)
     r.h = h;
 
     dofillrectangle(surface, w, h, 0x40FFFFFF);
+
+    if (ws > 0)
+    {
+
+        dofillrectangle(surface, ws, h, 0xC0FFFFFF);
+
+    }
+
+    else
+    {
+
+        dofillstripes(surface, w, h, 0x60FFFFFF);
+
+    }
+
     doborderrectangle(surface, w, h, 0xC0FFFFFF);
     SDL_BlitSurface(surface, NULL, display, &r);
     SDL_FreeSurface(surface);

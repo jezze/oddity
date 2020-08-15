@@ -106,6 +106,7 @@ void ondata(unsigned int id, void *data, unsigned int count)
         snprintf(volume_percentage_master, 8, "%s", (char *)data);
 
         volume_master_text.color = TEXT_COLOR_NORMAL;
+        volume_master_slider.value = strtol(volume_percentage_master, 0, 10);
 
         break;
 
@@ -113,6 +114,7 @@ void ondata(unsigned int id, void *data, unsigned int count)
         snprintf(volume_percentage_pcm, 8, "%s", (char *)data);
 
         volume_pcm_text.color = TEXT_COLOR_NORMAL;
+        volume_pcm_slider.value = strtol(volume_percentage_pcm, 0, 10);
 
         break;
 
@@ -120,6 +122,7 @@ void ondata(unsigned int id, void *data, unsigned int count)
         snprintf(volume_percentage_headphones, 8, "%s", (char *)data);
 
         volume_headphones_text.color = TEXT_COLOR_NORMAL;
+        volume_headphones_slider.value = strtol(volume_percentage_headphones, 0, 10);
 
         break;
 
@@ -230,17 +233,17 @@ void view_settings_setup(void)
     widget_area_init(&volume_master_area_text, 0, 1, 5, 1);
     widget_area_init(&volume_master_area_slider, 5, 1, 3, 1);
     widget_text_init(&volume_master_text, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Volume (Master)");
-    widget_slider_init(&volume_master_slider, 0, 31, 26);
+    widget_slider_init(&volume_master_slider, 0, 100, -1);
 
     widget_area_init(&volume_pcm_area_text, 0, 2, 5, 1);
     widget_area_init(&volume_pcm_area_slider, 5, 2, 3, 1);
     widget_text_init(&volume_pcm_text, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Volume (PCM)");
-    widget_slider_init(&volume_pcm_slider, 0, 31, 26);
+    widget_slider_init(&volume_pcm_slider, 0, 100, -1);
 
     widget_area_init(&volume_headphones_area_text, 0, 3, 5, 1);
     widget_area_init(&volume_headphones_area_slider, 5, 3, 3, 1);
     widget_text_init(&volume_headphones_text, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Volume (Headphones)");
-    widget_slider_init(&volume_headphones_slider, 0, 31, 26);
+    widget_slider_init(&volume_headphones_slider, 0, 100, -1);
 
     /* Test */
     widget_area_init(&testarea_master, 0, 5, 8, 1);

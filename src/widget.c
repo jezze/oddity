@@ -94,7 +94,21 @@ void widget_slider_render(struct widget_slider *slider)
     box.w = slider->size.w - 10 * 2;
     box.h = slider->size.h - 10 * 2;
 
-    backend_paint_slider(box.x, box.y, box.w, box.h);
+    if (slider->value > 0)
+    {
+
+        unsigned int ws = box.w * ((float)slider->value / (float)100);
+
+        backend_paint_slider(box.x, box.y, box.w, box.h, ws);
+
+    }
+
+    else
+    {
+
+        backend_paint_slider(box.x, box.y, box.w, box.h, -1);
+
+    }
 
 }
 
