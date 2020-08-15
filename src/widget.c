@@ -5,16 +5,6 @@
 #include "list.h"
 #include "widget.h"
 
-void widget_area_bounds(struct widget_area *area, struct box *box)
-{
-
-    box->x = area->size.x;
-    box->y = area->size.y;
-    box->w = area->size.w;
-    box->h = area->size.h;
-
-}
-
 void widget_area_place(struct widget_area *area, int x, int y, int w, int h)
 {
 
@@ -40,8 +30,6 @@ void widget_area_placein(struct widget_area *area, struct box *box)
 void widget_area_render(struct widget_area *area, unsigned int ticks)
 {
 
-    backend_paint_selection(area->size.x, area->size.y, area->size.w, area->size.h);
-
 }
 
 void widget_area_init(struct widget_area *area, int x, int y, int w, int h)
@@ -54,16 +42,6 @@ void widget_area_init(struct widget_area *area, int x, int y, int w, int h)
     area->unit.w = w;
     area->unit.h = h;
     area->selectable = 1;
-
-}
-
-void widget_slider_bounds(struct widget_slider *slider, struct box *box)
-{
-
-    box->x = slider->size.x;
-    box->y = slider->size.y;
-    box->w = slider->size.w;
-    box->h = slider->size.h;
 
 }
 
@@ -120,16 +98,6 @@ void widget_slider_init(struct widget_slider *slider, int min, int max, int valu
     slider->min = min;
     slider->max = max;
     slider->value = value;
-
-}
-
-void widget_text_bounds(struct widget_text *text, struct box *box)
-{
-
-    box->x = text->size.x;
-    box->y = text->size.y;
-    box->w = text->size.w;
-    box->h = text->size.h;
 
 }
 

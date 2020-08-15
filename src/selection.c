@@ -169,10 +169,10 @@ void selection_render(struct selection *selection, unsigned int ticks)
     if (selection->active)
     {
 
-        struct widget_area *a = selection->active->data;
+        struct widget_area *area = selection->active->data;
 
-        if (a->selectable)
-            widget_area_render(selection->active->data, ticks);
+        if (area->selectable)
+            backend_paint_selection(area->size.x, area->size.y, area->size.w, area->size.h);
 
     }
 
