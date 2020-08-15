@@ -72,7 +72,6 @@ static void ztore_init(void)
 {
 
     backend_init();
-    backend_loadaudio();
     backend_loadsample("select", "select.wav");
     backend_loadsample("click", "click.wav");
     backend_loadbackground("back.png");
@@ -85,7 +84,8 @@ static void ztore_destroy(void)
 
     backend_unloadfont();
     backend_unloadbackground();
-    backend_unloadaudio();
+    backend_unloadsample("select");
+    backend_unloadsample("click");
     backend_destroy();
 
 }

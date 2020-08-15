@@ -350,10 +350,31 @@ void backend_init(void)
 
     }
 
-    SDL_ShowCursor(SDL_DISABLE);
+    if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 512) < 0)
+    {
+
+        fprintf(stderr, "Unable to open audio: %s\n", Mix_GetError());
+        exit(EXIT_FAILURE);
+
+    }
+
+    if (Mix_AllocateChannels(4) < 0)
+    {
+
+        fprintf(stderr, "Unable to allocate channels: %s\n", Mix_GetError());
+        exit(EXIT_FAILURE);
+
+    }
 
     if (TTF_Init() < 0)
+    {
+
+        fprintf(stderr, "Unable to init TTF: %s\n", TTF_GetError());
         exit(EXIT_FAILURE);
+
+    }
+
+    SDL_ShowCursor(SDL_DISABLE);
 
 }
 
@@ -361,6 +382,7 @@ void backend_destroy(void)
 {
 
     TTF_Quit();
+    Mix_CloseAudio();
     SDL_Quit();
 
 }
@@ -469,7 +491,7 @@ void backend_unloadfont(void)
 
 }
 
-void backend_play(char *name)
+struct sample *findsample(char *name)
 {
 
     unsigned int i;
@@ -480,9 +502,22 @@ void backend_play(char *name)
         struct sample *sample = &samples[i];
 
         if (!strcmp(sample->name, name))
-            Mix_PlayChannel(-1, sample->chunk, 0);
+            return sample;
+
 
     }
+
+    return 0;
+
+}
+
+void backend_play(char *name)
+{
+
+    struct sample *sample = findsample(name);
+
+    if (sample)
+        Mix_PlayChannel(-1, sample->chunk, 0);
 
 }
 
@@ -504,48 +539,13 @@ void backend_loadsample(char *name, char *path)
 
 }
 
-void backend_loadaudio(void)
+void backend_unloadsample(char *name)
 {
 
-    int rc;
+    struct sample *sample = findsample(name);
 
-    rc = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 512);
-
-    if (rc < 0)
-    {
-
-        fprintf(stderr, "Unable to open audio: %s\n", Mix_GetError());
-        exit(EXIT_FAILURE);
-
-    }
-
-    rc = Mix_AllocateChannels(4);
-
-    if (rc < 0)
-    {
-
-        fprintf(stderr, "Unable to allocate channels: %s\n", Mix_GetError());
-        exit(EXIT_FAILURE);
-
-    }
-
-}
-
-void backend_unloadaudio(void)
-{
-
-    unsigned int i;
-
-    for (i = 0; i < nsamples; i++)
-    {
-
-        struct sample *sample = &samples[i];
-
+    if (sample)
         Mix_FreeChunk(sample->chunk);
-
-    }
-
-    Mix_CloseAudio();
 
 }
 
