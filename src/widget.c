@@ -90,9 +90,9 @@ void widget_slider_render(struct widget_slider *slider, unsigned int ticks)
     struct box box;
 
     box.x = slider->size.x + 10;
-    box.y = slider->size.y + 10;
+    box.y = slider->size.y + 8;
     box.w = slider->size.w - 10 * 2;
-    box.h = slider->size.h - 10 * 2;
+    box.h = slider->size.h - 8 * 2;
 
     if (slider->value >= 0)
     {
