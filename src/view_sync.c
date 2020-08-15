@@ -13,74 +13,22 @@
 #include "db.h"
 #include "session.h"
 
-struct progress
-{
-
-    char buffer[1024];
-    unsigned int count;
-    unsigned int totalbytes;
-    unsigned int percentage;
-    unsigned int timeremaining;
-
-};
-
 static struct view view;
-static struct progress progresses[8];
+static struct session_progress progresses[8];
 static struct widget_area areas[2];
 static struct widget_text texts[2];
 static struct selection selection;
 static struct db_remotelist remotelist;
 static char text[128];
 
-static unsigned int parsedata(struct progress *progress, char *buffer, unsigned int count)
-{
-
-    unsigned int offset = 0;
-    unsigned int i;
-
-    for (i = 0; i < count; i++)
-    {
-
-        if (buffer[i] == '\n')
-        {
-
-            if (i - offset > 0)
-            {
-
-                char *end;
-
-                progress->totalbytes = strtol(buffer + offset, &end, 10);
-                progress->percentage = strtol(end + 1, 0, 10);
-
-            }
-
-            offset = i + 1;
-
-        }
-
-    }
-
-    if (count > offset)
-    {
-
-        memcpy(buffer, buffer + offset, count - offset);
-
-        count = count - offset;
-
-    }
-
-    return count;
-
-}
-
 static void ondata(unsigned int id, void *data, unsigned int count)
 {
 
-    struct progress *progress = &progresses[id];
+    struct session_progress *progress = &progresses[id];
 
     memcpy(progress->buffer + progress->count, data, count);
 
-    progress->count = parsedata(progress, progress->buffer, progress->count + count);
+    progress->count = session_parseprogress(progress, progress->buffer, progress->count + count);
 
 }
 
@@ -108,7 +56,7 @@ static void place(unsigned int w, unsigned int h)
 static void render(unsigned int ticks)
 {
 
-    struct progress *progress = &progresses[0];
+    struct session_progress *progress = &progresses[0];
 
     snprintf(text, 128, "Progress: %d%%\nTotal bytes: %dKB", progress->percentage, progress->totalbytes);
     widget_area_render(selection.active->data);
@@ -132,40 +80,23 @@ static void load(void)
 
     unsigned int i;
 
-    ztore_setview(place, render, button);
     db_freeremotes(&remotelist);
     db_loadremotes(&remotelist);
 
     for (i = 0; i < remotelist.count; i++)
     {
 
-        struct progress *progress = &progresses[i];
-        struct db_remote *remote = &remotelist.items[i];
         char path[128];
 
-        progress->count = 0;
-        progress->totalbytes = 0;
-        progress->percentage = 0;
-        progress->timeremaining = 0;
-
-        file_getremotedatabasepath(path, 128, remote->id);
-        session_create("download1", i, ondata, oncomplete);
-        session_setarg("download1", 0, "wget");
-        session_setarg("download1", 1, "-q");
-        session_setarg("download1", 2, "--show-progress");
-        session_setarg("download1", 3, "--progress=dot");
-        session_setarg("download1", 4, "-o");
-        session_setarg("download1", 5, "/dev/stdout");
-        session_setarg("download1", 6, remote->url);
-        session_setarg("download1", 7, "-O");
-        session_setarg("download1", 8, path);
-        session_setarg("download1", 9, 0);
+        file_getremotedatabasepath(path, 128, remotelist.items[i].id);
+        session_createprogress(&progresses[i], i, remotelist.items[i].url, path, ondata, oncomplete);
 
         break;
 
     }
- 
+
     session_run();
+    ztore_setview(place, render, button);
 
     selection.active = selection.list.head;
 

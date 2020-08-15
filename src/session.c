@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <fcntl.h>
+#include "session.h"
 
 #define SESSION_MAX 32
 
@@ -232,6 +233,69 @@ void session_setarg(char *name, unsigned int index, char *value)
 
     if (session)
         session->args[index] = value;
+
+}
+
+unsigned int session_parseprogress(struct session_progress *progress, char *buffer, unsigned int count)
+{
+
+    unsigned int offset = 0;
+    unsigned int i;
+
+    for (i = 0; i < count; i++)
+    {
+
+        if (buffer[i] == '\n')
+        {
+
+            if (i - offset > 0)
+            {
+
+                char *end;
+
+                progress->totalbytes = strtol(buffer + offset, &end, 10);
+                progress->percentage = strtol(end + 1, 0, 10);
+
+            }
+
+            offset = i + 1;
+
+        }
+
+    }
+
+    if (count > offset)
+    {
+
+        memcpy(buffer, buffer + offset, count - offset);
+
+        count = count - offset;
+
+    }
+
+    return count;
+
+}
+
+void session_createprogress(struct session_progress *progress, unsigned int id, char *url, char *path, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id))
+{
+
+    progress->count = 0;
+    progress->totalbytes = 0;
+    progress->percentage = 0;
+    progress->timeremaining = 0;
+
+    session_create("download1", id, ondata, oncomplete);
+    session_setarg("download1", 0, "wget");
+    session_setarg("download1", 1, "-q");
+    session_setarg("download1", 2, "--show-progress");
+    session_setarg("download1", 3, "--progress=dot");
+    session_setarg("download1", 4, "-o");
+    session_setarg("download1", 5, "/dev/stdout");
+    session_setarg("download1", 6, url);
+    session_setarg("download1", 7, "-O");
+    session_setarg("download1", 8, path);
+    session_setarg("download1", 9, 0);
 
 }
 
