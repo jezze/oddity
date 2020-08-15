@@ -25,6 +25,9 @@ struct list_item *selection_getclosest(struct selection *selection, unsigned int
         int bax = abs(b->size.x - a->size.x);
         int bay = abs(b->size.y - a->size.y);
 
+        if (!b->selectable)
+            continue;
+
         switch (key)
         {
 

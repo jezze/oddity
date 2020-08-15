@@ -34,7 +34,9 @@ static void place(unsigned int w, unsigned int h)
 static void render(unsigned int ticks)
 {
 
-    widget_area_render(selection.active->data);
+    if (selection.active)
+        widget_area_render(selection.active->data);
+
     widget_text_render(&texts[0]);
     widget_text_render(&volume_text);
     widget_slider_render(&volume_slider);
