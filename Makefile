@@ -39,5 +39,8 @@ $(PKG): $(BIN)
 clean:
 	rm -f $(PKG) $(BIN) $(OBJ)
 
+run:
+	(cd opk && ./ztore)
+
 upload:
 	scp $(PKG) od@10.1.1.2:/media/data/apps/$(PKG)
