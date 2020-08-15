@@ -157,32 +157,29 @@ void session_poll(void)
 
         }
 
-    }
-
-    for (i = 0; i < SESSION_MAX; i++)
-    {
-
-        struct session *session = &sessions[i];
-        int status;
-
-        if (session->state != STATE_RUNNING)
-            continue;
-
-        waitpid(session->cpid, &status, WNOHANG);
-
-        if (WIFEXITED(status))
+        else
         {
 
-            close(session->fd[0]);
+            int status;
 
-            session->fd[0] = -1;
+            waitpid(session->cpid, &status, WNOHANG);
 
-            if (WEXITSTATUS(status) == 0)
-                session->oncomplete(session->id);
-            else
-                session->onfailure(session->id);
+            if (WIFEXITED(status))
+            {
 
-            session->state = STATE_NONE;
+                close(session->fd[0]);
+
+                if (WEXITSTATUS(status) == 0)
+                    session->oncomplete(session->id);
+                else
+                    session->onfailure(session->id);
+
+                session->fd[0] = -1;
+                session->name = 0;
+                session->id = 0;
+                session->state = STATE_NONE;
+
+            }
 
         }
 
@@ -216,8 +213,10 @@ void session_run(void)
         else
         {
 
-            session->state = STATE_NONE;
             session->fd[0] = -1;
+            session->name = 0;
+            session->id = 0;
+            session->state = STATE_NONE;
 
         }
 
