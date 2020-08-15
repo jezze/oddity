@@ -25,8 +25,8 @@ static unsigned int wordstart(char *text, unsigned int count)
 static unsigned int textw(char *text, unsigned int count)
 {
 
-    unsigned int i;
     unsigned int total = 0;
+    unsigned int i;
 
     for (i = 0; i < count; i++)
     {
@@ -46,8 +46,8 @@ static unsigned int textw(char *text, unsigned int count)
 static unsigned int maxfit(char *text, unsigned int count, unsigned int width)
 {
 
-    unsigned int i;
     unsigned int total = 0;
+    unsigned int i;
 
     for (i = 0; i < count; i++)
     {
