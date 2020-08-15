@@ -3,7 +3,6 @@
 #include <string.h>
 #include "define.h"
 #include "box.h"
-#include "text.h"
 #include "list.h"
 #include "view.h"
 #include "main.h"
