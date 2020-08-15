@@ -26,30 +26,23 @@ static struct widget_area volume_headphones_area_slider;
 static struct widget_text volume_headphones_text;
 static struct widget_slider volume_headphones_slider;
 static struct selection selection;
-static char volume_percentage_master[8];
-static char volume_percentage_pcm[8];
-static char volume_percentage_headphones[8];
 
 static void place(unsigned int w, unsigned int h)
 {
 
     widget_area_place(&audio_area, 0, 0, w, h);
     widget_text_placein(&audio_text, &audio_area.size);
-
     widget_area_place(&areas[0], 0, 0, w, h);
     widget_area_place(&areas[1], 0, 0, w, h);
     widget_area_place(&areas[2], 0, 0, w, h);
-
     widget_area_place(&volume_master_area_text, 0, 0, w, h);
     widget_area_place(&volume_master_area_slider, 0, 0, w, h);
     widget_text_placein(&volume_master_text, &volume_master_area_text.size);
     widget_slider_placein(&volume_master_slider, &volume_master_area_slider.size);
-
     widget_area_place(&volume_pcm_area_text, 0, 0, w, h);
     widget_area_place(&volume_pcm_area_slider, 0, 0, w, h);
     widget_text_placein(&volume_pcm_text, &volume_pcm_area_text.size);
     widget_slider_placein(&volume_pcm_slider, &volume_pcm_area_slider.size);
-
     widget_area_place(&volume_headphones_area_text, 0, 0, w, h);
     widget_area_place(&volume_headphones_area_slider, 0, 0, w, h);
     widget_text_placein(&volume_headphones_text, &volume_headphones_area_text.size);
@@ -61,15 +54,11 @@ static void render(unsigned int ticks)
 {
 
     selection_render(&selection, ticks);
-
     widget_text_render(&audio_text, ticks);
-
     widget_text_render(&volume_master_text, ticks);
     widget_slider_render(&volume_master_slider, ticks);
-
     widget_text_render(&volume_pcm_text, ticks);
     widget_slider_render(&volume_pcm_slider, ticks);
-
     widget_text_render(&volume_headphones_text, ticks);
     widget_slider_render(&volume_headphones_slider, ticks);
 
@@ -82,26 +71,20 @@ void ondata(unsigned int id, void *data, unsigned int count)
     {
 
     case 1:
-        snprintf(volume_percentage_master, 8, "%s", (char *)data);
-
         volume_master_text.color = TEXT_COLOR_NORMAL;
-        volume_master_slider.value = strtol(volume_percentage_master, 0, 10);
+        volume_master_slider.value = strtol(data, 0, 10);
 
         break;
 
     case 2:
-        snprintf(volume_percentage_pcm, 8, "%s", (char *)data);
-
         volume_pcm_text.color = TEXT_COLOR_NORMAL;
-        volume_pcm_slider.value = strtol(volume_percentage_pcm, 0, 10);
+        volume_pcm_slider.value = strtol(data, 0, 10);
 
         break;
 
     case 3:
-        snprintf(volume_percentage_headphones, 8, "%s", (char *)data);
-
         volume_headphones_text.color = TEXT_COLOR_NORMAL;
-        volume_headphones_slider.value = strtol(volume_percentage_headphones, 0, 10);
+        volume_headphones_slider.value = strtol(data, 0, 10);
 
         break;
 
@@ -170,9 +153,6 @@ static void button(unsigned int key)
 static void load(void)
 {
 
-    snprintf(volume_percentage_master, 8, "%s", "?");
-    snprintf(volume_percentage_pcm, 8, "%s", "?");
-    snprintf(volume_percentage_headphones, 8, "%s", "?");
     session_create("settings_volume_get_master", 1, ondata, oncomplete, onfailure);
     session_setarg("settings_volume_get_master", 0, "./helper.sh");
     session_setarg("settings_volume_get_master", 1, "volume_get");
