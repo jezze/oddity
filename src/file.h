@@ -8,6 +8,5 @@ unsigned int file_remove(char *name);
 unsigned int file_removeremote(unsigned int id);
 unsigned int file_removepackage(char *name);
 unsigned int file_download(char *url, char *to, unsigned int (*notify)(unsigned int totalbytes, unsigned int percentage));
-unsigned int file_downloadremote(char *url, unsigned int id, unsigned int (*notify)(unsigned int totalbytes, unsigned int percentage));
 unsigned int file_downloadpackage(char *name, unsigned int (*notify)(unsigned int totalbytes, unsigned int percentage));
 unsigned int file_matchsha1(char *path, char *checksum);

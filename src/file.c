@@ -164,17 +164,6 @@ unsigned int file_download(char *url, char *to, unsigned int (*notify)(unsigned 
 
 }
 
-unsigned int file_downloadremote(char *url, unsigned int id, unsigned int (*notify)(unsigned int totalbytes, unsigned int percentage))
-{
-
-    char remotedatapath[128];
-
-    file_getremotedatabasepath(remotedatapath, 128, id);
-
-    return file_download(url, remotedatapath, notify);
-
-}
-
 unsigned int file_downloadpackage(char *name, unsigned int (*notify)(unsigned int totalbytes, unsigned int percentage))
 {
 
