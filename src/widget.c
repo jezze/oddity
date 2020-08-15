@@ -94,7 +94,7 @@ void widget_slider_render(struct widget_slider *slider, unsigned int ticks)
     box.w = slider->size.w - 10 * 2;
     box.h = slider->size.h - 10 * 2;
 
-    if (slider->value > 0)
+    if (slider->value >= 0)
     {
 
         unsigned int ws = box.w * ((float)slider->value / (float)100);

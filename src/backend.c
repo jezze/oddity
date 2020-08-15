@@ -334,7 +334,7 @@ void backend_paint_slider(int x, int y, int w, int h, int ws, unsigned int ticks
 
     dofillrectangle(surface, w, h, 0x40FFFFFF);
 
-    if (ws > 0)
+    if (ws >= 0)
     {
 
         dofillrectangle(surface, ws, h, 0xC0FFFFFF);
