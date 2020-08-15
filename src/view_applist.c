@@ -73,8 +73,7 @@ static void render(unsigned int ticks)
     if (max)
     {
 
-        if (selection.active)
-            widget_area_render(selection.active->data);
+        selection_render(&selection);
 
         for (i = 0; i < max; i++)
         {

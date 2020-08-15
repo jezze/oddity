@@ -28,9 +28,7 @@ static void place(unsigned int w, unsigned int h)
 static void render(unsigned int ticks)
 {
 
-    if (selection.active)
-        widget_area_render(selection.active->data);
-
+    selection_render(&selection);
     widget_text_render(&texts[0]);
     widget_text_render(&texts[1]);
     widget_text_render(&texts[2]);

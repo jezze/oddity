@@ -58,10 +58,7 @@ static void render(unsigned int ticks)
     struct download *download = &downloads[0];
 
     snprintf(text, 128, "Progress: %d%%\nTotal bytes: %dKB", download->percentage, download->totalbytes);
-
-    if (selection.active)
-        widget_area_render(selection.active->data);
-
+    selection_render(&selection);
     widget_text_render(&texts[0]);
 
     if (download->percentage < 100)
