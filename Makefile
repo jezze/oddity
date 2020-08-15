@@ -20,8 +20,6 @@ OBJ= \
     src/view_app.o \
     src/view_settings.o \
     src/view_sync.o \
-    src/view_install.o \
-    src/view_uninstall.o \
     src/widget.o \
 
 include ${ARCH}.mk

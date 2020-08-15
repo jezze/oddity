@@ -2,107 +2,52 @@
 #include <string.h>
 #include "define.h"
 #include "box.h"
-#include "text.h"
 #include "list.h"
-#include "menu.h"
-#include "file.h"
-#include "db.h"
 #include "view.h"
 #include "main.h"
+#include "widget.h"
+#include "selection.h"
+#include "db.h"
 
 static struct view view;
-static struct box titlebox;
-static struct box shortbox;
-static struct menu menu;
-static struct box menubox;
-static struct menuitem menuitems[3];
+static struct widget_area title;
+static struct widget_text titletext;
+static struct widget_area description;
+static struct widget_text descriptiontext;
+static struct widget_area areas[3];
+static struct widget_text texts[3];
+static struct selection selection;
 static struct db_app *app;
 
 static void place(unsigned int w, unsigned int h)
 {
 
-    box_setpartsize(&titlebox, w / 10, h / 10, 0, 0, 10, 2);
-    box_setpartsize(&shortbox, w / 10, h / 10, 0, 1, 10, 6);
-    box_setpartsize(&menubox, w / 10, h / 10, 0, 6, 10, 4);
+    widget_area_place(&title, 0, 0, w, h);
+    widget_text_placein(&titletext, &title.size);
+    widget_area_place(&description, 0, 0, w, h);
+    widget_text_placein(&descriptiontext, &description.size);
+    widget_area_place(&areas[0], 0, 0, w, h);
+    widget_area_place(&areas[1], 0, 0, w, h);
+    widget_area_place(&areas[2], 0, 0, w, h);
+    widget_text_placein(&texts[0], &areas[0].size);
+    widget_text_placein(&texts[1], &areas[1].size);
+    widget_text_placein(&texts[2], &areas[2].size);
 
 }
 
 static void render(unsigned int ticks)
 {
 
-    text_render(&titlebox, TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, app->name);
-    text_render(&shortbox, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, app->shortdescription);
-    menu_render(&menu, &menubox);
+    selection_render(&selection);
+    widget_text_render(&titletext);
+    widget_text_render(&descriptiontext);
+    widget_text_render(&texts[0]);
+    widget_text_render(&texts[1]);
+    widget_text_render(&texts[2]);
 
 }
 
-static void button(unsigned int key)
-{
-
-    menu_button(&menu, key);
-
-    switch (key)
-    {
-
-    case KEY_B:
-        view_quit("app");
-
-        break;
-
-    }
-
-}
-
-static void updatestate(void)
-{
-
-    if (app->state == 1 || app->state == 2)
-    {
-
-        app->state = 0;
-
-        db_saveappstate(app);
-
-    }
-
-}
-
-static void load(void)
-{
-
-    if (app->state == 3)
-    {
-
-        menu_enable(&menu, 0);
-        menu_disable(&menu, 1);
-        menu_enable(&menu, 2);
-        menu_setrow(&menu, 0);
-
-    }
-
-    else
-    {
-
-        menu_disable(&menu, 0);
-        menu_enable(&menu, 1);
-        menu_disable(&menu, 2);
-        menu_setrow(&menu, 1);
-
-    }
-
-    updatestate();
-    main_setview(place, render, button);
-
-}
-
-static void config(char *key, void *value)
-{
-
-    if (!strcmp(key, "app"))
-        app = value;
-
-}
-
+/*
 static void runpackage(void)
 {
 
@@ -126,29 +71,34 @@ static void runpackage(void)
     db_freepackages(&packagelist);
 
 }
+*/
 
-static void menu_onselect(unsigned int index)
+static void button(unsigned int key)
 {
 
-    switch (index)
+    selection_setclosest(&selection, key);
+    selection_unselect(&selection, key, "app");
+
+}
+
+static void load(void)
+{
+
+    main_setview(place, render, button);
+
+    selection.active = selection.list.head;
+
+}
+
+static void config(char *key, void *value)
+{
+
+    if (!strcmp(key, "app"))
     {
 
-    case 0:
-        runpackage();
-
-        break;
-
-    case 1:
-        view_config("install", "app", app);
-        view_load("install", "app");
-
-        break;
-
-    case 2:
-        view_config("uninstall", "app", app);
-        view_load("uninstall", "app");
-
-        break;
+        app = value;
+        titletext.data = app->name;
+        descriptiontext.data = app->shortdescription;
 
     }
 
@@ -158,15 +108,20 @@ void view_app_setup(void)
 {
 
     view_init(&view, "app", load, config);
-    box_init(&titlebox);
-    box_init(&shortbox);
-    box_init(&menubox);
-    menu_init(&menu, menuitems, 3, menu_onselect);
-    menu_inititem(&menuitems[0], "Run", 0);
-    menu_inititem(&menuitems[1], "Install", 0);
-    menu_inititem(&menuitems[2], "Uninstall", 0);
-    menu_setrow(&menu, 0);
     view_register(&view);
+    widget_area_init(&title, 0, 0, 8, 1);
+    widget_text_init(&titletext, TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, 0);
+    widget_area_init(&description, 0, 1, 8, 4);
+    widget_text_init(&descriptiontext, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, 0);
+    widget_area_init(&areas[0], 0, 5, 8, 1);
+    selection_add(&selection, &areas[0].item);
+    widget_area_init(&areas[1], 0, 6, 8, 1);
+    selection_add(&selection, &areas[1].item);
+    widget_area_init(&areas[2], 0, 7, 8, 1);
+    selection_add(&selection, &areas[2].item);
+    widget_text_init(&texts[0], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Run");
+    widget_text_init(&texts[1], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Install");
+    widget_text_init(&texts[2], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Uninstall");
 
 }
 
