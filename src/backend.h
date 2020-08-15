@@ -9,10 +9,12 @@ void backend_render(unsigned int ticks, void (*place)(unsigned int w, unsigned i
 unsigned int backend_ticks(void);
 void backend_delay(unsigned int ms);
 void backend_play(char *name);
-void backend_loadbackground(char *name);
+void backend_tilebackground(char *name);
+void backend_loadimage(char *name, char *path);
 void backend_loadsample(char *name, char *path);
 void backend_loadfont(char *name);
 void backend_unloadbackground(void);
+void backend_unloadimage(char *name);
 void backend_unloadsample(char *name);
 void backend_unloadfont(void);
 void backend_init(void);

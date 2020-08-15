@@ -68,8 +68,9 @@ static void init(void)
     backend_loadsample("select", "select.wav");
     backend_loadsample("unselect", "unselect.wav");
     backend_loadsample("click", "click.wav");
-    backend_loadbackground("back.png");
+    backend_loadimage("background", "back.png");
     backend_loadfont("habbo.ttf");
+    backend_tilebackground("background");
 
 }
 
@@ -77,7 +78,7 @@ static void destroy(void)
 {
 
     backend_unloadfont();
-    backend_unloadbackground();
+    backend_unloadimage("background");
     backend_unloadsample("select");
     backend_unloadsample("unselect");
     backend_unloadsample("click");

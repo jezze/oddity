@@ -7,6 +7,14 @@
 #include "define.h"
 #include "backend.h"
 
+struct image
+{
+
+    char *name;
+    SDL_Surface *surface;
+
+};
+
 struct sample
 {
 
@@ -23,37 +31,8 @@ static unsigned int ssw;
 static unsigned int ssh;
 static struct sample samples[8];
 static unsigned int nsamples;
-
-static void loadastiles(SDL_Surface *surface)
-{
-
-    SDL_Rect src;
-    SDL_Rect dst;
-    int x;
-    int y;
-
-    for (y = 0; y < SCREEN_HEIGHT + 36; y += surface->h)
-    {
-
-        for (x = 0; x < SCREEN_WIDTH + 36; x += surface->w)
-        {
-
-            src.x = 0;
-            src.y = 0;
-            src.w = surface->w;
-            src.h = surface->h;
-            dst.x = x;
-            dst.y = y;
-            dst.w = surface->w;
-            dst.h = surface->h;
-
-            SDL_BlitSurface(surface, &src, background, &dst);
-
-        }
-
-    }
-
-}
+static struct image images[8];
+static unsigned int nimages;
 
 static void dofillstripes(SDL_Surface *s, int w, int h, unsigned int color, unsigned int ticks)
 {
@@ -248,6 +227,26 @@ static void renderbackground(unsigned int ticks)
 
 }
 
+static struct image *findimage(char *name)
+{
+
+    unsigned int i;
+
+    for (i = 0; i < nimages; i++)
+    {
+
+        struct image *image = &images[i];
+
+        if (!strcmp(image->name, name))
+            return image;
+
+
+    }
+
+    return 0;
+
+}
+
 static struct sample *findsample(char *name)
 {
 
@@ -426,34 +425,68 @@ void backend_play(char *name)
 
 }
 
-void backend_loadbackground(char *name)
+void backend_loadimage(char *name, char *path)
 {
 
-    SDL_Surface *image = IMG_Load(name);
+    struct image *image = &images[nimages++];
 
-    if (!image)
+    image->name = name;
+    image->surface = IMG_Load(path);
+
+    if (!image->surface)
     {
 
-        fprintf(stderr, "Unable to load image: %s\n", SDL_GetError());
+        fprintf(stderr, "Unable to load chunk: %s\n", IMG_GetError());
         exit(EXIT_FAILURE);
 
     }
 
-    background = SDL_CreateRGBSurface(0, display->w + 36, display->h + 36, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+}
 
-    if (!background)
+void backend_unloadimage(char *name)
+{
+
+    struct image *image = findimage(name);
+
+    if (image)
+        SDL_FreeSurface(image->surface);
+
+}
+
+void backend_tilebackground(char *name)
+{
+
+    struct image *image = findimage(name);
+    unsigned int x;
+    unsigned int y;
+
+    background = SDL_CreateRGBSurface(0, display->w + image->surface->w, display->h + image->surface->h, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+    ssw = image->surface->w;
+    ssh = image->surface->h;
+
+    for (y = 0; y < background->h; y += image->surface->h)
     {
 
-        fprintf(stderr, "Unable to create background: %s\n", SDL_GetError());
-        exit(EXIT_FAILURE);
+        for (x = 0; x < background->w; x += image->surface->w)
+        {
+
+            SDL_Rect src;
+            SDL_Rect dst;
+
+            src.x = 0;
+            src.y = 0;
+            src.w = image->surface->w;
+            src.h = image->surface->h;
+            dst.x = x;
+            dst.y = y;
+            dst.w = image->surface->w;
+            dst.h = image->surface->h;
+
+            SDL_BlitSurface(image->surface, &src, background, &dst);
+
+        }
 
     }
-
-    ssw = image->w;
-    ssh = image->h;
-
-    loadastiles(image);
-    SDL_FreeSurface(image);
 
 }
 
