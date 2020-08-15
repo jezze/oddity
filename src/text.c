@@ -5,9 +5,6 @@
 #include "text.h"
 #include "backend.h"
 
-#define XPADDING                        12
-#define YPADDING                        4
-
 static unsigned int rtrim(char *text, unsigned int count)
 {
 
@@ -97,65 +94,6 @@ static void renderline(char *text, unsigned int count, unsigned int x, unsigned 
 }
 
 void text_render(struct box *box, unsigned int color, unsigned int align, char *content)
-{
-
-    char *ptext = content;
-    unsigned int pcount = strlen(content);
-    unsigned int x = box->x + XPADDING;
-    unsigned int y = box->y + YPADDING;
-    unsigned int w = box->w - XPADDING * 2;
-    unsigned int h = box->h - YPADDING * 2;
-    unsigned int liney = y + backend_font_getascent();
-
-    while (pcount)
-    {
-
-        unsigned int linecount = maxfit(ptext, pcount, w);
-        unsigned int linex;
-
-        switch (align)
-        {
-
-        case TEXT_ALIGN_LEFT:
-            linex = x;
-
-            break;
-
-        case TEXT_ALIGN_RIGHT:
-            linex = x + w - textw(ptext, linecount);
-
-            break;
-
-        case TEXT_ALIGN_CENTER:
-            linex = x + (w - textw(ptext, linecount)) / 2;
-
-            break;
-
-        }
-
-        renderline(ptext, linecount, linex, liney, color);
-
-        while (ptext[linecount] == ' ' || ptext[linecount] == '\n')
-        {
-
-            if (ptext[linecount] == '\n')
-                liney += 16;
-
-            linecount++;
-
-        }
-
-        ptext += linecount;
-        pcount -= linecount;
-
-        if (liney > y + h)
-            break;
-
-    }
-
-}
-
-void text_render2(struct box *box, unsigned int color, unsigned int align, char *content)
 {
 
     char *ptext = content;

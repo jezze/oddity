@@ -9,7 +9,6 @@ OBJ= \
     src/file.o \
     src/list.o \
     src/main.o \
-    src/menu.o \
     src/selection.o \
     src/session.o \
     src/text.o \

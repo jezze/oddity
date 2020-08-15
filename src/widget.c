@@ -146,7 +146,7 @@ void widget_text_render(struct widget_text *text)
     box.w = text->size.w - 10 * 2;
     box.h = text->size.h - 6 * 2;
 
-    text_render2(&box, text->color, text->align, text->data);
+    text_render(&box, text->color, text->align, text->data);
 
 }
 
