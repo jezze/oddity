@@ -1,10 +1,20 @@
 #!/bin/sh
 
-run_getvolume() {
-    echo "26";
+run_volume_get() {
+    amixer sget PCM | awk -F"[][]" '/dB/ { print $2 }' | head -n 1
     exit 0
 }
 
-sleep 3
+run_volume_increment() {
+    amixer -q set PCM 10%+
+    run_volume_get
+    exit 0
+}
+
+run_volume_decrement() {
+    amixer -q set PCM 10%-
+    run_volume_get
+    exit 0
+}
 
 run_$1
