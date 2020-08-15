@@ -11,7 +11,6 @@
 #define STATE_NONE 0
 #define STATE_READY 1
 #define STATE_RUNNING 2
-#define STATE_CLOSING 2
 
 struct session
 {
