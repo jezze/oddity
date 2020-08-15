@@ -133,6 +133,8 @@ static void button(unsigned int key)
 static void load(void)
 {
 
+    page = 0;
+
     main_setview(place, render, button);
 
     selection.active = selection.list.head;
