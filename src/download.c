@@ -51,10 +51,10 @@ unsigned int download_parse(struct download *download, char *buffer, unsigned in
 
 }
 
-void download_create(struct download *download, unsigned int id, char *url, char *path, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id))
+void download_create(struct download *download, unsigned int id, char *url, char *path, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
 {
 
-    session_create("download1", id, ondata, oncomplete);
+    session_create("download1", id, ondata, oncomplete, onfailure);
     session_setarg("download1", 0, "wget");
     session_setarg("download1", 1, "-q");
     session_setarg("download1", 2, "--show-progress");

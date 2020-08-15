@@ -42,6 +42,11 @@ static void oncomplete(unsigned int id)
 
 }
 
+static void onfailure(unsigned int id)
+{
+
+}
+
 static void place(unsigned int w, unsigned int h)
 {
 
@@ -89,7 +94,7 @@ static void load(void)
 
         file_getremotedatabasepath(path, 128, remotelist.items[i].id);
         download_init(&downloads[i]);
-        download_create(&downloads[i], i, remotelist.items[i].url, path, ondata, oncomplete);
+        download_create(&downloads[i], i, remotelist.items[i].url, path, ondata, oncomplete, onfailure);
 
         break;
 

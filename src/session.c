@@ -24,6 +24,7 @@ struct session
     char *args[32];
     void (*ondata)(unsigned int id, void *data, unsigned int count);
     void (*oncomplete)(unsigned int id);
+    void (*onfailure)(unsigned int id);
 
 };
 
@@ -153,17 +154,30 @@ void session_poll(void)
 
         }
 
-        else
-        {
+    }
 
-            session->state = STATE_CLOSING;
+    for (i = 0; i < SESSION_MAX; i++)
+    {
+
+        struct session *session = &sessions[i];
+        int status;
+
+        if (session->state != STATE_RUNNING)
+            continue;
+
+        waitpid(session->cpid, &status, WNOHANG);
+
+        if (WIFEXITED(status))
+        {
 
             close(session->fd[0]);
 
             session->fd[0] = -1;
 
-            waitpid(session->cpid, NULL, 0);
-            session->oncomplete(session->id);
+            if (WEXITSTATUS(status) == 0)
+                session->oncomplete(session->id);
+            else
+                session->onfailure(session->id);
 
             session->state = STATE_NONE;
 
@@ -208,7 +222,7 @@ void session_run(void)
 
 }
 
-void session_create(char *name, unsigned int id, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id))
+void session_create(char *name, unsigned int id, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
 {
 
     struct session *session = findfree();
@@ -221,6 +235,7 @@ void session_create(char *name, unsigned int id, void (*ondata)(unsigned int id,
         session->id = id;
         session->ondata = ondata;
         session->oncomplete = oncomplete;
+        session->onfailure = onfailure;
 
     }
 
