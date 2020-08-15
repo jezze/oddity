@@ -25,26 +25,23 @@ static void (*_place)(unsigned int w, unsigned int h);
 static void (*_render)(unsigned int ticks);
 static void (*_button)(unsigned int key);
 static unsigned int quit;
-
-void main_quit(void)
-{
-
-    quit = 1;
-
-}
-
-void main_setview(void (*place)(unsigned int w, unsigned int h), void (*render)(unsigned int ticks), void (*button)(unsigned int key))
-{
-
-    _place = place;
-    _render = render;
-    _button = button;
-
-}
-
 static unsigned int ticks;
 
-static void main_loop(void)
+static void setup(void)
+{
+
+    view_app_setup();
+    view_applist_setup();
+    view_front_setup();
+    view_install_setup();
+    view_repolist_setup();
+    view_settings_setup();
+    view_sync_setup();
+    view_uninstall_setup();
+
+}
+
+static void run(void)
 {
 
     unsigned int limit = 1000 / 60;
@@ -68,7 +65,7 @@ static void main_loop(void)
 
 }
 
-static void main_init(void)
+static void init(void)
 {
 
     backend_init();
@@ -80,7 +77,7 @@ static void main_init(void)
 
 }
 
-static void main_destroy(void)
+static void destroy(void)
 {
 
     backend_unloadfont();
@@ -104,29 +101,38 @@ void main_exec(char *name)
     argv[2] = 0;
 
     snprintf(opk, 64, "/media/data/apps/%s", name);
-    main_destroy();
+    destroy();
     execvp(opkrun, argv);
+
+}
+
+void main_setview(void (*place)(unsigned int w, unsigned int h), void (*render)(unsigned int ticks), void (*button)(unsigned int key))
+{
+
+    _place = place;
+    _render = render;
+    _button = button;
+
+}
+
+void main_quit(void)
+{
+
+    quit = 1;
 
 }
 
 int main(int argc, char **argv)
 {
 
+    init();
+    setup();
     file_init();
     db_init();
-    main_init();
-    view_app_setup();
-    view_applist_setup();
-    view_front_setup();
-    view_install_setup();
-    view_repolist_setup();
-    view_settings_setup();
-    view_sync_setup();
-    view_uninstall_setup();
     view_load("front", 0);
-    main_loop();
+    run();
     view_quit("front");
-    main_destroy();
+    destroy();
 
     return 0;
 
