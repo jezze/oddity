@@ -109,9 +109,9 @@ void view_sync_setup(void)
     view_register(&view);
     widget_area_init(&areas[0], 0, 0, 8, 6);
     widget_area_init(&areas[1], 0, 7, 8, 1);
+    selection_add(&selection, &areas[1].item);
     widget_text_init(&texts[0], TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, text);
     widget_text_init(&texts[1], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Cancel");
-    list_add(&selection.list, &areas[1].item);
 
 }
 

@@ -153,3 +153,10 @@ void selection_unselect(struct selection *selection, unsigned int key, char *fro
 
 }
 
+void selection_add(struct selection *selection, struct list_item *item)
+{
+
+    list_add(&selection->list, item);
+
+}
+

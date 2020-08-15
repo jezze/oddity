@@ -65,7 +65,7 @@ void view_settings_setup(void)
     view_register(&view);
     widget_area_init(&areas[0], 0, 0, 8, 1);
     widget_area_init(&areas[1], 0, 1, 8, 1);
-    list_add(&selection.list, &areas[1].item);
+    selection_add(&selection, &areas[1].item);
     widget_text_init(&texts[0], TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, "Audio");
 
     /* Volume */

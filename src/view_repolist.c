@@ -131,10 +131,15 @@ void view_repolist_setup(void)
     view_init(&view, "repolist", load, 0);
     view_register(&view);
     widget_area_init(&areas[0], 0, 0, 8, 1);
+    selection_add(&selection, &areas[0].item);
     widget_area_init(&areas[1], 0, 1, 8, 1);
+    selection_add(&selection, &areas[1].item);
     widget_area_init(&areas[2], 0, 2, 8, 1);
+    selection_add(&selection, &areas[2].item);
     widget_area_init(&areas[3], 0, 3, 8, 1);
+    selection_add(&selection, &areas[3].item);
     widget_area_init(&areas[4], 2, 6, 4, 1);
+    selection_add(&selection, &areas[4].item);
     widget_area_init(&areas[5], 0, 7, 8, 1);
     widget_text_init(&texts[0], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "All");
     widget_text_init(&texts[1], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, all);
@@ -146,11 +151,6 @@ void view_repolist_setup(void)
     widget_text_init(&texts[7], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, updated);
     widget_text_init(&texts[8], TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Synchronize");
     widget_text_init(&texts[9], TEXT_COLOR_NORMAL, TEXT_ALIGN_CENTER, last);
-    list_add(&selection.list, &areas[0].item);
-    list_add(&selection.list, &areas[1].item);
-    list_add(&selection.list, &areas[2].item);
-    list_add(&selection.list, &areas[3].item);
-    list_add(&selection.list, &areas[4].item);
 
 }
 
