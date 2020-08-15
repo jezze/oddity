@@ -88,7 +88,7 @@ static void renderline(char *text, unsigned int count, unsigned int x, unsigned 
         int advance;
 
         backend_font_getmetrics(text[i], &minx, &maxx, &miny, &maxy, &advance);
-        backend_font_glyph(text[i], x + minx, y - maxy, maxx - minx, maxy - miny, color);
+        backend_paint_glyph(text[i], x + minx, y - maxy, maxx - minx, maxy - miny, color);
 
         x += advance;
 
