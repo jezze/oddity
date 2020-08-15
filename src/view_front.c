@@ -9,19 +9,23 @@
 
 static struct view quit;
 static struct view view;
-static struct widget_area areas[3];
-static struct widget_text texts[3];
+static struct widget_area libraryarea;
+static struct widget_text librarytext;
+static struct widget_area settingsarea;
+static struct widget_text settingstext;
+static struct widget_area exitarea;
+static struct widget_text exittext;
 static struct selection selection;
 
 static void place(unsigned int w, unsigned int h)
 {
 
-    widget_area_place(&areas[0], 0, 0, w, h);
-    widget_area_place(&areas[1], 0, 0, w, h);
-    widget_area_place(&areas[2], 0, 0, w, h);
-    widget_text_placein(&texts[0], &areas[0].size);
-    widget_text_placein(&texts[1], &areas[1].size);
-    widget_text_placein(&texts[2], &areas[2].size);
+    widget_area_place(&libraryarea, 0, 0, w, h);
+    widget_text_placein(&librarytext, &libraryarea.size);
+    widget_area_place(&settingsarea, 0, 0, w, h);
+    widget_text_placein(&settingstext, &settingsarea.size);
+    widget_area_place(&exitarea, 0, 0, w, h);
+    widget_text_placein(&exittext, &exitarea.size);
 
 }
 
@@ -29,9 +33,9 @@ static void render(unsigned int ticks)
 {
 
     selection_render(&selection, ticks);
-    widget_text_render(&texts[0], ticks);
-    widget_text_render(&texts[1], ticks);
-    widget_text_render(&texts[2], ticks);
+    widget_text_render(&librarytext, ticks);
+    widget_text_render(&settingstext, ticks);
+    widget_text_render(&exittext, ticks);
 
 }
 
@@ -40,13 +44,13 @@ static void button(unsigned int key)
 
     selection_setclosest(&selection, key);
 
-    if (selection_isactive(&selection, &areas[0].item))
+    if (selection_isactive(&selection, &libraryarea.item))
         selection_select(&selection, key, "front", "repolist");
 
-    if (selection_isactive(&selection, &areas[1].item))
+    if (selection_isactive(&selection, &settingsarea.item))
         selection_select(&selection, key, "front", "settings");
 
-    if (selection_isactive(&selection, &areas[2].item))
+    if (selection_isactive(&selection, &exitarea.item))
         selection_select(&selection, key, "front", "quit");
 
 }
@@ -66,15 +70,15 @@ void view_front_setup(void)
     view_register(&quit);
     view_init(&view, "front", load, 0);
     view_register(&view);
-    widget_area_init(&areas[0], 0, 5, 8, 1);
-    selection_add(&selection, &areas[0].item);
-    widget_area_init(&areas[1], 0, 6, 8, 1);
-    selection_add(&selection, &areas[1].item);
-    widget_area_init(&areas[2], 0, 7, 8, 1);
-    selection_add(&selection, &areas[2].item);
-    widget_text_init(&texts[0], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Library");
-    widget_text_init(&texts[1], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Settings");
-    widget_text_init(&texts[2], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Exit");
+    widget_area_init(&libraryarea, 0, 5, 8, 1);
+    widget_text_init(&librarytext, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Library");
+    selection_add(&selection, &libraryarea.item);
+    widget_area_init(&settingsarea, 0, 6, 8, 1);
+    widget_text_init(&settingstext, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Settings");
+    selection_add(&selection, &settingsarea.item);
+    widget_area_init(&exitarea, 0, 7, 8, 1);
+    widget_text_init(&exittext, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Exit");
+    selection_add(&selection, &exitarea.item);
 
 }
 

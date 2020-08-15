@@ -10,28 +10,32 @@
 #include "db.h"
 
 static struct view view;
-static struct widget_area title;
+static struct widget_area titlearea;
 static struct widget_text titletext;
-static struct widget_area description;
+static struct widget_area descriptionarea;
 static struct widget_text descriptiontext;
-static struct widget_area areas[3];
-static struct widget_text texts[3];
+static struct widget_area runarea;
+static struct widget_text runtext;
+static struct widget_area installarea;
+static struct widget_text installtext;
+static struct widget_area uninstallarea;
+static struct widget_text uninstalltext;
 static struct selection selection;
 static struct db_app *app;
 
 static void place(unsigned int w, unsigned int h)
 {
 
-    widget_area_place(&title, 0, 0, w, h);
-    widget_text_placein(&titletext, &title.size);
-    widget_area_place(&description, 0, 0, w, h);
-    widget_text_placein(&descriptiontext, &description.size);
-    widget_area_place(&areas[0], 0, 0, w, h);
-    widget_area_place(&areas[1], 0, 0, w, h);
-    widget_area_place(&areas[2], 0, 0, w, h);
-    widget_text_placein(&texts[0], &areas[0].size);
-    widget_text_placein(&texts[1], &areas[1].size);
-    widget_text_placein(&texts[2], &areas[2].size);
+    widget_area_place(&titlearea, 0, 0, w, h);
+    widget_text_placein(&titletext, &titlearea.size);
+    widget_area_place(&descriptionarea, 0, 0, w, h);
+    widget_text_placein(&descriptiontext, &descriptionarea.size);
+    widget_area_place(&runarea, 0, 0, w, h);
+    widget_text_placein(&runtext, &runarea.size);
+    widget_area_place(&installarea, 0, 0, w, h);
+    widget_text_placein(&installtext, &installarea.size);
+    widget_area_place(&uninstallarea, 0, 0, w, h);
+    widget_text_placein(&uninstalltext, &uninstallarea.size);
 
 }
 
@@ -41,9 +45,9 @@ static void render(unsigned int ticks)
     selection_render(&selection, ticks);
     widget_text_render(&titletext, ticks);
     widget_text_render(&descriptiontext, ticks);
-    widget_text_render(&texts[0], ticks);
-    widget_text_render(&texts[1], ticks);
-    widget_text_render(&texts[2], ticks);
+    widget_text_render(&runtext, ticks);
+    widget_text_render(&installtext, ticks);
+    widget_text_render(&uninstalltext, ticks);
 
 }
 
@@ -108,19 +112,19 @@ void view_app_setup(void)
 
     view_init(&view, "app", load, config);
     view_register(&view);
-    widget_area_init(&title, 0, 0, 8, 1);
+    widget_area_init(&titlearea, 0, 0, 8, 1);
     widget_text_init(&titletext, TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, 0);
-    widget_area_init(&description, 0, 1, 8, 4);
+    widget_area_init(&descriptionarea, 0, 1, 8, 4);
     widget_text_init(&descriptiontext, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, 0);
-    widget_area_init(&areas[0], 0, 5, 8, 1);
-    selection_add(&selection, &areas[0].item);
-    widget_area_init(&areas[1], 0, 6, 8, 1);
-    selection_add(&selection, &areas[1].item);
-    widget_area_init(&areas[2], 0, 7, 8, 1);
-    selection_add(&selection, &areas[2].item);
-    widget_text_init(&texts[0], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Run");
-    widget_text_init(&texts[1], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Install");
-    widget_text_init(&texts[2], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Uninstall");
+    widget_area_init(&runarea, 0, 5, 8, 1);
+    widget_text_init(&runtext, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Run");
+    selection_add(&selection, &runarea.item);
+    widget_area_init(&installarea, 0, 6, 8, 1);
+    widget_text_init(&installtext, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Install");
+    selection_add(&selection, &installarea.item);
+    widget_area_init(&uninstallarea, 0, 7, 8, 1);
+    widget_text_init(&uninstalltext, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Uninstall");
+    selection_add(&selection, &uninstallarea.item);
 
 }
 
