@@ -97,8 +97,7 @@ static void load(void)
 
     download_run();
     main_setview(place, render, button);
-
-    selection.active = selection.list.head;
+    selection_reset(&selection);
 
 }
 

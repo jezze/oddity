@@ -178,3 +178,10 @@ void selection_render(struct selection *selection)
 
 }
 
+void selection_reset(struct selection *selection)
+{
+
+    selection->active = selection->list.head;
+
+}
+

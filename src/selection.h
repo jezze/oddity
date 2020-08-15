@@ -13,3 +13,4 @@ void selection_select(struct selection *selection, unsigned int key, char *from,
 void selection_unselect(struct selection *selection, unsigned int key, char *from);
 void selection_add(struct selection *selection, struct list_item *item);
 void selection_render(struct selection *selection);
+void selection_reset(struct selection *selection);

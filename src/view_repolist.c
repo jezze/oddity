@@ -120,8 +120,7 @@ static void load(void)
     snprintf(installed, 16, "%u items", db_countappswithstate(3));
     snprintf(last, 32, "Last updated: %s", "Never");
     main_setview(place, render, button);
-
-    selection.active = selection.list.head;
+    selection_reset(&selection);
 
 }
 

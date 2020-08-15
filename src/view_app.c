@@ -85,8 +85,7 @@ static void load(void)
 {
 
     main_setview(place, render, button);
-
-    selection.active = selection.list.head;
+    selection_reset(&selection);
 
 }
 
