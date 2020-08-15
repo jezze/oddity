@@ -7,7 +7,6 @@
 #include "session.h"
 
 #define SESSION_MAX 32
-
 #define STATE_NONE 0
 #define STATE_READY 1
 #define STATE_RUNNING 2
@@ -208,7 +207,6 @@ void session_run(void)
         else
         {
 
-            session->fd[0] = -1;
             session->name = 0;
             session->id = 0;
             session->state = STATE_NONE;
