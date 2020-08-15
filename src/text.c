@@ -5,7 +5,7 @@
 #include "text.h"
 #include "backend.h"
 
-static unsigned int rtrim(char *text, unsigned int count)
+static unsigned int wordstart(char *text, unsigned int count)
 {
 
     unsigned int i;
@@ -18,7 +18,7 @@ static unsigned int rtrim(char *text, unsigned int count)
 
     }
 
-    return i - 1;
+    return i;
 
 }
 
@@ -62,7 +62,7 @@ static unsigned int maxfit(char *text, unsigned int count, unsigned int width)
         total += advance;
 
         if (total >= width)
-            return rtrim(text, i);
+            return wordstart(text, i);
 
     }
 
@@ -128,16 +128,7 @@ void text_render(struct box *box, unsigned int color, unsigned int align, char *
 
         renderline(ptext, linecount, linex, liney, color);
 
-        while (ptext[linecount] == ' ' || ptext[linecount] == '\n')
-        {
-
-            if (ptext[linecount] == '\n')
-                liney += 18;
-
-            linecount++;
-
-        }
-
+        liney += TEXT_ROWHEIGHT;
         ptext += linecount;
         pcount -= linecount;
 
