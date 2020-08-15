@@ -105,10 +105,14 @@ static int spawn(struct session *session)
 void session_poll(void)
 {
 
+    struct timeval val;
     char buf[1024];
     unsigned int i;
     int n, maxfd = 0;
     fd_set rfds;
+
+    val.tv_sec = 0;
+    val.tv_usec = 1;
 
     FD_ZERO(&rfds);
 
@@ -133,7 +137,7 @@ void session_poll(void)
     if (maxfd == 0)
         return;
 
-    select(maxfd + 1, &rfds, NULL, NULL, NULL);
+    select(maxfd + 1, &rfds, NULL, NULL, &val);
 
     for (i = 0; i < SESSION_MAX; i++)
     {
