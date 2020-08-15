@@ -6,13 +6,13 @@ run_volume_get() {
 }
 
 run_volume_increment() {
-    amixer -q set $1 10%+
+    amixer -q set $1 1+
     run_volume_get $1
     exit 0
 }
 
 run_volume_decrement() {
-    amixer -q set $1 10%-
+    amixer -q set $1 1-
     run_volume_get $1
     exit 0
 }
