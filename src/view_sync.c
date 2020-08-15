@@ -11,10 +11,10 @@
 #include "selection.h"
 #include "file.h"
 #include "db.h"
-#include "session.h"
+#include "download.h"
 
 static struct view view;
-static struct session_progress progresses[8];
+static struct download downloads[8];
 static struct widget_area areas[2];
 static struct widget_text texts[2];
 static struct selection selection;
@@ -24,11 +24,11 @@ static char text[128];
 static void ondata(unsigned int id, void *data, unsigned int count)
 {
 
-    struct session_progress *progress = &progresses[id];
+    struct download *download = &downloads[id];
 
-    memcpy(progress->buffer + progress->count, data, count);
+    memcpy(download->buffer + download->count, data, count);
 
-    progress->count = session_parseprogress(progress, progress->buffer, progress->count + count);
+    download->count = download_parse(download, download->buffer, download->count + count);
 
 }
 
@@ -56,13 +56,13 @@ static void place(unsigned int w, unsigned int h)
 static void render(unsigned int ticks)
 {
 
-    struct session_progress *progress = &progresses[0];
+    struct download *download = &downloads[0];
 
-    snprintf(text, 128, "Progress: %d%%\nTotal bytes: %dKB", progress->percentage, progress->totalbytes);
+    snprintf(text, 128, "Progress: %d%%\nTotal bytes: %dKB", download->percentage, download->totalbytes);
     widget_area_render(selection.active->data);
     widget_text_render(&texts[0]);
 
-    if (progress->percentage < 100)
+    if (download->percentage < 100)
         widget_text_render(&texts[1]);
 
 }
@@ -89,13 +89,14 @@ static void load(void)
         char path[128];
 
         file_getremotedatabasepath(path, 128, remotelist.items[i].id);
-        session_createprogress(&progresses[i], i, remotelist.items[i].url, path, ondata, oncomplete);
+        download_init(&downloads[i]);
+        download_create(&downloads[i], i, remotelist.items[i].url, path, ondata, oncomplete);
 
         break;
 
     }
 
-    session_run();
+    download_run();
     ztore_setview(place, render, button);
 
     selection.active = selection.list.head;
