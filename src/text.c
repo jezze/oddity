@@ -132,6 +132,14 @@ void text_render(struct box *box, unsigned int color, unsigned int align, char *
         ptext += linecount;
         pcount -= linecount;
 
+        if (pcount && ptext[0] == '\n')
+        {
+
+            ptext++;
+            pcount--;
+
+        }
+
         if (liney > box->y + box->h)
             break;
 
