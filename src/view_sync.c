@@ -29,21 +29,29 @@ static void ondata(unsigned int id, void *data, unsigned int count)
 
     download->count = download_parse(download, download->buffer, download->count + count);
 
+    snprintf(text, 128, "Waiting to download...\n\nProgress: %d%%\nTotal bytes: %dKB", download->percentage, download->totalbytes);
+
 }
 
 static void oncomplete(unsigned int id)
 {
 
     struct db_remote *remote = &remotelist.items[id];
+    struct download *download = &downloads[id];
 
     ondata(id, "\n", 1);
     db_sync(remote);
     file_removeremote(remote->id);
+    snprintf(text, 128, "Waiting to download...\n\nProgress: %d%%\nTotal bytes: %dKB\n\nSynchronization complete.", download->percentage, download->totalbytes);
 
 }
 
 static void onfailure(unsigned int id)
 {
+
+    struct download *download = &downloads[id];
+
+    snprintf(text, 128, "Waiting to download...\n\nProgress: %d%%\nTotal bytes: %dKB\n\nSynchronization failed.", download->percentage, download->totalbytes);
 
 }
 
@@ -58,9 +66,6 @@ static void place(unsigned int w, unsigned int h)
 static void render(unsigned int ticks)
 {
 
-    struct download *download = &downloads[0];
-
-    snprintf(text, 128, "Progress: %d%%\nTotal bytes: %dKB", download->percentage, download->totalbytes);
     selection_render(&selection, ticks);
     widget_text_render(&statustext, ticks);
 
@@ -79,6 +84,7 @@ static void load(void)
 
     unsigned int i;
 
+    snprintf(text, 128, "Waiting to download...");
     db_freeremotes(&remotelist);
     db_loadremotes(&remotelist);
 
