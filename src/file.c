@@ -22,7 +22,7 @@ void file_init(void)
 void file_getdatabasepath(char *path, unsigned int count)
 {
 
-    snprintf(path, count, "%s/.ztore/data.db", home);
+    snprintf(path, count, "%s/.ztore/local.db", home);
 
 }
 

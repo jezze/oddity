@@ -3,7 +3,8 @@ struct db_remote
 
     unsigned int id;
     char *name;
-    char *url;
+    char *urldatabase;
+    char *urlpackages;
 
 };
 
@@ -54,7 +55,7 @@ struct db_packagelist
 
 void db_init(void);
 int db_sync(struct db_remote *remote);
-void db_createremote(struct db_remote *remote, unsigned int id, char *name, char *url);
+void db_createremote(struct db_remote *remote, unsigned int id, char *name, char *urldatabase, char *urlpackages);
 void db_freeremote(struct db_remote *remote);
 void db_freeremotes(struct db_remotelist *list);
 int db_loadremote(struct db_remote *remote, unsigned int id);
@@ -66,8 +67,6 @@ int db_loadapp(struct db_app *app, unsigned int id);
 int db_saveappstate(struct db_app *app);
 unsigned int db_countapps(void);
 int db_loadapps(struct db_applist *list);
-unsigned int db_countappswithstate(unsigned int state);
-int db_loadappswithstate(struct db_applist *list, unsigned int state);
 int db_loadappsfromremote(struct db_applist *list, struct db_remote *remote);
 void db_createpackage(struct db_package *package, unsigned int id, char *name, char *date, char *sha1, unsigned int state);
 void db_freepackage(struct db_package *package);

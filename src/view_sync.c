@@ -96,7 +96,7 @@ static void load(void)
 
         file_getremotedatabasepath(path, 128, remotelist.items[i].id);
         download_init(&downloads[i]);
-        download_create(&downloads[i], i, remotelist.items[i].url, path, ondata, oncomplete, onfailure);
+        download_create(&downloads[i], i, remotelist.items[i].urldatabase, path, ondata, oncomplete, onfailure);
 
         break;
 

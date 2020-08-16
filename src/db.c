@@ -69,7 +69,7 @@ void db_init(void)
     file_getdatabasepath(datapath, 128);
 
     if (!file_exist(datapath))
-        file_copy("db/data.db", datapath);
+        file_copy("db/local.db", datapath);
 
 }
 
@@ -85,10 +85,8 @@ int db_sync(struct db_remote *remote)
 
     attach(db, "external", remotedatapath);
 
-    if (sqlite3_prepare_v2(db, "INSERT OR IGNORE INTO apps (remotes_id, id, name, short, icon, preview, date, author, portauthor, homepage, description, state) SELECT ?, id, name, short, icon, preview, date, author, portauthor, homepage, description, 1 FROM external.apps", -1, &res, 0) != SQLITE_OK)
+    if (sqlite3_prepare_v2(db, "INSERT OR IGNORE INTO apps (id, name, short, author, homepage, description) SELECT id, name, short, author, homepage, description FROM external.apps", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
-
-    sqlite3_bind_int(res, 1, remote->id);
 
     if (sqlite3_step(res) != SQLITE_DONE)
         exit(EXIT_FAILURE);
@@ -96,34 +94,8 @@ int db_sync(struct db_remote *remote)
     if (sqlite3_finalize(res) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
-    if (sqlite3_prepare_v2(db, "INSERT OR REPLACE INTO apps (remotes_id, id, name, short, icon, preview, date, author, portauthor, homepage, description, state) SELECT ?, id, name, short, icon, preview, date, author, portauthor, homepage, description, 2 FROM external.apps EXCEPT SELECT ?, id, name, short, icon, preview, date, author, portauthor, homepage, description, 2 FROM apps", -1, &res, 0) != SQLITE_OK)
+    if (sqlite3_prepare_v2(db, "INSERT OR IGNORE INTO packages (sha1, apps_id, date, revision, version) SELECT sha1, apps_id, date, revision, version FROM external.packages", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
-
-    sqlite3_bind_int(res, 1, remote->id);
-    sqlite3_bind_int(res, 2, remote->id);
-
-    if (sqlite3_step(res) != SQLITE_DONE)
-        exit(EXIT_FAILURE);
-
-    if (sqlite3_finalize(res) != SQLITE_OK)
-        exit(EXIT_FAILURE);
-
-    if (sqlite3_prepare_v2(db, "INSERT OR IGNORE INTO packages (remotes_id, id, apps_id, name, date, sha1, state) SELECT ?, id, apps_id, name, date, sha1, 1 FROM external.packages", -1, &res, 0) != SQLITE_OK)
-        exit(EXIT_FAILURE);
-
-    sqlite3_bind_int(res, 1, remote->id);
-
-    if (sqlite3_step(res) != SQLITE_DONE)
-        exit(EXIT_FAILURE);
-
-    if (sqlite3_finalize(res) != SQLITE_OK)
-        exit(EXIT_FAILURE);
-
-    if (sqlite3_prepare_v2(db, "INSERT OR REPLACE INTO packages (remotes_id, id, apps_id, name, date, sha1, state) SELECT ?, id, apps_id, name, date, sha1, 2 FROM external.packages EXCEPT SELECT ?, id, apps_id, name, date, sha1, 2 FROM packages", -1, &res, 0) != SQLITE_OK)
-        exit(EXIT_FAILURE);
-
-    sqlite3_bind_int(res, 1, remote->id);
-    sqlite3_bind_int(res, 2, remote->id);
 
     if (sqlite3_step(res) != SQLITE_DONE)
         exit(EXIT_FAILURE);
@@ -138,12 +110,13 @@ int db_sync(struct db_remote *remote)
 
 }
 
-void db_createremote(struct db_remote *remote, unsigned int id, char *name, char *url)
+void db_createremote(struct db_remote *remote, unsigned int id, char *name, char *urldatabase, char *urlpackages)
 {
 
     remote->id = id;
     remote->name = strdup(name);
-    remote->url = strdup(url);
+    remote->urldatabase = strdup(urldatabase);
+    remote->urlpackages = strdup(urlpackages);
 
 }
 
@@ -151,11 +124,13 @@ void db_freeremote(struct db_remote *remote)
 {
 
     free(remote->name);
-    free(remote->url);
+    free(remote->urldatabase);
+    free(remote->urlpackages);
 
     remote->id = 0;
     remote->name = 0;
-    remote->url = 0;
+    remote->urldatabase = 0;
+    remote->urlpackages = 0;
 
 }
 
@@ -177,7 +152,7 @@ int db_loadremote(struct db_remote *remote, unsigned int id)
 
     opendatabase(&db);
 
-    if (sqlite3_prepare_v2(db, "SELECT id, name, url FROM remotes WHERE id = ?", -1, &res, 0) != SQLITE_OK)
+    if (sqlite3_prepare_v2(db, "SELECT id, name, urldatabase, urlpackages FROM remotes WHERE id = ?", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
     sqlite3_bind_int(res, 1, id);
@@ -185,7 +160,7 @@ int db_loadremote(struct db_remote *remote, unsigned int id)
     if (sqlite3_step(res) != SQLITE_ROW)
         exit(EXIT_FAILURE);
 
-    db_createremote(remote, sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2));
+    db_createremote(remote, sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2), (char *)sqlite3_column_text(res, 3));
 
     if (sqlite3_step(res) != SQLITE_DONE)
         exit(EXIT_FAILURE);
@@ -233,11 +208,11 @@ int db_loadremotes(struct db_remotelist *list)
     list->count = countremotes(db);
     list->items = malloc(sizeof (struct db_remote) * list->count);
 
-    if (sqlite3_prepare_v2(db, "SELECT id, name, url FROM remotes ORDER BY name", -1, &res, 0) != SQLITE_OK)
+    if (sqlite3_prepare_v2(db, "SELECT id, name, urldatabase, urlpackages FROM remotes ORDER BY name", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
     for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
-        db_createremote(&list->items[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2));
+        db_createremote(&list->items[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2), (char *)sqlite3_column_text(res, 3));
 
     if (sqlite3_finalize(res) != SQLITE_OK)
         exit(EXIT_FAILURE);
@@ -387,80 +362,11 @@ int db_loadapps(struct db_applist *list)
     list->count = countapps(db);
     list->items = malloc(sizeof (struct db_app) * list->count);
 
-    if (sqlite3_prepare_v2(db, "SELECT id, name, short, state FROM apps ORDER BY name", -1, &res, 0) != SQLITE_OK)
+    if (sqlite3_prepare_v2(db, "SELECT id, name, short FROM apps ORDER BY name", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
     for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
-        db_createapp(&list->items[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2), sqlite3_column_int(res, 3));
-
-    if (sqlite3_finalize(res) != SQLITE_OK)
-        exit(EXIT_FAILURE);
-
-    closedatabase(db);
-
-    return 1;
-
-}
-
-static unsigned int countappswithstate(sqlite3 *db, unsigned int state)
-{
-
-    sqlite3_stmt *res;
-    unsigned int count;
-
-    if (sqlite3_prepare_v2(db, "SELECT COUNT(*) AS count FROM apps WHERE state = ?", -1, &res, 0) != SQLITE_OK)
-        exit(EXIT_FAILURE);
-
-    sqlite3_bind_int(res, 1, state);
-
-    if (sqlite3_step(res) == SQLITE_ROW)
-        count = sqlite3_column_int(res, 0);
-
-    if (sqlite3_step(res) != SQLITE_DONE)
-        exit(EXIT_FAILURE);
-
-    if (sqlite3_finalize(res) != SQLITE_OK)
-        exit(EXIT_FAILURE);
-
-    return count;
-
-}
-
-unsigned int db_countappswithstate(unsigned int state)
-{
-
-    sqlite3 *db;
-    unsigned int count;
-
-    opendatabase(&db);
-
-    count = countappswithstate(db, state);
-
-    closedatabase(db);
-
-    return count;
-
-}
-
-int db_loadappswithstate(struct db_applist *list, unsigned int state)
-{
-
-    sqlite3 *db;
-    sqlite3_stmt *res;
-    unsigned int i;
-
-    opendatabase(&db);
-
-    list->count = countappswithstate(db, state);
-    list->items = malloc(sizeof (struct db_app) * list->count);
-
-    if (sqlite3_prepare_v2(db, "SELECT id, name, short, state FROM apps WHERE state = ? ORDER BY name", -1, &res, 0) != SQLITE_OK)
-        exit(EXIT_FAILURE);
-
-    sqlite3_bind_int(res, 1, state);
-
-    for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
-        db_createapp(&list->items[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2), sqlite3_column_int(res, 3));
+        db_createapp(&list->items[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2), 0);
 
     if (sqlite3_finalize(res) != SQLITE_OK)
         exit(EXIT_FAILURE);

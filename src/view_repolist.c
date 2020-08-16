@@ -78,7 +78,7 @@ static void button(unsigned int key)
     {
 
         db_freeapps(&applist);
-        db_loadappswithstate(&applist, 3);
+        db_loadapps(&applist);
         view_config("applist", "list", &applist);
         selection_select(&selection, key, "repolist", "applist");
 
@@ -88,7 +88,7 @@ static void button(unsigned int key)
     {
 
         db_freeapps(&applist);
-        db_loadappswithstate(&applist, 1);
+        db_loadapps(&applist);
         view_config("applist", "list", &applist);
         selection_select(&selection, key, "repolist", "applist");
 
@@ -98,7 +98,7 @@ static void button(unsigned int key)
     {
 
         db_freeapps(&applist);
-        db_loadappswithstate(&applist, 2);
+        db_loadapps(&applist);
         view_config("applist", "list", &applist);
         selection_select(&selection, key, "repolist", "applist");
 
@@ -115,9 +115,9 @@ static void load(void)
 {
 
     snprintf(all, 16, "%u items", db_countapps());
-    snprintf(new, 16, "%u items", db_countappswithstate(1));
-    snprintf(updated, 16, "%u items", db_countappswithstate(2));
-    snprintf(installed, 16, "%u items", db_countappswithstate(3));
+    snprintf(new, 16, "%u items", db_countapps());
+    snprintf(updated, 16, "%u items", db_countapps());
+    snprintf(installed, 16, "%u items", db_countapps());
     snprintf(last, 32, "Last updated: %s", "Never");
     main_setview(place, render, button);
     selection_reset(&selection);
