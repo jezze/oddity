@@ -10,13 +10,20 @@
 struct list_item *selection_getclosest(struct selection *selection, unsigned int key)
 {
 
-    struct widget_area *a = selection->active->data;
+    struct widget_area *a;
     struct list_item *best = 0;
-    int amx = a->size.x + a->size.w / 2;
-    int amy = a->size.y + a->size.h / 2;
+    struct list_item *current;
     int bestabsx = 5000;
     int bestabsy = 5000;
-    struct list_item *current;
+    int amx;
+    int amy;
+
+    if (!selection->active)
+        return 0;
+
+    a = selection->active->data;
+    amx = a->size.x + a->size.w / 2;
+    amy = a->size.y + a->size.h / 2;
 
     for (current = selection->list.head; current; current = current->next)
     {

@@ -16,8 +16,6 @@ static struct view view;
 static struct download downloads[8];
 static struct widget_area statusarea;
 static struct widget_text statustext;
-static struct widget_area cancelarea;
-static struct widget_text canceltext;
 static struct selection selection;
 static struct db_remotelist remotelist;
 static char text[128];
@@ -53,9 +51,7 @@ static void place(unsigned int w, unsigned int h)
 {
 
     widget_area_place(&statusarea, 0, 0, w, h);
-    widget_area_place(&cancelarea, 0, 0, w, h);
     widget_text_placein(&statustext, &statusarea.size);
-    widget_text_placein(&canceltext, &cancelarea.size);
 
 }
 
@@ -67,9 +63,6 @@ static void render(unsigned int ticks)
     snprintf(text, 128, "Progress: %d%%\nTotal bytes: %dKB", download->percentage, download->totalbytes);
     selection_render(&selection, ticks);
     widget_text_render(&statustext, ticks);
-
-    if (download->percentage < 100)
-        widget_text_render(&canceltext, ticks);
 
 }
 
@@ -115,9 +108,6 @@ void view_sync_setup(void)
     view_register(&view);
     widget_area_init(&statusarea, 0, 0, 8, 6);
     widget_text_init(&statustext, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, text);
-    widget_area_init(&cancelarea, 0, 7, 8, 1);
-    widget_text_init(&canceltext, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Cancel");
-    selection_add(&selection, &cancelarea.item);
 
 }
 
