@@ -51,7 +51,6 @@ static void render(unsigned int ticks)
 
 }
 
-/*
 static void runpackage(void)
 {
 
@@ -75,12 +74,19 @@ static void runpackage(void)
     db_freepackages(&packagelist);
 
 }
-*/
 
 static void button(unsigned int key)
 {
 
     selection_setclosest(&selection, key);
+
+    if (key == KEY_A && selection_isactive(&selection, &runarea.item))
+    {
+
+        runpackage();
+
+    }
+
     selection_unselect(&selection, key, "app");
 
 }
