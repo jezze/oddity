@@ -231,7 +231,7 @@ static void renderbackground(unsigned int ticks)
 static void renderfade(unsigned int ticks)
 {
 
-    unsigned int i = ticks * 8;
+    unsigned int i = ticks * 16;
 
     if (i < 0xFF)
     {

@@ -19,6 +19,7 @@ void view_applist_setup(void);
 void view_front_setup(void);
 void view_repolist_setup(void);
 void view_settings_setup(void);
+void view_settings_audio_setup(void);
 void view_sync_setup(void);
 static void (*_place)(unsigned int w, unsigned int h);
 static void (*_render)(unsigned int ticks);
@@ -34,6 +35,7 @@ static void setup(void)
     view_front_setup();
     view_repolist_setup();
     view_settings_setup();
+    view_settings_audio_setup();
     view_sync_setup();
 
 }
