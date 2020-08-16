@@ -84,7 +84,7 @@ static void load(void)
 
     unsigned int i;
 
-    snprintf(text, 128, "Connecting to remote server...");
+    snprintf(text, 128, "Connecting...\n\nProgress: %d%%\nTotal bytes: %dKB", 0, 0);
     db_freeremotes(&remotelist);
     db_loadremotes(&remotelist);
 
