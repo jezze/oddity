@@ -560,6 +560,7 @@ void backend_unloadbackground(void)
 {
 
     SDL_FreeSurface(background);
+    SDL_FreeSurface(fade);
 
 }
 
