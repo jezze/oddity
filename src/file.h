@@ -1,7 +1,7 @@
 void file_init(void);
-void file_getdatabasepath(char *path, unsigned int count);
-void file_getremotedatabasepath(char *path, unsigned int count, unsigned int id);
-void file_getpackagepath(char *path, unsigned int count, char *name);
+void file_getlocaldatabasepath(char *path, unsigned int count);
+void file_getlocalremotedatabasepath(char *path, unsigned int count, unsigned int id);
+void file_getlocalpackagepath(char *path, unsigned int count, char *name);
 unsigned int file_exist(char *path);
 unsigned int file_copy(char *from, char *to);
 unsigned int file_remove(char *name);

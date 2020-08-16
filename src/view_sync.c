@@ -93,7 +93,7 @@ static void load(void)
 
         char path[128];
 
-        file_getremotedatabasepath(path, 128, remotelist.items[i].id);
+        file_getlocalremotedatabasepath(path, 128, remotelist.items[i].id);
         download_init(&downloads[i]);
         download_create(&downloads[i], i, remotelist.items[i].urldatabase, path, ondata, oncomplete, onfailure);
 

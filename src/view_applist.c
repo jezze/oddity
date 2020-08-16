@@ -68,7 +68,7 @@ static void render(unsigned int ticks)
         {
 
             texts[i * 2].data = applist->items[start + i].name;
-            texts[i * 2 + 1].data = stateinfo[applist->items[start + i].state];
+            texts[i * 2 + 1].data = stateinfo[1];
 
             widget_text_render(&texts[i * 2], ticks);
             widget_text_render(&texts[i * 2 + 1], ticks);

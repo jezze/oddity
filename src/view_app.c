@@ -57,10 +57,7 @@ static void runpackage(void)
     for (i = 0; i < packagelist.count; i++)
     {
 
-        if (packagelist.items[i].state != 3)
-            continue;
-
-        main_exec(packagelist.items[i].name);
+        main_exec(packagelist.items[i].sha1);
 
         break;
 

@@ -88,7 +88,7 @@ static void destroy(void)
 
 }
 
-void main_exec(char *name)
+void main_exec(char *sha1)
 {
 
     char *opkrun = "opkrun";
@@ -99,7 +99,7 @@ void main_exec(char *name)
     argv[1] = opk;
     argv[2] = 0;
 
-    snprintf(opk, 64, "/media/data/apps/%s", name);
+    snprintf(opk, 64, "/media/data/apps/%s", sha1);
     destroy();
     execvp(opkrun, argv);
 

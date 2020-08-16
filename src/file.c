@@ -19,31 +19,24 @@ void file_init(void)
 
 }
 
-void file_getdatabasepath(char *path, unsigned int count)
+void file_getlocaldatabasepath(char *path, unsigned int count)
 {
 
     snprintf(path, count, "%s/.ztore/local.db", home);
 
 }
 
-void file_getremotedatabasepath(char *path, unsigned int count, unsigned int id)
+void file_getlocalremotedatabasepath(char *path, unsigned int count, unsigned int id)
 {
 
     snprintf(path, count, "%s/.ztore/remote_%u.db", home, id);
 
 }
 
-void file_getpackagepath(char *path, unsigned int count, char *name)
+void file_getlocalpackagepath(char *path, unsigned int count, char *sha1)
 {
 
-    snprintf(path, count, "/media/data/apps/%s", name);
-
-}
-
-void file_getremotepackagepath(char *path, unsigned int count, char *name)
-{
-
-    snprintf(path, count, "%s/%s/%s", "http://gcw.abstraction.se/", "apps/official", name);
+    snprintf(path, count, "/media/data/apps/%s.opk", sha1);
 
 }
 
@@ -81,7 +74,7 @@ unsigned int file_removeremote(unsigned int id)
 
     char remotedatapath[128];
 
-    file_getremotedatabasepath(remotedatapath, 128, id);
+    file_getlocalremotedatabasepath(remotedatapath, 128, id);
 
     return file_remove(remotedatapath);
 
@@ -92,7 +85,7 @@ unsigned int file_removepackage(char *name)
 
     char remotedatapath[128];
 
-    file_getpackagepath(remotedatapath, 128, name);
+    file_getlocalpackagepath(remotedatapath, 128, name);
 
     return file_remove(remotedatapath);
 
