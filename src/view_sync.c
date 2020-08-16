@@ -42,7 +42,7 @@ static void oncomplete(unsigned int id)
     ondata(id, "\n", 1);
     db_sync(remote);
     file_removeremote(remote->id);
-    snprintf(text, 128, "Download complete!\n\nProgress: %d%%\nTotal bytes: %dKB", download->percentage, download->totalbytes);
+    snprintf(text, 128, "Synchronization complete!\n\nProgress: %d%%\nTotal bytes: %dKB", download->percentage, download->totalbytes);
 
 }
 
@@ -51,7 +51,7 @@ static void onfailure(unsigned int id)
 
     struct download *download = &downloads[id];
 
-    snprintf(text, 128, "Download failed!\n\nProgress: %d%%\nTotal bytes: %dKB", download->percentage, download->totalbytes);
+    snprintf(text, 128, "Synchronization failed!\n\nProgress: %d%%\nTotal bytes: %dKB", download->percentage, download->totalbytes);
 
 }
 
