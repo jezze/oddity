@@ -29,7 +29,7 @@ static void ondata(unsigned int id, void *data, unsigned int count)
 
     download->count = download_parse(download, download->buffer, download->count + count);
 
-    snprintf(text, 128, "Waiting to download...\n\nProgress: %d%%\nTotal bytes: %dKB", download->percentage, download->totalbytes);
+    snprintf(text, 128, "Downloading...\n\nProgress: %d%%\nTotal bytes: %dKB", download->percentage, download->totalbytes);
 
 }
 
@@ -42,7 +42,7 @@ static void oncomplete(unsigned int id)
     ondata(id, "\n", 1);
     db_sync(remote);
     file_removeremote(remote->id);
-    snprintf(text, 128, "Waiting to download...\n\nProgress: %d%%\nTotal bytes: %dKB\n\nSynchronization complete.", download->percentage, download->totalbytes);
+    snprintf(text, 128, "Download complete!\n\nProgress: %d%%\nTotal bytes: %dKB", download->percentage, download->totalbytes);
 
 }
 
@@ -51,7 +51,7 @@ static void onfailure(unsigned int id)
 
     struct download *download = &downloads[id];
 
-    snprintf(text, 128, "Waiting to download...\n\nProgress: %d%%\nTotal bytes: %dKB\n\nSynchronization failed.", download->percentage, download->totalbytes);
+    snprintf(text, 128, "Download failed!\n\nProgress: %d%%\nTotal bytes: %dKB", download->percentage, download->totalbytes);
 
 }
 
@@ -84,7 +84,7 @@ static void load(void)
 
     unsigned int i;
 
-    snprintf(text, 128, "Waiting to download...");
+    snprintf(text, 128, "Connecting to remote server...");
     db_freeremotes(&remotelist);
     db_loadremotes(&remotelist);
 
