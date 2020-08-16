@@ -25,6 +25,7 @@ struct sample
 
 static SDL_Surface *display;
 static SDL_Surface *background;
+static SDL_Surface *fade;
 static TTF_Font *font;
 static TTF_Font *ofont;
 static unsigned int ssw;
@@ -227,6 +228,23 @@ static void renderbackground(unsigned int ticks)
 
 }
 
+static void renderfade(unsigned int ticks)
+{
+
+    unsigned int i = ticks * 8;
+
+    if (i < 0xFF)
+    {
+
+        unsigned int color = (0xFF - i) << 24;
+
+        dofillrectangle(fade, fade->w, fade->h, color);
+        SDL_BlitSurface(fade, NULL, display, NULL);
+
+    }
+
+}
+
 static struct image *findimage(char *name)
 {
 
@@ -397,6 +415,7 @@ void backend_render(unsigned int ticks, void (*place)(unsigned int w, unsigned i
     place(SCREEN_WIDTH, SCREEN_HEIGHT);
     renderbackground(ticks);
     render(ticks);
+    renderfade(ticks);
     SDL_Flip(display);
 
 }
@@ -487,6 +506,8 @@ void backend_tilebackground(char *name)
         }
 
     }
+
+    fade = SDL_CreateRGBSurface(0, display->w, display->h, display->format->BitsPerPixel, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 
 }
 
