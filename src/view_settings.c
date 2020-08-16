@@ -182,23 +182,23 @@ void view_settings_setup(void)
     view_init(&view, "settings", load, 0);
     view_register(&view);
     widget_area_init(&audioarea, 0, 0, 8, 1);
-    widget_text_init(&audiotext, TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, "Audio");
+    widget_text_init(&audiotext, TEXT_COLOR_TITLE, TEXT_ALIGN_LEFT, "Volume");
     widget_area_init(&volumemasterarea, 0, 1, 8, 1);
     widget_area_init(&volumemasterareatext, 0, 1, 5, 1);
     widget_area_init(&volumemasterareaslider, 5, 1, 3, 1);
-    widget_text_init(&volumemastertext, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Volume (Master)");
+    widget_text_init(&volumemastertext, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Master");
     widget_slider_init(&volumemasterslider, 0, 100, -1);
     selection_add(&selection, &volumemasterarea.item);
     widget_area_init(&volumepcmarea, 0, 2, 8, 1);
     widget_area_init(&volumepcmareatext, 0, 2, 5, 1);
     widget_area_init(&volumepcmareaslider, 5, 2, 3, 1);
-    widget_text_init(&volumepcmtext, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Volume (PCM)");
+    widget_text_init(&volumepcmtext, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "PCM");
     widget_slider_init(&volumepcmslider, 0, 100, -1);
     selection_add(&selection, &volumepcmarea.item);
     widget_area_init(&volumeheadphonesarea, 0, 3, 8, 1);
     widget_area_init(&volumeheadphonesareatext, 0, 3, 5, 1);
     widget_area_init(&volumeheadphonesareaslider, 5, 3, 3, 1);
-    widget_text_init(&volumeheadphonestext, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Volume (Headphones)");
+    widget_text_init(&volumeheadphonestext, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Headphones");
     widget_slider_init(&volumeheadphonesslider, 0, 100, -1);
     selection_add(&selection, &volumeheadphonesarea.item);
 
