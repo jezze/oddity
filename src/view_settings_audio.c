@@ -94,30 +94,6 @@ void ondata(unsigned int id, void *data, unsigned int count)
 
 }
 
-void oncomplete(unsigned int id)
-{
-
-    switch (id)
-    {
-
-    case 1:
-        break;
-
-    case 2:
-        break;
-
-    case 3:
-        break;
-
-    }
-
-}
-
-void onfailure(unsigned int id)
-{
-
-}
-
 static void button(unsigned int key)
 {
 
@@ -127,7 +103,7 @@ static void button(unsigned int key)
     {
 
     case KEY_LEFT:
-        session_create("settings_volume_decrement", 2, ondata, oncomplete, onfailure);
+        session_create("settings_volume_decrement", 2, ondata, 0, 0);
         session_setarg("settings_volume_decrement", 0, "./helper.sh");
         session_setarg("settings_volume_decrement", 1, "volume_decrement");
         session_setarg("settings_volume_decrement", 2, "PCM");
@@ -137,7 +113,7 @@ static void button(unsigned int key)
         break;
 
     case KEY_RIGHT:
-        session_create("settings_volume_increment", 2, ondata, oncomplete, onfailure);
+        session_create("settings_volume_increment", 2, ondata, 0, 0);
         session_setarg("settings_volume_increment", 0, "./helper.sh");
         session_setarg("settings_volume_increment", 1, "volume_increment");
         session_setarg("settings_volume_increment", 2, "PCM");
@@ -155,17 +131,17 @@ static void button(unsigned int key)
 static void load(void)
 {
 
-    session_create("settings_volume_get_master", 1, ondata, oncomplete, onfailure);
+    session_create("settings_volume_get_master", 1, ondata, 0, 0);
     session_setarg("settings_volume_get_master", 0, "./helper.sh");
     session_setarg("settings_volume_get_master", 1, "volume_get");
     session_setarg("settings_volume_get_master", 2, "Master");
     session_setarg("settings_volume_get_master", 3, 0);
-    session_create("settings_volume_get_pcm", 2, ondata, oncomplete, onfailure);
+    session_create("settings_volume_get_pcm", 2, ondata, 0, 0);
     session_setarg("settings_volume_get_pcm", 0, "./helper.sh");
     session_setarg("settings_volume_get_pcm", 1, "volume_get");
     session_setarg("settings_volume_get_pcm", 2, "PCM");
     session_setarg("settings_volume_get_pcm", 3, 0);
-    session_create("settings_volume_get_headphones", 3, ondata, oncomplete, onfailure);
+    session_create("settings_volume_get_headphones", 3, ondata, 0, 0);
     session_setarg("settings_volume_get_headphones", 0, "./helper.sh");
     session_setarg("settings_volume_get_headphones", 1, "volume_get");
     session_setarg("settings_volume_get_headphones", 2, "Headphones");

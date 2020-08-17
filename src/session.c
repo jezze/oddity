@@ -148,7 +148,8 @@ void session_poll(void)
         if (count > 0)
         {
 
-            session->ondata(session->id, buffer, count);
+            if (session->ondata)
+                session->ondata(session->id, buffer, count);
 
         }
 
@@ -165,9 +166,20 @@ void session_poll(void)
                 close(session->fd[0]);
 
                 if (WEXITSTATUS(status) == 0)
-                    session->oncomplete(session->id);
+                {
+
+                    if (session->oncomplete)
+                        session->oncomplete(session->id);
+
+                }
+
                 else
-                    session->onfailure(session->id);
+                {
+
+                    if (session->onfailure)
+                        session->onfailure(session->id);
+
+                }
 
                 session->name = 0;
                 session->id = 0;
