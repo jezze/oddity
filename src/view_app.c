@@ -46,27 +46,6 @@ static void render(unsigned int ticks)
 
 }
 
-static void runpackage(void)
-{
-
-    struct db_packagelist packagelist;
-    unsigned int i;
-
-    db_loadpackagesfromapp(&packagelist, app);
-
-    for (i = 0; i < packagelist.count; i++)
-    {
-
-        main_exec(packagelist.items[i].sha1);
-
-        break;
-
-    }
-
-    db_freepackages(&packagelist);
-
-}
-
 static void button(unsigned int key)
 {
 
@@ -75,7 +54,21 @@ static void button(unsigned int key)
     if (key == KEY_A && selection_isactive(&selection, &runarea.item))
     {
 
-        runpackage();
+        struct db_packagelist packagelist;
+        unsigned int i;
+
+        db_loadpackagesfromapp(&packagelist, app);
+
+        for (i = 0; i < packagelist.count; i++)
+        {
+
+            main_exec(packagelist.items[i].sha1);
+
+            break;
+
+        }
+
+        db_freepackages(&packagelist);
 
     }
 

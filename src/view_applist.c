@@ -14,7 +14,6 @@ static struct widget_area areas[9];
 static struct widget_text texts[17];
 static struct selection selection;
 static struct db_applist *applist;
-static char *stateinfo[] = {"", "New", "Updated", "Installed"};
 static unsigned int page;
 
 static void place(unsigned int w, unsigned int h)
@@ -52,6 +51,7 @@ static void place(unsigned int w, unsigned int h)
 static void render(unsigned int ticks)
 {
 
+    char *stateinfo[] = {"", "New", "Updated", "Installed"};
     unsigned int start = page * 8;
     unsigned int max = applist->count - start;
     unsigned int i;
