@@ -9,6 +9,8 @@
 
 static struct view view;
 static struct widget_area audioarea;
+static struct widget_area audioareaicon;
+static struct widget_area audioareatext;
 static struct widget_text audiotext;
 static struct selection selection;
 
@@ -16,7 +18,9 @@ static void place(unsigned int w, unsigned int h)
 {
 
     widget_area_place(&audioarea, 0, 0, w, h);
-    widget_text_placein(&audiotext, &audioarea.size);
+    widget_area_place(&audioareaicon, 0, 0, w, h);
+    widget_area_place(&audioareatext, 0, 0, w, h);
+    widget_text_placein(&audiotext, &audioareatext.size);
 
 }
 
@@ -53,8 +57,10 @@ void view_settings_setup(void)
 
     view_init(&view, "settings", load, 0);
     view_register(&view);
-    widget_area_init(&audioarea, 0, 7, 8, 1);
-    widget_text_init(&audiotext, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Audio");
+    widget_area_init(&audioarea, 0, 0, 4, 3);
+    widget_area_init(&audioareaicon, 0, 0, 4, 2);
+    widget_area_init(&audioareatext, 0, 2, 4, 1);
+    widget_text_init(&audiotext, TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Audio");
     selection_add(&selection, &audioarea.item);
 
 }
