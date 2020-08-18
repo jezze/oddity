@@ -122,7 +122,7 @@ void view_repolist_setup(void)
     selection_add(&selection, &areanew.item);
     widget_area_init(&areaupdated, 0, 3, 8, 1);
     selection_add(&selection, &areaupdated.item);
-    widget_area_init(&areasynchronize, 0, 7, 4, 1);
+    widget_area_init(&areasynchronize, 0, 7, 8, 1);
     selection_add(&selection, &areasynchronize.item);
     widget_text_init(&textall, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "All");
     widget_text_init(&textallitems, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, all);

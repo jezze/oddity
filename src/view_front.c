@@ -70,14 +70,14 @@ void view_front_setup(void)
     view_register(&quit);
     view_init(&view, "front", load, 0);
     view_register(&view);
-    widget_area_init(&libraryarea, 0, 5, 8, 1);
-    widget_text_init(&librarytext, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Library");
+    widget_area_init(&libraryarea, 0, 3, 8, 1);
+    widget_text_init(&librarytext, TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Library");
     selection_add(&selection, &libraryarea.item);
-    widget_area_init(&settingsarea, 0, 6, 8, 1);
-    widget_text_init(&settingstext, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Settings");
+    widget_area_init(&settingsarea, 0, 4, 8, 1);
+    widget_text_init(&settingstext, TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Settings");
     selection_add(&selection, &settingsarea.item);
-    widget_area_init(&exitarea, 0, 7, 8, 1);
-    widget_text_init(&exittext, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Exit");
+    widget_area_init(&exitarea, 0, 5, 8, 1);
+    widget_text_init(&exittext, TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Exit");
     selection_add(&selection, &exitarea.item);
 
 }
