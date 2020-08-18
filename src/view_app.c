@@ -21,17 +21,17 @@ static struct widget_text uninstalltext;
 static struct selection selection;
 static struct db_app app;
 
-static void place(unsigned int w, unsigned int h)
+static void place(struct box *size)
 {
 
-    widget_area_place(&titlearea, 0, 0, w, h);
-    widget_text_placein(&titletext, &titlearea.size);
-    widget_area_place(&descriptionarea, 0, 0, w, h);
-    widget_text_placein(&descriptiontext, &descriptionarea.size);
-    widget_area_place(&runarea, 0, 0, w, h);
-    widget_text_placein(&runtext, &runarea.size);
-    widget_area_place(&uninstallarea, 0, 0, w, h);
-    widget_text_placein(&uninstalltext, &uninstallarea.size);
+    widget_area_place(&titlearea, size);
+    widget_text_place(&titletext, &titlearea.size);
+    widget_area_place(&descriptionarea, size);
+    widget_text_place(&descriptiontext, &descriptionarea.size);
+    widget_area_place(&runarea, size);
+    widget_text_place(&runtext, &runarea.size);
+    widget_area_place(&uninstallarea, size);
+    widget_text_place(&uninstalltext, &uninstallarea.size);
 
 }
 

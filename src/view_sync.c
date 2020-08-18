@@ -55,11 +55,11 @@ static void onfailure(unsigned int id)
 
 }
 
-static void place(unsigned int w, unsigned int h)
+static void place(struct box *size)
 {
 
-    widget_area_place(&statusarea, 0, 0, w, h);
-    widget_text_placein(&statustext, &statusarea.size);
+    widget_area_place(&statusarea, size);
+    widget_text_place(&statustext, &statusarea.size);
 
 }
 

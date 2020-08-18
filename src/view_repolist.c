@@ -30,23 +30,23 @@ static char new[16];
 static char updated[16];
 static char installed[16];
 
-static void place(unsigned int w, unsigned int h)
+static void place(struct box *size)
 {
 
-    widget_area_place(&areaall, 0, 0, w, h);
-    widget_area_place(&areainstalled, 0, 0, w, h);
-    widget_area_place(&areanew, 0, 0, w, h);
-    widget_area_place(&areaupdated, 0, 0, w, h);
-    widget_area_place(&areasynchronize, 0, 0, w, h);
-    widget_text_placein(&textall, &areaall.size);
-    widget_text_placein(&textallitems, &areaall.size);
-    widget_text_placein(&textinstalled, &areainstalled.size);
-    widget_text_placein(&textinstalleditems, &areainstalled.size);
-    widget_text_placein(&textnew, &areanew.size);
-    widget_text_placein(&textnewitems, &areanew.size);
-    widget_text_placein(&textupdated, &areaupdated.size);
-    widget_text_placein(&textupdateditems, &areaupdated.size);
-    widget_text_placein(&textsynchronize, &areasynchronize.size);
+    widget_area_place(&areaall, size);
+    widget_area_place(&areainstalled, size);
+    widget_area_place(&areanew, size);
+    widget_area_place(&areaupdated, size);
+    widget_area_place(&areasynchronize, size);
+    widget_text_place(&textall, &areaall.size);
+    widget_text_place(&textallitems, &areaall.size);
+    widget_text_place(&textinstalled, &areainstalled.size);
+    widget_text_place(&textinstalleditems, &areainstalled.size);
+    widget_text_place(&textnew, &areanew.size);
+    widget_text_place(&textnewitems, &areanew.size);
+    widget_text_place(&textupdated, &areaupdated.size);
+    widget_text_place(&textupdateditems, &areaupdated.size);
+    widget_text_place(&textsynchronize, &areasynchronize.size);
 
 }
 

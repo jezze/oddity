@@ -1,29 +1,22 @@
 #include <stdlib.h>
-#include "backend.h"
 #include "box.h"
+#include "backend.h"
 #include "text.h"
 #include "list.h"
 #include "widget.h"
 
-void widget_area_place(struct widget_area *area, int x, int y, int w, int h)
+void widget_area_place(struct widget_area *area, struct box *box)
 {
 
     unsigned int ow = 12;
     unsigned int oh = 12;
-    unsigned int col = (w - ow * 2) / 8;
-    unsigned int row = (h - oh * 2) / 8;
+    unsigned int col = (box->w - ow * 2) / 8;
+    unsigned int row = (box->h - oh * 2) / 8;
 
     area->size.x = col * area->unit.x + ow;
     area->size.y = row * area->unit.y + oh;
     area->size.w = col * area->unit.w;
     area->size.h = row * area->unit.h;
-
-}
-
-void widget_area_placein(struct widget_area *area, struct box *box)
-{
-
-    widget_area_place(area, box->x, box->y, box->w, box->h);
 
 }
 
@@ -45,20 +38,13 @@ void widget_area_init(struct widget_area *area, int x, int y, int w, int h)
 
 }
 
-void widget_slider_place(struct widget_slider *slider, int x, int y, int w, int h)
+void widget_slider_place(struct widget_slider *slider, struct box *box)
 {
 
-    slider->size.x = x;
-    slider->size.y = y;
-    slider->size.w = w;
-    slider->size.h = h;
-
-}
-
-void widget_slider_placein(struct widget_slider *slider, struct box *box)
-{
-
-    widget_slider_place(slider, box->x, box->y, box->w, box->h);
+    slider->size.x = box->x;
+    slider->size.y = box->y;
+    slider->size.w = box->w;
+    slider->size.h = box->h;
 
 }
 
@@ -101,20 +87,13 @@ void widget_slider_init(struct widget_slider *slider, int min, int max, int valu
 
 }
 
-void widget_text_place(struct widget_text *text, int x, int y, int w, int h)
+void widget_text_place(struct widget_text *text, struct box *box)
 {
 
-    text->size.x = x;
-    text->size.y = y;
-    text->size.w = w;
-    text->size.h = h;
-
-}
-
-void widget_text_placein(struct widget_text *text, struct box *box)
-{
-
-    widget_text_place(text, box->x, box->y, box->w, box->h);
+    text->size.x = box->x;
+    text->size.y = box->y;
+    text->size.w = box->w;
+    text->size.h = box->h;
 
 }
 

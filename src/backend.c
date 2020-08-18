@@ -5,6 +5,7 @@
 #include <SDL/SDL_mixer.h>
 #include <SDL/SDL_ttf.h>
 #include "define.h"
+#include "box.h"
 #include "backend.h"
 
 struct image
@@ -409,10 +410,17 @@ void backend_waitevent(void (*quit)(void), void (*button)(unsigned int key))
 
 }
 
-void backend_render(unsigned int ticks, void (*place)(unsigned int w, unsigned int h), void (*render)(unsigned int ticks))
+void backend_render(unsigned int ticks, void (*place)(struct box *size), void (*render)(unsigned int ticks))
 {
 
-    place(SCREEN_WIDTH, SCREEN_HEIGHT);
+    struct box box;
+
+    box.x = 0;
+    box.y = 0;
+    box.w = SCREEN_WIDTH;
+    box.h = SCREEN_HEIGHT;
+
+    place(&box);
     renderbackground(ticks);
     render(ticks);
     renderfade(ticks);

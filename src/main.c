@@ -21,7 +21,7 @@ void view_repolist_setup(void);
 void view_settings_setup(void);
 void view_settings_audio_setup(void);
 void view_sync_setup(void);
-static void (*_place)(unsigned int w, unsigned int h);
+static void (*_place)(struct box *size);
 static void (*_render)(unsigned int ticks);
 static void (*_button)(unsigned int key);
 static unsigned int quit;
@@ -105,7 +105,7 @@ void main_exec(char *sha1)
 
 }
 
-void main_setview(void (*place)(unsigned int w, unsigned int h), void (*render)(unsigned int ticks), void (*button)(unsigned int key))
+void main_setview(void (*place)(struct box *size), void (*render)(unsigned int ticks), void (*button)(unsigned int key))
 {
 
     _place = place;

@@ -17,15 +17,15 @@ static struct widget_area exitarea;
 static struct widget_text exittext;
 static struct selection selection;
 
-static void place(unsigned int w, unsigned int h)
+static void place(struct box *size)
 {
 
-    widget_area_place(&libraryarea, 0, 0, w, h);
-    widget_text_placein(&librarytext, &libraryarea.size);
-    widget_area_place(&settingsarea, 0, 0, w, h);
-    widget_text_placein(&settingstext, &settingsarea.size);
-    widget_area_place(&exitarea, 0, 0, w, h);
-    widget_text_placein(&exittext, &exitarea.size);
+    widget_area_place(&libraryarea, size);
+    widget_text_place(&librarytext, &libraryarea.size);
+    widget_area_place(&settingsarea, size);
+    widget_text_place(&settingstext, &settingsarea.size);
+    widget_area_place(&exitarea, size);
+    widget_text_place(&exittext, &exitarea.size);
 
 }
 

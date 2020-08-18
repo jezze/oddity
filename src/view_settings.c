@@ -14,13 +14,13 @@ static struct widget_area audioareatext;
 static struct widget_text audiotext;
 static struct selection selection;
 
-static void place(unsigned int w, unsigned int h)
+static void place(struct box *size)
 {
 
-    widget_area_place(&audioarea, 0, 0, w, h);
-    widget_area_place(&audioareaicon, 0, 0, w, h);
-    widget_area_place(&audioareatext, 0, 0, w, h);
-    widget_text_placein(&audiotext, &audioareatext.size);
+    widget_area_place(&audioarea, size);
+    widget_area_place(&audioareaicon, size);
+    widget_area_place(&audioareatext, size);
+    widget_text_place(&audiotext, &audioareatext.size);
 
 }
 

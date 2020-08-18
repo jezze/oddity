@@ -29,26 +29,26 @@ static struct widget_text volumeheadphonestext;
 static struct widget_slider volumeheadphonesslider;
 static struct selection selection;
 
-static void place(unsigned int w, unsigned int h)
+static void place(struct box *size)
 {
 
-    widget_area_place(&audioarea, 0, 0, w, h);
-    widget_text_placein(&audiotext, &audioarea.size);
-    widget_area_place(&volumemasterarea, 0, 0, w, h);
-    widget_area_place(&volumemasterareatext, 0, 0, w, h);
-    widget_area_place(&volumemasterareaslider, 0, 0, w, h);
-    widget_text_placein(&volumemastertext, &volumemasterareatext.size);
-    widget_slider_placein(&volumemasterslider, &volumemasterareaslider.size);
-    widget_area_place(&volumepcmarea, 0, 0, w, h);
-    widget_area_place(&volumepcmareatext, 0, 0, w, h);
-    widget_area_place(&volumepcmareaslider, 0, 0, w, h);
-    widget_text_placein(&volumepcmtext, &volumepcmareatext.size);
-    widget_slider_placein(&volumepcmslider, &volumepcmareaslider.size);
-    widget_area_place(&volumeheadphonesarea, 0, 0, w, h);
-    widget_area_place(&volumeheadphonesareatext, 0, 0, w, h);
-    widget_area_place(&volumeheadphonesareaslider, 0, 0, w, h);
-    widget_text_placein(&volumeheadphonestext, &volumeheadphonesareatext.size);
-    widget_slider_placein(&volumeheadphonesslider, &volumeheadphonesareaslider.size);
+    widget_area_place(&audioarea, size);
+    widget_text_place(&audiotext, &audioarea.size);
+    widget_area_place(&volumemasterarea, size);
+    widget_area_place(&volumemasterareatext, size);
+    widget_area_place(&volumemasterareaslider, size);
+    widget_text_place(&volumemastertext, &volumemasterareatext.size);
+    widget_slider_place(&volumemasterslider, &volumemasterareaslider.size);
+    widget_area_place(&volumepcmarea, size);
+    widget_area_place(&volumepcmareatext, size);
+    widget_area_place(&volumepcmareaslider, size);
+    widget_text_place(&volumepcmtext, &volumepcmareatext.size);
+    widget_slider_place(&volumepcmslider, &volumepcmareaslider.size);
+    widget_area_place(&volumeheadphonesarea, size);
+    widget_area_place(&volumeheadphonesareatext, size);
+    widget_area_place(&volumeheadphonesareaslider, size);
+    widget_text_place(&volumeheadphonestext, &volumeheadphonesareatext.size);
+    widget_slider_place(&volumeheadphonesslider, &volumeheadphonesareaslider.size);
 
 }
 

@@ -16,35 +16,35 @@ static struct selection selection;
 static struct db_applist applist;
 static unsigned int page;
 
-static void place(unsigned int w, unsigned int h)
+static void place(struct box *size)
 {
 
-    widget_area_place(&areas[0], 0, 0, w, h);
-    widget_area_place(&areas[1], 0, 0, w, h);
-    widget_area_place(&areas[2], 0, 0, w, h);
-    widget_area_place(&areas[3], 0, 0, w, h);
-    widget_area_place(&areas[4], 0, 0, w, h);
-    widget_area_place(&areas[5], 0, 0, w, h);
-    widget_area_place(&areas[6], 0, 0, w, h);
-    widget_area_place(&areas[7], 0, 0, w, h);
-    widget_text_placein(&texts[0], &areas[0].size);
-    widget_text_placein(&texts[1], &areas[0].size);
-    widget_text_placein(&texts[2], &areas[1].size);
-    widget_text_placein(&texts[3], &areas[1].size);
-    widget_text_placein(&texts[4], &areas[2].size);
-    widget_text_placein(&texts[5], &areas[2].size);
-    widget_text_placein(&texts[6], &areas[3].size);
-    widget_text_placein(&texts[7], &areas[3].size);
-    widget_text_placein(&texts[8], &areas[4].size);
-    widget_text_placein(&texts[9], &areas[4].size);
-    widget_text_placein(&texts[10], &areas[5].size);
-    widget_text_placein(&texts[11], &areas[5].size);
-    widget_text_placein(&texts[12], &areas[6].size);
-    widget_text_placein(&texts[13], &areas[6].size);
-    widget_text_placein(&texts[14], &areas[7].size);
-    widget_text_placein(&texts[15], &areas[7].size);
-    widget_area_place(&areas[8], 0, 0, w, h);
-    widget_text_placein(&texts[16], &areas[8].size);
+    widget_area_place(&areas[0], size);
+    widget_area_place(&areas[1], size);
+    widget_area_place(&areas[2], size);
+    widget_area_place(&areas[3], size);
+    widget_area_place(&areas[4], size);
+    widget_area_place(&areas[5], size);
+    widget_area_place(&areas[6], size);
+    widget_area_place(&areas[7], size);
+    widget_text_place(&texts[0], &areas[0].size);
+    widget_text_place(&texts[1], &areas[0].size);
+    widget_text_place(&texts[2], &areas[1].size);
+    widget_text_place(&texts[3], &areas[1].size);
+    widget_text_place(&texts[4], &areas[2].size);
+    widget_text_place(&texts[5], &areas[2].size);
+    widget_text_place(&texts[6], &areas[3].size);
+    widget_text_place(&texts[7], &areas[3].size);
+    widget_text_place(&texts[8], &areas[4].size);
+    widget_text_place(&texts[9], &areas[4].size);
+    widget_text_place(&texts[10], &areas[5].size);
+    widget_text_place(&texts[11], &areas[5].size);
+    widget_text_place(&texts[12], &areas[6].size);
+    widget_text_place(&texts[13], &areas[6].size);
+    widget_text_place(&texts[14], &areas[7].size);
+    widget_text_place(&texts[15], &areas[7].size);
+    widget_area_place(&areas[8], size);
+    widget_text_place(&texts[16], &areas[8].size);
 
 }
 
