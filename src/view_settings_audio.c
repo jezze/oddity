@@ -189,6 +189,13 @@ static void button(unsigned int key)
 static void load(void)
 {
 
+    volumemastertext.color = TEXT_COLOR_DISABLE;
+    volumemasterslider.value = -1;
+    volumepcmtext.color = TEXT_COLOR_DISABLE;
+    volumepcmslider.value = -1;
+    volumeheadphonestext.color = TEXT_COLOR_DISABLE;
+    volumeheadphonesslider.value = -1;
+
     session_create("settings_volume_get_master", 1, ondata, 0, 0);
     session_setarg("settings_volume_get_master", 0, "./helper.sh");
     session_setarg("settings_volume_get_master", 1, "volume_get");
