@@ -222,10 +222,15 @@ int db_loadremotes(struct db_remotelist *list)
 
 }
 
-void db_createapp(struct db_app *app, unsigned int id, char *name, char *shortdescription)
+void db_createapp(struct db_app *app, char id[6], char *name, char *shortdescription)
 {
 
-    app->id = id;
+    app->id[0] = id[0];
+    app->id[1] = id[1];
+    app->id[2] = id[2];
+    app->id[3] = id[3];
+    app->id[4] = id[4];
+    app->id[5] = id[5];
     app->name = strdup(name);
     app->shortdescription = strdup(shortdescription);
 
@@ -237,7 +242,12 @@ void db_freeapp(struct db_app *app)
     free(app->name);
     free(app->shortdescription);
 
-    app->id = 0;
+    app->id[0] = 0;
+    app->id[1] = 0;
+    app->id[2] = 0;
+    app->id[3] = 0;
+    app->id[4] = 0;
+    app->id[5] = 0;
     app->name = 0;
     app->shortdescription = 0;
 
@@ -253,7 +263,7 @@ void db_freeapps(struct db_applist *list)
 
 }
 
-int db_loadapp(struct db_app *app, unsigned int id)
+int db_loadapp(struct db_app *app, char id[6])
 {
 
     sqlite3 *db;
@@ -264,12 +274,12 @@ int db_loadapp(struct db_app *app, unsigned int id)
     if (sqlite3_prepare_v2(db, "SELECT id, name, short FROM apps WHERE id = ?", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
-    sqlite3_bind_int(res, 1, id);
+    sqlite3_bind_text(res, 1, id, 6, 0);
 
     if (sqlite3_step(res) != SQLITE_ROW)
         exit(EXIT_FAILURE);
 
-    db_createapp(app, sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2));
+    db_createapp(app, (char *)sqlite3_column_text(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2));
 
     if (sqlite3_step(res) != SQLITE_DONE)
         exit(EXIT_FAILURE);
@@ -337,7 +347,7 @@ int db_loadapps(struct db_applist *list)
         exit(EXIT_FAILURE);
 
     for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
-        db_createapp(&list->items[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2));
+        db_createapp(&list->items[i], (char *)sqlite3_column_text(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2));
 
     if (sqlite3_finalize(res) != SQLITE_OK)
         exit(EXIT_FAILURE);
@@ -390,7 +400,7 @@ int db_loadappsfromremote(struct db_applist *list, struct db_remote *remote)
     sqlite3_bind_int(res, 1, remote->id);
 
     for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
-        db_createapp(&list->items[i], sqlite3_column_int(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2));
+        db_createapp(&list->items[i], (char *)sqlite3_column_text(res, 0), (char *)sqlite3_column_text(res, 1), (char *)sqlite3_column_text(res, 2));
 
     if (sqlite3_finalize(res) != SQLITE_OK)
         exit(EXIT_FAILURE);
@@ -469,7 +479,7 @@ static unsigned int countpackagesfromapp(sqlite3 *db, struct db_app *app)
     if (sqlite3_prepare_v2(db, "SELECT COUNT(*) AS count FROM packages WHERE apps_id = ?", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
-    sqlite3_bind_int(res, 1, app->id);
+    sqlite3_bind_text(res, 1, app->id, 6, 0);
 
     if (sqlite3_step(res) == SQLITE_ROW)
         count = sqlite3_column_int(res, 0);
@@ -499,7 +509,7 @@ int db_loadpackagesfromapp(struct db_packagelist *list, struct db_app *app)
     if (sqlite3_prepare_v2(db, "SELECT sha1, date FROM packages WHERE apps_id = ? ORDER BY date", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
-    sqlite3_bind_int(res, 1, app->id);
+    sqlite3_bind_text(res, 1, app->id, 6, 0);
 
     for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
         db_createpackage(&list->items[i], (char *)sqlite3_column_text(res, 0), (char *)sqlite3_column_text(res, 1));
@@ -523,7 +533,7 @@ static unsigned int countpackagesfromremoteapp(sqlite3 *db, struct db_remote *re
         exit(EXIT_FAILURE);
 
     sqlite3_bind_int(res, 1, remote->id);
-    sqlite3_bind_int(res, 2, app->id);
+    sqlite3_bind_text(res, 2, app->id, 6, 0);
 
     if (sqlite3_step(res) == SQLITE_ROW)
         count = sqlite3_column_int(res, 0);
@@ -553,7 +563,7 @@ int db_loadpackagesfromremoteapp(struct db_packagelist *list, struct db_remote *
     if (sqlite3_prepare_v2(db, "SELECT sha1, date FROM packages WHERE apps_id = ? ORDER BY date", -1, &res, 0) != SQLITE_OK)
         exit(EXIT_FAILURE);
 
-    sqlite3_bind_int(res, 1, app->id);
+    sqlite3_bind_text(res, 1, app->id, 6, 0);
 
     for (i = 0; sqlite3_step(res) == SQLITE_ROW; i++)
         db_createpackage(&list->items[i], (char *)sqlite3_column_text(res, 0), (char *)sqlite3_column_text(res, 1));

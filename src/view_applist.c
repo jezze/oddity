@@ -13,7 +13,7 @@ static struct view view;
 static struct widget_area areas[9];
 static struct widget_text texts[17];
 static struct selection selection;
-static struct db_applist *applist;
+static struct db_applist applist;
 static unsigned int page;
 
 static void place(unsigned int w, unsigned int h)
@@ -53,7 +53,7 @@ static void render(unsigned int ticks)
 
     char *stateinfo[] = {"", "New", "Updated", "Installed"};
     unsigned int start = page * 8;
-    unsigned int max = applist->count - start;
+    unsigned int max = applist.count - start;
     unsigned int i;
 
     if (max > 8)
@@ -67,7 +67,7 @@ static void render(unsigned int ticks)
         for (i = 0; i < max; i++)
         {
 
-            texts[i * 2].data = applist->items[start + i].name;
+            texts[i * 2].data = applist.items[start + i].name;
             texts[i * 2 + 1].data = stateinfo[1];
 
             widget_text_render(&texts[i * 2], ticks);
@@ -89,7 +89,7 @@ static void render(unsigned int ticks)
 static void button(unsigned int key)
 {
 
-    unsigned int maxpages = applist->count / 8;
+    unsigned int maxpages = applist.count / 8;
     unsigned int i;
 
     selection_setclosest(&selection, key);
@@ -97,12 +97,12 @@ static void button(unsigned int key)
     for (i = 0; i < 8; i++)
     {
 
-        struct db_app *app = &applist->items[page * 8 + i];
+        struct db_app *app = &applist.items[page * 8 + i];
 
         if (selection_isactive(&selection, &areas[i].item))
         {
 
-            view_config("app", "app", app);
+            view_config("app", "id", app->id);
             selection_select(&selection, key, "applist", "app");
 
         }
@@ -144,7 +144,25 @@ static void config(char *key, void *value)
 {
 
     if (!strcmp(key, "list"))
-        applist = value;
+    {
+
+        char *category = value;
+
+        db_freeapps(&applist);
+
+        if (!strcmp(category, "all"))
+            db_loadapps(&applist);
+
+        if (!strcmp(category, "installed"))
+            db_loadapps(&applist);
+
+        if (!strcmp(category, "new"))
+            db_loadapps(&applist);
+
+        if (!strcmp(category, "updated"))
+            db_loadapps(&applist);
+
+    }
 
 }
 

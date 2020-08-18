@@ -103,22 +103,80 @@ static void button(unsigned int key)
     {
 
     case KEY_LEFT:
-        session_create("settings_volume_decrement", 2, ondata, 0, 0);
-        session_setarg("settings_volume_decrement", 0, "./helper.sh");
-        session_setarg("settings_volume_decrement", 1, "volume_decrement");
-        session_setarg("settings_volume_decrement", 2, "PCM");
-        session_setarg("settings_volume_decrement", 3, 0);
-        session_run();
+        if (selection_isactive(&selection, &volumemasterarea.item))
+        {
+
+            session_create("settings_volume_decrement", 1, ondata, 0, 0);
+            session_setarg("settings_volume_decrement", 0, "./helper.sh");
+            session_setarg("settings_volume_decrement", 1, "volume_decrement");
+            session_setarg("settings_volume_decrement", 2, "Master");
+            session_setarg("settings_volume_decrement", 3, 0);
+            session_run();
+
+        }
+
+        if (selection_isactive(&selection, &volumepcmarea.item))
+        {
+
+            session_create("settings_volume_decrement", 2, ondata, 0, 0);
+            session_setarg("settings_volume_decrement", 0, "./helper.sh");
+            session_setarg("settings_volume_decrement", 1, "volume_decrement");
+            session_setarg("settings_volume_decrement", 2, "PCM");
+            session_setarg("settings_volume_decrement", 3, 0);
+            session_run();
+
+        }
+
+        if (selection_isactive(&selection, &volumeheadphonesarea.item))
+        {
+
+            session_create("settings_volume_decrement", 3, ondata, 0, 0);
+            session_setarg("settings_volume_decrement", 0, "./helper.sh");
+            session_setarg("settings_volume_decrement", 1, "volume_decrement");
+            session_setarg("settings_volume_decrement", 2, "Headphones");
+            session_setarg("settings_volume_decrement", 3, 0);
+            session_run();
+
+        }
 
         break;
 
     case KEY_RIGHT:
-        session_create("settings_volume_increment", 2, ondata, 0, 0);
-        session_setarg("settings_volume_increment", 0, "./helper.sh");
-        session_setarg("settings_volume_increment", 1, "volume_increment");
-        session_setarg("settings_volume_increment", 2, "PCM");
-        session_setarg("settings_volume_increment", 3, 0);
-        session_run();
+        if (selection_isactive(&selection, &volumemasterarea.item))
+        {
+
+            session_create("settings_volume_increment", 1, ondata, 0, 0);
+            session_setarg("settings_volume_increment", 0, "./helper.sh");
+            session_setarg("settings_volume_increment", 1, "volume_increment");
+            session_setarg("settings_volume_increment", 2, "Master");
+            session_setarg("settings_volume_increment", 3, 0);
+            session_run();
+
+        }
+
+        if (selection_isactive(&selection, &volumepcmarea.item))
+        {
+
+            session_create("settings_volume_increment", 2, ondata, 0, 0);
+            session_setarg("settings_volume_increment", 0, "./helper.sh");
+            session_setarg("settings_volume_increment", 1, "volume_increment");
+            session_setarg("settings_volume_increment", 2, "PCM");
+            session_setarg("settings_volume_increment", 3, 0);
+            session_run();
+
+        }
+
+        if (selection_isactive(&selection, &volumeheadphonesarea.item))
+        {
+
+            session_create("settings_volume_increment", 3, ondata, 0, 0);
+            session_setarg("settings_volume_increment", 0, "./helper.sh");
+            session_setarg("settings_volume_increment", 1, "volume_increment");
+            session_setarg("settings_volume_increment", 2, "Headphones");
+            session_setarg("settings_volume_increment", 3, 0);
+            session_run();
+
+        }
 
         break;
 

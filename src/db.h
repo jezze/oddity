@@ -19,7 +19,7 @@ struct db_remotelist
 struct db_app
 {
 
-    unsigned int id;
+    char id[6];
     char *name;
     char *shortdescription;
 
@@ -56,10 +56,10 @@ void db_freeremote(struct db_remote *remote);
 void db_freeremotes(struct db_remotelist *list);
 int db_loadremote(struct db_remote *remote, unsigned int id);
 int db_loadremotes(struct db_remotelist *list);
-void db_createapp(struct db_app *app, unsigned int id, char *name, char *shortdescription);
+void db_createapp(struct db_app *app, char id[6], char *name, char *shortdescription);
 void db_freeapp(struct db_app *app);
 void db_freeapps(struct db_applist *list);
-int db_loadapp(struct db_app *app, unsigned int id);
+int db_loadapp(struct db_app *app, char id[6]);
 unsigned int db_countapps(void);
 int db_loadapps(struct db_applist *list);
 int db_loadappsfromremote(struct db_applist *list, struct db_remote *remote);

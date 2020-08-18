@@ -19,7 +19,7 @@ static struct widget_text runtext;
 static struct widget_area uninstallarea;
 static struct widget_text uninstalltext;
 static struct selection selection;
-static struct db_app *app;
+static struct db_app app;
 
 static void place(unsigned int w, unsigned int h)
 {
@@ -51,24 +51,29 @@ static void button(unsigned int key)
 
     selection_setclosest(&selection, key);
 
-    if (key == KEY_A && selection_isactive(&selection, &runarea.item))
+    if (key == KEY_A)
     {
 
-        struct db_packagelist packagelist;
-        unsigned int i;
-
-        db_loadpackagesfromapp(&packagelist, app);
-
-        for (i = 0; i < packagelist.count; i++)
+        if (selection_isactive(&selection, &runarea.item))
         {
 
-            main_exec(packagelist.items[i].sha1);
+            struct db_packagelist packagelist;
+            unsigned int i;
 
-            break;
+            db_loadpackagesfromapp(&packagelist, &app);
+
+            for (i = 0; i < packagelist.count; i++)
+            {
+
+                main_exec(packagelist.items[i].sha1);
+
+                break;
+
+            }
+
+            db_freepackages(&packagelist);
 
         }
-
-        db_freepackages(&packagelist);
 
     }
 
@@ -87,12 +92,14 @@ static void load(void)
 static void config(char *key, void *value)
 {
 
-    if (!strcmp(key, "app"))
+    if (!strcmp(key, "id"))
     {
 
-        app = value;
-        titletext.data = app->name;
-        descriptiontext.data = app->shortdescription;
+        db_freeapp(&app);
+        db_loadapp(&app, value);
+
+        titletext.data = app.name;
+        descriptiontext.data = app.shortdescription;
 
     }
 

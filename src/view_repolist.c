@@ -18,7 +18,6 @@ static char new[16];
 static char updated[16];
 static char installed[16];
 static char last[32];
-static struct db_applist applist;
 
 static void place(unsigned int w, unsigned int h)
 {
@@ -64,42 +63,21 @@ static void button(unsigned int key)
 
     selection_setclosest(&selection, key);
 
-    if (key == KEY_A && selection_isactive(&selection, &areas[0].item))
+    if (key == KEY_A)
     {
 
-        db_freeapps(&applist);
-        db_loadapps(&applist);
-        view_config("applist", "list", &applist);
-        selection_select(&selection, key, "repolist", "applist");
+        if (selection_isactive(&selection, &areas[0].item))
+            view_config("applist", "list", "all");
 
-    }
+        if (selection_isactive(&selection, &areas[1].item))
+            view_config("applist", "list", "installed");
 
-    if (key == KEY_A && selection_isactive(&selection, &areas[1].item))
-    {
+        if (selection_isactive(&selection, &areas[2].item))
+            view_config("applist", "list", "new");
 
-        db_freeapps(&applist);
-        db_loadapps(&applist);
-        view_config("applist", "list", &applist);
-        selection_select(&selection, key, "repolist", "applist");
+        if (selection_isactive(&selection, &areas[3].item))
+            view_config("applist", "list", "updated");
 
-    }
-
-    if (key == KEY_A && selection_isactive(&selection, &areas[2].item))
-    {
-
-        db_freeapps(&applist);
-        db_loadapps(&applist);
-        view_config("applist", "list", &applist);
-        selection_select(&selection, key, "repolist", "applist");
-
-    }
-
-    if (key == KEY_A && selection_isactive(&selection, &areas[3].item))
-    {
-
-        db_freeapps(&applist);
-        db_loadapps(&applist);
-        view_config("applist", "list", &applist);
         selection_select(&selection, key, "repolist", "applist");
 
     }
