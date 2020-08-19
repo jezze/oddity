@@ -12,9 +12,4 @@ struct view
 
 };
 
-void view_config(char *name, char *key, void *value);
-void view_register(struct view *view);
-struct view *view_find(char *name);
-void view_load(char *name, char *parentname);
-void view_quit(char *name);
 void view_init(struct view *view, char *name, void (*load)(void), void (*config)(char *key, void *value));

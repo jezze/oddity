@@ -56,7 +56,7 @@ void view_settings_setup(void)
 {
 
     view_init(&view, "settings", load, 0);
-    view_register(&view);
+    main_register(&view);
     widget_area_init(&audioarea, 0, 0, 4, 3);
     widget_area_init(&audioareaicon, 0, 0, 4, 2);
     widget_area_init(&audioareatext, 0, 2, 4, 1);

@@ -5,6 +5,7 @@
 #include "widget.h"
 #include "backend.h"
 #include "view.h"
+#include "main.h"
 #include "selection.h"
 
 struct widget *selection_getclosest(struct selection *selection, unsigned int key)
@@ -135,7 +136,7 @@ void selection_select(struct selection *selection, unsigned int key, char *from,
     {
 
     case KEY_A:
-        view_load(to, from);
+        main_loadview(to, from);
         backend_play("select");
 
         break;
@@ -151,7 +152,7 @@ void selection_unselect(struct selection *selection, unsigned int key, char *fro
     {
 
     case KEY_B:
-        view_quit(from);
+        main_quitview(from);
         backend_play("unselect");
 
         break;

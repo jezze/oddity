@@ -75,16 +75,16 @@ static void button(unsigned int key)
     {
 
         if (selection_isactive(&selection, &areaall))
-            view_config("applist", "list", "all");
+            main_configview("applist", "list", "all");
 
         if (selection_isactive(&selection, &areainstalled))
-            view_config("applist", "list", "installed");
+            main_configview("applist", "list", "installed");
 
         if (selection_isactive(&selection, &areanew))
-            view_config("applist", "list", "new");
+            main_configview("applist", "list", "new");
 
         if (selection_isactive(&selection, &areaupdated))
-            view_config("applist", "list", "updated");
+            main_configview("applist", "list", "updated");
 
         selection_select(&selection, key, "repolist", "applist");
 
@@ -113,7 +113,7 @@ void view_repolist_setup(void)
 {
 
     view_init(&view, "repolist", load, 0);
-    view_register(&view);
+    main_register(&view);
     widget_area_init(&areaall, 0, 0, 8, 1);
     selection_add(&selection, &areaall);
     widget_area_init(&areainstalled, 0, 1, 8, 1);

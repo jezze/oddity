@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include "box.h"
 #include "text.h"
@@ -26,6 +27,7 @@ static void (*_render)(unsigned int ticks);
 static void (*_button)(unsigned int key);
 static unsigned int quit;
 static unsigned int ticks;
+static struct list views;
 
 static void setup(void)
 {
@@ -88,6 +90,91 @@ static void destroy(void)
 
 }
 
+void main_setview(void (*place)(struct box *size), void (*render)(unsigned int ticks), void (*button)(unsigned int key))
+{
+
+    _place = place;
+    _render = render;
+    _button = button;
+
+}
+
+struct view *findview(char *name)
+{
+
+    struct list_item *current;
+
+    for (current = views.head; current; current = current->next)
+    {
+
+        struct view *view = current->data;
+
+        if (!strcmp(view->name, name))
+            return view;
+
+    }
+
+    return 0;
+
+}
+
+void main_configview(char *name, char *key, void *value)
+{
+
+    struct view *view = findview(name);
+
+    if (!view)
+        return;
+
+    if (view->config)
+        view->config(key, value);
+
+}
+
+void main_loadview(char *name, char *parentname)
+{
+
+    struct view *view = findview(name);
+
+    if (!view)
+        return;
+
+    view->parentname = parentname;
+
+    if (view->load)
+        view->load();
+
+}
+
+void main_quitview(char *name)
+{
+
+    struct view *view = findview(name);
+
+    if (!view)
+        return;
+
+    if (view->parentname)
+    {
+
+        struct view *parent = findview(view->parentname);
+
+        if (!parent)
+            return;
+
+        main_loadview(view->parentname, parent->parentname);
+
+    }
+
+}
+
+void main_register(struct view *view)
+{
+
+    list_add(&views, &view->item);
+
+}
+
 void main_exec(char *sha1)
 {
 
@@ -105,15 +192,6 @@ void main_exec(char *sha1)
 
 }
 
-void main_setview(void (*place)(struct box *size), void (*render)(unsigned int ticks), void (*button)(unsigned int key))
-{
-
-    _place = place;
-    _render = render;
-    _button = button;
-
-}
-
 void main_quit(void)
 {
 
@@ -128,9 +206,9 @@ int main(int argc, char **argv)
     setup();
     file_init();
     db_init();
-    view_load("front", 0);
+    main_loadview("front", 0);
     run();
-    view_quit("front");
+    main_quitview("front");
     destroy();
 
     return 0;

@@ -111,7 +111,7 @@ void view_sync_setup(void)
 {
 
     view_init(&view, "sync", load, 0);
-    view_register(&view);
+    main_register(&view);
     widget_area_init(&statusarea, 0, 0, 8, 6);
     widget_text_init(&statustext, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, text);
 

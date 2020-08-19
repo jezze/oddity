@@ -109,7 +109,7 @@ void view_app_setup(void)
 {
 
     view_init(&view, "app", load, config);
-    view_register(&view);
+    main_register(&view);
     widget_area_init(&titlearea, 0, 0, 8, 1);
     widget_text_init(&titletext, TEXT_COLOR_TITLE, TEXT_ALIGN_CENTER, 0);
     widget_area_init(&descriptionarea, 0, 1, 8, 4);

@@ -102,7 +102,7 @@ static void button(unsigned int key)
         if (selection_isactive(&selection, &areas[i]))
         {
 
-            view_config("app", "id", app->id);
+            main_configview("app", "id", app->id);
             selection_select(&selection, key, "applist", "app");
 
         }
@@ -170,7 +170,7 @@ void view_applist_setup(void)
 {
 
     view_init(&view, "applist", load, config);
-    view_register(&view);
+    main_register(&view);
     widget_area_init(&areas[0], 0, 0, 8, 1);
     selection_add(&selection, &areas[0]);
     widget_area_init(&areas[1], 0, 1, 8, 1);

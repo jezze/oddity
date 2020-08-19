@@ -221,7 +221,7 @@ void view_settings_audio_setup(void)
 {
 
     view_init(&view, "settings_audio", load, 0);
-    view_register(&view);
+    main_register(&view);
     widget_area_init(&audioarea, 0, 0, 8, 1);
     widget_text_init(&audiotext, TEXT_COLOR_TITLE, TEXT_ALIGN_CENTER, "Volume");
     widget_area_init(&volumemasterarea, 0, 1, 8, 1);
