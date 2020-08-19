@@ -221,7 +221,6 @@ void view_settings_audio_setup(void)
 {
 
     view_init(&view, "settings_audio", load, 0);
-    main_register(&view);
     widget_area_init(&audioarea, 0, 0, 8, 1);
     widget_text_init(&audiotext, TEXT_COLOR_TITLE, TEXT_ALIGN_CENTER, "Volume");
     widget_area_init(&volumemasterarea, 0, 1, 8, 1);
@@ -242,6 +241,7 @@ void view_settings_audio_setup(void)
     widget_text_init(&volumeheadphonestext, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Headphones");
     widget_slider_init(&volumeheadphonesslider, 0, 100, -1);
     selection_add(&selection, &volumeheadphonesarea);
+    main_register(&view);
 
 }
 

@@ -170,7 +170,6 @@ void view_applist_setup(void)
 {
 
     view_init(&view, "applist", load, config);
-    main_register(&view);
     widget_area_init(&areas[0], 0, 0, 8, 1);
     selection_add(&selection, &areas[0]);
     widget_area_init(&areas[1], 0, 1, 8, 1);
@@ -205,6 +204,7 @@ void view_applist_setup(void)
     widget_text_init(&texts[14], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
     widget_text_init(&texts[15], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
     widget_text_init(&texts[16], TEXT_COLOR_NORMAL, TEXT_ALIGN_CENTER, "No items found.");
+    main_register(&view);
 
 }
 

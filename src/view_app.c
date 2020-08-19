@@ -109,7 +109,6 @@ void view_app_setup(void)
 {
 
     view_init(&view, "app", load, config);
-    main_register(&view);
     widget_area_init(&titlearea, 0, 0, 8, 1);
     widget_text_init(&titletext, TEXT_COLOR_TITLE, TEXT_ALIGN_CENTER, 0);
     widget_area_init(&descriptionarea, 0, 1, 8, 4);
@@ -120,6 +119,7 @@ void view_app_setup(void)
     widget_area_init(&uninstallarea, 4, 7, 4, 1);
     widget_text_init(&uninstalltext, TEXT_COLOR_DISABLE, TEXT_ALIGN_CENTER, "Uninstall");
     selection_add(&selection, &uninstallarea);
+    main_register(&view);
 
 }
 

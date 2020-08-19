@@ -69,7 +69,6 @@ void view_front_setup(void)
     view_init(&quit, "quit", main_quit, 0);
     main_register(&quit);
     view_init(&view, "front", load, 0);
-    main_register(&view);
     widget_area_init(&libraryarea, 0, 4, 8, 1);
     widget_text_init(&librarytext, TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Library");
     selection_add(&selection, &libraryarea);
@@ -79,6 +78,7 @@ void view_front_setup(void)
     widget_area_init(&exitarea, 0, 6, 8, 1);
     widget_text_init(&exittext, TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Exit");
     selection_add(&selection, &exitarea);
+    main_register(&view);
 
 }
 

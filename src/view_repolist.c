@@ -113,7 +113,6 @@ void view_repolist_setup(void)
 {
 
     view_init(&view, "repolist", load, 0);
-    main_register(&view);
     widget_area_init(&areaall, 0, 0, 8, 1);
     selection_add(&selection, &areaall);
     widget_area_init(&areainstalled, 0, 1, 8, 1);
@@ -133,6 +132,7 @@ void view_repolist_setup(void)
     widget_text_init(&textupdated, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Updated");
     widget_text_init(&textupdateditems, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, updated);
     widget_text_init(&textsynchronize, TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Synchronize");
+    main_register(&view);
 
 }
 
