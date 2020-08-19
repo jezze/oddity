@@ -114,15 +114,10 @@ void view_repolist_setup(void)
 
     view_init(&view, "repolist", load, 0);
     widget_area_init(&areaall, 0, 0, 8, 1);
-    selection_add(&selection, &areaall);
     widget_area_init(&areainstalled, 0, 1, 8, 1);
-    selection_add(&selection, &areainstalled);
     widget_area_init(&areanew, 0, 2, 8, 1);
-    selection_add(&selection, &areanew);
     widget_area_init(&areaupdated, 0, 3, 8, 1);
-    selection_add(&selection, &areaupdated);
     widget_area_init(&areasynchronize, 0, 7, 8, 1);
-    selection_add(&selection, &areasynchronize);
     widget_text_init(&textall, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "All");
     widget_text_init(&textallitems, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, all);
     widget_text_init(&textinstalled, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Installed");
@@ -132,6 +127,11 @@ void view_repolist_setup(void)
     widget_text_init(&textupdated, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Updated");
     widget_text_init(&textupdateditems, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, updated);
     widget_text_init(&textsynchronize, TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Synchronize");
+    selection_add(&selection, &areaall);
+    selection_add(&selection, &areainstalled);
+    selection_add(&selection, &areanew);
+    selection_add(&selection, &areaupdated);
+    selection_add(&selection, &areasynchronize);
     main_register(&view);
 
 }
