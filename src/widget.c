@@ -5,30 +5,42 @@
 #include "list.h"
 #include "widget.h"
 
-void widget_area_place(struct widget_area *area, struct box *box)
+static void widget_init(struct widget *widget, unsigned int type)
 {
 
+    widget->type = type;
+
+    list_inititem(&widget->item, widget);
+
+}
+
+void widget_area_place(struct widget *widget, struct box *box)
+{
+
+    struct widget_area *area = &widget->payload.area;
     unsigned int ow = 12;
     unsigned int oh = 12;
     unsigned int col = (box->w - ow * 2) / 8;
     unsigned int row = (box->h - oh * 2) / 8;
 
-    area->size.x = col * area->unit.x + ow;
-    area->size.y = row * area->unit.y + oh;
-    area->size.w = col * area->unit.w;
-    area->size.h = row * area->unit.h;
+    widget->size.x = col * area->unit.x + ow;
+    widget->size.y = row * area->unit.y + oh;
+    widget->size.w = col * area->unit.w;
+    widget->size.h = row * area->unit.h;
 
 }
 
-void widget_area_render(struct widget_area *area, unsigned int ticks)
+void widget_area_render(struct widget *widget, unsigned int ticks)
 {
 
 }
 
-void widget_area_init(struct widget_area *area, int x, int y, int w, int h)
+void widget_area_init(struct widget *widget, int x, int y, int w, int h)
 {
 
-    list_inititem(&area->item, area);
+    struct widget_area *area = &widget->payload.area;
+
+    widget_init(widget, WIDGET_TYPE_AREA);
 
     area->unit.x = x;
     area->unit.y = y;
@@ -38,25 +50,26 @@ void widget_area_init(struct widget_area *area, int x, int y, int w, int h)
 
 }
 
-void widget_slider_place(struct widget_slider *slider, struct box *box)
+void widget_slider_place(struct widget *widget, struct box *box)
 {
 
-    slider->size.x = box->x;
-    slider->size.y = box->y;
-    slider->size.w = box->w;
-    slider->size.h = box->h;
+    widget->size.x = box->x;
+    widget->size.y = box->y;
+    widget->size.w = box->w;
+    widget->size.h = box->h;
 
 }
 
-void widget_slider_render(struct widget_slider *slider, unsigned int ticks)
+void widget_slider_render(struct widget *widget, unsigned int ticks)
 {
 
+    struct widget_slider *slider = &widget->payload.slider;
     struct box box;
 
-    box.x = slider->size.x + 10;
-    box.y = slider->size.y + 8;
-    box.w = slider->size.w - 10 * 2;
-    box.h = slider->size.h - 8 * 2;
+    box.x = widget->size.x + 10;
+    box.y = widget->size.y + 8;
+    box.w = widget->size.w - 10 * 2;
+    box.h = widget->size.h - 8 * 2;
 
     if (slider->value >= 0)
     {
@@ -76,10 +89,12 @@ void widget_slider_render(struct widget_slider *slider, unsigned int ticks)
 
 }
 
-void widget_slider_init(struct widget_slider *slider, int min, int max, int value)
+void widget_slider_init(struct widget *widget, int min, int max, int value)
 {
 
-    list_inititem(&slider->item, slider);
+    struct widget_slider *slider = &widget->payload.slider;
+
+    widget_init(widget, WIDGET_TYPE_SLIDER);
 
     slider->min = min;
     slider->max = max;
@@ -87,34 +102,37 @@ void widget_slider_init(struct widget_slider *slider, int min, int max, int valu
 
 }
 
-void widget_text_place(struct widget_text *text, struct box *box)
+void widget_text_place(struct widget *widget, struct box *box)
 {
 
-    text->size.x = box->x;
-    text->size.y = box->y;
-    text->size.w = box->w;
-    text->size.h = box->h;
+    widget->size.x = box->x;
+    widget->size.y = box->y;
+    widget->size.w = box->w;
+    widget->size.h = box->h;
 
 }
 
-void widget_text_render(struct widget_text *text, unsigned int ticks)
+void widget_text_render(struct widget *widget, unsigned int ticks)
 {
 
+    struct widget_text *text = &widget->payload.text;
     struct box box;
 
-    box.x = text->size.x + 10;
-    box.y = text->size.y + 6;
-    box.w = text->size.w - 10 * 2;
-    box.h = text->size.h - 6 * 2;
+    box.x = widget->size.x + 10;
+    box.y = widget->size.y + 6;
+    box.w = widget->size.w - 10 * 2;
+    box.h = widget->size.h - 6 * 2;
 
     text_render(&box, text->color, text->align, text->data);
 
 }
 
-void widget_text_init(struct widget_text *text, unsigned int color, unsigned int align, char *data)
+void widget_text_init(struct widget *widget, unsigned int color, unsigned int align, char *data)
 {
 
-    list_inititem(&text->item, text);
+    struct widget_text *text = &widget->payload.text;
+
+    widget_init(widget, WIDGET_TYPE_TEXT);
 
     text->color = color;
     text->align = align;

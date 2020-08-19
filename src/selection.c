@@ -10,7 +10,7 @@
 struct list_item *selection_getclosest(struct selection *selection, unsigned int key)
 {
 
-    struct widget_area *a;
+    struct widget *a;
     struct list_item *best = 0;
     struct list_item *current;
     int bestabsx = 5000;
@@ -28,12 +28,9 @@ struct list_item *selection_getclosest(struct selection *selection, unsigned int
     for (current = selection->list.head; current; current = current->next)
     {
 
-        struct widget_area *b = current->data;
+        struct widget *b = current->data;
         int bax = abs(b->size.x - a->size.x);
         int bay = abs(b->size.y - a->size.y);
-
-        if (!b->selectable)
-            continue;
 
         switch (key)
         {
@@ -176,10 +173,9 @@ void selection_render(struct selection *selection, unsigned int ticks)
     if (selection->active)
     {
 
-        struct widget_area *area = selection->active->data;
+        struct widget *widget = selection->active->data;
 
-        if (area->selectable)
-            backend_paint_selection(area->size.x, area->size.y, area->size.w, area->size.h);
+        backend_paint_selection(widget->size.x, widget->size.y, widget->size.w, widget->size.h);
 
     }
 

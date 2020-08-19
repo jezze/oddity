@@ -10,23 +10,23 @@
 #include "session.h"
 
 static struct view view;
-static struct widget_area audioarea;
-static struct widget_text audiotext;
-static struct widget_area volumemasterarea;
-static struct widget_area volumemasterareatext;
-static struct widget_area volumemasterareaslider;
-static struct widget_text volumemastertext;
-static struct widget_slider volumemasterslider;
-static struct widget_area volumepcmarea;
-static struct widget_area volumepcmareatext;
-static struct widget_area volumepcmareaslider;
-static struct widget_text volumepcmtext;
-static struct widget_slider volumepcmslider;
-static struct widget_area volumeheadphonesarea;
-static struct widget_area volumeheadphonesareatext;
-static struct widget_area volumeheadphonesareaslider;
-static struct widget_text volumeheadphonestext;
-static struct widget_slider volumeheadphonesslider;
+static struct widget audioarea;
+static struct widget audiotext;
+static struct widget volumemasterarea;
+static struct widget volumemasterareatext;
+static struct widget volumemasterareaslider;
+static struct widget volumemastertext;
+static struct widget volumemasterslider;
+static struct widget volumepcmarea;
+static struct widget volumepcmareatext;
+static struct widget volumepcmareaslider;
+static struct widget volumepcmtext;
+static struct widget volumepcmslider;
+static struct widget volumeheadphonesarea;
+static struct widget volumeheadphonesareatext;
+static struct widget volumeheadphonesareaslider;
+static struct widget volumeheadphonestext;
+static struct widget volumeheadphonesslider;
 static struct selection selection;
 
 static void place(struct box *size)
@@ -73,20 +73,20 @@ void ondata(unsigned int id, void *data, unsigned int count)
     {
 
     case 1:
-        volumemastertext.color = TEXT_COLOR_NORMAL;
-        volumemasterslider.value = strtol(data, 0, 10);
+        volumemastertext.payload.text.color = TEXT_COLOR_NORMAL;
+        volumemasterslider.payload.slider.value = strtol(data, 0, 10);
 
         break;
 
     case 2:
-        volumepcmtext.color = TEXT_COLOR_NORMAL;
-        volumepcmslider.value = strtol(data, 0, 10);
+        volumepcmtext.payload.text.color = TEXT_COLOR_NORMAL;
+        volumepcmslider.payload.slider.value = strtol(data, 0, 10);
 
         break;
 
     case 3:
-        volumeheadphonestext.color = TEXT_COLOR_NORMAL;
-        volumeheadphonesslider.value = strtol(data, 0, 10);
+        volumeheadphonestext.payload.text.color = TEXT_COLOR_NORMAL;
+        volumeheadphonesslider.payload.slider.value = strtol(data, 0, 10);
 
         break;
 
@@ -189,12 +189,12 @@ static void button(unsigned int key)
 static void load(void)
 {
 
-    volumemastertext.color = TEXT_COLOR_DISABLE;
-    volumemasterslider.value = -1;
-    volumepcmtext.color = TEXT_COLOR_DISABLE;
-    volumepcmslider.value = -1;
-    volumeheadphonestext.color = TEXT_COLOR_DISABLE;
-    volumeheadphonesslider.value = -1;
+    volumemastertext.payload.text.color = TEXT_COLOR_DISABLE;
+    volumemasterslider.payload.slider.value = -1;
+    volumepcmtext.payload.text.color = TEXT_COLOR_DISABLE;
+    volumepcmslider.payload.slider.value = -1;
+    volumeheadphonestext.payload.text.color = TEXT_COLOR_DISABLE;
+    volumeheadphonesslider.payload.slider.value = -1;
 
     session_create("settings_volume_get_master", 1, ondata, 0, 0);
     session_setarg("settings_volume_get_master", 0, "./helper.sh");

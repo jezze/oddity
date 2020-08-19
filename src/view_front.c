@@ -9,12 +9,12 @@
 
 static struct view quit;
 static struct view view;
-static struct widget_area libraryarea;
-static struct widget_text librarytext;
-static struct widget_area settingsarea;
-static struct widget_text settingstext;
-static struct widget_area exitarea;
-static struct widget_text exittext;
+static struct widget libraryarea;
+static struct widget librarytext;
+static struct widget settingsarea;
+static struct widget settingstext;
+static struct widget exitarea;
+static struct widget exittext;
 static struct selection selection;
 
 static void place(struct box *size)

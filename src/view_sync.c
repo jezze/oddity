@@ -14,8 +14,8 @@
 
 static struct view view;
 static struct download downloads[8];
-static struct widget_area statusarea;
-static struct widget_text statustext;
+static struct widget statusarea;
+static struct widget statustext;
 static struct selection selection;
 static struct db_remotelist remotelist;
 static char text[128];

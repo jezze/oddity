@@ -10,20 +10,20 @@
 #include "selection.h"
 
 static struct view view;
-static struct widget_area areaall;
-static struct widget_area areainstalled;
-static struct widget_area areanew;
-static struct widget_area areaupdated;
-static struct widget_area areasynchronize;
-static struct widget_text textall;
-static struct widget_text textallitems;
-static struct widget_text textinstalled;
-static struct widget_text textinstalleditems;
-static struct widget_text textnew;
-static struct widget_text textnewitems;
-static struct widget_text textupdated;
-static struct widget_text textupdateditems;
-static struct widget_text textsynchronize;
+static struct widget areaall;
+static struct widget areainstalled;
+static struct widget areanew;
+static struct widget areaupdated;
+static struct widget areasynchronize;
+static struct widget textall;
+static struct widget textallitems;
+static struct widget textinstalled;
+static struct widget textinstalleditems;
+static struct widget textnew;
+static struct widget textnewitems;
+static struct widget textupdated;
+static struct widget textupdateditems;
+static struct widget textsynchronize;
 static struct selection selection;
 static char all[16];
 static char new[16];

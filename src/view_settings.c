@@ -8,10 +8,10 @@
 #include "selection.h"
 
 static struct view view;
-static struct widget_area audioarea;
-static struct widget_area audioareaicon;
-static struct widget_area audioareatext;
-static struct widget_text audiotext;
+static struct widget audioarea;
+static struct widget audioareaicon;
+static struct widget audioareatext;
+static struct widget audiotext;
 static struct selection selection;
 
 static void place(struct box *size)

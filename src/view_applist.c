@@ -10,8 +10,8 @@
 #include "db.h"
 
 static struct view view;
-static struct widget_area areas[9];
-static struct widget_text texts[17];
+static struct widget areas[9];
+static struct widget texts[17];
 static struct selection selection;
 static struct db_applist applist;
 static unsigned int page;
@@ -67,8 +67,8 @@ static void render(unsigned int ticks)
         for (i = 0; i < max; i++)
         {
 
-            texts[i * 2].data = applist.items[start + i].name;
-            texts[i * 2 + 1].data = stateinfo[1];
+            texts[i * 2].payload.text.data = applist.items[start + i].name;
+            texts[i * 2 + 1].payload.text.data = stateinfo[1];
 
             widget_text_render(&texts[i * 2], ticks);
             widget_text_render(&texts[i * 2 + 1], ticks);

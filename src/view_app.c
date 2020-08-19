@@ -10,14 +10,14 @@
 #include "db.h"
 
 static struct view view;
-static struct widget_area titlearea;
-static struct widget_text titletext;
-static struct widget_area descriptionarea;
-static struct widget_text descriptiontext;
-static struct widget_area runarea;
-static struct widget_text runtext;
-static struct widget_area uninstallarea;
-static struct widget_text uninstalltext;
+static struct widget titlearea;
+static struct widget titletext;
+static struct widget descriptionarea;
+static struct widget descriptiontext;
+static struct widget runarea;
+static struct widget runtext;
+static struct widget uninstallarea;
+static struct widget uninstalltext;
 static struct selection selection;
 static struct db_app app;
 
@@ -98,8 +98,8 @@ static void config(char *key, void *value)
         db_freeapp(&app);
         db_loadapp(&app, value);
 
-        titletext.data = app.name;
-        descriptiontext.data = app.shortdescription;
+        titletext.payload.text.data = app.name;
+        descriptiontext.payload.text.data = app.shortdescription;
 
     }
 
