@@ -49,7 +49,7 @@ static void render(unsigned int ticks)
 static void button(unsigned int key)
 {
 
-    selection_setclosest(&selection, key);
+    selection_move(&selection, key);
 
     if (key == KEY_A)
     {

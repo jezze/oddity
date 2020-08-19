@@ -42,7 +42,7 @@ static void render(unsigned int ticks)
 static void button(unsigned int key)
 {
 
-    selection_setclosest(&selection, key);
+    selection_move(&selection, key);
 
     if (selection_isactive(&selection, &libraryarea))
         selection_select(&selection, key, "front", "repolist");

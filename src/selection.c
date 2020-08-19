@@ -8,7 +8,14 @@
 #include "main.h"
 #include "selection.h"
 
-struct widget *selection_getclosest(struct selection *selection, unsigned int key)
+unsigned int selection_isactive(struct selection *selection, struct widget *widget)
+{
+
+    return selection->active == widget;
+
+}
+
+void selection_move(struct selection *selection, unsigned int key)
 {
 
     struct widget *a;
@@ -20,7 +27,7 @@ struct widget *selection_getclosest(struct selection *selection, unsigned int ke
     int amy;
 
     if (!selection->active)
-        return 0;
+        return;
 
     a = selection->active;
     amx = a->size.x + a->size.w / 2;
@@ -100,15 +107,6 @@ struct widget *selection_getclosest(struct selection *selection, unsigned int ke
 
     }
 
-    return best;
-
-}
-
-struct widget *selection_setclosest(struct selection *selection, unsigned int key)
-{
-
-    struct widget *best = selection_getclosest(selection, key);
-
     if (best)
     {
 
@@ -117,15 +115,6 @@ struct widget *selection_setclosest(struct selection *selection, unsigned int ke
         backend_play("click");
 
     }
-
-    return selection->active;
-
-}
-
-unsigned int selection_isactive(struct selection *selection, struct widget *widget)
-{
-
-    return selection->active == widget;
 
 }
 

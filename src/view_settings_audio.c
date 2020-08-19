@@ -97,7 +97,7 @@ void ondata(unsigned int id, void *data, unsigned int count)
 static void button(unsigned int key)
 {
 
-    selection_setclosest(&selection, key);
+    selection_move(&selection, key);
 
     switch (key)
     {

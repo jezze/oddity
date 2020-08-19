@@ -92,7 +92,7 @@ static void button(unsigned int key)
     unsigned int maxpages = applist.count / 8;
     unsigned int i;
 
-    selection_setclosest(&selection, key);
+    selection_move(&selection, key);
 
     for (i = 0; i < 8; i++)
     {
