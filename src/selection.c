@@ -7,11 +7,11 @@
 #include "view.h"
 #include "selection.h"
 
-struct list_item *selection_getclosest(struct selection *selection, unsigned int key)
+struct widget *selection_getclosest(struct selection *selection, unsigned int key)
 {
 
     struct widget *a;
-    struct list_item *best = 0;
+    struct widget *best = 0;
     struct list_item *current;
     int bestabsx = 5000;
     int bestabsy = 5000;
@@ -21,7 +21,7 @@ struct list_item *selection_getclosest(struct selection *selection, unsigned int
     if (!selection->active)
         return 0;
 
-    a = selection->active->data;
+    a = selection->active;
     amx = a->size.x + a->size.w / 2;
     amy = a->size.y + a->size.h / 2;
 
@@ -42,7 +42,7 @@ struct list_item *selection_getclosest(struct selection *selection, unsigned int
             if (bay <= bestabsy && bax < bestabsx)
             {
 
-                best = current;
+                best = b;
                 bestabsx = bax;
                 bestabsy = bay;
 
@@ -57,7 +57,7 @@ struct list_item *selection_getclosest(struct selection *selection, unsigned int
             if (bay <= bestabsy && bax < bestabsx)
             {
 
-                best = current;
+                best = b;
                 bestabsx = bax;
                 bestabsy = bay;
 
@@ -72,7 +72,7 @@ struct list_item *selection_getclosest(struct selection *selection, unsigned int
             if (bax <= bestabsx && bay < bestabsy)
             {
 
-                best = current;
+                best = b;
                 bestabsx = bax;
                 bestabsy = bay;
 
@@ -87,7 +87,7 @@ struct list_item *selection_getclosest(struct selection *selection, unsigned int
             if (bax <= bestabsx && bay < bestabsy)
             {
 
-                best = current;
+                best = b;
                 bestabsx = bax;
                 bestabsy = bay;
 
@@ -103,10 +103,10 @@ struct list_item *selection_getclosest(struct selection *selection, unsigned int
 
 }
 
-struct list_item *selection_setclosest(struct selection *selection, unsigned int key)
+struct widget *selection_setclosest(struct selection *selection, unsigned int key)
 {
 
-    struct list_item *best = selection_getclosest(selection, key);
+    struct widget *best = selection_getclosest(selection, key);
 
     if (best)
     {
@@ -121,10 +121,10 @@ struct list_item *selection_setclosest(struct selection *selection, unsigned int
 
 }
 
-unsigned int selection_isactive(struct selection *selection, struct list_item *item)
+unsigned int selection_isactive(struct selection *selection, struct widget *widget)
 {
 
-    return selection->active == item;
+    return selection->active == widget;
 
 }
 
@@ -160,10 +160,10 @@ void selection_unselect(struct selection *selection, unsigned int key, char *fro
 
 }
 
-void selection_add(struct selection *selection, struct list_item *item)
+void selection_add(struct selection *selection, struct widget *widget)
 {
 
-    list_add(&selection->list, item);
+    list_add(&selection->list, &widget->item);
 
 }
 
@@ -173,7 +173,7 @@ void selection_render(struct selection *selection, unsigned int ticks)
     if (selection->active)
     {
 
-        struct widget *widget = selection->active->data;
+        struct widget *widget = selection->active;
 
         backend_paint_selection(widget->size.x, widget->size.y, widget->size.w, widget->size.h);
 
@@ -184,7 +184,10 @@ void selection_render(struct selection *selection, unsigned int ticks)
 void selection_reset(struct selection *selection)
 {
 
-    selection->active = selection->list.head;
+    if (selection->list.head)
+        selection->active = selection->list.head->data;
+    else
+        selection->active = 0;
 
 }
 

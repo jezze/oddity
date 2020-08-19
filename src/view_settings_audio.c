@@ -103,7 +103,7 @@ static void button(unsigned int key)
     {
 
     case KEY_LEFT:
-        if (selection_isactive(&selection, &volumemasterarea.item))
+        if (selection_isactive(&selection, &volumemasterarea))
         {
 
             session_create("settings_volume_decrement", 1, ondata, 0, 0);
@@ -115,7 +115,7 @@ static void button(unsigned int key)
 
         }
 
-        if (selection_isactive(&selection, &volumepcmarea.item))
+        if (selection_isactive(&selection, &volumepcmarea))
         {
 
             session_create("settings_volume_decrement", 2, ondata, 0, 0);
@@ -127,7 +127,7 @@ static void button(unsigned int key)
 
         }
 
-        if (selection_isactive(&selection, &volumeheadphonesarea.item))
+        if (selection_isactive(&selection, &volumeheadphonesarea))
         {
 
             session_create("settings_volume_decrement", 3, ondata, 0, 0);
@@ -142,7 +142,7 @@ static void button(unsigned int key)
         break;
 
     case KEY_RIGHT:
-        if (selection_isactive(&selection, &volumemasterarea.item))
+        if (selection_isactive(&selection, &volumemasterarea))
         {
 
             session_create("settings_volume_increment", 1, ondata, 0, 0);
@@ -154,7 +154,7 @@ static void button(unsigned int key)
 
         }
 
-        if (selection_isactive(&selection, &volumepcmarea.item))
+        if (selection_isactive(&selection, &volumepcmarea))
         {
 
             session_create("settings_volume_increment", 2, ondata, 0, 0);
@@ -166,7 +166,7 @@ static void button(unsigned int key)
 
         }
 
-        if (selection_isactive(&selection, &volumeheadphonesarea.item))
+        if (selection_isactive(&selection, &volumeheadphonesarea))
         {
 
             session_create("settings_volume_increment", 3, ondata, 0, 0);
@@ -229,19 +229,19 @@ void view_settings_audio_setup(void)
     widget_area_init(&volumemasterareaslider, 5, 1, 3, 1);
     widget_text_init(&volumemastertext, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Master");
     widget_slider_init(&volumemasterslider, 0, 100, -1);
-    selection_add(&selection, &volumemasterarea.item);
+    selection_add(&selection, &volumemasterarea);
     widget_area_init(&volumepcmarea, 0, 2, 8, 1);
     widget_area_init(&volumepcmareatext, 0, 2, 5, 1);
     widget_area_init(&volumepcmareaslider, 5, 2, 3, 1);
     widget_text_init(&volumepcmtext, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "PCM");
     widget_slider_init(&volumepcmslider, 0, 100, -1);
-    selection_add(&selection, &volumepcmarea.item);
+    selection_add(&selection, &volumepcmarea);
     widget_area_init(&volumeheadphonesarea, 0, 3, 8, 1);
     widget_area_init(&volumeheadphonesareatext, 0, 3, 5, 1);
     widget_area_init(&volumeheadphonesareaslider, 5, 3, 3, 1);
     widget_text_init(&volumeheadphonestext, TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Headphones");
     widget_slider_init(&volumeheadphonesslider, 0, 100, -1);
-    selection_add(&selection, &volumeheadphonesarea.item);
+    selection_add(&selection, &volumeheadphonesarea);
 
 }
 

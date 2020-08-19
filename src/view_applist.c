@@ -99,7 +99,7 @@ static void button(unsigned int key)
 
         struct db_app *app = &applist.items[page * 8 + i];
 
-        if (selection_isactive(&selection, &areas[i].item))
+        if (selection_isactive(&selection, &areas[i]))
         {
 
             view_config("app", "id", app->id);
@@ -172,21 +172,21 @@ void view_applist_setup(void)
     view_init(&view, "applist", load, config);
     view_register(&view);
     widget_area_init(&areas[0], 0, 0, 8, 1);
-    selection_add(&selection, &areas[0].item);
+    selection_add(&selection, &areas[0]);
     widget_area_init(&areas[1], 0, 1, 8, 1);
-    selection_add(&selection, &areas[1].item);
+    selection_add(&selection, &areas[1]);
     widget_area_init(&areas[2], 0, 2, 8, 1);
-    selection_add(&selection, &areas[2].item);
+    selection_add(&selection, &areas[2]);
     widget_area_init(&areas[3], 0, 3, 8, 1);
-    selection_add(&selection, &areas[3].item);
+    selection_add(&selection, &areas[3]);
     widget_area_init(&areas[4], 0, 4, 8, 1);
-    selection_add(&selection, &areas[4].item);
+    selection_add(&selection, &areas[4]);
     widget_area_init(&areas[5], 0, 5, 8, 1);
-    selection_add(&selection, &areas[5].item);
+    selection_add(&selection, &areas[5]);
     widget_area_init(&areas[6], 0, 6, 8, 1);
-    selection_add(&selection, &areas[6].item);
+    selection_add(&selection, &areas[6]);
     widget_area_init(&areas[7], 0, 7, 8, 1);
-    selection_add(&selection, &areas[7].item);
+    selection_add(&selection, &areas[7]);
     widget_area_init(&areas[8], 0, 3, 8, 1);
     widget_text_init(&texts[0], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
     widget_text_init(&texts[1], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);

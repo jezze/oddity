@@ -37,7 +37,7 @@ static void button(unsigned int key)
 
     selection_setclosest(&selection, key);
 
-    if (selection_isactive(&selection, &audioarea.item))
+    if (selection_isactive(&selection, &audioarea))
         selection_select(&selection, key, "settings", "settings_audio");
 
     selection_unselect(&selection, key, "settings");
@@ -61,7 +61,7 @@ void view_settings_setup(void)
     widget_area_init(&audioareaicon, 0, 0, 4, 2);
     widget_area_init(&audioareatext, 0, 2, 4, 1);
     widget_text_init(&audiotext, TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Audio");
-    selection_add(&selection, &audioarea.item);
+    selection_add(&selection, &audioarea);
 
 }
 

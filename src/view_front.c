@@ -44,13 +44,13 @@ static void button(unsigned int key)
 
     selection_setclosest(&selection, key);
 
-    if (selection_isactive(&selection, &libraryarea.item))
+    if (selection_isactive(&selection, &libraryarea))
         selection_select(&selection, key, "front", "repolist");
 
-    if (selection_isactive(&selection, &settingsarea.item))
+    if (selection_isactive(&selection, &settingsarea))
         selection_select(&selection, key, "front", "settings");
 
-    if (selection_isactive(&selection, &exitarea.item))
+    if (selection_isactive(&selection, &exitarea))
         selection_select(&selection, key, "front", "quit");
 
 }
@@ -72,13 +72,13 @@ void view_front_setup(void)
     view_register(&view);
     widget_area_init(&libraryarea, 0, 4, 8, 1);
     widget_text_init(&librarytext, TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Library");
-    selection_add(&selection, &libraryarea.item);
+    selection_add(&selection, &libraryarea);
     widget_area_init(&settingsarea, 0, 5, 8, 1);
     widget_text_init(&settingstext, TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Settings");
-    selection_add(&selection, &settingsarea.item);
+    selection_add(&selection, &settingsarea);
     widget_area_init(&exitarea, 0, 6, 8, 1);
     widget_text_init(&exittext, TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Exit");
-    selection_add(&selection, &exitarea.item);
+    selection_add(&selection, &exitarea);
 
 }
 

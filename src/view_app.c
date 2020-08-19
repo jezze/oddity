@@ -54,7 +54,7 @@ static void button(unsigned int key)
     if (key == KEY_A)
     {
 
-        if (selection_isactive(&selection, &runarea.item))
+        if (selection_isactive(&selection, &runarea))
         {
 
             struct db_packagelist packagelist;
@@ -116,10 +116,10 @@ void view_app_setup(void)
     widget_text_init(&descriptiontext, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, 0);
     widget_area_init(&runarea, 0, 7, 4, 1);
     widget_text_init(&runtext, TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Start");
-    selection_add(&selection, &runarea.item);
+    selection_add(&selection, &runarea);
     widget_area_init(&uninstallarea, 4, 7, 4, 1);
     widget_text_init(&uninstalltext, TEXT_COLOR_DISABLE, TEXT_ALIGN_CENTER, "Uninstall");
-    selection_add(&selection, &uninstallarea.item);
+    selection_add(&selection, &uninstallarea);
 
 }
 

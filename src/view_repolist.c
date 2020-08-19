@@ -74,23 +74,23 @@ static void button(unsigned int key)
     if (key == KEY_A)
     {
 
-        if (selection_isactive(&selection, &areaall.item))
+        if (selection_isactive(&selection, &areaall))
             view_config("applist", "list", "all");
 
-        if (selection_isactive(&selection, &areainstalled.item))
+        if (selection_isactive(&selection, &areainstalled))
             view_config("applist", "list", "installed");
 
-        if (selection_isactive(&selection, &areanew.item))
+        if (selection_isactive(&selection, &areanew))
             view_config("applist", "list", "new");
 
-        if (selection_isactive(&selection, &areaupdated.item))
+        if (selection_isactive(&selection, &areaupdated))
             view_config("applist", "list", "updated");
 
         selection_select(&selection, key, "repolist", "applist");
 
     }
 
-    if (selection_isactive(&selection, &areasynchronize.item))
+    if (selection_isactive(&selection, &areasynchronize))
         selection_select(&selection, key, "repolist", "sync");
 
     selection_unselect(&selection, key, "repolist");
@@ -115,15 +115,15 @@ void view_repolist_setup(void)
     view_init(&view, "repolist", load, 0);
     view_register(&view);
     widget_area_init(&areaall, 0, 0, 8, 1);
-    selection_add(&selection, &areaall.item);
+    selection_add(&selection, &areaall);
     widget_area_init(&areainstalled, 0, 1, 8, 1);
-    selection_add(&selection, &areainstalled.item);
+    selection_add(&selection, &areainstalled);
     widget_area_init(&areanew, 0, 2, 8, 1);
-    selection_add(&selection, &areanew.item);
+    selection_add(&selection, &areanew);
     widget_area_init(&areaupdated, 0, 3, 8, 1);
-    selection_add(&selection, &areaupdated.item);
+    selection_add(&selection, &areaupdated);
     widget_area_init(&areasynchronize, 0, 7, 8, 1);
-    selection_add(&selection, &areasynchronize.item);
+    selection_add(&selection, &areasynchronize);
     widget_text_init(&textall, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "All");
     widget_text_init(&textallitems, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, all);
     widget_text_init(&textinstalled, TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Installed");
