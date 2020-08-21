@@ -235,6 +235,8 @@ static void load(void)
     volumemasterslider.payload.slider.value = -1;
     volumepcmtext.payload.text.color = TEXT_COLOR_DISABLE;
     volumepcmslider.payload.slider.value = -1;
+    volumeheadphonetext.payload.text.color = TEXT_COLOR_DISABLE;
+    volumeheadphoneslider.payload.slider.value = -1;
     volumeheadphonestext.payload.text.color = TEXT_COLOR_DISABLE;
     volumeheadphonesslider.payload.slider.value = -1;
 
