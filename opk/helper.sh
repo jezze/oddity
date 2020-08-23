@@ -17,6 +17,11 @@ run_volume_decrement() {
     exit 0
 }
 
+run_download() {
+    wget -q --show-progress --progress=dot -o /dev/stdout $1 -O $2 2>/dev/null
+    exit 0
+}
+
 if [ $# -gt 0 ]
 then
     run_$@
