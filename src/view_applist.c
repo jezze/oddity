@@ -89,21 +89,27 @@ static void render(unsigned int ticks)
 static void button(unsigned int key)
 {
 
-    unsigned int maxpages = applist.count / 8;
+    unsigned int offset = page * 8;
     unsigned int i;
 
     selection_move(&selection, key);
 
-    for (i = 0; i < 8; i++)
+    for (i = offset; i < offset + 8; i++)
     {
 
-        struct db_app *app = &applist.items[page * 8 + i];
-
-        if (selection_isactive(&selection, &areas[i]))
+        if (i < applist.count)
         {
 
-            main_configview("app", "id", app->id);
-            selection_select(&selection, key, "applist", "app");
+            struct db_app *app = &applist.items[i];
+            unsigned int k = i % 8;
+
+            if (selection_isactive(&selection, &areas[k]))
+            {
+
+                main_configview("app", "id", app->id);
+                selection_select(&selection, key, "applist", "app");
+
+            }
 
         }
 
@@ -121,7 +127,7 @@ static void button(unsigned int key)
         break;
 
     case KEY_RIGHT:
-        if (page < maxpages)
+        if (page < (applist.count / 8))
             page++;
 
         break;
