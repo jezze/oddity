@@ -55,11 +55,11 @@ void download_create(struct download *download, unsigned int id, char *url, char
 {
 
     session_create("download", id, ondata, oncomplete, onfailure);
-    session_setarg("download", 0, "./helper.sh");
-    session_setarg("download", 1, "download");
-    session_setarg("download", 2, url);
-    session_setarg("download", 3, path);
-    session_setarg("download", 4, 0);
+    session_setarg("download", id, 0, "./helper.sh");
+    session_setarg("download", id, 1, "download");
+    session_setarg("download", id, 2, url);
+    session_setarg("download", id, 3, path);
+    session_setarg("download", id, 4, 0);
 
 }
 

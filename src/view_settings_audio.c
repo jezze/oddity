@@ -125,10 +125,10 @@ static void button(unsigned int key)
         {
 
             session_create("settings_volume_decrement", 1, ondata, 0, 0);
-            session_setarg("settings_volume_decrement", 0, "./helper.sh");
-            session_setarg("settings_volume_decrement", 1, "volume_decrement");
-            session_setarg("settings_volume_decrement", 2, "Master");
-            session_setarg("settings_volume_decrement", 3, 0);
+            session_setarg("settings_volume_decrement", 1, 0, "./helper.sh");
+            session_setarg("settings_volume_decrement", 1, 1, "volume_decrement");
+            session_setarg("settings_volume_decrement", 1, 2, "Master");
+            session_setarg("settings_volume_decrement", 1, 3, 0);
             session_run();
 
         }
@@ -137,10 +137,10 @@ static void button(unsigned int key)
         {
 
             session_create("settings_volume_decrement", 2, ondata, 0, 0);
-            session_setarg("settings_volume_decrement", 0, "./helper.sh");
-            session_setarg("settings_volume_decrement", 1, "volume_decrement");
-            session_setarg("settings_volume_decrement", 2, "PCM");
-            session_setarg("settings_volume_decrement", 3, 0);
+            session_setarg("settings_volume_decrement", 2, 0, "./helper.sh");
+            session_setarg("settings_volume_decrement", 2, 1, "volume_decrement");
+            session_setarg("settings_volume_decrement", 2, 2, "PCM");
+            session_setarg("settings_volume_decrement", 2, 3, 0);
             session_run();
 
         }
@@ -149,10 +149,10 @@ static void button(unsigned int key)
         {
 
             session_create("settings_volume_decrement", 3, ondata, 0, 0);
-            session_setarg("settings_volume_decrement", 0, "./helper.sh");
-            session_setarg("settings_volume_decrement", 1, "volume_decrement");
-            session_setarg("settings_volume_decrement", 2, "Headphone");
-            session_setarg("settings_volume_decrement", 3, 0);
+            session_setarg("settings_volume_decrement", 3, 0, "./helper.sh");
+            session_setarg("settings_volume_decrement", 3, 1, "volume_decrement");
+            session_setarg("settings_volume_decrement", 3, 2, "Headphone");
+            session_setarg("settings_volume_decrement", 3, 3, 0);
             session_run();
 
         }
@@ -161,10 +161,10 @@ static void button(unsigned int key)
         {
 
             session_create("settings_volume_decrement", 4, ondata, 0, 0);
-            session_setarg("settings_volume_decrement", 0, "./helper.sh");
-            session_setarg("settings_volume_decrement", 1, "volume_decrement");
-            session_setarg("settings_volume_decrement", 2, "Headphones");
-            session_setarg("settings_volume_decrement", 3, 0);
+            session_setarg("settings_volume_decrement", 4, 0, "./helper.sh");
+            session_setarg("settings_volume_decrement", 4, 1, "volume_decrement");
+            session_setarg("settings_volume_decrement", 4, 2, "Headphones");
+            session_setarg("settings_volume_decrement", 4, 3, 0);
             session_run();
 
         }
@@ -176,10 +176,10 @@ static void button(unsigned int key)
         {
 
             session_create("settings_volume_increment", 1, ondata, 0, 0);
-            session_setarg("settings_volume_increment", 0, "./helper.sh");
-            session_setarg("settings_volume_increment", 1, "volume_increment");
-            session_setarg("settings_volume_increment", 2, "Master");
-            session_setarg("settings_volume_increment", 3, 0);
+            session_setarg("settings_volume_increment", 1, 0, "./helper.sh");
+            session_setarg("settings_volume_increment", 1, 1, "volume_increment");
+            session_setarg("settings_volume_increment", 1, 2, "Master");
+            session_setarg("settings_volume_increment", 1, 3, 0);
             session_run();
 
         }
@@ -188,10 +188,10 @@ static void button(unsigned int key)
         {
 
             session_create("settings_volume_increment", 2, ondata, 0, 0);
-            session_setarg("settings_volume_increment", 0, "./helper.sh");
-            session_setarg("settings_volume_increment", 1, "volume_increment");
-            session_setarg("settings_volume_increment", 2, "PCM");
-            session_setarg("settings_volume_increment", 3, 0);
+            session_setarg("settings_volume_increment", 2, 0, "./helper.sh");
+            session_setarg("settings_volume_increment", 2, 1, "volume_increment");
+            session_setarg("settings_volume_increment", 2, 2, "PCM");
+            session_setarg("settings_volume_increment", 2, 3, 0);
             session_run();
 
         }
@@ -200,10 +200,10 @@ static void button(unsigned int key)
         {
 
             session_create("settings_volume_increment", 3, ondata, 0, 0);
-            session_setarg("settings_volume_increment", 0, "./helper.sh");
-            session_setarg("settings_volume_increment", 1, "volume_increment");
-            session_setarg("settings_volume_increment", 2, "Headphone");
-            session_setarg("settings_volume_increment", 3, 0);
+            session_setarg("settings_volume_increment", 3, 0, "./helper.sh");
+            session_setarg("settings_volume_increment", 3, 1, "volume_increment");
+            session_setarg("settings_volume_increment", 3, 2, "Headphone");
+            session_setarg("settings_volume_increment", 3, 3, 0);
             session_run();
 
         }
@@ -212,10 +212,10 @@ static void button(unsigned int key)
         {
 
             session_create("settings_volume_increment", 4, ondata, 0, 0);
-            session_setarg("settings_volume_increment", 0, "./helper.sh");
-            session_setarg("settings_volume_increment", 1, "volume_increment");
-            session_setarg("settings_volume_increment", 2, "Headphones");
-            session_setarg("settings_volume_increment", 3, 0);
+            session_setarg("settings_volume_increment", 4, 0, "./helper.sh");
+            session_setarg("settings_volume_increment", 4, 1, "volume_increment");
+            session_setarg("settings_volume_increment", 4, 2, "Headphones");
+            session_setarg("settings_volume_increment", 4, 3, 0);
             session_run();
 
         }
@@ -240,26 +240,26 @@ static void load(void)
     volumeheadphonestext.payload.text.color = TEXT_COLOR_DISABLE;
     volumeheadphonesslider.payload.slider.value = -1;
 
-    session_create("settings_volume_get_master", 1, ondata, 0, 0);
-    session_setarg("settings_volume_get_master", 0, "./helper.sh");
-    session_setarg("settings_volume_get_master", 1, "volume_get");
-    session_setarg("settings_volume_get_master", 2, "Master");
-    session_setarg("settings_volume_get_master", 3, 0);
-    session_create("settings_volume_get_pcm", 2, ondata, 0, 0);
-    session_setarg("settings_volume_get_pcm", 0, "./helper.sh");
-    session_setarg("settings_volume_get_pcm", 1, "volume_get");
-    session_setarg("settings_volume_get_pcm", 2, "PCM");
-    session_setarg("settings_volume_get_pcm", 3, 0);
-    session_create("settings_volume_get_headphone", 3, ondata, 0, 0);
-    session_setarg("settings_volume_get_headphone", 0, "./helper.sh");
-    session_setarg("settings_volume_get_headphone", 1, "volume_get");
-    session_setarg("settings_volume_get_headphone", 2, "Headphone");
-    session_setarg("settings_volume_get_headphone", 3, 0);
-    session_create("settings_volume_get_headphones", 4, ondata, 0, 0);
-    session_setarg("settings_volume_get_headphones", 0, "./helper.sh");
-    session_setarg("settings_volume_get_headphones", 1, "volume_get");
-    session_setarg("settings_volume_get_headphones", 2, "Headphones");
-    session_setarg("settings_volume_get_headphones", 3, 0);
+    session_create("settings_volume_get", 1, ondata, 0, 0);
+    session_setarg("settings_volume_get", 1, 0, "./helper.sh");
+    session_setarg("settings_volume_get", 1, 1, "volume_get");
+    session_setarg("settings_volume_get", 1, 2, "Master");
+    session_setarg("settings_volume_get", 1, 3, 0);
+    session_create("settings_volume_get", 2, ondata, 0, 0);
+    session_setarg("settings_volume_get", 2, 0, "./helper.sh");
+    session_setarg("settings_volume_get", 2, 1, "volume_get");
+    session_setarg("settings_volume_get", 2, 2, "PCM");
+    session_setarg("settings_volume_get", 2, 3, 0);
+    session_create("settings_volume_get", 3, ondata, 0, 0);
+    session_setarg("settings_volume_get", 3, 0, "./helper.sh");
+    session_setarg("settings_volume_get", 3, 1, "volume_get");
+    session_setarg("settings_volume_get", 3, 2, "Headphone");
+    session_setarg("settings_volume_get", 3, 3, 0);
+    session_create("settings_volume_get", 4, ondata, 0, 0);
+    session_setarg("settings_volume_get", 4, 0, "./helper.sh");
+    session_setarg("settings_volume_get", 4, 1, "volume_get");
+    session_setarg("settings_volume_get", 4, 2, "Headphones");
+    session_setarg("settings_volume_get", 4, 3, 0);
     session_run();
     main_setview(place, render, button);
     selection_reset(&selection);

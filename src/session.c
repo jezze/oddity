@@ -36,8 +36,10 @@ static struct session *findfree(void)
     for (i = 0; i < SESSION_MAX; i++)
     {
 
-        if (sessions[i].state == STATE_NONE)
-            return &sessions[i];
+        struct session *session = &sessions[i];
+
+        if (session->state == STATE_NONE)
+            return session;
 
     }
 
@@ -45,7 +47,7 @@ static struct session *findfree(void)
 
 }
 
-static struct session *findname(char *name)
+static struct session *findsession(char *name, unsigned int id)
 {
 
     unsigned int i;
@@ -53,8 +55,10 @@ static struct session *findname(char *name)
     for (i = 0; i < SESSION_MAX; i++)
     {
 
-        if (!strcmp(sessions[i].name, name))
-            return &sessions[i];
+        struct session *session = &sessions[i];
+
+        if (session->id == id && !strcmp(session->name, name))
+            return session;
 
     }
 
@@ -248,10 +252,10 @@ void session_create(char *name, unsigned int id, void (*ondata)(unsigned int id,
 
 }
 
-void session_setarg(char *name, unsigned int index, char *value)
+void session_setarg(char *name, unsigned int id, unsigned int index, char *value)
 {
 
-    struct session *session = findname(name);
+    struct session *session = findsession(name, id);
 
     if (session)
         session->args[index] = value;
