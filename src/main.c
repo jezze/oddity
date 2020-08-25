@@ -24,7 +24,7 @@ void view_repolist_setup(void);
 void view_settings_setup(void);
 void view_settings_audio_setup(void);
 void view_sync_setup(void);
-static struct view *_view;
+static struct view *current;
 static unsigned int quit;
 static unsigned int ticks;
 static struct list views;
@@ -53,8 +53,8 @@ static void run(void)
         frametime = backend_ticks();
 
         session_poll();
-        backend_pollevent(main_quit, _view->button);
-        backend_renderview(_view, &_view->selection, ticks);
+        backend_pollevent(main_quit, current->button);
+        backend_renderview(current, &current->selection, ticks);
 
         if (backend_ticks() - frametime < TIMELIMIT)
             backend_delay(TIMELIMIT - (backend_ticks() - frametime));
@@ -135,7 +135,7 @@ void main_loadview(char *name, char *parentname)
     if (view->load)
         view->load();
 
-    _view = view;
+    current = view;
 
 }
 
