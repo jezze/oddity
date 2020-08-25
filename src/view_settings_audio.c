@@ -76,7 +76,7 @@ static void button(unsigned int key)
     {
 
     case KEY_LEFT:
-        if (selection_isactive(&view.selection, &volumemasterarea))
+        if (selection_isactive(&view.selection, "volumemasterarea"))
         {
 
             session_create("settings_volume_decrement", 1, ondata, 0, 0);
@@ -88,7 +88,7 @@ static void button(unsigned int key)
 
         }
 
-        if (selection_isactive(&view.selection, &volumepcmarea))
+        if (selection_isactive(&view.selection, "volumepcmarea"))
         {
 
             session_create("settings_volume_decrement", 2, ondata, 0, 0);
@@ -100,7 +100,7 @@ static void button(unsigned int key)
 
         }
 
-        if (selection_isactive(&view.selection, &volumeheadphonearea))
+        if (selection_isactive(&view.selection, "volumeheadphonearea"))
         {
 
             session_create("settings_volume_decrement", 3, ondata, 0, 0);
@@ -112,7 +112,7 @@ static void button(unsigned int key)
 
         }
 
-        if (selection_isactive(&view.selection, &volumeheadphonesarea))
+        if (selection_isactive(&view.selection, "volumeheadphonesarea"))
         {
 
             session_create("settings_volume_decrement", 4, ondata, 0, 0);
@@ -127,7 +127,7 @@ static void button(unsigned int key)
         break;
 
     case KEY_RIGHT:
-        if (selection_isactive(&view.selection, &volumemasterarea))
+        if (selection_isactive(&view.selection, "volumemasterarea"))
         {
 
             session_create("settings_volume_increment", 1, ondata, 0, 0);
@@ -139,7 +139,7 @@ static void button(unsigned int key)
 
         }
 
-        if (selection_isactive(&view.selection, &volumepcmarea))
+        if (selection_isactive(&view.selection, "volumepcmarea"))
         {
 
             session_create("settings_volume_increment", 2, ondata, 0, 0);
@@ -151,7 +151,7 @@ static void button(unsigned int key)
 
         }
 
-        if (selection_isactive(&view.selection, &volumeheadphonearea))
+        if (selection_isactive(&view.selection, "volumeheadphonearea"))
         {
 
             session_create("settings_volume_increment", 3, ondata, 0, 0);
@@ -163,7 +163,7 @@ static void button(unsigned int key)
 
         }
 
-        if (selection_isactive(&view.selection, &volumeheadphonesarea))
+        if (selection_isactive(&view.selection, "volumeheadphonesarea"))
         {
 
             session_create("settings_volume_increment", 4, ondata, 0, 0);
@@ -179,7 +179,7 @@ static void button(unsigned int key)
 
     }
 
-    selection_unselect(&view.selection, key, "settings_audio");
+    selection_unselect(&view.selection, key, view.name);
 
 }
 

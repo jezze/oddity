@@ -32,11 +32,11 @@ static void button(unsigned int key)
             struct db_app *app = &applist.items[i];
             unsigned int k = i % 8;
 
-            if (selection_isactive(&view.selection, &areas[k]))
+            if (selection_isactive(&view.selection, areas[k].id))
             {
 
                 main_configview("app", "id", app->id);
-                selection_select(&view.selection, key, "applist", "app");
+                selection_select(&view.selection, key, areas[k].id, view.name, "app");
 
             }
 
@@ -44,7 +44,7 @@ static void button(unsigned int key)
 
     }
 
-    selection_unselect(&view.selection, key, "applist");
+    selection_unselect(&view.selection, key, view.name);
 
     switch (key)
     {

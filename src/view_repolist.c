@@ -37,26 +37,26 @@ static void button(unsigned int key)
     if (key == KEY_A)
     {
 
-        if (selection_isactive(&view.selection, &areaall))
+        if (selection_isactive(&view.selection, "areaall"))
             main_configview("applist", "list", "all");
 
-        if (selection_isactive(&view.selection, &areainstalled))
+        if (selection_isactive(&view.selection, "areainstalled"))
             main_configview("applist", "list", "installed");
 
-        if (selection_isactive(&view.selection, &areanew))
+        if (selection_isactive(&view.selection, "areanew"))
             main_configview("applist", "list", "new");
 
-        if (selection_isactive(&view.selection, &areaupdated))
+        if (selection_isactive(&view.selection, "areaupdated"))
             main_configview("applist", "list", "updated");
-
-        selection_select(&view.selection, key, "repolist", "applist");
 
     }
 
-    if (selection_isactive(&view.selection, &areasynchronize))
-        selection_select(&view.selection, key, "repolist", "sync");
-
-    selection_unselect(&view.selection, key, "repolist");
+    selection_select(&view.selection, key, "areaall", view.name, "applist");
+    selection_select(&view.selection, key, "areainstalled", view.name, "applist");
+    selection_select(&view.selection, key, "areanew", view.name, "applist");
+    selection_select(&view.selection, key, "areaupdated", view.name, "applist");
+    selection_select(&view.selection, key, "areasynchronize", view.name, "sync");
+    selection_unselect(&view.selection, key, view.name);
 
 }
 

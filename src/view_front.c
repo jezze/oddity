@@ -20,15 +20,9 @@ static void button(unsigned int key)
 {
 
     selection_move(&view.selection, key);
-
-    if (selection_isactive(&view.selection, &libraryarea))
-        selection_select(&view.selection, key, "front", "repolist");
-
-    if (selection_isactive(&view.selection, &settingsarea))
-        selection_select(&view.selection, key, "front", "settings");
-
-    if (selection_isactive(&view.selection, &exitarea))
-        selection_select(&view.selection, key, "front", "quit");
+    selection_select(&view.selection, key, "libraryarea", view.name, "repolist");
+    selection_select(&view.selection, key, "settingsarea", view.name, "settings");
+    selection_select(&view.selection, key, "exitarea", view.name, "quit");
 
 }
 

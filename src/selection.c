@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include "define.h"
 #include "box.h"
 #include "list.h"
@@ -8,10 +9,13 @@
 #include "backend.h"
 #include "main.h"
 
-unsigned int selection_isactive(struct selection *selection, struct widget *widget)
+unsigned int selection_isactive(struct selection *selection, char *id)
 {
 
-    return selection->active == widget;
+    if (!selection->active)
+        return 0;
+
+    return !strcmp(selection->active->id, id);
 
 }
 
@@ -118,35 +122,34 @@ void selection_move(struct selection *selection, unsigned int key)
 
 }
 
-void selection_select(struct selection *selection, unsigned int key, char *from, char *to)
+void selection_select(struct selection *selection, unsigned int key, char *match, char *from, char *to)
 {
 
-    switch (key)
-    {
+    if (key != KEY_A)
+        return;
 
-    case KEY_A:
-        main_loadview(to, from);
-        backend_play("select");
+    if (!selection->active)
+        return;
 
-        break;
+    if (!strlen(selection->active->id))
+        return;
 
-    }
+    if (strcmp(selection->active->id, match))
+        return;
+
+    main_loadview(to, from);
+    backend_play("select");
 
 }
 
 void selection_unselect(struct selection *selection, unsigned int key, char *from)
 {
 
-    switch (key)
-    {
+    if (key != KEY_B)
+        return;
 
-    case KEY_B:
-        main_quitview(from);
-        backend_play("unselect");
-
-        break;
-
-    }
+    main_quitview(from);
+    backend_play("unselect");
 
 }
 

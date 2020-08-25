@@ -28,7 +28,7 @@ static void button(unsigned int key)
     if (key == KEY_A)
     {
 
-        if (selection_isactive(&view.selection, &runarea))
+        if (selection_isactive(&view.selection, "runarea"))
         {
 
             struct db_packagelist packagelist;
@@ -51,7 +51,7 @@ static void button(unsigned int key)
 
     }
 
-    selection_unselect(&view.selection, key, "app");
+    selection_unselect(&view.selection, key, view.name);
 
 }
 

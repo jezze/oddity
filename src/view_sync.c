@@ -58,7 +58,7 @@ static void button(unsigned int key)
 {
 
     selection_move(&view.selection, key);
-    selection_unselect(&view.selection, key, "sync");
+    selection_unselect(&view.selection, key, view.name);
 
 }
 

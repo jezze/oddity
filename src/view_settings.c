@@ -17,11 +17,8 @@ static void button(unsigned int key)
 {
 
     selection_move(&view.selection, key);
-
-    if (selection_isactive(&view.selection, &audioarea))
-        selection_select(&view.selection, key, "settings", "settings_audio");
-
-    selection_unselect(&view.selection, key, "settings");
+    selection_select(&view.selection, key, "audioarea", view.name, "settings_audio");
+    selection_unselect(&view.selection, key, view.name);
 
 }
 
@@ -35,7 +32,7 @@ static void load(void)
 void view_settings_setup(void)
 {
 
-    widget_area_init(&audioarea, "", "main", 0, 0, 4, 3);
+    widget_area_init(&audioarea, "audioarea", "main", 0, 0, 4, 3);
     widget_area_init(&audioareaicon, "", "main", 0, 0, 4, 2);
     widget_area_init(&audioareatext, "audioareatext", "main", 0, 2, 4, 1);
     widget_text_init(&audiotext, "", "audioareatext", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Audio");
