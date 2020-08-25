@@ -6,6 +6,10 @@
 #include <SDL/SDL_ttf.h>
 #include "define.h"
 #include "box.h"
+#include "list.h"
+#include "widget.h"
+#include "selection.h"
+#include "view.h"
 #include "backend.h"
 
 struct image
@@ -423,6 +427,23 @@ void backend_render(unsigned int ticks, void (*place)(struct box *size), void (*
     place(&box);
     renderbackground(ticks);
     render(ticks);
+    renderfade(ticks);
+    SDL_Flip(display);
+
+}
+
+void backend_renderview(struct view *view, struct selection *selection, unsigned int ticks)
+{
+
+    view->main.size.x = 0;
+    view->main.size.y = 0;
+    view->main.size.w = SCREEN_WIDTH;
+    view->main.size.h = SCREEN_HEIGHT;
+
+    view_place(view, &view->main);
+    renderbackground(ticks);
+    selection_render(selection, ticks);
+    view_render(view, &view->main, ticks);
     renderfade(ticks);
     SDL_Flip(display);
 

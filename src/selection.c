@@ -3,10 +3,10 @@
 #include "box.h"
 #include "list.h"
 #include "widget.h"
-#include "backend.h"
-#include "view.h"
-#include "main.h"
 #include "selection.h"
+#include "view.h"
+#include "backend.h"
+#include "main.h"
 
 unsigned int selection_isactive(struct selection *selection, struct widget *widget)
 {

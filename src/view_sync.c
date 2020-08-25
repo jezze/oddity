@@ -4,19 +4,18 @@
 #include "define.h"
 #include "box.h"
 #include "list.h"
-#include "view.h"
-#include "main.h"
 #include "widget.h"
 #include "selection.h"
+#include "view.h"
 #include "file.h"
 #include "db.h"
 #include "download.h"
+#include "main.h"
 
 static struct view view;
 static struct download downloads[8];
 static struct widget statusarea;
 static struct widget statustext;
-static struct selection selection;
 static struct db_remotelist remotelist;
 static char text[128];
 
@@ -55,27 +54,11 @@ static void onfailure(unsigned int id)
 
 }
 
-static void place(struct box *size)
-{
-
-    widget_area_place(&statusarea, size);
-    widget_text_place(&statustext, &statusarea.size);
-
-}
-
-static void render(unsigned int ticks)
-{
-
-    selection_render(&selection, ticks);
-    widget_text_render(&statustext, ticks);
-
-}
-
 static void button(unsigned int key)
 {
 
-    selection_move(&selection, key);
-    selection_unselect(&selection, key, "sync");
+    selection_move(&view.selection, key);
+    selection_unselect(&view.selection, key, "sync");
 
 }
 
@@ -102,17 +85,18 @@ static void load(void)
     }
 
     download_run();
-    main_setview(place, render, button);
-    selection_reset(&selection);
+    selection_reset(&view.selection);
 
 }
 
 void view_sync_setup(void)
 {
 
-    view_init(&view, "sync", load, 0);
-    widget_area_init(&statusarea, 0, 0, 8, 6);
-    widget_text_init(&statustext, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, text);
+    widget_area_init(&statusarea, "statusarea", "main", 0, 0, 8, 6);
+    widget_text_init(&statustext, "", "statusarea", TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, text);
+    view_init(&view, "sync", load, 0, 0, button);
+    view_register(&view, &statusarea);
+    view_register(&view, &statustext);
     main_register(&view);
 
 }

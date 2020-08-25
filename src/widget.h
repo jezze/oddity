@@ -32,6 +32,8 @@ struct widget_text
 struct widget
 {
 
+    char *id;
+    char *in;
     unsigned int type;
     struct list_item item;
     struct box size;
@@ -49,10 +51,10 @@ struct widget
 
 void widget_area_place(struct widget *widget, struct box *box);
 void widget_area_render(struct widget *widget, unsigned int ticks);
-void widget_area_init(struct widget *widget, int x, int y, int w, int h);
+void widget_area_init(struct widget *widget, char *id, char *in, int x, int y, int w, int h);
 void widget_slider_place(struct widget *widget, struct box *box);
 void widget_slider_render(struct widget *widget, unsigned int ticks);
-void widget_slider_init(struct widget *widget, int min, int max, int value);
+void widget_slider_init(struct widget *widget, char *id, char *in, int min, int max, int value);
 void widget_text_place(struct widget *widget, struct box *box);
 void widget_text_render(struct widget *widget, unsigned int ticks);
-void widget_text_init(struct widget *widget, unsigned int color, unsigned int align, char *data);
+void widget_text_init(struct widget *widget, char *id, char *in, unsigned int color, unsigned int align, char *data);

@@ -2,6 +2,10 @@
 #include <string.h>
 #include "define.h"
 #include "box.h"
+#include "list.h"
+#include "widget.h"
+#include "selection.h"
+#include "view.h"
 #include "text.h"
 #include "backend.h"
 

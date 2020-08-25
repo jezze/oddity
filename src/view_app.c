@@ -3,11 +3,11 @@
 #include "define.h"
 #include "box.h"
 #include "list.h"
-#include "view.h"
-#include "main.h"
 #include "widget.h"
 #include "selection.h"
+#include "view.h"
 #include "db.h"
+#include "main.h"
 
 static struct view view;
 static struct widget titlearea;
@@ -18,43 +18,17 @@ static struct widget runarea;
 static struct widget runtext;
 static struct widget uninstallarea;
 static struct widget uninstalltext;
-static struct selection selection;
 static struct db_app app;
-
-static void place(struct box *size)
-{
-
-    widget_area_place(&titlearea, size);
-    widget_text_place(&titletext, &titlearea.size);
-    widget_area_place(&descriptionarea, size);
-    widget_text_place(&descriptiontext, &descriptionarea.size);
-    widget_area_place(&runarea, size);
-    widget_text_place(&runtext, &runarea.size);
-    widget_area_place(&uninstallarea, size);
-    widget_text_place(&uninstalltext, &uninstallarea.size);
-
-}
-
-static void render(unsigned int ticks)
-{
-
-    selection_render(&selection, ticks);
-    widget_text_render(&titletext, ticks);
-    widget_text_render(&descriptiontext, ticks);
-    widget_text_render(&runtext, ticks);
-    widget_text_render(&uninstalltext, ticks);
-
-}
 
 static void button(unsigned int key)
 {
 
-    selection_move(&selection, key);
+    selection_move(&view.selection, key);
 
     if (key == KEY_A)
     {
 
-        if (selection_isactive(&selection, &runarea))
+        if (selection_isactive(&view.selection, &runarea))
         {
 
             struct db_packagelist packagelist;
@@ -77,15 +51,14 @@ static void button(unsigned int key)
 
     }
 
-    selection_unselect(&selection, key, "app");
+    selection_unselect(&view.selection, key, "app");
 
 }
 
 static void load(void)
 {
 
-    main_setview(place, render, button);
-    selection_reset(&selection);
+    selection_reset(&view.selection);
 
 }
 
@@ -108,17 +81,25 @@ static void config(char *key, void *value)
 void view_app_setup(void)
 {
 
-    view_init(&view, "app", load, config);
-    widget_area_init(&titlearea, 0, 0, 8, 1);
-    widget_text_init(&titletext, TEXT_COLOR_TITLE, TEXT_ALIGN_CENTER, 0);
-    widget_area_init(&descriptionarea, 0, 1, 8, 4);
-    widget_text_init(&descriptiontext, TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, 0);
-    widget_area_init(&runarea, 0, 7, 4, 1);
-    widget_text_init(&runtext, TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Start");
-    widget_area_init(&uninstallarea, 4, 7, 4, 1);
-    widget_text_init(&uninstalltext, TEXT_COLOR_DISABLE, TEXT_ALIGN_CENTER, "Uninstall");
-    selection_add(&selection, &runarea);
-    selection_add(&selection, &uninstallarea);
+    widget_area_init(&titlearea, "titlearea", "main", 0, 0, 8, 1);
+    widget_text_init(&titletext, "", "titlearea", TEXT_COLOR_TITLE, TEXT_ALIGN_CENTER, 0);
+    widget_area_init(&descriptionarea, "descriptionarea", "main", 0, 1, 8, 4);
+    widget_text_init(&descriptiontext, "", "descriptionarea", TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, 0);
+    widget_area_init(&runarea, "runarea", "main", 0, 7, 4, 1);
+    widget_text_init(&runtext, "", "runarea", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Start");
+    widget_area_init(&uninstallarea, "uninstallarea", "main", 4, 7, 4, 1);
+    widget_text_init(&uninstalltext, "", "uninstallarea", TEXT_COLOR_DISABLE, TEXT_ALIGN_CENTER, "Uninstall");
+    selection_add(&view.selection, &runarea);
+    selection_add(&view.selection, &uninstallarea);
+    view_init(&view, "app", load, 0, config, button);
+    view_register(&view, &titlearea);
+    view_register(&view, &titletext);
+    view_register(&view, &descriptionarea);
+    view_register(&view, &descriptiontext);
+    view_register(&view, &runarea);
+    view_register(&view, &runtext);
+    view_register(&view, &uninstallarea);
+    view_register(&view, &uninstalltext);
     main_register(&view);
 
 }

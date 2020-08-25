@@ -3,88 +3,17 @@
 #include "define.h"
 #include "box.h"
 #include "list.h"
-#include "view.h"
-#include "main.h"
 #include "widget.h"
 #include "selection.h"
+#include "view.h"
 #include "db.h"
+#include "main.h"
 
 static struct view view;
 static struct widget areas[9];
 static struct widget texts[17];
-static struct selection selection;
 static struct db_applist applist;
 static unsigned int page;
-
-static void place(struct box *size)
-{
-
-    widget_area_place(&areas[0], size);
-    widget_area_place(&areas[1], size);
-    widget_area_place(&areas[2], size);
-    widget_area_place(&areas[3], size);
-    widget_area_place(&areas[4], size);
-    widget_area_place(&areas[5], size);
-    widget_area_place(&areas[6], size);
-    widget_area_place(&areas[7], size);
-    widget_text_place(&texts[0], &areas[0].size);
-    widget_text_place(&texts[1], &areas[0].size);
-    widget_text_place(&texts[2], &areas[1].size);
-    widget_text_place(&texts[3], &areas[1].size);
-    widget_text_place(&texts[4], &areas[2].size);
-    widget_text_place(&texts[5], &areas[2].size);
-    widget_text_place(&texts[6], &areas[3].size);
-    widget_text_place(&texts[7], &areas[3].size);
-    widget_text_place(&texts[8], &areas[4].size);
-    widget_text_place(&texts[9], &areas[4].size);
-    widget_text_place(&texts[10], &areas[5].size);
-    widget_text_place(&texts[11], &areas[5].size);
-    widget_text_place(&texts[12], &areas[6].size);
-    widget_text_place(&texts[13], &areas[6].size);
-    widget_text_place(&texts[14], &areas[7].size);
-    widget_text_place(&texts[15], &areas[7].size);
-    widget_area_place(&areas[8], size);
-    widget_text_place(&texts[16], &areas[8].size);
-
-}
-
-static void render(unsigned int ticks)
-{
-
-    char *stateinfo[] = {"", "New", "Updated", "Installed"};
-    unsigned int start = page * 8;
-    unsigned int max = applist.count - start;
-    unsigned int i;
-
-    if (max > 8)
-        max = 8;
-
-    if (max)
-    {
-
-        selection_render(&selection, ticks);
-
-        for (i = 0; i < max; i++)
-        {
-
-            texts[i * 2].payload.text.data = applist.items[start + i].name;
-            texts[i * 2 + 1].payload.text.data = stateinfo[1];
-
-            widget_text_render(&texts[i * 2], ticks);
-            widget_text_render(&texts[i * 2 + 1], ticks);
-
-        }
-
-    }
-
-    else
-    {
-
-        widget_text_render(&texts[16], ticks);
-
-    }
-
-}
 
 static void button(unsigned int key)
 {
@@ -92,7 +21,7 @@ static void button(unsigned int key)
     unsigned int offset = page * 8;
     unsigned int i;
 
-    selection_move(&selection, key);
+    selection_move(&view.selection, key);
 
     for (i = offset; i < offset + 8; i++)
     {
@@ -103,11 +32,11 @@ static void button(unsigned int key)
             struct db_app *app = &applist.items[i];
             unsigned int k = i % 8;
 
-            if (selection_isactive(&selection, &areas[k]))
+            if (selection_isactive(&view.selection, &areas[k]))
             {
 
                 main_configview("app", "id", app->id);
-                selection_select(&selection, key, "applist", "app");
+                selection_select(&view.selection, key, "applist", "app");
 
             }
 
@@ -115,7 +44,7 @@ static void button(unsigned int key)
 
     }
 
-    selection_unselect(&selection, key, "applist");
+    selection_unselect(&view.selection, key, "applist");
 
     switch (key)
     {
@@ -141,8 +70,7 @@ static void load(void)
 
     page = 0;
 
-    main_setview(place, render, button);
-    selection_reset(&selection);
+    selection_reset(&view.selection);
 
 }
 
@@ -175,41 +103,73 @@ static void config(char *key, void *value)
 void view_applist_setup(void)
 {
 
-    view_init(&view, "applist", load, config);
-    widget_area_init(&areas[0], 0, 0, 8, 1);
-    widget_area_init(&areas[1], 0, 1, 8, 1);
-    widget_area_init(&areas[2], 0, 2, 8, 1);
-    widget_area_init(&areas[3], 0, 3, 8, 1);
-    widget_area_init(&areas[4], 0, 4, 8, 1);
-    widget_area_init(&areas[5], 0, 5, 8, 1);
-    widget_area_init(&areas[6], 0, 6, 8, 1);
-    widget_area_init(&areas[7], 0, 7, 8, 1);
-    widget_area_init(&areas[8], 0, 3, 8, 1);
-    widget_text_init(&texts[0], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(&texts[1], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(&texts[2], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(&texts[3], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(&texts[4], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(&texts[5], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(&texts[6], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(&texts[7], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(&texts[8], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(&texts[9], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(&texts[10], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(&texts[11], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(&texts[12], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(&texts[13], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(&texts[14], TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(&texts[15], TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(&texts[16], TEXT_COLOR_NORMAL, TEXT_ALIGN_CENTER, "No items found.");
-    selection_add(&selection, &areas[0]);
-    selection_add(&selection, &areas[1]);
-    selection_add(&selection, &areas[2]);
-    selection_add(&selection, &areas[3]);
-    selection_add(&selection, &areas[4]);
-    selection_add(&selection, &areas[5]);
-    selection_add(&selection, &areas[6]);
-    selection_add(&selection, &areas[7]);
+    widget_area_init(&areas[0], "area0", "main", 0, 0, 8, 1);
+    widget_area_init(&areas[1], "area1", "main", 0, 1, 8, 1);
+    widget_area_init(&areas[2], "area2", "main", 0, 2, 8, 1);
+    widget_area_init(&areas[3], "area3", "main", 0, 3, 8, 1);
+    widget_area_init(&areas[4], "area4", "main", 0, 4, 8, 1);
+    widget_area_init(&areas[5], "area5", "main", 0, 5, 8, 1);
+    widget_area_init(&areas[6], "area6", "main", 0, 6, 8, 1);
+    widget_area_init(&areas[7], "area7", "main", 0, 7, 8, 1);
+    widget_area_init(&areas[8], "area8", "main", 0, 3, 8, 1);
+    widget_text_init(&texts[0], "", "area0", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(&texts[1], "", "area0", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(&texts[2], "", "area1", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(&texts[3], "", "area1", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(&texts[4], "", "area2", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(&texts[5], "", "area2", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(&texts[6], "", "area3", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(&texts[7], "", "area3", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(&texts[8], "", "area4", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(&texts[9], "", "area4", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(&texts[10], "", "area5", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(&texts[11], "", "area5", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(&texts[12], "", "area6", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(&texts[13], "", "area6", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(&texts[14], "", "area7", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(&texts[15], "", "area7", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(&texts[16], "", "area8", TEXT_COLOR_NORMAL, TEXT_ALIGN_CENTER, "No items found.");
+    /*
+    selection_add(&view.selection, &areas[0]);
+    selection_add(&view.selection, &areas[1]);
+    selection_add(&view.selection, &areas[2]);
+    selection_add(&view.selection, &areas[3]);
+    selection_add(&view.selection, &areas[4]);
+    selection_add(&view.selection, &areas[5]);
+    selection_add(&view.selection, &areas[6]);
+    selection_add(&view.selection, &areas[7]);
+    */
+    view_init(&view, "applist", load, 0, config, button);
+    /*
+    view_register(&view, &areas[0]);
+    view_register(&view, &areas[1]);
+    view_register(&view, &areas[2]);
+    view_register(&view, &areas[3]);
+    view_register(&view, &areas[4]);
+    view_register(&view, &areas[5]);
+    view_register(&view, &areas[6]);
+    view_register(&view, &areas[7]);
+    */
+    view_register(&view, &areas[8]);
+    /*
+    view_register(&view, &texts[0]);
+    view_register(&view, &texts[1]);
+    view_register(&view, &texts[2]);
+    view_register(&view, &texts[3]);
+    view_register(&view, &texts[4]);
+    view_register(&view, &texts[5]);
+    view_register(&view, &texts[6]);
+    view_register(&view, &texts[7]);
+    view_register(&view, &texts[8]);
+    view_register(&view, &texts[9]);
+    view_register(&view, &texts[10]);
+    view_register(&view, &texts[11]);
+    view_register(&view, &texts[12]);
+    view_register(&view, &texts[13]);
+    view_register(&view, &texts[14]);
+    view_register(&view, &texts[15]);
+    */
+    view_register(&view, &texts[16]);
     main_register(&view);
 
 }

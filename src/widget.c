@@ -1,14 +1,18 @@
 #include <stdlib.h>
 #include "box.h"
-#include "backend.h"
-#include "text.h"
 #include "list.h"
+#include "text.h"
 #include "widget.h"
+#include "selection.h"
+#include "view.h"
+#include "backend.h"
 
-static void widget_init(struct widget *widget, unsigned int type)
+static void widget_init(struct widget *widget, unsigned int type, char *id, char *in)
 {
 
     widget->type = type;
+    widget->id = id;
+    widget->in = in;
 
     list_inititem(&widget->item, widget);
 
@@ -35,12 +39,12 @@ void widget_area_render(struct widget *widget, unsigned int ticks)
 
 }
 
-void widget_area_init(struct widget *widget, int x, int y, int w, int h)
+void widget_area_init(struct widget *widget, char *id, char *in, int x, int y, int w, int h)
 {
 
     struct widget_area *area = &widget->payload.area;
 
-    widget_init(widget, WIDGET_TYPE_AREA);
+    widget_init(widget, WIDGET_TYPE_AREA, id, in);
 
     area->unit.x = x;
     area->unit.y = y;
@@ -89,12 +93,12 @@ void widget_slider_render(struct widget *widget, unsigned int ticks)
 
 }
 
-void widget_slider_init(struct widget *widget, int min, int max, int value)
+void widget_slider_init(struct widget *widget, char *id, char *in, int min, int max, int value)
 {
 
     struct widget_slider *slider = &widget->payload.slider;
 
-    widget_init(widget, WIDGET_TYPE_SLIDER);
+    widget_init(widget, WIDGET_TYPE_SLIDER, id, in);
 
     slider->min = min;
     slider->max = max;
@@ -127,12 +131,12 @@ void widget_text_render(struct widget *widget, unsigned int ticks)
 
 }
 
-void widget_text_init(struct widget *widget, unsigned int color, unsigned int align, char *data)
+void widget_text_init(struct widget *widget, char *id, char *in, unsigned int color, unsigned int align, char *data)
 {
 
     struct widget_text *text = &widget->payload.text;
 
-    widget_init(widget, WIDGET_TYPE_TEXT);
+    widget_init(widget, WIDGET_TYPE_TEXT, id, in);
 
     text->color = color;
     text->align = align;
