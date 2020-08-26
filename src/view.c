@@ -115,12 +115,15 @@ unsigned int view_isactive(struct view *view, char *id)
 void view_moveselection(struct view *view, unsigned int key)
 {
 
-    struct widget *best = 0;
     struct list_item *current;
+    struct widget *best = 0;
     int bestdx = 5000;
     int bestdy = 5000;
     int mx;
     int my;
+
+    if (!(key == KEY_LEFT || key == KEY_RIGHT || key == KEY_UP || key == KEY_DOWN))
+        return;
 
     if (!view->selection.active)
         return;
