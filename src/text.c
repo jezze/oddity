@@ -5,7 +5,6 @@
 #include "list.h"
 #include "widget.h"
 #include "view.h"
-#include "selection.h"
 #include "text.h"
 #include "backend.h"
 

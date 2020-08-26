@@ -4,7 +4,6 @@
 #include "text.h"
 #include "widget.h"
 #include "view.h"
-#include "selection.h"
 #include "backend.h"
 
 static void widget_init(struct widget *widget, unsigned int type, char *id, char *in)

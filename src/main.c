@@ -11,7 +11,6 @@
 #include "db.h"
 #include "widget.h"
 #include "view.h"
-#include "selection.h"
 #include "backend.h"
 #include "main.h"
 
