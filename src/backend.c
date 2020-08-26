@@ -413,25 +413,7 @@ void backend_waitevent(void (*quit)(void), void (*button)(unsigned int key))
 
 }
 
-void backend_render(unsigned int ticks, void (*place)(struct box *size), void (*render)(unsigned int ticks))
-{
-
-    struct box box;
-
-    box.x = 0;
-    box.y = 0;
-    box.w = SCREEN_WIDTH;
-    box.h = SCREEN_HEIGHT;
-
-    place(&box);
-    renderbackground(ticks);
-    render(ticks);
-    renderfade(ticks);
-    SDL_Flip(display);
-
-}
-
-void backend_renderview(struct view *view, unsigned int ticks)
+void backend_render(struct view *view, unsigned int ticks)
 {
 
     view->main.size.x = 0;
@@ -439,10 +421,9 @@ void backend_renderview(struct view *view, unsigned int ticks)
     view->main.size.w = SCREEN_WIDTH;
     view->main.size.h = SCREEN_HEIGHT;
 
-    view_place(view, &view->main);
+    view_place(view);
     renderbackground(ticks);
-    view_renderselection(view, ticks);
-    view_render(view, &view->main, ticks);
+    view_render(view, ticks);
     renderfade(ticks);
     SDL_Flip(display);
 

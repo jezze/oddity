@@ -53,7 +53,7 @@ static void run(void)
 
         session_poll();
         backend_pollevent(main_quit, current->button);
-        backend_renderview(current, ticks);
+        backend_render(current, ticks);
 
         if (backend_ticks() - frametime < TIMELIMIT)
             backend_delay(TIMELIMIT - (backend_ticks() - frametime));

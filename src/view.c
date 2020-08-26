@@ -33,6 +33,28 @@ static void placewidget(struct widget *widget, struct box *size)
 
 }
 
+static void placewidgets(struct view *view, struct widget *parent)
+{
+
+    struct list_item *current;
+
+    for (current = view->widgets.head; current; current = current->next)
+    {
+
+        struct widget *widget = current->data;
+
+        if (strlen(parent->id) && !strcmp(widget->in, parent->id))
+        {
+
+            placewidget(widget, &parent->size);
+            placewidgets(view, widget);
+
+        }
+
+    }
+
+}
+
 static void renderwidget(struct widget *widget, unsigned int ticks)
 {
 
@@ -58,29 +80,7 @@ static void renderwidget(struct widget *widget, unsigned int ticks)
 
 }
 
-void view_place(struct view *view, struct widget *parent)
-{
-
-    struct list_item *current;
-
-    for (current = view->widgets.head; current; current = current->next)
-    {
-
-        struct widget *widget = current->data;
-
-        if (strlen(parent->id) && !strcmp(widget->in, parent->id))
-        {
-
-            placewidget(widget, &parent->size);
-            view_place(view, widget);
-
-        }
-
-    }
-
-}
-
-void view_render(struct view *view, struct widget *parent, unsigned int ticks)
+static void renderwidgets(struct view *view, struct widget *parent, unsigned int ticks)
 {
 
     struct list_item *current;
@@ -94,11 +94,34 @@ void view_render(struct view *view, struct widget *parent, unsigned int ticks)
         {
 
             renderwidget(widget, ticks);
-            view_render(view, widget, ticks);
+            renderwidgets(view, widget, ticks);
 
         }
 
     }
+
+}
+
+void view_place(struct view *view)
+{
+
+    placewidgets(view, &view->main);
+
+}
+
+void view_render(struct view *view, unsigned int ticks)
+{
+
+    if (view->selection.active)
+    {
+
+        struct widget *widget = view->selection.active;
+
+        backend_paint_selection(widget->size.x, widget->size.y, widget->size.w, widget->size.h);
+
+    }
+
+    renderwidgets(view, &view->main, ticks);
 
 }
 
@@ -251,20 +274,6 @@ void view_addselection(struct view *view, struct widget *widget)
 {
 
     list_add(&view->selection.list, &widget->selectionitem);
-
-}
-
-void view_renderselection(struct view *view, unsigned int ticks)
-{
-
-    if (view->selection.active)
-    {
-
-        struct widget *widget = view->selection.active;
-
-        backend_paint_selection(widget->size.x, widget->size.y, widget->size.w, widget->size.h);
-
-    }
 
 }
 
