@@ -32,10 +32,10 @@ static void load(void)
 void view_settings_setup(void)
 {
 
-    widget_area_init(&audioarea, "audioarea", "main", 0, 0, 4, 3);
-    widget_area_init(&audioareaicon, "", "main", 0, 0, 4, 2);
-    widget_area_init(&audioareatext, "audioareatext", "main", 0, 2, 4, 1);
-    widget_text_init(&audiotext, "", "audioareatext", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Audio");
+    widget_area_init(&audioarea, "audioarea", WIDGET_IN_DEFAULT, 0, 0, 4, 3);
+    widget_area_init(&audioareaicon, "audioareaicon", WIDGET_IN_DEFAULT, 0, 0, 4, 2);
+    widget_area_init(&audioareatext, "audioareatext", WIDGET_IN_DEFAULT, 0, 2, 4, 1);
+    widget_text_init(&audiotext, WIDGET_ID_DEFAULT, "audioareatext", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Audio");
     selection_add(&view.selection, &audioarea);
     view_init(&view, "settings", load, 0, 0, button);
     view_register(&view, &audioarea);

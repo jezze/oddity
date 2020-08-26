@@ -36,12 +36,12 @@ static void load(void)
 void view_front_setup(void)
 {
 
-    widget_area_init(&libraryarea, "libraryarea", "main", 0, 4, 8, 1);
-    widget_text_init(&librarytext, "", "libraryarea", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Library");
-    widget_area_init(&settingsarea, "settingsarea", "main", 0, 5, 8, 1);
-    widget_text_init(&settingstext, "", "settingsarea", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Settings");
-    widget_area_init(&exitarea, "exitarea", "main", 0, 6, 8, 1);
-    widget_text_init(&exittext, "", "exitarea", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Exit");
+    widget_area_init(&libraryarea, "libraryarea", WIDGET_IN_DEFAULT, 0, 4, 8, 1);
+    widget_text_init(&librarytext, WIDGET_ID_DEFAULT, "libraryarea", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Library");
+    widget_area_init(&settingsarea, "settingsarea", WIDGET_IN_DEFAULT, 0, 5, 8, 1);
+    widget_text_init(&settingstext, WIDGET_ID_DEFAULT, "settingsarea", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Settings");
+    widget_area_init(&exitarea, "exitarea", WIDGET_IN_DEFAULT, 0, 6, 8, 1);
+    widget_text_init(&exittext, WIDGET_ID_DEFAULT, "exitarea", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Exit");
     selection_add(&view.selection, &libraryarea);
     selection_add(&view.selection, &settingsarea);
     selection_add(&view.selection, &exitarea);

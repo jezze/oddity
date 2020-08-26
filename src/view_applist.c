@@ -103,32 +103,32 @@ static void config(char *key, void *value)
 void view_applist_setup(void)
 {
 
-    widget_area_init(&areas[0], "area0", "main", 0, 0, 8, 1);
-    widget_area_init(&areas[1], "area1", "main", 0, 1, 8, 1);
-    widget_area_init(&areas[2], "area2", "main", 0, 2, 8, 1);
-    widget_area_init(&areas[3], "area3", "main", 0, 3, 8, 1);
-    widget_area_init(&areas[4], "area4", "main", 0, 4, 8, 1);
-    widget_area_init(&areas[5], "area5", "main", 0, 5, 8, 1);
-    widget_area_init(&areas[6], "area6", "main", 0, 6, 8, 1);
-    widget_area_init(&areas[7], "area7", "main", 0, 7, 8, 1);
-    widget_area_init(&areas[8], "area8", "main", 0, 3, 8, 1);
-    widget_text_init(&texts[0], "", "area0", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(&texts[1], "", "area0", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(&texts[2], "", "area1", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(&texts[3], "", "area1", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(&texts[4], "", "area2", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(&texts[5], "", "area2", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(&texts[6], "", "area3", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(&texts[7], "", "area3", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(&texts[8], "", "area4", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(&texts[9], "", "area4", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(&texts[10], "", "area5", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(&texts[11], "", "area5", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(&texts[12], "", "area6", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(&texts[13], "", "area6", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(&texts[14], "", "area7", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(&texts[15], "", "area7", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(&texts[16], "", "area8", TEXT_COLOR_NORMAL, TEXT_ALIGN_CENTER, "No items found.");
+    widget_area_init(&areas[0], "area0", WIDGET_IN_DEFAULT, 0, 0, 8, 1);
+    widget_area_init(&areas[1], "area1", WIDGET_IN_DEFAULT, 0, 1, 8, 1);
+    widget_area_init(&areas[2], "area2", WIDGET_IN_DEFAULT, 0, 2, 8, 1);
+    widget_area_init(&areas[3], "area3", WIDGET_IN_DEFAULT, 0, 3, 8, 1);
+    widget_area_init(&areas[4], "area4", WIDGET_IN_DEFAULT, 0, 4, 8, 1);
+    widget_area_init(&areas[5], "area5", WIDGET_IN_DEFAULT, 0, 5, 8, 1);
+    widget_area_init(&areas[6], "area6", WIDGET_IN_DEFAULT, 0, 6, 8, 1);
+    widget_area_init(&areas[7], "area7", WIDGET_IN_DEFAULT, 0, 7, 8, 1);
+    widget_area_init(&areas[8], "area8", WIDGET_IN_DEFAULT, 0, 3, 8, 1);
+    widget_text_init(&texts[0], WIDGET_ID_DEFAULT, "area0", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(&texts[1], WIDGET_ID_DEFAULT, "area0", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(&texts[2], WIDGET_ID_DEFAULT, "area1", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(&texts[3], WIDGET_ID_DEFAULT, "area1", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(&texts[4], WIDGET_ID_DEFAULT, "area2", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(&texts[5], WIDGET_ID_DEFAULT, "area2", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(&texts[6], WIDGET_ID_DEFAULT, "area3", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(&texts[7], WIDGET_ID_DEFAULT, "area3", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(&texts[8], WIDGET_ID_DEFAULT, "area4", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(&texts[9], WIDGET_ID_DEFAULT, "area4", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(&texts[10], WIDGET_ID_DEFAULT, "area5", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(&texts[11], WIDGET_ID_DEFAULT, "area5", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(&texts[12], WIDGET_ID_DEFAULT, "area6", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(&texts[13], WIDGET_ID_DEFAULT, "area6", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(&texts[14], WIDGET_ID_DEFAULT, "area7", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(&texts[15], WIDGET_ID_DEFAULT, "area7", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(&texts[16], WIDGET_ID_DEFAULT, "area8", TEXT_COLOR_NORMAL, TEXT_ALIGN_CENTER, "No items found.");
     /*
     selection_add(&view.selection, &areas[0]);
     selection_add(&view.selection, &areas[1]);

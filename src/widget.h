@@ -2,6 +2,8 @@
 #define WIDGET_TYPE_AREA                1
 #define WIDGET_TYPE_SLIDER              2
 #define WIDGET_TYPE_TEXT                3
+#define WIDGET_ID_DEFAULT               ""
+#define WIDGET_IN_DEFAULT               "main"
 
 struct widget_area
 {
