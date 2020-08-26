@@ -115,86 +115,84 @@ unsigned int view_isactive(struct view *view, char *id)
 void view_moveselection(struct view *view, unsigned int key)
 {
 
-    struct widget *a;
     struct widget *best = 0;
     struct list_item *current;
-    int bestabsx = 5000;
-    int bestabsy = 5000;
-    int amx;
-    int amy;
+    int bestdx = 5000;
+    int bestdy = 5000;
+    int mx;
+    int my;
 
     if (!view->selection.active)
         return;
 
-    a = view->selection.active;
-    amx = a->size.x + a->size.w / 2;
-    amy = a->size.y + a->size.h / 2;
+    mx = view->selection.active->size.x + view->selection.active->size.w / 2;
+    my = view->selection.active->size.y + view->selection.active->size.h / 2;
 
     for (current = view->selection.list.head; current; current = current->next)
     {
 
-        struct widget *b = current->data;
-        int bax = abs(b->size.x - a->size.x);
-        int bay = abs(b->size.y - a->size.y);
+        struct widget *widget = current->data;
+        int dx = abs(widget->size.x - view->selection.active->size.x);
+        int dy = abs(widget->size.y - view->selection.active->size.y);
 
         switch (key)
         {
 
         case KEY_LEFT:
-            if (b->size.x + b->size.w >= amx)
+            if (widget->size.x + widget->size.w >= mx)
                 continue;
 
-            if (bay <= bestabsy && bax < bestabsx)
+            if (dy <= bestdy && dx < bestdx)
             {
 
-                best = b;
-                bestabsx = bax;
-                bestabsy = bay;
+                best = widget;
+                bestdx = dx;
+                bestdy = dy;
 
             }
 
             break;
 
         case KEY_RIGHT:
-            if (b->size.x < amx)
+            if (widget->size.x < mx)
                 continue;
 
-            if (bay <= bestabsy && bax < bestabsx)
+            if (dy <= bestdy && dx < bestdx)
             {
 
-                best = b;
-                bestabsx = bax;
-                bestabsy = bay;
+                best = widget;
+                bestdx = dx;
+                bestdy = dy;
 
             }
 
             break;
 
         case KEY_UP:
-            if (b->size.y + b->size.h >= amy)
+            if (widget->size.y + widget->size.h >= my)
                 continue;
 
-            if (bax <= bestabsx && bay < bestabsy)
+            if (dx <= bestdx && dy < bestdy)
             {
 
-                best = b;
-                bestabsx = bax;
-                bestabsy = bay;
+                best = widget;
+                bestdx = dx;
+                bestdy = dy;
 
             }
 
             break;
 
         case KEY_DOWN:
-            if (b->size.y < amy)
+            if (widget->size.y < my)
                 continue;
 
-            if (bax <= bestabsx && bay < bestabsy)
+            if (dx <= bestdx && dy < bestdy)
             {
 
-                best = b;
-                bestabsx = bax;
-                bestabsy = bay;
+                best = widget;
+                bestdx = dx;
+                bestdy = dy;
 
             }
 

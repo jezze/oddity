@@ -39,7 +39,7 @@ $(PKG): $(BIN)
 clean:
 	rm -f $(PKG) $(BIN) $(OBJ)
 
-run:
+run: $(PKG)
 	(cd opk && ./ztore)
 
 upload:
