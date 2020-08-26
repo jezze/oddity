@@ -1,15 +1,7 @@
-struct selection
-{
-
-    struct list list;
-    struct widget *active;
-
-};
-
-unsigned int selection_isactive(struct selection *selection, char *id);
-void selection_move(struct selection *selection, unsigned int key);
-void selection_select(struct selection *selection, unsigned int key, char *match, char *from, char *to);
-void selection_unselect(struct selection *selection, unsigned int key, char *from);
-void selection_add(struct selection *selection, struct widget *widget);
-void selection_render(struct selection *selection, unsigned int ticks);
-void selection_reset(struct selection *selection);
+unsigned int view_isactive(struct view *view, char *id);
+void view_moveselection(struct view *view, unsigned int key);
+void view_select(struct view *view, unsigned int key, char *match, char *from, char *to);
+void view_unselect(struct view *view, unsigned int key, char *from);
+void view_addselection(struct view *view, struct widget *widget);
+void view_renderselection(struct view *view, unsigned int ticks);
+void view_reset(struct view *view);

@@ -6,7 +6,7 @@ void backend_paint_selection(int x, int y, int w, int h);
 void backend_pollevent(void (*quit)(void), void (*button)(unsigned int key));
 void backend_waitevent(void (*quit)(void), void (*button)(unsigned int key));
 void backend_render(unsigned int ticks, void (*place)(struct box *size), void (*render)(unsigned int ticks));
-void backend_renderview(struct view *view, struct selection *selection, unsigned int ticks);
+void backend_renderview(struct view *view, unsigned int ticks);
 unsigned int backend_ticks(void);
 void backend_delay(unsigned int ms);
 void backend_play(char *name);

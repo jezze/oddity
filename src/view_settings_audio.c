@@ -4,8 +4,8 @@
 #include "box.h"
 #include "list.h"
 #include "widget.h"
-#include "selection.h"
 #include "view.h"
+#include "selection.h"
 #include "session.h"
 #include "main.h"
 
@@ -70,13 +70,13 @@ void ondata(unsigned int id, void *data, unsigned int count)
 static void button(unsigned int key)
 {
 
-    selection_move(&view.selection, key);
+    view_moveselection(&view, key);
 
     switch (key)
     {
 
     case KEY_LEFT:
-        if (selection_isactive(&view.selection, "volumemasterarea"))
+        if (view_isactive(&view, "volumemasterarea"))
         {
 
             session_create("settings_volume_decrement", 1, ondata, 0, 0);
@@ -88,7 +88,7 @@ static void button(unsigned int key)
 
         }
 
-        if (selection_isactive(&view.selection, "volumepcmarea"))
+        if (view_isactive(&view, "volumepcmarea"))
         {
 
             session_create("settings_volume_decrement", 2, ondata, 0, 0);
@@ -100,7 +100,7 @@ static void button(unsigned int key)
 
         }
 
-        if (selection_isactive(&view.selection, "volumeheadphonearea"))
+        if (view_isactive(&view, "volumeheadphonearea"))
         {
 
             session_create("settings_volume_decrement", 3, ondata, 0, 0);
@@ -112,7 +112,7 @@ static void button(unsigned int key)
 
         }
 
-        if (selection_isactive(&view.selection, "volumeheadphonesarea"))
+        if (view_isactive(&view, "volumeheadphonesarea"))
         {
 
             session_create("settings_volume_decrement", 4, ondata, 0, 0);
@@ -127,7 +127,7 @@ static void button(unsigned int key)
         break;
 
     case KEY_RIGHT:
-        if (selection_isactive(&view.selection, "volumemasterarea"))
+        if (view_isactive(&view, "volumemasterarea"))
         {
 
             session_create("settings_volume_increment", 1, ondata, 0, 0);
@@ -139,7 +139,7 @@ static void button(unsigned int key)
 
         }
 
-        if (selection_isactive(&view.selection, "volumepcmarea"))
+        if (view_isactive(&view, "volumepcmarea"))
         {
 
             session_create("settings_volume_increment", 2, ondata, 0, 0);
@@ -151,7 +151,7 @@ static void button(unsigned int key)
 
         }
 
-        if (selection_isactive(&view.selection, "volumeheadphonearea"))
+        if (view_isactive(&view, "volumeheadphonearea"))
         {
 
             session_create("settings_volume_increment", 3, ondata, 0, 0);
@@ -163,7 +163,7 @@ static void button(unsigned int key)
 
         }
 
-        if (selection_isactive(&view.selection, "volumeheadphonesarea"))
+        if (view_isactive(&view, "volumeheadphonesarea"))
         {
 
             session_create("settings_volume_increment", 4, ondata, 0, 0);
@@ -179,7 +179,7 @@ static void button(unsigned int key)
 
     }
 
-    selection_unselect(&view.selection, key, view.name);
+    view_unselect(&view, key, view.name);
 
 }
 
@@ -216,7 +216,7 @@ static void load(void)
     session_setarg("settings_volume_get", 4, 2, "Headphones");
     session_setarg("settings_volume_get", 4, 3, 0);
     session_run();
-    selection_reset(&view.selection);
+    view_reset(&view);
 
 }
 
@@ -245,10 +245,10 @@ void view_settings_audio_setup(void)
     widget_area_init(&volumeheadphonesareaslider, "volumeheadphonesareaslider", WIDGET_IN_DEFAULT, 5, 4, 3, 1);
     widget_text_init(&volumeheadphonestext, WIDGET_ID_DEFAULT, "volumeheadphonesareatext", TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Headphones");
     widget_slider_init(&volumeheadphonesslider, WIDGET_ID_DEFAULT, "volumeheadphonesareaslider", 0, 100, -1);
-    selection_add(&view.selection, &volumemasterarea);
-    selection_add(&view.selection, &volumepcmarea);
-    selection_add(&view.selection, &volumeheadphonearea);
-    selection_add(&view.selection, &volumeheadphonesarea);
+    view_addselection(&view, &volumemasterarea);
+    view_addselection(&view, &volumepcmarea);
+    view_addselection(&view, &volumeheadphonearea);
+    view_addselection(&view, &volumeheadphonesarea);
     view_init(&view, "settings_audio", load, 0, 0, button);
     view_register(&view, &audioarea);
     view_register(&view, &audiotext);

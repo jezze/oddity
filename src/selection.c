@@ -4,22 +4,22 @@
 #include "box.h"
 #include "list.h"
 #include "widget.h"
-#include "selection.h"
 #include "view.h"
+#include "selection.h"
 #include "backend.h"
 #include "main.h"
 
-unsigned int selection_isactive(struct selection *selection, char *id)
+unsigned int view_isactive(struct view *view, char *id)
 {
 
-    if (!selection->active)
+    if (!view->selection.active)
         return 0;
 
-    return !strcmp(selection->active->id, id);
+    return !strcmp(view->selection.active->id, id);
 
 }
 
-void selection_move(struct selection *selection, unsigned int key)
+void view_moveselection(struct view *view, unsigned int key)
 {
 
     struct widget *a;
@@ -30,14 +30,14 @@ void selection_move(struct selection *selection, unsigned int key)
     int amx;
     int amy;
 
-    if (!selection->active)
+    if (!view->selection.active)
         return;
 
-    a = selection->active;
+    a = view->selection.active;
     amx = a->size.x + a->size.w / 2;
     amy = a->size.y + a->size.h / 2;
 
-    for (current = selection->list.head; current; current = current->next)
+    for (current = view->selection.list.head; current; current = current->next)
     {
 
         struct widget *b = current->data;
@@ -114,7 +114,7 @@ void selection_move(struct selection *selection, unsigned int key)
     if (best)
     {
 
-        selection->active = best;
+        view->selection.active = best;
 
         backend_play("click");
 
@@ -122,19 +122,19 @@ void selection_move(struct selection *selection, unsigned int key)
 
 }
 
-void selection_select(struct selection *selection, unsigned int key, char *match, char *from, char *to)
+void view_select(struct view *view, unsigned int key, char *match, char *from, char *to)
 {
 
     if (key != KEY_A)
         return;
 
-    if (!selection->active)
+    if (!view->selection.active)
         return;
 
-    if (!strlen(selection->active->id))
+    if (!strlen(view->selection.active->id))
         return;
 
-    if (strcmp(selection->active->id, match))
+    if (strcmp(view->selection.active->id, match))
         return;
 
     main_loadview(to, from);
@@ -142,7 +142,7 @@ void selection_select(struct selection *selection, unsigned int key, char *match
 
 }
 
-void selection_unselect(struct selection *selection, unsigned int key, char *from)
+void view_unselect(struct view *view, unsigned int key, char *from)
 {
 
     if (key != KEY_B)
@@ -153,20 +153,20 @@ void selection_unselect(struct selection *selection, unsigned int key, char *fro
 
 }
 
-void selection_add(struct selection *selection, struct widget *widget)
+void view_addselection(struct view *view, struct widget *widget)
 {
 
-    list_add(&selection->list, &widget->selectionitem);
+    list_add(&view->selection.list, &widget->selectionitem);
 
 }
 
-void selection_render(struct selection *selection, unsigned int ticks)
+void view_renderselection(struct view *view, unsigned int ticks)
 {
 
-    if (selection->active)
+    if (view->selection.active)
     {
 
-        struct widget *widget = selection->active;
+        struct widget *widget = view->selection.active;
 
         backend_paint_selection(widget->size.x, widget->size.y, widget->size.w, widget->size.h);
 
@@ -174,13 +174,13 @@ void selection_render(struct selection *selection, unsigned int ticks)
 
 }
 
-void selection_reset(struct selection *selection)
+void view_reset(struct view *view)
 {
 
-    if (selection->list.head)
-        selection->active = selection->list.head->data;
+    if (view->selection.list.head)
+        view->selection.active = view->selection.list.head->data;
     else
-        selection->active = 0;
+        view->selection.active = 0;
 
 }
 

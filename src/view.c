@@ -3,8 +3,8 @@
 #include "box.h"
 #include "list.h"
 #include "widget.h"
-#include "selection.h"
 #include "view.h"
+#include "selection.h"
 
 static void placewidget(struct widget *widget, struct box *size)
 {

@@ -4,8 +4,8 @@
 #include "box.h"
 #include "list.h"
 #include "widget.h"
-#include "selection.h"
 #include "view.h"
+#include "selection.h"
 #include "db.h"
 #include "main.h"
 
@@ -23,12 +23,12 @@ static struct db_app app;
 static void button(unsigned int key)
 {
 
-    selection_move(&view.selection, key);
+    view_moveselection(&view, key);
 
     if (key == KEY_A)
     {
 
-        if (selection_isactive(&view.selection, "runarea"))
+        if (view_isactive(&view, "runarea"))
         {
 
             struct db_packagelist packagelist;
@@ -51,14 +51,14 @@ static void button(unsigned int key)
 
     }
 
-    selection_unselect(&view.selection, key, view.name);
+    view_unselect(&view, key, view.name);
 
 }
 
 static void load(void)
 {
 
-    selection_reset(&view.selection);
+    view_reset(&view);
 
 }
 
@@ -89,8 +89,8 @@ void view_app_setup(void)
     widget_text_init(&runtext, WIDGET_ID_DEFAULT, "runarea", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Start");
     widget_area_init(&uninstallarea, "uninstallarea", WIDGET_IN_DEFAULT, 4, 7, 4, 1);
     widget_text_init(&uninstalltext, WIDGET_ID_DEFAULT, "uninstallarea", TEXT_COLOR_DISABLE, TEXT_ALIGN_CENTER, "Uninstall");
-    selection_add(&view.selection, &runarea);
-    selection_add(&view.selection, &uninstallarea);
+    view_addselection(&view, &runarea);
+    view_addselection(&view, &uninstallarea);
     view_init(&view, "app", load, 0, config, button);
     view_register(&view, &titlearea);
     view_register(&view, &titletext);

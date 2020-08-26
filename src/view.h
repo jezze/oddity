@@ -10,7 +10,7 @@ struct view
     void (*button)(unsigned int key);
     struct list widgets;
     struct widget main;
-    struct selection selection;
+    struct { struct list list; struct widget *active; } selection;
 
 };
 

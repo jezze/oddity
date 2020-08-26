@@ -8,8 +8,8 @@
 #include "box.h"
 #include "list.h"
 #include "widget.h"
-#include "selection.h"
 #include "view.h"
+#include "selection.h"
 #include "backend.h"
 
 struct image
@@ -432,7 +432,7 @@ void backend_render(unsigned int ticks, void (*place)(struct box *size), void (*
 
 }
 
-void backend_renderview(struct view *view, struct selection *selection, unsigned int ticks)
+void backend_renderview(struct view *view, unsigned int ticks)
 {
 
     view->main.size.x = 0;
@@ -442,7 +442,7 @@ void backend_renderview(struct view *view, struct selection *selection, unsigned
 
     view_place(view, &view->main);
     renderbackground(ticks);
-    selection_render(selection, ticks);
+    view_renderselection(view, ticks);
     view_render(view, &view->main, ticks);
     renderfade(ticks);
     SDL_Flip(display);

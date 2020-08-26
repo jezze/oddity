@@ -5,8 +5,8 @@
 #include "box.h"
 #include "list.h"
 #include "widget.h"
-#include "selection.h"
 #include "view.h"
+#include "selection.h"
 #include "file.h"
 #include "db.h"
 #include "download.h"
@@ -57,8 +57,8 @@ static void onfailure(unsigned int id)
 static void button(unsigned int key)
 {
 
-    selection_move(&view.selection, key);
-    selection_unselect(&view.selection, key, view.name);
+    view_moveselection(&view, key);
+    view_unselect(&view, key, view.name);
 
 }
 
@@ -85,7 +85,7 @@ static void load(void)
     }
 
     download_run();
-    selection_reset(&view.selection);
+    view_reset(&view);
 
 }
 

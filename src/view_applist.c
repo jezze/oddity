@@ -4,8 +4,8 @@
 #include "box.h"
 #include "list.h"
 #include "widget.h"
-#include "selection.h"
 #include "view.h"
+#include "selection.h"
 #include "db.h"
 #include "main.h"
 
@@ -21,7 +21,7 @@ static void button(unsigned int key)
     unsigned int offset = page * 8;
     unsigned int i;
 
-    selection_move(&view.selection, key);
+    view_moveselection(&view, key);
 
     for (i = offset; i < offset + 8; i++)
     {
@@ -32,11 +32,11 @@ static void button(unsigned int key)
             struct db_app *app = &applist.items[i];
             unsigned int k = i % 8;
 
-            if (selection_isactive(&view.selection, areas[k].id))
+            if (view_isactive(&view, areas[k].id))
             {
 
                 main_configview("app", "id", app->id);
-                selection_select(&view.selection, key, areas[k].id, view.name, "app");
+                view_select(&view, key, areas[k].id, view.name, "app");
 
             }
 
@@ -44,7 +44,7 @@ static void button(unsigned int key)
 
     }
 
-    selection_unselect(&view.selection, key, view.name);
+    view_unselect(&view, key, view.name);
 
     switch (key)
     {
@@ -70,7 +70,7 @@ static void load(void)
 
     page = 0;
 
-    selection_reset(&view.selection);
+    view_reset(&view);
 
 }
 
@@ -130,14 +130,14 @@ void view_applist_setup(void)
     widget_text_init(&texts[15], WIDGET_ID_DEFAULT, "area7", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
     widget_text_init(&texts[16], WIDGET_ID_DEFAULT, "area8", TEXT_COLOR_NORMAL, TEXT_ALIGN_CENTER, "No items found.");
     /*
-    selection_add(&view.selection, &areas[0]);
-    selection_add(&view.selection, &areas[1]);
-    selection_add(&view.selection, &areas[2]);
-    selection_add(&view.selection, &areas[3]);
-    selection_add(&view.selection, &areas[4]);
-    selection_add(&view.selection, &areas[5]);
-    selection_add(&view.selection, &areas[6]);
-    selection_add(&view.selection, &areas[7]);
+    view_addselection(&view, &areas[0]);
+    view_addselection(&view, &areas[1]);
+    view_addselection(&view, &areas[2]);
+    view_addselection(&view, &areas[3]);
+    view_addselection(&view, &areas[4]);
+    view_addselection(&view, &areas[5]);
+    view_addselection(&view, &areas[6]);
+    view_addselection(&view, &areas[7]);
     */
     view_init(&view, "applist", load, 0, config, button);
     /*

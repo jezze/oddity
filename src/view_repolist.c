@@ -4,8 +4,8 @@
 #include "box.h"
 #include "list.h"
 #include "widget.h"
-#include "selection.h"
 #include "view.h"
+#include "selection.h"
 #include "db.h"
 #include "main.h"
 
@@ -32,31 +32,31 @@ static char installed[16];
 static void button(unsigned int key)
 {
 
-    selection_move(&view.selection, key);
+    view_moveselection(&view, key);
 
     if (key == KEY_A)
     {
 
-        if (selection_isactive(&view.selection, "areaall"))
+        if (view_isactive(&view, "areaall"))
             main_configview("applist", "list", "all");
 
-        if (selection_isactive(&view.selection, "areainstalled"))
+        if (view_isactive(&view, "areainstalled"))
             main_configview("applist", "list", "installed");
 
-        if (selection_isactive(&view.selection, "areanew"))
+        if (view_isactive(&view, "areanew"))
             main_configview("applist", "list", "new");
 
-        if (selection_isactive(&view.selection, "areaupdated"))
+        if (view_isactive(&view, "areaupdated"))
             main_configview("applist", "list", "updated");
 
     }
 
-    selection_select(&view.selection, key, "areaall", view.name, "applist");
-    selection_select(&view.selection, key, "areainstalled", view.name, "applist");
-    selection_select(&view.selection, key, "areanew", view.name, "applist");
-    selection_select(&view.selection, key, "areaupdated", view.name, "applist");
-    selection_select(&view.selection, key, "areasynchronize", view.name, "sync");
-    selection_unselect(&view.selection, key, view.name);
+    view_select(&view, key, "areaall", view.name, "applist");
+    view_select(&view, key, "areainstalled", view.name, "applist");
+    view_select(&view, key, "areanew", view.name, "applist");
+    view_select(&view, key, "areaupdated", view.name, "applist");
+    view_select(&view, key, "areasynchronize", view.name, "sync");
+    view_unselect(&view, key, view.name);
 
 }
 
@@ -67,7 +67,7 @@ static void load(void)
     snprintf(new, 16, "%u items", db_countapps());
     snprintf(updated, 16, "%u items", db_countapps());
     snprintf(installed, 16, "%u items", db_countapps());
-    selection_reset(&view.selection);
+    view_reset(&view);
 
 }
 
@@ -88,11 +88,11 @@ void view_repolist_setup(void)
     widget_text_init(&textupdated, WIDGET_ID_DEFAULT, "areaupdated", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Updated");
     widget_text_init(&textupdateditems, WIDGET_ID_DEFAULT, "areaupdated", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, updated);
     widget_text_init(&textsynchronize, WIDGET_ID_DEFAULT, "areasynchronize", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Synchronize");
-    selection_add(&view.selection, &areaall);
-    selection_add(&view.selection, &areainstalled);
-    selection_add(&view.selection, &areanew);
-    selection_add(&view.selection, &areaupdated);
-    selection_add(&view.selection, &areasynchronize);
+    view_addselection(&view, &areaall);
+    view_addselection(&view, &areainstalled);
+    view_addselection(&view, &areanew);
+    view_addselection(&view, &areaupdated);
+    view_addselection(&view, &areasynchronize);
     view_init(&view, "repolist", load, 0, 0, button);
     view_register(&view, &areaall);
     view_register(&view, &areainstalled);

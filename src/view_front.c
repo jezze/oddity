@@ -3,8 +3,8 @@
 #include "box.h"
 #include "list.h"
 #include "widget.h"
-#include "selection.h"
 #include "view.h"
+#include "selection.h"
 #include "main.h"
 
 static struct view quit;
@@ -19,17 +19,17 @@ static struct widget exittext;
 static void button(unsigned int key)
 {
 
-    selection_move(&view.selection, key);
-    selection_select(&view.selection, key, "libraryarea", view.name, "repolist");
-    selection_select(&view.selection, key, "settingsarea", view.name, "settings");
-    selection_select(&view.selection, key, "exitarea", view.name, "quit");
+    view_moveselection(&view, key);
+    view_select(&view, key, "libraryarea", view.name, "repolist");
+    view_select(&view, key, "settingsarea", view.name, "settings");
+    view_select(&view, key, "exitarea", view.name, "quit");
 
 }
 
 static void load(void)
 {
 
-    selection_reset(&view.selection);
+    view_reset(&view);
 
 }
 
@@ -42,9 +42,9 @@ void view_front_setup(void)
     widget_text_init(&settingstext, WIDGET_ID_DEFAULT, "settingsarea", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Settings");
     widget_area_init(&exitarea, "exitarea", WIDGET_IN_DEFAULT, 0, 6, 8, 1);
     widget_text_init(&exittext, WIDGET_ID_DEFAULT, "exitarea", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Exit");
-    selection_add(&view.selection, &libraryarea);
-    selection_add(&view.selection, &settingsarea);
-    selection_add(&view.selection, &exitarea);
+    view_addselection(&view, &libraryarea);
+    view_addselection(&view, &settingsarea);
+    view_addselection(&view, &exitarea);
     view_init(&quit, "quit", main_quit, 0, 0, 0);
     main_registerview(&quit);
     view_init(&view, "front", load, 0, 0, button);
