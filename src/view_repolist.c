@@ -108,7 +108,7 @@ void view_repolist_setup(void)
     view_register(&view, &textupdated);
     view_register(&view, &textupdateditems);
     view_register(&view, &textsynchronize);
-    main_register(&view);
+    main_registerview(&view);
 
 }
 

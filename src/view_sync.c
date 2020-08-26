@@ -97,7 +97,7 @@ void view_sync_setup(void)
     view_init(&view, "sync", load, 0, 0, button);
     view_register(&view, &statusarea);
     view_register(&view, &statustext);
-    main_register(&view);
+    main_registerview(&view);
 
 }
 

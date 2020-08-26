@@ -46,7 +46,7 @@ void view_front_setup(void)
     selection_add(&view.selection, &settingsarea);
     selection_add(&view.selection, &exitarea);
     view_init(&quit, "quit", main_quit, 0, 0, 0);
-    main_register(&quit);
+    main_registerview(&quit);
     view_init(&view, "front", load, 0, 0, button);
     view_register(&view, &libraryarea);
     view_register(&view, &librarytext);
@@ -54,7 +54,7 @@ void view_front_setup(void)
     view_register(&view, &settingstext);
     view_register(&view, &exitarea);
     view_register(&view, &exittext);
-    main_register(&view);
+    main_registerview(&view);
 
 }
 

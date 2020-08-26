@@ -42,7 +42,7 @@ void view_settings_setup(void)
     view_register(&view, &audioareaicon);
     view_register(&view, &audioareatext);
     view_register(&view, &audiotext);
-    main_register(&view);
+    main_registerview(&view);
 
 }
 

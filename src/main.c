@@ -90,7 +90,7 @@ static void destroy(void)
 
 }
 
-struct view *findview(char *name)
+static struct view *findview(char *name)
 {
 
     struct list_item *current;
@@ -161,7 +161,7 @@ void main_quitview(char *name)
 
 }
 
-void main_register(struct view *view)
+void main_registerview(struct view *view)
 {
 
     list_add(&views, &view->item);

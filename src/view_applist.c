@@ -170,7 +170,7 @@ void view_applist_setup(void)
     view_register(&view, &texts[15]);
     */
     view_register(&view, &texts[16]);
-    main_register(&view);
+    main_registerview(&view);
 
 }
 

@@ -272,7 +272,7 @@ void view_settings_audio_setup(void)
     view_register(&view, &volumeheadphonesareaslider);
     view_register(&view, &volumeheadphonestext);
     view_register(&view, &volumeheadphonesslider);
-    main_register(&view);
+    main_registerview(&view);
 
 }
 

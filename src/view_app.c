@@ -100,7 +100,7 @@ void view_app_setup(void)
     view_register(&view, &runtext);
     view_register(&view, &uninstallarea);
     view_register(&view, &uninstalltext);
-    main_register(&view);
+    main_registerview(&view);
 
 }
 
