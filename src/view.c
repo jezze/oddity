@@ -323,13 +323,6 @@ void view_reset(struct view *view)
 
 }
 
-void view_register(struct view *view, struct widget *widget)
-{
-
-    list_add(&view->widgets, &widget->item);
-
-}
-
 void view_init(struct view *view, char *name, void (*load)(void), void (*step)(unsigned int ticks), void (*config)(char *key, void *value), void (*button)(unsigned int key))
 {
 
@@ -341,7 +334,7 @@ void view_init(struct view *view, char *name, void (*load)(void), void (*step)(u
 
     list_inititem(&view->item, view);
     widget_area_init(&view->main, "main", "", 0, 0, 8, 8);
-    view_register(view, &view->main);
+    list_add(&view->widgets, &view->main.item);
 
 }
 

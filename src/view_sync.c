@@ -13,8 +13,6 @@
 
 static struct view view;
 static struct download downloads[8];
-static struct widget statusarea;
-static struct widget statustext;
 static struct db_remotelist remotelist;
 static char text[128];
 
@@ -91,11 +89,9 @@ static void load(void)
 void view_sync_setup(void)
 {
 
-    widget_area_init(&statusarea, "area_status", WIDGET_IN_DEFAULT, 0, 0, 8, 6);
-    widget_text_init(&statustext, WIDGET_ID_DEFAULT, "area_status", TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, text);
+    widget_area_init(view_createwidget(&view), "area_status", WIDGET_IN_DEFAULT, 0, 0, 8, 6);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_status", TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, text);
     view_init(&view, "sync", load, 0, 0, button);
-    view_register(&view, &statusarea);
-    view_register(&view, &statustext);
     main_registerview(&view);
 
 }

@@ -24,5 +24,4 @@ void view_select(struct view *view, unsigned int key, char *match, char *from, c
 void view_unselect(struct view *view, unsigned int key, char *from);
 void view_addselection(struct view *view, char *id);
 void view_reset(struct view *view);
-void view_register(struct view *view, struct widget *widget);
 void view_init(struct view *view, char *name, void (*load)(void), void (*step)(unsigned int ticks), void (*config)(char *key, void *value), void (*button)(unsigned int key));
