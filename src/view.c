@@ -8,6 +8,9 @@
 #include "backend.h"
 #include "main.h"
 
+static struct widget widgets[512];
+static unsigned int nwidgets;
+
 static void placewidget(struct widget *widget, struct box *size)
 {
 
@@ -99,6 +102,36 @@ static void renderwidgets(struct view *view, struct widget *parent, unsigned int
         }
 
     }
+
+}
+
+struct widget *view_findwidget(struct view *view, char *id)
+{
+
+    struct list_item *current;
+
+    for (current = view->widgets.head; current; current = current->next)
+    {
+
+        struct widget *widget = current->data;
+
+        if (!strcmp(widget->id, id))
+            return widget;
+
+    }
+
+    return 0;
+
+}
+
+struct widget *view_createwidget(struct view *view)
+{
+
+    struct widget *widget = &widgets[nwidgets++];
+
+    list_add(&view->widgets, &widget->item);
+
+    return widget;
 
 }
 
@@ -270,10 +303,13 @@ void view_unselect(struct view *view, unsigned int key, char *from)
 
 }
 
-void view_addselection(struct view *view, struct widget *widget)
+void view_addselection(struct view *view, char *id)
 {
 
-    list_add(&view->selection.list, &widget->selectionitem);
+    struct widget *widget = view_findwidget(view, id);
+
+    if (widget)
+        list_add(&view->selection.list, &widget->selectionitem);
 
 }
 

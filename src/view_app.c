@@ -9,14 +9,6 @@
 #include "main.h"
 
 static struct view view;
-static struct widget titlearea;
-static struct widget titletext;
-static struct widget descriptionarea;
-static struct widget descriptiontext;
-static struct widget runarea;
-static struct widget runtext;
-static struct widget uninstallarea;
-static struct widget uninstalltext;
 static struct db_app app;
 
 static void button(unsigned int key)
@@ -70,8 +62,8 @@ static void config(char *key, void *value)
         db_freeapp(&app);
         db_loadapp(&app, value);
 
-        titletext.payload.text.data = app.name;
-        descriptiontext.payload.text.data = app.shortdescription;
+        view_findwidget(&view, "area_title")->payload.text.data = app.name;
+        view_findwidget(&view, "area_description")->payload.text.data = app.shortdescription;
 
     }
 
@@ -80,25 +72,17 @@ static void config(char *key, void *value)
 void view_app_setup(void)
 {
 
-    widget_area_init(&titlearea, "area_title", WIDGET_IN_DEFAULT, 0, 0, 8, 1);
-    widget_text_init(&titletext, WIDGET_ID_DEFAULT, "area_title", TEXT_COLOR_TITLE, TEXT_ALIGN_CENTER, 0);
-    widget_area_init(&descriptionarea, "area_description", WIDGET_IN_DEFAULT, 0, 1, 8, 4);
-    widget_text_init(&descriptiontext, WIDGET_ID_DEFAULT, "area_description", TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, 0);
-    widget_area_init(&runarea, "area_run", WIDGET_IN_DEFAULT, 0, 7, 4, 1);
-    widget_text_init(&runtext, WIDGET_ID_DEFAULT, "area_run", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Start");
-    widget_area_init(&uninstallarea, "area_uninstall", WIDGET_IN_DEFAULT, 4, 7, 4, 1);
-    widget_text_init(&uninstalltext, WIDGET_ID_DEFAULT, "area_uninstall", TEXT_COLOR_DISABLE, TEXT_ALIGN_CENTER, "Uninstall");
-    view_addselection(&view, &runarea);
-    view_addselection(&view, &uninstallarea);
+    widget_area_init(view_createwidget(&view), "area_title", WIDGET_IN_DEFAULT, 0, 0, 8, 1);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_title", TEXT_COLOR_TITLE, TEXT_ALIGN_CENTER, 0);
+    widget_area_init(view_createwidget(&view), "area_description", WIDGET_IN_DEFAULT, 0, 1, 8, 4);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_description", TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, 0);
+    widget_area_init(view_createwidget(&view), "area_run", WIDGET_IN_DEFAULT, 0, 7, 4, 1);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_run", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Start");
+    widget_area_init(view_createwidget(&view), "area_uninstall", WIDGET_IN_DEFAULT, 4, 7, 4, 1);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_uninstall", TEXT_COLOR_DISABLE, TEXT_ALIGN_CENTER, "Uninstall");
+    view_addselection(&view, "area_run");
+    view_addselection(&view, "area_uninstall");
     view_init(&view, "app", load, 0, config, button);
-    view_register(&view, &titlearea);
-    view_register(&view, &titletext);
-    view_register(&view, &descriptionarea);
-    view_register(&view, &descriptiontext);
-    view_register(&view, &runarea);
-    view_register(&view, &runtext);
-    view_register(&view, &uninstallarea);
-    view_register(&view, &uninstalltext);
     main_registerview(&view);
 
 }
