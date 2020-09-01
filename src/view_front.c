@@ -19,9 +19,9 @@ static void button(unsigned int key)
 {
 
     view_moveselection(&view, key);
-    view_select(&view, key, "libraryarea", view.name, "repolist");
-    view_select(&view, key, "settingsarea", view.name, "settings");
-    view_select(&view, key, "exitarea", view.name, "quit");
+    view_select(&view, key, "area_library", view.name, "repolist");
+    view_select(&view, key, "area_settings", view.name, "settings");
+    view_select(&view, key, "area_exit", view.name, "quit");
 
 }
 
@@ -35,12 +35,12 @@ static void load(void)
 void view_front_setup(void)
 {
 
-    widget_area_init(&libraryarea, "libraryarea", WIDGET_IN_DEFAULT, 0, 4, 8, 1);
-    widget_text_init(&librarytext, WIDGET_ID_DEFAULT, "libraryarea", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Library");
-    widget_area_init(&settingsarea, "settingsarea", WIDGET_IN_DEFAULT, 0, 5, 8, 1);
-    widget_text_init(&settingstext, WIDGET_ID_DEFAULT, "settingsarea", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Settings");
-    widget_area_init(&exitarea, "exitarea", WIDGET_IN_DEFAULT, 0, 6, 8, 1);
-    widget_text_init(&exittext, WIDGET_ID_DEFAULT, "exitarea", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Exit");
+    widget_area_init(&libraryarea, "area_library", WIDGET_IN_DEFAULT, 0, 4, 8, 1);
+    widget_text_init(&librarytext, WIDGET_ID_DEFAULT, "area_library", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Library");
+    widget_area_init(&settingsarea, "area_settings", WIDGET_IN_DEFAULT, 0, 5, 8, 1);
+    widget_text_init(&settingstext, WIDGET_ID_DEFAULT, "area_settings", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Settings");
+    widget_area_init(&exitarea, "area_exit", WIDGET_IN_DEFAULT, 0, 6, 8, 1);
+    widget_text_init(&exittext, WIDGET_ID_DEFAULT, "area_exit", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Exit");
     view_addselection(&view, &libraryarea);
     view_addselection(&view, &settingsarea);
     view_addselection(&view, &exitarea);

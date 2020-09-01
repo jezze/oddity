@@ -36,25 +36,25 @@ static void button(unsigned int key)
     if (key == KEY_A)
     {
 
-        if (view_isactive(&view, "areaall"))
+        if (view_isactive(&view, "area_all"))
             main_configview("applist", "list", "all");
 
-        if (view_isactive(&view, "areainstalled"))
+        if (view_isactive(&view, "area_installed"))
             main_configview("applist", "list", "installed");
 
-        if (view_isactive(&view, "areanew"))
+        if (view_isactive(&view, "area_new"))
             main_configview("applist", "list", "new");
 
-        if (view_isactive(&view, "areaupdated"))
+        if (view_isactive(&view, "area_updated"))
             main_configview("applist", "list", "updated");
 
     }
 
-    view_select(&view, key, "areaall", view.name, "applist");
-    view_select(&view, key, "areainstalled", view.name, "applist");
-    view_select(&view, key, "areanew", view.name, "applist");
-    view_select(&view, key, "areaupdated", view.name, "applist");
-    view_select(&view, key, "areasynchronize", view.name, "sync");
+    view_select(&view, key, "area_all", view.name, "applist");
+    view_select(&view, key, "area_installed", view.name, "applist");
+    view_select(&view, key, "area_new", view.name, "applist");
+    view_select(&view, key, "area_updated", view.name, "applist");
+    view_select(&view, key, "area_synchronize", view.name, "sync");
     view_unselect(&view, key, view.name);
 
 }
@@ -73,20 +73,20 @@ static void load(void)
 void view_repolist_setup(void)
 {
 
-    widget_area_init(&areaall, "areaall", WIDGET_IN_DEFAULT, 0, 0, 8, 1);
-    widget_area_init(&areainstalled, "areainstalled", WIDGET_IN_DEFAULT, 0, 1, 8, 1);
-    widget_area_init(&areanew, "areanew", WIDGET_IN_DEFAULT, 0, 2, 8, 1);
-    widget_area_init(&areaupdated, "areaupdated", WIDGET_IN_DEFAULT, 0, 3, 8, 1);
-    widget_area_init(&areasynchronize, "areasynchronize", WIDGET_IN_DEFAULT, 0, 7, 8, 1);
-    widget_text_init(&textall, WIDGET_ID_DEFAULT, "areaall", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "All");
-    widget_text_init(&textallitems, WIDGET_ID_DEFAULT, "areaall", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, all);
-    widget_text_init(&textinstalled, WIDGET_ID_DEFAULT, "areainstalled", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Installed");
-    widget_text_init(&textinstalleditems, WIDGET_ID_DEFAULT, "areainstalled", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, installed);
-    widget_text_init(&textnew, WIDGET_ID_DEFAULT, "areanew", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "New");
-    widget_text_init(&textnewitems, WIDGET_ID_DEFAULT, "areanew", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, new);
-    widget_text_init(&textupdated, WIDGET_ID_DEFAULT, "areaupdated", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Updated");
-    widget_text_init(&textupdateditems, WIDGET_ID_DEFAULT, "areaupdated", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, updated);
-    widget_text_init(&textsynchronize, WIDGET_ID_DEFAULT, "areasynchronize", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Synchronize");
+    widget_area_init(&areaall, "area_all", WIDGET_IN_DEFAULT, 0, 0, 8, 1);
+    widget_area_init(&areainstalled, "area_installed", WIDGET_IN_DEFAULT, 0, 1, 8, 1);
+    widget_area_init(&areanew, "area_new", WIDGET_IN_DEFAULT, 0, 2, 8, 1);
+    widget_area_init(&areaupdated, "area_updated", WIDGET_IN_DEFAULT, 0, 3, 8, 1);
+    widget_area_init(&areasynchronize, "area_synchronize", WIDGET_IN_DEFAULT, 0, 7, 8, 1);
+    widget_text_init(&textall, WIDGET_ID_DEFAULT, "area_all", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "All");
+    widget_text_init(&textallitems, WIDGET_ID_DEFAULT, "area_all", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, all);
+    widget_text_init(&textinstalled, WIDGET_ID_DEFAULT, "area_installed", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Installed");
+    widget_text_init(&textinstalleditems, WIDGET_ID_DEFAULT, "area_installed", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, installed);
+    widget_text_init(&textnew, WIDGET_ID_DEFAULT, "area_new", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "New");
+    widget_text_init(&textnewitems, WIDGET_ID_DEFAULT, "area_new", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, new);
+    widget_text_init(&textupdated, WIDGET_ID_DEFAULT, "area_updated", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Updated");
+    widget_text_init(&textupdateditems, WIDGET_ID_DEFAULT, "area_updated", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, updated);
+    widget_text_init(&textsynchronize, WIDGET_ID_DEFAULT, "area_synchronize", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Synchronize");
     view_addselection(&view, &areaall);
     view_addselection(&view, &areainstalled);
     view_addselection(&view, &areanew);

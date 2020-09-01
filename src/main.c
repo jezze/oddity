@@ -22,6 +22,7 @@ void view_front_setup(void);
 void view_repolist_setup(void);
 void view_settings_setup(void);
 void view_settings_audio_setup(void);
+void view_settings_system_setup(void);
 void view_sync_setup(void);
 static struct view *current;
 static unsigned int quit;
@@ -37,6 +38,7 @@ static void setup(void)
     view_repolist_setup();
     view_settings_setup();
     view_settings_audio_setup();
+    view_settings_system_setup();
     view_sync_setup();
 
 }

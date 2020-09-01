@@ -91,8 +91,8 @@ static void load(void)
 void view_sync_setup(void)
 {
 
-    widget_area_init(&statusarea, "statusarea", WIDGET_IN_DEFAULT, 0, 0, 8, 6);
-    widget_text_init(&statustext, WIDGET_ID_DEFAULT, "statusarea", TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, text);
+    widget_area_init(&statusarea, "area_status", WIDGET_IN_DEFAULT, 0, 0, 8, 6);
+    widget_text_init(&statustext, WIDGET_ID_DEFAULT, "area_status", TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, text);
     view_init(&view, "sync", load, 0, 0, button);
     view_register(&view, &statusarea);
     view_register(&view, &statustext);
