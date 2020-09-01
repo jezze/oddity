@@ -224,22 +224,22 @@ void view_settings_audio_setup(void)
 
     widget_area_init(&audioarea, WIDGET_ID_DEFAULT, WIDGET_IN_DEFAULT, 0, 0, 8, 1);
     widget_text_init(&audiotext, WIDGET_ID_DEFAULT, WIDGET_IN_DEFAULT, TEXT_COLOR_TITLE, TEXT_ALIGN_CENTER, "Volume");
-    widget_area_init(&volumemasterarea, WIDGET_ID_DEFAULT, WIDGET_IN_DEFAULT, 0, 1, 8, 1);
+    widget_area_init(&volumemasterarea, "volumemasterarea", WIDGET_IN_DEFAULT, 0, 1, 8, 1);
     widget_area_init(&volumemasterareatext, "volumemasterareatext", WIDGET_IN_DEFAULT, 0, 1, 5, 1);
     widget_area_init(&volumemasterareaslider, "volumemasterareaslider", WIDGET_IN_DEFAULT, 5, 1, 3, 1);
     widget_text_init(&volumemastertext, WIDGET_ID_DEFAULT, "volumemasterareatext", TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Master");
     widget_slider_init(&volumemasterslider, WIDGET_ID_DEFAULT, "volumemasterareaslider", 0, 100, -1);
-    widget_area_init(&volumepcmarea, WIDGET_ID_DEFAULT, WIDGET_IN_DEFAULT, 0, 2, 8, 1);
+    widget_area_init(&volumepcmarea, "volumepcmarea", WIDGET_IN_DEFAULT, 0, 2, 8, 1);
     widget_area_init(&volumepcmareatext, "volumepcmareatext", WIDGET_IN_DEFAULT, 0, 2, 5, 1);
     widget_area_init(&volumepcmareaslider, "volumepcmareaslider", WIDGET_IN_DEFAULT, 5, 2, 3, 1);
     widget_text_init(&volumepcmtext, WIDGET_ID_DEFAULT, "volumepcmareatext", TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "PCM");
     widget_slider_init(&volumepcmslider, WIDGET_ID_DEFAULT, "volumepcmareaslider", 0, 100, -1);
-    widget_area_init(&volumeheadphonearea, WIDGET_ID_DEFAULT, WIDGET_IN_DEFAULT, 0, 3, 8, 1);
+    widget_area_init(&volumeheadphonearea, "volumeheadphonearea", WIDGET_IN_DEFAULT, 0, 3, 8, 1);
     widget_area_init(&volumeheadphoneareatext, "volumeheadphoneareatext", WIDGET_IN_DEFAULT, 0, 3, 5, 1);
     widget_area_init(&volumeheadphoneareaslider, "volumeheadphoneareaslider", WIDGET_IN_DEFAULT, 5, 3, 3, 1);
     widget_text_init(&volumeheadphonetext, WIDGET_ID_DEFAULT, "volumeheadphoneareatext", TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Headphone");
     widget_slider_init(&volumeheadphoneslider, WIDGET_ID_DEFAULT, "volumeheadphoneareaslider", 0, 100, -1);
-    widget_area_init(&volumeheadphonesarea, WIDGET_ID_DEFAULT, WIDGET_IN_DEFAULT, 0, 4, 8, 1);
+    widget_area_init(&volumeheadphonesarea, "volumeheadphonesarea", WIDGET_IN_DEFAULT, 0, 4, 8, 1);
     widget_area_init(&volumeheadphonesareatext, "volumeheadphonesareatext", WIDGET_IN_DEFAULT, 0, 4, 5, 1);
     widget_area_init(&volumeheadphonesareaslider, "volumeheadphonesareaslider", WIDGET_IN_DEFAULT, 5, 4, 3, 1);
     widget_text_init(&volumeheadphonestext, WIDGET_ID_DEFAULT, "volumeheadphonesareatext", TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Headphones");
