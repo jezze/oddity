@@ -32,6 +32,7 @@ static SDL_Surface *background;
 static SDL_Surface *fade;
 static TTF_Font *font;
 static TTF_Font *ofont;
+static TTF_Font *ifont;
 static unsigned int ssw;
 static unsigned int ssh;
 static struct sample samples[8];
@@ -342,6 +343,27 @@ void backend_paint_glyph(char c, unsigned int x, unsigned int y, unsigned int w,
 
 }
 
+void backend_paint_icon(unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int type)
+{
+
+    SDL_Surface *surface;
+    SDL_Rect rect;
+    SDL_Color color;
+
+    rect.x = (x + w / 2) - 24;
+    rect.y = (y + h / 2) - 12;
+    rect.w = w;
+    rect.h = h;
+    color.r = 0xA0;
+    color.g = 0xC0;
+    color.b = 0xC0;
+    surface = TTF_RenderGlyph_Solid(ifont, type, color);
+
+    SDL_BlitSurface(surface, NULL, display, &rect);
+    SDL_FreeSurface(surface);
+
+}
+
 void backend_paint_slider(int x, int y, int w, int h, int ws, unsigned int ticks)
 {
 
@@ -565,6 +587,21 @@ void backend_loadfont(char *name)
 
 }
 
+void backend_loadfont2(char *name)
+{
+
+    ifont = TTF_OpenFont(name, 48);
+
+    if (!ifont)
+    {
+
+        fprintf(stderr, "Unable to load font: %s\n", SDL_GetError());
+        exit(EXIT_FAILURE);
+
+    }
+
+}
+
 void backend_unloadbackground(void)
 {
 
@@ -583,11 +620,12 @@ void backend_unloadsample(char *name)
 
 }
 
-void backend_unloadfont(void)
+void backend_unloadfonts(void)
 {
 
     TTF_CloseFont(font);
     TTF_CloseFont(ofont);
+    TTF_CloseFont(ifont);
 
 }
 

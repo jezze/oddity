@@ -55,6 +55,42 @@ void widget_area_init(struct widget *widget, char *id, char *in, int x, int y, i
 
 }
 
+void widget_icon_place(struct widget *widget, struct box *box)
+{
+
+    widget->size.x = box->x;
+    widget->size.y = box->y;
+    widget->size.w = box->w;
+    widget->size.h = box->h;
+
+}
+
+void widget_icon_render(struct widget *widget, unsigned int ticks)
+{
+
+    struct widget_icon *icon = &widget->payload.icon;
+    struct box box;
+
+    box.x = widget->size.x + 10;
+    box.y = widget->size.y + 6;
+    box.w = widget->size.w - 10 * 2;
+    box.h = widget->size.h - 6 * 2;
+
+    backend_paint_icon(box.x, box.y, box.w, box.h, icon->type);
+
+}
+
+void widget_icon_init(struct widget *widget, char *id, char *in, unsigned int type)
+{
+
+    struct widget_icon *icon = &widget->payload.icon;
+
+    widget_init(widget, WIDGET_TYPE_ICON, id, in);
+
+    icon->type = type;
+
+}
+
 void widget_slider_place(struct widget *widget, struct box *box)
 {
 

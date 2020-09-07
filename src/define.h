@@ -27,3 +27,5 @@
 #define TOGGLE_ON                       1
 #define TOGGLE_OFF_DISABLED             2
 #define TOGGLE_ON_DISABLED              3
+#define ICON_AUDIO                      0xEEA8
+#define ICON_SYSTEM                     0xEA4D
