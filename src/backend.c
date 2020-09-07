@@ -33,6 +33,7 @@ static SDL_Surface *fade;
 static TTF_Font *font;
 static TTF_Font *ofont;
 static TTF_Font *ifont;
+static TTF_Font *oifont;
 static unsigned int ssw;
 static unsigned int ssh;
 static struct sample samples[8];
@@ -327,10 +328,10 @@ void backend_paint_glyph(char c, unsigned int x, unsigned int y, unsigned int w,
     color.g = col >> 8;
     color.b = col >> 0;
     surface = TTF_RenderGlyph_Solid(font, c, color);
-    orect.x = x - 1;
-    orect.y = y - 1;
-    orect.w = w;
-    orect.h = h;
+    orect.x = rect.x - 1;
+    orect.y = rect.y - 1;
+    orect.w = rect.w;
+    orect.h = rect.h;
     ocolor.r = 10;
     ocolor.g = 10;
     ocolor.b = 10;
@@ -347,8 +348,11 @@ void backend_paint_icon(unsigned int x, unsigned int y, unsigned int w, unsigned
 {
 
     SDL_Surface *surface;
+    SDL_Surface *osurface;
     SDL_Rect rect;
+    SDL_Rect orect;
     SDL_Color color;
+    SDL_Color ocolor;
 
     rect.x = (x + w / 2) - 24;
     rect.y = (y + h / 2) - 12;
@@ -358,7 +362,17 @@ void backend_paint_icon(unsigned int x, unsigned int y, unsigned int w, unsigned
     color.g = 0xC0;
     color.b = 0xC0;
     surface = TTF_RenderGlyph_Solid(ifont, type, color);
+    orect.x = rect.x - 1;
+    orect.y = rect.y - 1;
+    orect.w = rect.w;
+    orect.h = rect.h;
+    ocolor.r = 10;
+    ocolor.g = 10;
+    ocolor.b = 10;
+    osurface = TTF_RenderGlyph_Solid(oifont, type, ocolor);
 
+    SDL_BlitSurface(osurface, NULL, display, &orect);
+    SDL_FreeSurface(osurface);
     SDL_BlitSurface(surface, NULL, display, &rect);
     SDL_FreeSurface(surface);
 
@@ -599,6 +613,18 @@ void backend_loadfont2(char *name)
         exit(EXIT_FAILURE);
 
     }
+
+    oifont = TTF_OpenFont(name, 48);
+
+    if (!ofont)
+    {
+
+        fprintf(stderr, "Unable to load font: %s\n", SDL_GetError());
+        exit(EXIT_FAILURE);
+
+    }
+
+    TTF_SetFontOutline(oifont, 1);
 
 }
 
