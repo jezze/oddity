@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include "define.h"
 #include "box.h"
 #include "list.h"
 #include "text.h"
@@ -141,6 +142,45 @@ void widget_text_init(struct widget *widget, char *id, char *in, unsigned int co
     text->color = color;
     text->align = align;
     text->data = data;
+
+}
+
+void widget_toggle_place(struct widget *widget, struct box *box)
+{
+
+    widget->size.x = box->x;
+    widget->size.y = box->y;
+    widget->size.w = box->w;
+    widget->size.h = box->h;
+
+}
+
+void widget_toggle_render(struct widget *widget, unsigned int ticks)
+{
+
+    struct widget_toggle *toggle = &widget->payload.toggle;
+    struct box box;
+
+    box.x = widget->size.x + 10;
+    box.y = widget->size.y + 6;
+    box.w = widget->size.w - 10 * 2;
+    box.h = widget->size.h - 6 * 2;
+
+    if (toggle->on)
+        text_render(&box, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "On");
+    else
+        text_render(&box, TEXT_COLOR_DISABLE, TEXT_ALIGN_RIGHT, "Off");
+
+}
+
+void widget_toggle_init(struct widget *widget, char *id, char *in, unsigned int on)
+{
+
+    struct widget_toggle *toggle = &widget->payload.toggle;
+
+    widget_init(widget, WIDGET_TYPE_TOGGLE, id, in);
+
+    toggle->on = on;
 
 }
 

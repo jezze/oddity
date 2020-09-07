@@ -32,6 +32,11 @@ static void placewidget(struct widget *widget, struct box *size)
 
         break;
 
+    case WIDGET_TYPE_TOGGLE:
+        widget_toggle_place(widget, size);
+
+        break;
+
     }
 
 }
@@ -76,6 +81,11 @@ static void renderwidget(struct widget *widget, unsigned int ticks)
 
     case WIDGET_TYPE_TEXT:
         widget_text_render(widget, ticks);
+
+        break;
+
+    case WIDGET_TYPE_TOGGLE:
+        widget_toggle_render(widget, ticks);
 
         break;
 
