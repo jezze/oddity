@@ -35,7 +35,7 @@ struct widget_text
 struct widget_toggle
 {
 
-    unsigned int on;
+    unsigned int state;
 
 };
 
@@ -72,4 +72,4 @@ void widget_text_render(struct widget *widget, unsigned int ticks);
 void widget_text_init(struct widget *widget, char *id, char *in, unsigned int color, unsigned int align, char *data);
 void widget_toggle_place(struct widget *widget, struct box *box);
 void widget_toggle_render(struct widget *widget, unsigned int ticks);
-void widget_toggle_init(struct widget *widget, char *id, char *in, unsigned int on);
+void widget_toggle_init(struct widget *widget, char *id, char *in, unsigned int state);

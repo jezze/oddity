@@ -23,3 +23,7 @@
 #define TEXT_ALIGN_RIGHT                1
 #define TEXT_ALIGN_CENTER               2
 #define TEXT_ROWHEIGHT                  20
+#define TOGGLE_OFF                      0
+#define TOGGLE_ON                       1
+#define TOGGLE_OFF_DISABLED             2
+#define TOGGLE_ON_DISABLED              3

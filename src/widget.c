@@ -166,21 +166,40 @@ void widget_toggle_render(struct widget *widget, unsigned int ticks)
     box.w = widget->size.w - 10 * 2;
     box.h = widget->size.h - 6 * 2;
 
-    if (toggle->on)
+    switch (toggle->state)
+    {
+
+    case TOGGLE_OFF:
+        text_render(&box, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "Off");
+
+        break;
+    case TOGGLE_ON:
         text_render(&box, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "On");
-    else
+
+        break;
+
+    case TOGGLE_OFF_DISABLED:
         text_render(&box, TEXT_COLOR_DISABLE, TEXT_ALIGN_RIGHT, "Off");
+
+        break;
+
+    case TOGGLE_ON_DISABLED:
+        text_render(&box, TEXT_COLOR_DISABLE, TEXT_ALIGN_RIGHT, "On");
+
+        break;
+
+    }
 
 }
 
-void widget_toggle_init(struct widget *widget, char *id, char *in, unsigned int on)
+void widget_toggle_init(struct widget *widget, char *id, char *in, unsigned int state)
 {
 
     struct widget_toggle *toggle = &widget->payload.toggle;
 
     widget_init(widget, WIDGET_TYPE_TOGGLE, id, in);
 
-    toggle->on = on;
+    toggle->state = state;
 
 }
 
