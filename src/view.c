@@ -221,7 +221,7 @@ void view_moveselection(struct view *view, unsigned int key)
             if (widget->size.x + widget->size.w >= mx)
                 continue;
 
-            if (dy <= bestdy && dx < bestdx)
+            if (dy <= bestdy && dx <= bestdx)
             {
 
                 best = widget;
@@ -236,7 +236,7 @@ void view_moveselection(struct view *view, unsigned int key)
             if (widget->size.x < mx)
                 continue;
 
-            if (dy <= bestdy && dx < bestdx)
+            if (dy <= bestdy && dx <= bestdx)
             {
 
                 best = widget;
@@ -251,7 +251,7 @@ void view_moveselection(struct view *view, unsigned int key)
             if (widget->size.y + widget->size.h >= my)
                 continue;
 
-            if (dx <= bestdx && dy < bestdy)
+            if (dx <= bestdx && dy <= bestdy)
             {
 
                 best = widget;
@@ -266,7 +266,7 @@ void view_moveselection(struct view *view, unsigned int key)
             if (widget->size.y < my)
                 continue;
 
-            if (dx <= bestdx && dy < bestdy)
+            if (dx <= bestdx && dy <= bestdy)
             {
 
                 best = widget;
