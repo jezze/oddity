@@ -22,24 +22,24 @@ cmd_download() {
     exit 0
 }
 
-cmd_autorun_get() {
-    test -e ~/.autorun && echo "on" || echo "off"
+cmd_autostart_get() {
+    test -e ~/.autostart && echo "on" || echo "off"
 
     exit 0
 }
 
-cmd_autorun_install() {
+cmd_autostart_install() {
     local opk="/media/data/apps/ztore.opk"
 
-    test -e $opk && echo -e "#!/bin/sh\n\nopkrun $opk" > ~/.autorun
+    test -e $opk && echo -e "#!/bin/sh\n\nopkrun $opk" > ~/.autostart && chmod +x ~/.autostart
 
-    cmd_autorun_get
+    cmd_autostart_get
 }
 
-cmd_autorun_uninstall() {
-    rm -f ~/.autorun
+cmd_autostart_uninstall() {
+    rm -f ~/.autostart
 
-    cmd_autorun_get
+    cmd_autostart_get
 }
 
 if [ $# -gt 0 ]

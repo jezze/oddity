@@ -59,7 +59,7 @@ static void button(unsigned int key)
             case TOGGLE_OFF:
                 session_create("settings_autostart_install", 1, ondata, 0, 0);
                 session_setarg("settings_autostart_install", 1, 0, "./helper.sh");
-                session_setarg("settings_autostart_install", 1, 1, "autorun_install");
+                session_setarg("settings_autostart_install", 1, 1, "autostart_install");
                 session_setarg("settings_autostart_install", 1, 2, 0);
                 session_run();
 
@@ -68,7 +68,7 @@ static void button(unsigned int key)
             case TOGGLE_ON:
                 session_create("settings_autostart_uninstall", 1, ondata, 0, 0);
                 session_setarg("settings_autostart_uninstall", 1, 0, "./helper.sh");
-                session_setarg("settings_autostart_uninstall", 1, 1, "autorun_uninstall");
+                session_setarg("settings_autostart_uninstall", 1, 1, "autostart_uninstall");
                 session_setarg("settings_autostart_uninstall", 1, 2, 0);
                 session_run();
 
@@ -92,7 +92,7 @@ static void load(void)
 
     session_create("settings_autostart_get", 1, ondata, 0, 0);
     session_setarg("settings_autostart_get", 1, 0, "./helper.sh");
-    session_setarg("settings_autostart_get", 1, 1, "autorun_get");
+    session_setarg("settings_autostart_get", 1, 1, "autostart_get");
     session_setarg("settings_autostart_get", 1, 2, 0);
     session_run();
     view_reset(&view);
