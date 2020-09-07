@@ -1,12 +1,28 @@
 #include <stdlib.h>
+#include <string.h>
 #include "define.h"
 #include "box.h"
 #include "list.h"
 #include "widget.h"
 #include "view.h"
 #include "main.h"
+#include "session.h"
 
 static struct view view;
+
+static void ondata(unsigned int id, void *data, unsigned int count)
+{
+
+    struct widget *widget = view_findwidget(&view, "toggle_autostart");
+
+    if (!strncmp(data, "on", 2))
+        widget->payload.toggle.on = 1;
+    else if (!strncmp(data, "off", 3))
+        widget->payload.toggle.on = 0;
+    else
+        widget->payload.toggle.on = 0;
+
+}
 
 static void button(unsigned int key)
 {
@@ -22,7 +38,27 @@ static void button(unsigned int key)
 
             struct widget *widget = view_findwidget(&view, "toggle_autostart");
 
-            widget->payload.toggle.on = !widget->payload.toggle.on;
+            if (widget->payload.toggle.on)
+            {
+
+                session_create("settings_autostart_uninstall", 1, ondata, 0, 0);
+                session_setarg("settings_autostart_uninstall", 1, 0, "./helper.sh");
+                session_setarg("settings_autostart_uninstall", 1, 1, "autorun_uninstall");
+                session_setarg("settings_autostart_uninstall", 1, 2, 0);
+                session_run();
+
+            }
+
+            else
+            {
+
+                session_create("settings_autostart_install", 1, ondata, 0, 0);
+                session_setarg("settings_autostart_install", 1, 0, "./helper.sh");
+                session_setarg("settings_autostart_install", 1, 1, "autorun_install");
+                session_setarg("settings_autostart_install", 1, 2, 0);
+                session_run();
+
+            }
 
         }
 
@@ -37,6 +73,11 @@ static void button(unsigned int key)
 static void load(void)
 {
 
+    session_create("settings_autostart_get", 1, ondata, 0, 0);
+    session_setarg("settings_autostart_get", 1, 0, "./helper.sh");
+    session_setarg("settings_autostart_get", 1, 1, "autorun_get");
+    session_setarg("settings_autostart_get", 1, 2, 0);
+    session_run();
     view_reset(&view);
 
 }
