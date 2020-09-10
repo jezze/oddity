@@ -9,7 +9,7 @@
 
 #define DIVX 8
 #define DIVY 8
-#define PADX 12
+#define PADX 8
 #define PADY 6
 
 static void widget_init(struct widget *widget, unsigned int type, char *id, char *in)
