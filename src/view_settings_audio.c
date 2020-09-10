@@ -200,8 +200,8 @@ static void load(void)
 void view_settings_audio_setup(void)
 {
 
-    widget_area_init(view_createwidget(&view), WIDGET_ID_DEFAULT, WIDGET_IN_DEFAULT, 0, 0, 8, 1);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, WIDGET_IN_DEFAULT, TEXT_COLOR_TITLE, TEXT_ALIGN_CENTER, "Volume");
+    widget_area_init(view_createwidget(&view), "area_volume", WIDGET_IN_DEFAULT, 0, 0, 8, 1);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_volume", TEXT_COLOR_TITLE, TEXT_ALIGN_CENTER, "Volume");
     widget_area_init(view_createwidget(&view), "area_volume_master", WIDGET_IN_DEFAULT, 0, 1, 8, 1);
     widget_area_init(view_createwidget(&view), "area_volume_master_text", WIDGET_IN_DEFAULT, 0, 1, 5, 1);
     widget_area_init(view_createwidget(&view), "area_volume_master_slider", WIDGET_IN_DEFAULT, 5, 1, 3, 1);
