@@ -129,7 +129,7 @@ void view_applist_setup(void)
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area7", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
 */
 
-    widget_area_init(view_createwidget(&view), "area_noitems", WIDGET_IN_DEFAULT, 0, 3, 8, 1);
+    widget_area_init(view_createwidget(&view), "area_noitems", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_noitems", TEXT_COLOR_NORMAL, TEXT_ALIGN_CENTER, "No items found.");
     view_init(&view, "applist", load, 0, config, button);
     main_registerview(&view);

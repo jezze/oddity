@@ -200,26 +200,26 @@ static void load(void)
 void view_settings_audio_setup(void)
 {
 
-    widget_area_init(view_createwidget(&view), "area_volume", WIDGET_IN_DEFAULT, 0, 0, 8, 1);
+    widget_area_init(view_createwidget(&view), "area_volume", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_volume", TEXT_COLOR_TITLE, TEXT_ALIGN_CENTER, "Volume");
-    widget_area_init(view_createwidget(&view), "area_volume_master", WIDGET_IN_DEFAULT, 0, 1, 8, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_master_text", WIDGET_IN_DEFAULT, 0, 1, 5, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_master_slider", WIDGET_IN_DEFAULT, 5, 1, 3, 1);
+    widget_area_init(view_createwidget(&view), "area_volume_master", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
+    widget_area_init(view_createwidget(&view), "area_volume_master_text", WIDGET_IN_DEFAULT, 0, 1, 8, 1);
+    widget_area_init(view_createwidget(&view), "area_volume_master_slider", WIDGET_IN_DEFAULT, 8, 1, 4, 1);
     widget_text_init(view_createwidget(&view), "text_volume_master", "area_volume_master_text", TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Master");
     widget_slider_init(view_createwidget(&view), "slider_volume_master", "area_volume_master_slider", 0, 100, -1);
-    widget_area_init(view_createwidget(&view), "area_volume_pcm", WIDGET_IN_DEFAULT, 0, 2, 8, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_pcm_text", WIDGET_IN_DEFAULT, 0, 2, 5, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_pcm_slider", WIDGET_IN_DEFAULT, 5, 2, 3, 1);
+    widget_area_init(view_createwidget(&view), "area_volume_pcm", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
+    widget_area_init(view_createwidget(&view), "area_volume_pcm_text", WIDGET_IN_DEFAULT, 0, 2, 8, 1);
+    widget_area_init(view_createwidget(&view), "area_volume_pcm_slider", WIDGET_IN_DEFAULT, 8, 2, 4, 1);
     widget_text_init(view_createwidget(&view), "text_volume_pcm", "area_volume_pcm_text", TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "PCM");
     widget_slider_init(view_createwidget(&view), "slider_volume_pcm", "area_volume_pcm_slider", 0, 100, -1);
-    widget_area_init(view_createwidget(&view), "area_volume_headphone", WIDGET_IN_DEFAULT, 0, 3, 8, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_headphone_text", WIDGET_IN_DEFAULT, 0, 3, 5, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_headphone_slider", WIDGET_IN_DEFAULT, 5, 3, 3, 1);
+    widget_area_init(view_createwidget(&view), "area_volume_headphone", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
+    widget_area_init(view_createwidget(&view), "area_volume_headphone_text", WIDGET_IN_DEFAULT, 0, 3, 8, 1);
+    widget_area_init(view_createwidget(&view), "area_volume_headphone_slider", WIDGET_IN_DEFAULT, 8, 3, 4, 1);
     widget_text_init(view_createwidget(&view), "text_volume_headphone", "area_volume_headphone_text", TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Headphone");
     widget_slider_init(view_createwidget(&view), "slider_volume_headphone", "area_volume_headphone_slider", 0, 100, -1);
-    widget_area_init(view_createwidget(&view), "area_volume_headphones", WIDGET_IN_DEFAULT, 0, 4, 8, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_headphones_text", WIDGET_IN_DEFAULT, 0, 4, 5, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_headphones_slider", WIDGET_IN_DEFAULT, 5, 4, 3, 1);
+    widget_area_init(view_createwidget(&view), "area_volume_headphones", WIDGET_IN_DEFAULT, 0, 4, 12, 1);
+    widget_area_init(view_createwidget(&view), "area_volume_headphones_text", WIDGET_IN_DEFAULT, 0, 4, 8, 1);
+    widget_area_init(view_createwidget(&view), "area_volume_headphones_slider", WIDGET_IN_DEFAULT, 8, 4, 4, 1);
     widget_text_init(view_createwidget(&view), "text_volume_headphones", "area_volume_headphones_text", TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Headphones");
     widget_slider_init(view_createwidget(&view), "slider_volume_headphones", "area_volume_headphones_slider", 0, 100, -1);
     view_addselection(&view, "area_volume_master");

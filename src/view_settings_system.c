@@ -102,7 +102,7 @@ static void load(void)
 void view_settings_system_setup(void)
 {
 
-    widget_area_init(view_createwidget(&view), "area_autostart", WIDGET_IN_DEFAULT, 0, 0, 8, 1);
+    widget_area_init(view_createwidget(&view), "area_autostart", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
     widget_text_init(view_createwidget(&view), "text_autostart", "area_autostart", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Autostart");
     widget_toggle_init(view_createwidget(&view), "toggle_autostart", "area_autostart", TOGGLE_OFF_DISABLED);
     view_addselection(&view, "area_autostart");

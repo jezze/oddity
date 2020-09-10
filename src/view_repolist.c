@@ -59,11 +59,11 @@ static void load(void)
 void view_repolist_setup(void)
 {
 
-    widget_area_init(view_createwidget(&view), "area_all", WIDGET_IN_DEFAULT, 0, 0, 8, 1);
-    widget_area_init(view_createwidget(&view), "area_installed", WIDGET_IN_DEFAULT, 0, 1, 8, 1);
-    widget_area_init(view_createwidget(&view), "area_new", WIDGET_IN_DEFAULT, 0, 2, 8, 1);
-    widget_area_init(view_createwidget(&view), "area_updated", WIDGET_IN_DEFAULT, 0, 3, 8, 1);
-    widget_area_init(view_createwidget(&view), "area_synchronize", WIDGET_IN_DEFAULT, 0, 7, 8, 1);
+    widget_area_init(view_createwidget(&view), "area_all", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
+    widget_area_init(view_createwidget(&view), "area_installed", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
+    widget_area_init(view_createwidget(&view), "area_new", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
+    widget_area_init(view_createwidget(&view), "area_updated", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
+    widget_area_init(view_createwidget(&view), "area_synchronize", WIDGET_IN_DEFAULT, 0, 7, 12, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_all", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "All");
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_all", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, all);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_installed", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Installed");

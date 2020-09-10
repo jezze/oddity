@@ -7,8 +7,10 @@
 #include "view.h"
 #include "backend.h"
 
-#define DIVX 8
+#define DIVX 12
 #define DIVY 8
+#define BORX 1
+#define BORY 2
 #define PADX 8
 #define PADY 6
 
@@ -28,8 +30,8 @@ void widget_area_place(struct widget *widget, struct box *box)
 {
 
     struct widget_area *area = &widget->payload.area;
-    unsigned int x = box->w / DIVX - 2;
-    unsigned int y = box->h / DIVY - 2;
+    unsigned int x = box->w / DIVX - BORX;
+    unsigned int y = box->h / DIVY - BORY;
     unsigned int mx = (box->w - (x * DIVX)) / 2;
     unsigned int my = (box->h - (y * DIVY)) / 2;
 

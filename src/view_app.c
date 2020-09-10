@@ -72,9 +72,9 @@ static void config(char *key, void *value)
 void view_app_setup(void)
 {
 
-    widget_area_init(view_createwidget(&view), "area_title", WIDGET_IN_DEFAULT, 0, 0, 8, 1);
+    widget_area_init(view_createwidget(&view), "area_title", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_title", TEXT_COLOR_TITLE, TEXT_ALIGN_CENTER, 0);
-    widget_area_init(view_createwidget(&view), "area_description", WIDGET_IN_DEFAULT, 0, 1, 8, 4);
+    widget_area_init(view_createwidget(&view), "area_description", WIDGET_IN_DEFAULT, 0, 1, 12, 4);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_description", TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, 0);
     widget_area_init(view_createwidget(&view), "area_run", WIDGET_IN_DEFAULT, 0, 7, 4, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_run", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Start");
