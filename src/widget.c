@@ -7,6 +7,11 @@
 #include "view.h"
 #include "backend.h"
 
+#define DIVX 8
+#define DIVY 8
+#define PADX 12
+#define PADY 6
+
 static void widget_init(struct widget *widget, unsigned int type, char *id, char *in)
 {
 
@@ -23,15 +28,15 @@ void widget_area_place(struct widget *widget, struct box *box)
 {
 
     struct widget_area *area = &widget->payload.area;
-    unsigned int ow = 12;
-    unsigned int oh = 12;
-    unsigned int col = (box->w - ow * 2) / 8;
-    unsigned int row = (box->h - oh * 2) / 8;
+    unsigned int x = box->w / DIVX - 2;
+    unsigned int y = box->h / DIVY - 2;
+    unsigned int mx = (box->w - (x * DIVX)) / 2;
+    unsigned int my = (box->h - (y * DIVY)) / 2;
 
-    widget->size.x = col * area->unit.x + ow;
-    widget->size.y = row * area->unit.y + oh;
-    widget->size.w = col * area->unit.w;
-    widget->size.h = row * area->unit.h;
+    widget->size.x = x * area->unit.x + mx;
+    widget->size.y = y * area->unit.y + my;
+    widget->size.w = x * area->unit.w;
+    widget->size.h = y * area->unit.h;
 
 }
 
@@ -71,10 +76,10 @@ void widget_icon_render(struct widget *widget, unsigned int ticks)
     struct widget_icon *icon = &widget->payload.icon;
     struct box box;
 
-    box.x = widget->size.x + 10;
-    box.y = widget->size.y + 6;
-    box.w = widget->size.w - 10 * 2;
-    box.h = widget->size.h - 6 * 2;
+    box.x = widget->size.x + PADX;
+    box.y = widget->size.y + PADY;
+    box.w = widget->size.w - PADX * 2;
+    box.h = widget->size.h - PADY * 2;
 
     backend_paint_icon(box.x, box.y, box.w, box.h, icon->type);
 
@@ -107,10 +112,10 @@ void widget_slider_render(struct widget *widget, unsigned int ticks)
     struct widget_slider *slider = &widget->payload.slider;
     struct box box;
 
-    box.x = widget->size.x + 10;
-    box.y = widget->size.y + 8;
-    box.w = widget->size.w - 10 * 2;
-    box.h = widget->size.h - 8 * 2;
+    box.x = widget->size.x + PADX;
+    box.y = widget->size.y + PADY;
+    box.w = widget->size.w - PADX * 2;
+    box.h = widget->size.h - PADY * 2;
 
     if (slider->value >= 0)
     {
@@ -159,10 +164,10 @@ void widget_text_render(struct widget *widget, unsigned int ticks)
     struct widget_text *text = &widget->payload.text;
     struct box box;
 
-    box.x = widget->size.x + 10;
-    box.y = widget->size.y + 6;
-    box.w = widget->size.w - 10 * 2;
-    box.h = widget->size.h - 6 * 2;
+    box.x = widget->size.x + PADX;
+    box.y = widget->size.y + PADY;
+    box.w = widget->size.w - PADX * 2;
+    box.h = widget->size.h - PADY * 2;
 
     text_render(&box, text->color, text->align, text->data);
 
@@ -197,10 +202,10 @@ void widget_toggle_render(struct widget *widget, unsigned int ticks)
     struct widget_toggle *toggle = &widget->payload.toggle;
     struct box box;
 
-    box.x = widget->size.x + 10;
-    box.y = widget->size.y + 6;
-    box.w = widget->size.w - 10 * 2;
-    box.h = widget->size.h - 6 * 2;
+    box.x = widget->size.x + PADX;
+    box.y = widget->size.y + PADY;
+    box.w = widget->size.w - PADX * 2;
+    box.h = widget->size.h - PADY * 2;
 
     switch (toggle->state)
     {
