@@ -21,6 +21,9 @@ static void button(unsigned int key)
 static void load(void)
 {
 
+    view_findwidget(&view, "area_audio")->selectable = 1;
+    view_findwidget(&view, "area_network")->selectable = 1;
+    view_findwidget(&view, "area_system")->selectable = 1;
     view_reset(&view);
 
 }
@@ -43,9 +46,6 @@ void view_settings_setup(void)
     widget_icon_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_system_icon", ICON_SYSTEM);
     widget_area_init(view_createwidget(&view), "area_system_text", WIDGET_IN_DEFAULT, 4, 5, 4, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_system_text", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "System");
-    view_addselection(&view, "area_audio");
-    view_addselection(&view, "area_network");
-    view_addselection(&view, "area_system");
     view_init(&view, "settings", load, 0, 0, button);
     main_registerview(&view);
 

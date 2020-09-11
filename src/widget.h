@@ -11,7 +11,6 @@ struct widget_area
 {
 
     struct box unit;
-    unsigned int selectable;
 
 };
 
@@ -57,6 +56,7 @@ struct widget
     struct list_item item;
     struct list_item selectionitem;
     struct box size;
+    unsigned int selectable;
 
     union
     {

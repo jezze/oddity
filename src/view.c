@@ -165,10 +165,10 @@ void view_place(struct view *view)
 void view_render(struct view *view, unsigned int ticks)
 {
 
-    if (view->selection.active)
+    if (view->selected)
     {
 
-        struct widget *widget = view->selection.active;
+        struct widget *widget = view->selected;
 
         backend_paint_selection(widget->size.x, widget->size.y, widget->size.w, widget->size.h);
 
@@ -181,10 +181,10 @@ void view_render(struct view *view, unsigned int ticks)
 unsigned int view_isactive(struct view *view, char *id)
 {
 
-    if (!view->selection.active)
+    if (!view->selected)
         return 0;
 
-    return !strcmp(view->selection.active->id, id);
+    return !strcmp(view->selected->id, id);
 
 }
 
@@ -201,18 +201,21 @@ void view_moveselection(struct view *view, unsigned int key)
     if (!(key == KEY_LEFT || key == KEY_RIGHT || key == KEY_UP || key == KEY_DOWN))
         return;
 
-    if (!view->selection.active)
+    if (!view->selected)
         return;
 
-    mx = view->selection.active->size.x + view->selection.active->size.w / 2;
-    my = view->selection.active->size.y + view->selection.active->size.h / 2;
+    mx = view->selected->size.x + view->selected->size.w / 2;
+    my = view->selected->size.y + view->selected->size.h / 2;
 
-    for (current = view->selection.list.head; current; current = current->next)
+    for (current = view->widgets.head; current; current = current->next)
     {
 
         struct widget *widget = current->data;
-        int dx = abs(widget->size.x - view->selection.active->size.x);
-        int dy = abs(widget->size.y - view->selection.active->size.y);
+        int dx = abs(widget->size.x - view->selected->size.x);
+        int dy = abs(widget->size.y - view->selected->size.y);
+
+        if (!widget->selectable)
+            continue;
 
         switch (key)
         {
@@ -284,7 +287,7 @@ void view_moveselection(struct view *view, unsigned int key)
     if (best)
     {
 
-        view->selection.active = best;
+        view->selected = best;
 
         backend_play("click");
 
@@ -298,13 +301,13 @@ void view_select(struct view *view, unsigned int key, char *match, char *from, c
     if (key != KEY_A)
         return;
 
-    if (!view->selection.active)
+    if (!view->selected)
         return;
 
-    if (!strlen(view->selection.active->id))
+    if (!strlen(view->selected->id))
         return;
 
-    if (strcmp(view->selection.active->id, match))
+    if (strcmp(view->selected->id, match))
         return;
 
     main_loadview(to, from);
@@ -323,23 +326,28 @@ void view_unselect(struct view *view, unsigned int key, char *from)
 
 }
 
-void view_addselection(struct view *view, char *id)
-{
-
-    struct widget *widget = view_findwidget(view, id);
-
-    if (widget)
-        list_add(&view->selection.list, &widget->selectionitem);
-
-}
-
 void view_reset(struct view *view)
 {
 
-    if (view->selection.list.head)
-        view->selection.active = view->selection.list.head->data;
-    else
-        view->selection.active = 0;
+    struct list_item *current;
+
+    view->selected = 0;
+
+    for (current = view->widgets.head; current; current = current->next)
+    {
+
+        struct widget *widget = current->data;
+
+        if (widget->selectable)
+        {
+
+            view->selected = widget;
+
+            return;
+
+        }
+
+    }
 
 }
 

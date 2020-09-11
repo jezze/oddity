@@ -89,6 +89,12 @@ static void load(void)
 
     view_findwidget(&view, "text_autostart")->payload.text.color = TEXT_COLOR_DISABLE;
     view_findwidget(&view, "toggle_autostart")->payload.toggle.state = TOGGLE_OFF_DISABLED;
+    view_findwidget(&view, "area_language")->selectable = 1;
+    view_findwidget(&view, "area_region")->selectable = 1;
+    view_findwidget(&view, "area_datetime")->selectable = 1;
+    view_findwidget(&view, "area_autostart")->selectable = 1;
+    view_findwidget(&view, "area_sysinfo")->selectable = 1;
+    view_findwidget(&view, "area_upgrade")->selectable = 1;
 
     session_create("settings_autostart_get", 1, ondata, 0, 0);
     session_setarg("settings_autostart_get", 1, 0, "./helper.sh");
@@ -119,12 +125,6 @@ void view_settings_system_setup(void)
     widget_area_init(view_createwidget(&view), "area_upgrade", WIDGET_IN_DEFAULT, 0, 5, 12, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_upgrade", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Upgrade");
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_upgrade", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "V1.02");
-    view_addselection(&view, "area_language");
-    view_addselection(&view, "area_region");
-    view_addselection(&view, "area_datetime");
-    view_addselection(&view, "area_autostart");
-    view_addselection(&view, "area_sysinfo");
-    view_addselection(&view, "area_upgrade");
     view_init(&view, "settings_system", load, 0, 0, button);
     main_registerview(&view);
 

@@ -22,6 +22,10 @@ static void button(unsigned int key)
 static void load(void)
 {
 
+    view_findwidget(&view, "area_library")->selectable = 1;
+    view_findwidget(&view, "area_settings")->selectable = 1;
+    view_findwidget(&view, "area_exit")->selectable = 1;
+
     view_reset(&view);
 
 }
@@ -35,9 +39,6 @@ void view_front_setup(void)
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_settings", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Settings");
     widget_area_init(view_createwidget(&view), "area_exit", WIDGET_IN_DEFAULT, 0, 7, 12, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_exit", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Exit");
-    view_addselection(&view, "area_library");
-    view_addselection(&view, "area_settings");
-    view_addselection(&view, "area_exit");
     view_init(&quit, "quit", main_quit, 0, 0, 0);
     main_registerview(&quit);
     view_init(&view, "front", load, 0, 0, button);

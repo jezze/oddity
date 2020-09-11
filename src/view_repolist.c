@@ -52,6 +52,13 @@ static void load(void)
     snprintf(new, 16, "%u items", db_countapps());
     snprintf(updated, 16, "%u items", db_countapps());
     snprintf(installed, 16, "%u items", db_countapps());
+
+    view_findwidget(&view, "area_all")->selectable = 1;
+    view_findwidget(&view, "area_installed")->selectable = 1;
+    view_findwidget(&view, "area_new")->selectable = 1;
+    view_findwidget(&view, "area_updated")->selectable = 1;
+    view_findwidget(&view, "area_synchronize")->selectable = 1;
+
     view_reset(&view);
 
 }
@@ -73,11 +80,6 @@ void view_repolist_setup(void)
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_updated", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Updated");
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_updated", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, updated);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_synchronize", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Synchronize");
-    view_addselection(&view, "area_all");
-    view_addselection(&view, "area_installed");
-    view_addselection(&view, "area_new");
-    view_addselection(&view, "area_updated");
-    view_addselection(&view, "area_synchronize");
     view_init(&view, "repolist", load, 0, 0, button);
     main_registerview(&view);
 

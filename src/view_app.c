@@ -49,6 +49,9 @@ static void button(unsigned int key)
 static void load(void)
 {
 
+    view_findwidget(&view, "area_run")->selectable = 1;
+    view_findwidget(&view, "area_uninstall")->selectable = 1;
+
     view_reset(&view);
 
 }
@@ -80,8 +83,6 @@ void view_app_setup(void)
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_run", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Start");
     widget_area_init(view_createwidget(&view), "area_uninstall", WIDGET_IN_DEFAULT, 4, 7, 4, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_uninstall", TEXT_COLOR_DISABLE, TEXT_ALIGN_CENTER, "Uninstall");
-    view_addselection(&view, "area_run");
-    view_addselection(&view, "area_uninstall");
     view_init(&view, "app", load, 0, config, button);
     main_registerview(&view);
 

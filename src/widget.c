@@ -58,7 +58,6 @@ void widget_area_init(struct widget *widget, char *id, char *in, int x, int y, i
     area->unit.y = y;
     area->unit.w = w;
     area->unit.h = h;
-    area->selectable = 1;
 
 }
 

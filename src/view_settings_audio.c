@@ -171,6 +171,10 @@ static void load(void)
     view_findwidget(&view, "slider_volume_headphone")->payload.slider.value = -1;
     view_findwidget(&view, "text_volume_headphones")->payload.text.color = TEXT_COLOR_DISABLE;
     view_findwidget(&view, "slider_volume_headphones")->payload.slider.value = -1;
+    view_findwidget(&view, "area_volume_master")->selectable = 1;
+    view_findwidget(&view, "area_volume_pcm")->selectable = 1;
+    view_findwidget(&view, "area_volume_headphone")->selectable = 1;
+    view_findwidget(&view, "area_volume_headphones")->selectable = 1;
 
     session_create("settings_volume_get", 1, ondata, 0, 0);
     session_setarg("settings_volume_get", 1, 0, "./helper.sh");
@@ -222,10 +226,6 @@ void view_settings_audio_setup(void)
     widget_area_init(view_createwidget(&view), "area_volume_headphones_slider", WIDGET_IN_DEFAULT, 8, 4, 4, 1);
     widget_text_init(view_createwidget(&view), "text_volume_headphones", "area_volume_headphones_text", TEXT_COLOR_DISABLE, TEXT_ALIGN_LEFT, "Headphones");
     widget_slider_init(view_createwidget(&view), "slider_volume_headphones", "area_volume_headphones_slider", 0, 100, -1);
-    view_addselection(&view, "area_volume_master");
-    view_addselection(&view, "area_volume_pcm");
-    view_addselection(&view, "area_volume_headphone");
-    view_addselection(&view, "area_volume_headphones");
     view_init(&view, "settings_audio", load, 0, 0, button);
     main_registerview(&view);
 
