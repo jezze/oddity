@@ -102,10 +102,29 @@ static void load(void)
 void view_settings_system_setup(void)
 {
 
-    widget_area_init(view_createwidget(&view), "area_autostart", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
+    widget_area_init(view_createwidget(&view), "area_language", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_language", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Language");
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_language", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "English (US)");
+    widget_area_init(view_createwidget(&view), "area_region", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_region", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Region");
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_region", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "Sweden");
+    widget_area_init(view_createwidget(&view), "area_datetime", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_datetime", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Date and Time");
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_datetime", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "2020-08-20 15:32:10");
+    widget_area_init(view_createwidget(&view), "area_autostart", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
     widget_text_init(view_createwidget(&view), "text_autostart", "area_autostart", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Autostart");
     widget_toggle_init(view_createwidget(&view), "toggle_autostart", "area_autostart", TOGGLE_OFF_DISABLED);
+    widget_area_init(view_createwidget(&view), "area_sysinfo", WIDGET_IN_DEFAULT, 0, 4, 12, 1);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_sysinfo", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "System Information");
+    widget_area_init(view_createwidget(&view), "area_upgrade", WIDGET_IN_DEFAULT, 0, 5, 12, 1);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_upgrade", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, "Upgrade");
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_upgrade", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "V1.02");
+    view_addselection(&view, "area_language");
+    view_addselection(&view, "area_region");
+    view_addselection(&view, "area_datetime");
     view_addselection(&view, "area_autostart");
+    view_addselection(&view, "area_sysinfo");
+    view_addselection(&view, "area_upgrade");
     view_init(&view, "settings_system", load, 0, 0, button);
     main_registerview(&view);
 
