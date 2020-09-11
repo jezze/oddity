@@ -6,7 +6,7 @@
 #include "view.h"
 #include "main.h"
 
-static struct view exitview;
+static struct view view;
 
 static void load(void)
 {
@@ -18,8 +18,8 @@ static void load(void)
 void view_exit_setup(void)
 {
 
-    view_init(&exitview, "exit", load, 0, 0, 0);
-    main_registerview(&exitview);
+    view_init(&view, "exit", load, 0, 0, 0);
+    main_registerview(&view);
 
 }
 
