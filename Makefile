@@ -12,10 +12,11 @@ OBJ= \
     src/session.o \
     src/text.o \
     src/view.o \
+    src/view_app.o \
+    src/view_applist.o \
+    src/view_exit.o \
     src/view_front.o \
     src/view_repolist.o \
-    src/view_applist.o \
-    src/view_app.o \
     src/view_settings.o \
     src/view_settings_audio.o \
     src/view_settings_system.o \

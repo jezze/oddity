@@ -18,6 +18,7 @@
 
 void view_app_setup(void);
 void view_applist_setup(void);
+void view_exit_setup(void);
 void view_front_setup(void);
 void view_repolist_setup(void);
 void view_settings_setup(void);
@@ -34,6 +35,7 @@ static void setup(void)
 
     view_app_setup();
     view_applist_setup();
+    view_exit_setup();
     view_front_setup();
     view_repolist_setup();
     view_settings_setup();
