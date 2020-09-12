@@ -49,9 +49,8 @@ static void button(unsigned int key)
 static void load(void)
 {
 
-    view_findwidget(&view, "area_run")->selectable = 1;
-    view_findwidget(&view, "area_uninstall")->selectable = 1;
-
+    view_setattr(&view, "area_run", "selectable", "true");
+    view_setattr(&view, "area_uninstall", "selectable", "true");
     view_reset(&view);
 
 }

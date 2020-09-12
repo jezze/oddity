@@ -52,13 +52,11 @@ static void load(void)
     snprintf(new, 16, "%u items", db_countapps());
     snprintf(updated, 16, "%u items", db_countapps());
     snprintf(installed, 16, "%u items", db_countapps());
-
-    view_findwidget(&view, "area_all")->selectable = 1;
-    view_findwidget(&view, "area_installed")->selectable = 1;
-    view_findwidget(&view, "area_new")->selectable = 1;
-    view_findwidget(&view, "area_updated")->selectable = 1;
-    view_findwidget(&view, "area_synchronize")->selectable = 1;
-
+    view_setattr(&view, "area_all", "selectable", "true");
+    view_setattr(&view, "area_installed", "selectable", "true");
+    view_setattr(&view, "area_new", "selectable", "true");
+    view_setattr(&view, "area_updated", "selectable", "true");
+    view_setattr(&view, "area_synchronize", "selectable", "true");
     view_reset(&view);
 
 }

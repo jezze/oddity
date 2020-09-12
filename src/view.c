@@ -351,6 +351,26 @@ void view_reset(struct view *view)
 
 }
 
+void view_setattr(struct view *view, char *id, char *key, char *value)
+{
+
+    struct widget *widget = view_findwidget(view, id);
+
+    if (!widget)
+        return;
+
+    if (!strcmp(key, "selectable"))
+    {
+
+        if (!strcmp(value, "true"))
+            widget->selectable = 1;
+        else if (strcmp(value, "false"))
+            widget->selectable = 0;
+
+    }
+
+}
+
 void view_init(struct view *view, char *name, void (*load)(void), void (*step)(unsigned int ticks), void (*config)(char *key, void *value), void (*button)(unsigned int key))
 {
 

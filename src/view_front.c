@@ -21,10 +21,9 @@ static void button(unsigned int key)
 static void load(void)
 {
 
-    view_findwidget(&view, "area_library")->selectable = 1;
-    view_findwidget(&view, "area_settings")->selectable = 1;
-    view_findwidget(&view, "area_exit")->selectable = 1;
-
+    view_setattr(&view, "area_library", "selectable", "true");
+    view_setattr(&view, "area_settings", "selectable", "true");
+    view_setattr(&view, "area_exit", "selectable", "true");
     view_reset(&view);
 
 }

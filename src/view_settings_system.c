@@ -133,14 +133,14 @@ static void load(void)
 
     view_findwidget(&view, "text_autostart")->payload.text.color = TEXT_TYPE_DISABLE;
     view_findwidget(&view, "toggle_autostart")->payload.toggle.state = TOGGLE_OFF_DISABLED;
-    view_findwidget(&view, "area_language")->selectable = 1;
-    view_findwidget(&view, "area_timezone")->selectable = 1;
-    view_findwidget(&view, "area_date")->selectable = 1;
-    view_findwidget(&view, "area_time")->selectable = 1;
-    view_findwidget(&view, "area_autostart")->selectable = 1;
-    view_findwidget(&view, "area_upgrade")->selectable = 1;
-    view_findwidget(&view, "area_sysinfo")->selectable = 1;
 
+    view_setattr(&view, "area_language", "selectable", "true");
+    view_setattr(&view, "area_timezone", "selectable", "true");
+    view_setattr(&view, "area_date", "selectable", "true");
+    view_setattr(&view, "area_time", "selectable", "true");
+    view_setattr(&view, "area_autostart", "selectable", "true");
+    view_setattr(&view, "area_upgrade", "selectable", "true");
+    view_setattr(&view, "area_sysinfo", "selectable", "true");
     helper_autostart_get(1, autostart_ondata, 0, 0);
     helper_date_get(1, date_ondata, 0, 0);
     helper_time_get(1, time_ondata, 0, 0);

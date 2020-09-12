@@ -21,9 +21,9 @@ static void button(unsigned int key)
 static void load(void)
 {
 
-    view_findwidget(&view, "area_audio")->selectable = 1;
-    view_findwidget(&view, "area_network")->selectable = 1;
-    view_findwidget(&view, "area_system")->selectable = 1;
+    view_setattr(&view, "area_audio", "selectable", "true");
+    view_setattr(&view, "area_network", "selectable", "true");
+    view_setattr(&view, "area_system", "selectable", "true");
     view_reset(&view);
 
 }

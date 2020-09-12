@@ -100,11 +100,11 @@ static void load(void)
     view_findwidget(&view, "slider_volume_headphone")->payload.slider.value = -1;
     view_findwidget(&view, "text_volume_headphones")->payload.text.color = TEXT_TYPE_DISABLE;
     view_findwidget(&view, "slider_volume_headphones")->payload.slider.value = -1;
-    view_findwidget(&view, "area_volume_master")->selectable = 1;
-    view_findwidget(&view, "area_volume_pcm")->selectable = 1;
-    view_findwidget(&view, "area_volume_headphone")->selectable = 1;
-    view_findwidget(&view, "area_volume_headphones")->selectable = 1;
 
+    view_setattr(&view, "area_volume_master", "selectable", "true");
+    view_setattr(&view, "area_volume_pcm", "selectable", "true");
+    view_setattr(&view, "area_volume_headphone", "selectable", "true");
+    view_setattr(&view, "area_volume_headphones", "selectable", "true");
     helper_volume_get(1, "Master", ondata, 0, 0);
     helper_volume_get(2, "PCM", ondata, 0, 0);
     helper_volume_get(3, "Headphone", ondata, 0, 0);
