@@ -1,5 +1,9 @@
 #!/bin/sh
 
+cmd_datetime_get() {
+    date --rfc-3339=second
+}
+
 cmd_volume_get() {
     amixer sget $1 | awk -F"[][]" '/dB/ { print $2 }' | head -n 1
 
@@ -18,14 +22,10 @@ cmd_volume_decrement() {
 
 cmd_download() {
     wget -q --show-progress --progress=dot -o /dev/stdout $1 -O $2 2>/dev/null
-
-    exit 0
 }
 
 cmd_autostart_get() {
     test -e ~/.autostart && echo "on" || echo "off"
-
-    exit 0
 }
 
 cmd_autostart_install() {

@@ -84,6 +84,16 @@ void helper_autostart_uninstall(unsigned int id, void (*ondata)(unsigned int id,
 
 }
 
+void helper_datetime_get(unsigned int id, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
+{
+
+    session_create("datetime_get", id, ondata, oncomplete, onfailure);
+    session_setarg("datetime_get", id, 0, "./helper.sh");
+    session_setarg("datetime_get", id, 1, "datetime_get");
+    session_setarg("datetime_get", id, 2, 0);
+
+}
+
 void helper_volume_get(unsigned int id, char *channel, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
 {
 
