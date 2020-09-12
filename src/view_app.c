@@ -76,13 +76,13 @@ void view_app_setup(void)
 {
 
     widget_area_init(view_createwidget(&view), "area_title", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_title", TEXT_COLOR_TITLE, TEXT_ALIGN_CENTER, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_title", TEXT_TYPE_TITLE, TEXT_ALIGN_CENTER, 0);
     widget_area_init(view_createwidget(&view), "area_description", WIDGET_IN_DEFAULT, 0, 1, 12, 4);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_description", TEXT_COLOR_NORMAL, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_description", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, 0);
     widget_area_init(view_createwidget(&view), "area_run", WIDGET_IN_DEFAULT, 0, 7, 4, 1);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_run", TEXT_COLOR_SELECT, TEXT_ALIGN_CENTER, "Start");
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_run", TEXT_TYPE_SELECT, TEXT_ALIGN_CENTER, "Start");
     widget_area_init(view_createwidget(&view), "area_uninstall", WIDGET_IN_DEFAULT, 4, 7, 4, 1);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_uninstall", TEXT_COLOR_DISABLE, TEXT_ALIGN_CENTER, "Uninstall");
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_uninstall", TEXT_TYPE_DISABLE, TEXT_ALIGN_CENTER, "Uninstall");
     view_init(&view, "app", load, 0, config, button);
     main_registerview(&view);
 

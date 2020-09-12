@@ -111,26 +111,26 @@ void view_applist_setup(void)
     widget_area_init(view_createwidget(&view), "area5", WIDGET_IN_DEFAULT, 0, 5, 8, 1);
     widget_area_init(view_createwidget(&view), "area6", WIDGET_IN_DEFAULT, 0, 6, 8, 1);
     widget_area_init(view_createwidget(&view), "area7", WIDGET_IN_DEFAULT, 0, 7, 8, 1);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area0", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area0", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area1", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area1", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area2", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area2", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area3", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area3", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area4", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area4", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area5", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area5", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area6", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area6", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area7", TEXT_COLOR_SELECT, TEXT_ALIGN_LEFT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area7", TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area0", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area0", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area1", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area1", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area2", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area2", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area3", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area3", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area4", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area4", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area5", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area5", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area6", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area6", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area7", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area7", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
 */
 
     widget_area_init(view_createwidget(&view), "area_noitems", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_noitems", TEXT_COLOR_NORMAL, TEXT_ALIGN_CENTER, "No items found.");
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_noitems", TEXT_TYPE_NORMAL, TEXT_ALIGN_CENTER, "No items found.");
     view_init(&view, "applist", load, 0, config, button);
     main_registerview(&view);
 

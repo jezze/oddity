@@ -211,21 +211,21 @@ void widget_toggle_render(struct widget *widget, unsigned int ticks)
     {
 
     case TOGGLE_OFF:
-        text_render(&box, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "Off");
+        text_render(&box, TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, "Off");
 
         break;
     case TOGGLE_ON:
-        text_render(&box, TEXT_COLOR_NORMAL, TEXT_ALIGN_RIGHT, "On");
+        text_render(&box, TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, "On");
 
         break;
 
     case TOGGLE_OFF_DISABLED:
-        text_render(&box, TEXT_COLOR_DISABLE, TEXT_ALIGN_RIGHT, "Off");
+        text_render(&box, TEXT_TYPE_DISABLE, TEXT_ALIGN_RIGHT, "Off");
 
         break;
 
     case TOGGLE_ON_DISABLED:
-        text_render(&box, TEXT_COLOR_DISABLE, TEXT_ALIGN_RIGHT, "On");
+        text_render(&box, TEXT_TYPE_DISABLE, TEXT_ALIGN_RIGHT, "On");
 
         break;
 
