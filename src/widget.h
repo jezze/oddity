@@ -17,7 +17,6 @@ struct widget_area
 struct widget_icon
 {
 
-    struct box unit;
     unsigned int type;
 
 };
