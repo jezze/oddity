@@ -58,6 +58,10 @@ static void run(void)
         session_run();
         session_poll();
         backend_pollevent(main_quit, current->button);
+
+        if (current->step)
+            current->step(ticks);
+
         backend_render(current, ticks);
 
         if (backend_ticks() - frametime < TIMELIMIT)

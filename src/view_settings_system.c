@@ -72,6 +72,19 @@ static void timezone_ondata(unsigned int id, void *data, unsigned int count)
 
 }
 
+static void step(unsigned int ticks)
+{
+
+    if (ticks % 60 == 0)
+    {
+
+        helper_date_get(2, date_ondata, 0, 0);
+        helper_time_get(2, time_ondata, 0, 0);
+
+    }
+
+}
+
 static void button(unsigned int key)
 {
 
@@ -159,7 +172,7 @@ void view_settings_system_setup(void)
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_upgrade", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, "V1.02");
     widget_area_init(view_createwidget(&view), "area_sysinfo", WIDGET_IN_DEFAULT, 0, 6, 12, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_sysinfo", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "System Information");
-    view_init(&view, "settings_system", load, 0, 0, button);
+    view_init(&view, "settings_system", load, step, 0, button);
     main_registerview(&view);
 
 }
