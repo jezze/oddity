@@ -84,13 +84,33 @@ void helper_autostart_uninstall(unsigned int id, void (*ondata)(unsigned int id,
 
 }
 
-void helper_datetime_get(unsigned int id, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
+void helper_date_get(unsigned int id, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
 {
 
-    session_create("datetime_get", id, ondata, oncomplete, onfailure);
-    session_setarg("datetime_get", id, 0, "./helper.sh");
-    session_setarg("datetime_get", id, 1, "datetime_get");
-    session_setarg("datetime_get", id, 2, 0);
+    session_create("date_get", id, ondata, oncomplete, onfailure);
+    session_setarg("date_get", id, 0, "./helper.sh");
+    session_setarg("date_get", id, 1, "date_get");
+    session_setarg("date_get", id, 2, 0);
+
+}
+
+void helper_time_get(unsigned int id, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
+{
+
+    session_create("time_get", id, ondata, oncomplete, onfailure);
+    session_setarg("time_get", id, 0, "./helper.sh");
+    session_setarg("time_get", id, 1, "time_get");
+    session_setarg("time_get", id, 2, 0);
+
+}
+
+void helper_timezone_get(unsigned int id, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
+{
+
+    session_create("timezone_get", id, ondata, oncomplete, onfailure);
+    session_setarg("timezone_get", id, 0, "./helper.sh");
+    session_setarg("timezone_get", id, 1, "timezone_get");
+    session_setarg("timezone_get", id, 2, 0);
 
 }
 

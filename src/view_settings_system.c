@@ -11,7 +11,10 @@
 #include "helper.h"
 
 static struct view view;
-static char datetime[32];
+static char language[32];
+static char timezone[32];
+static char date[32];
+static char time[32];
 
 static void autostart_ondata(unsigned int id, void *data, unsigned int count)
 {
@@ -42,12 +45,30 @@ static void autostart_ondata(unsigned int id, void *data, unsigned int count)
 
 }
 
-static void datetime_ondata(unsigned int id, void *data, unsigned int count)
+static void date_ondata(unsigned int id, void *data, unsigned int count)
 {
 
-    char *date = data;
+    char *s = data;
 
-    snprintf(datetime, 32, "%s", date);
+    snprintf(date, 32, "%s", s);
+
+}
+
+static void time_ondata(unsigned int id, void *data, unsigned int count)
+{
+
+    char *s = data;
+
+    snprintf(time, 32, "%s", s);
+
+}
+
+static void timezone_ondata(unsigned int id, void *data, unsigned int count)
+{
+
+    char *s = data;
+
+    snprintf(timezone, 32, "%s", s);
 
 }
 
@@ -93,19 +114,24 @@ static void button(unsigned int key)
 static void load(void)
 {
 
-    snprintf(datetime, 32, "-");
+    snprintf(language, 32, "English (US)");
+    snprintf(timezone, 32, "-");
+    snprintf(date, 32, "-");
 
     view_findwidget(&view, "text_autostart")->payload.text.color = TEXT_TYPE_DISABLE;
     view_findwidget(&view, "toggle_autostart")->payload.toggle.state = TOGGLE_OFF_DISABLED;
     view_findwidget(&view, "area_language")->selectable = 1;
-    view_findwidget(&view, "area_region")->selectable = 1;
-    view_findwidget(&view, "area_datetime")->selectable = 1;
+    view_findwidget(&view, "area_timezone")->selectable = 1;
+    view_findwidget(&view, "area_date")->selectable = 1;
+    view_findwidget(&view, "area_time")->selectable = 1;
     view_findwidget(&view, "area_autostart")->selectable = 1;
-    view_findwidget(&view, "area_sysinfo")->selectable = 1;
     view_findwidget(&view, "area_upgrade")->selectable = 1;
+    view_findwidget(&view, "area_sysinfo")->selectable = 1;
 
     helper_autostart_get(1, autostart_ondata, 0, 0);
-    helper_datetime_get(1, datetime_ondata, 0, 0);
+    helper_date_get(1, date_ondata, 0, 0);
+    helper_time_get(1, time_ondata, 0, 0);
+    helper_timezone_get(1, timezone_ondata, 0, 0);
     view_reset(&view);
 
 }
@@ -115,21 +141,24 @@ void view_settings_system_setup(void)
 
     widget_area_init(view_createwidget(&view), "area_language", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_language", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Language");
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_language", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, "English (US)");
-    widget_area_init(view_createwidget(&view), "area_region", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_region", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Region");
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_region", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, "Europe/Sweden");
-    widget_area_init(view_createwidget(&view), "area_datetime", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_datetime", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Date and Time");
-    widget_text_init(view_createwidget(&view), "text_datetime", "area_datetime", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, datetime);
-    widget_area_init(view_createwidget(&view), "area_autostart", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
+    widget_text_init(view_createwidget(&view), "text_language", "area_language", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, language);
+    widget_area_init(view_createwidget(&view), "area_timezone", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_timezone", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Timezone");
+    widget_text_init(view_createwidget(&view), "text_timezone", "area_timezone", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, timezone);
+    widget_area_init(view_createwidget(&view), "area_date", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_date", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Date");
+    widget_text_init(view_createwidget(&view), "text_date", "area_date", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, date);
+    widget_area_init(view_createwidget(&view), "area_time", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_time", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Time");
+    widget_text_init(view_createwidget(&view), "text_time", "area_time", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, time);
+    widget_area_init(view_createwidget(&view), "area_autostart", WIDGET_IN_DEFAULT, 0, 4, 12, 1);
     widget_text_init(view_createwidget(&view), "text_autostart", "area_autostart", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Autostart");
     widget_toggle_init(view_createwidget(&view), "toggle_autostart", "area_autostart", TOGGLE_OFF_DISABLED);
-    widget_area_init(view_createwidget(&view), "area_sysinfo", WIDGET_IN_DEFAULT, 0, 4, 12, 1);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_sysinfo", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "System Information");
     widget_area_init(view_createwidget(&view), "area_upgrade", WIDGET_IN_DEFAULT, 0, 5, 12, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_upgrade", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Upgrade");
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_upgrade", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, "V1.02");
+    widget_area_init(view_createwidget(&view), "area_sysinfo", WIDGET_IN_DEFAULT, 0, 6, 12, 1);
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_sysinfo", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "System Information");
     view_init(&view, "settings_system", load, 0, 0, button);
     main_registerview(&view);
 

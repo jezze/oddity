@@ -1,7 +1,15 @@
 #!/bin/sh
 
-cmd_datetime_get() {
-    date --rfc-3339=second
+cmd_date_get() {
+    date +"%x"
+}
+
+cmd_time_get() {
+    date +"%X"
+}
+
+cmd_timezone_get() {
+    date +"%Z"
 }
 
 cmd_volume_get() {
