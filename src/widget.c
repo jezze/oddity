@@ -169,7 +169,8 @@ void widget_text_render(struct widget *widget, unsigned int ticks)
     box.w = widget->size.w - PADX * 2;
     box.h = widget->size.h - PADY * 2;
 
-    text_render(&box, text->color, text->align, text->data);
+    if (text->data)
+        text_render(&box, text->color, text->align, text->data);
 
 }
 
