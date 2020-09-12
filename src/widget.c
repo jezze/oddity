@@ -34,10 +34,10 @@ void widget_area_place(struct widget *widget, struct box *box)
     unsigned int mx = (box->w - (x * DIVX)) / 2;
     unsigned int my = (box->h - (y * DIVY)) / 2;
 
-    widget->size.x = x * area->unit.x + mx;
-    widget->size.y = y * area->unit.y + my;
-    widget->size.w = x * area->unit.w;
-    widget->size.h = y * area->unit.h;
+    widget->size.x = x * area->x + mx;
+    widget->size.y = y * area->y + my;
+    widget->size.w = x * area->w;
+    widget->size.h = y * area->h;
 
 }
 
@@ -53,10 +53,10 @@ void widget_area_init(struct widget *widget, char *id, char *in, int x, int y, i
 
     widget_init(widget, WIDGET_TYPE_AREA, id, in);
 
-    area->unit.x = x;
-    area->unit.y = y;
-    area->unit.w = w;
-    area->unit.h = h;
+    area->x = x;
+    area->y = y;
+    area->w = w;
+    area->h = h;
 
 }
 

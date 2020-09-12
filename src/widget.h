@@ -10,7 +10,10 @@
 struct widget_area
 {
 
-    struct box unit;
+    int x;
+    int y;
+    int w;
+    int h;
 
 };
 
