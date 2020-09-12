@@ -104,7 +104,7 @@ void view_settings_system_setup(void)
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_language", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, "English (US)");
     widget_area_init(view_createwidget(&view), "area_region", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_region", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Region");
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_region", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, "Sweden");
+    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_region", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, "Europe/Sweden");
     widget_area_init(view_createwidget(&view), "area_datetime", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_datetime", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Date and Time");
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_datetime", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, "2020-08-20 15:32:10");
