@@ -36,7 +36,7 @@ struct widget_slider
 struct widget_text
 {
 
-    unsigned int color;
+    unsigned int type;
     unsigned int align;
     char *data;
 
@@ -74,16 +74,21 @@ struct widget
 
 void widget_area_place(struct widget *widget, struct box *box);
 void widget_area_render(struct widget *widget, unsigned int ticks);
+void widget_area_set(struct widget *widget, char *key, char *value);
 void widget_area_init(struct widget *widget, char *id, char *in, int x, int y, int w, int h);
 void widget_icon_place(struct widget *widget, struct box *box);
 void widget_icon_render(struct widget *widget, unsigned int ticks);
+void widget_icon_set(struct widget *widget, char *key, char *value);
 void widget_icon_init(struct widget *widget, char *id, char *in, unsigned int type);
 void widget_slider_place(struct widget *widget, struct box *box);
 void widget_slider_render(struct widget *widget, unsigned int ticks);
+void widget_slider_set(struct widget *widget, char *key, char *value);
 void widget_slider_init(struct widget *widget, char *id, char *in, int min, int max, int value);
 void widget_text_place(struct widget *widget, struct box *box);
 void widget_text_render(struct widget *widget, unsigned int ticks);
-void widget_text_init(struct widget *widget, char *id, char *in, unsigned int color, unsigned int align, char *data);
+void widget_text_set(struct widget *widget, char *key, char *value);
+void widget_text_init(struct widget *widget, char *id, char *in, unsigned int type, unsigned int align, char *data);
 void widget_toggle_place(struct widget *widget, struct box *box);
 void widget_toggle_render(struct widget *widget, unsigned int ticks);
+void widget_toggle_set(struct widget *widget, char *key, char *value);
 void widget_toggle_init(struct widget *widget, char *id, char *in, unsigned int state);

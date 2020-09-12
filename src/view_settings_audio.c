@@ -18,26 +18,26 @@ void ondata(unsigned int id, void *data, unsigned int count)
     {
 
     case 1:
-        view_findwidget(&view, "text_volume_master")->payload.text.color = TEXT_TYPE_NORMAL;
-        view_findwidget(&view, "slider_volume_master")->payload.slider.value = strtol(data, 0, 10);
+        view_setattr(&view, "text_volume_master", "type", "normal");
+        view_setattr(&view, "slider_volume_master", "value", data);
 
         break;
 
     case 2:
-        view_findwidget(&view, "text_volume_pcm")->payload.text.color = TEXT_TYPE_NORMAL;
-        view_findwidget(&view, "slider_volume_pcm")->payload.slider.value = strtol(data, 0, 10);
+        view_setattr(&view, "text_volume_pcm", "type", "normal");
+        view_setattr(&view, "slider_volume_pcm", "value", data);
 
         break;
 
     case 3:
-        view_findwidget(&view, "text_volume_headphone")->payload.text.color = TEXT_TYPE_NORMAL;
-        view_findwidget(&view, "slider_volume_headphone")->payload.slider.value = strtol(data, 0, 10);
+        view_setattr(&view, "text_volume_headphone", "type", "normal");
+        view_setattr(&view, "slider_volume_headphone", "value", data);
 
         break;
 
     case 4:
-        view_findwidget(&view, "text_volume_headphones")->payload.text.color = TEXT_TYPE_NORMAL;
-        view_findwidget(&view, "slider_volume_headphones")->payload.slider.value = strtol(data, 0, 10);
+        view_setattr(&view, "text_volume_headphones", "type", "normal");
+        view_setattr(&view, "slider_volume_headphones", "value", data);
 
         break;
 
@@ -92,24 +92,23 @@ static void button(unsigned int key)
 static void load(void)
 {
 
-    view_findwidget(&view, "text_volume_master")->payload.text.color = TEXT_TYPE_DISABLE;
-    view_findwidget(&view, "slider_volume_master")->payload.slider.value = -1;
-    view_findwidget(&view, "text_volume_pcm")->payload.text.color = TEXT_TYPE_DISABLE;
-    view_findwidget(&view, "slider_volume_pcm")->payload.slider.value = -1;
-    view_findwidget(&view, "text_volume_headphone")->payload.text.color = TEXT_TYPE_DISABLE;
-    view_findwidget(&view, "slider_volume_headphone")->payload.slider.value = -1;
-    view_findwidget(&view, "text_volume_headphones")->payload.text.color = TEXT_TYPE_DISABLE;
-    view_findwidget(&view, "slider_volume_headphones")->payload.slider.value = -1;
-
     view_setattr(&view, "area_volume_master", "selectable", "true");
     view_setattr(&view, "area_volume_pcm", "selectable", "true");
     view_setattr(&view, "area_volume_headphone", "selectable", "true");
     view_setattr(&view, "area_volume_headphones", "selectable", "true");
+    view_setattr(&view, "text_volume_master", "type", "disable");
+    view_setattr(&view, "text_volume_pcm", "type", "disable");
+    view_setattr(&view, "text_volume_headphone", "type", "disable");
+    view_setattr(&view, "text_volume_headphones", "type", "disable");
+    view_setattr(&view, "slider_volume_master", "value", "-1");
+    view_setattr(&view, "slider_volume_pcm", "value", "-1");
+    view_setattr(&view, "slider_volume_headphone", "value", "-1");
+    view_setattr(&view, "slider_volume_headphones", "value", "-1");
+    view_reset(&view);
     helper_volume_get(1, "Master", ondata, 0, 0);
     helper_volume_get(2, "PCM", ondata, 0, 0);
     helper_volume_get(3, "Headphone", ondata, 0, 0);
     helper_volume_get(4, "Headphones", ondata, 0, 0);
-    view_reset(&view);
 
 }
 

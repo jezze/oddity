@@ -63,9 +63,8 @@ static void config(char *key, void *value)
 
         db_freeapp(&app);
         db_loadapp(&app, value);
-
-        view_findwidget(&view, "area_title")->payload.text.data = app.name;
-        view_findwidget(&view, "area_description")->payload.text.data = app.shortdescription;
+        view_setattr(&view, "text_title", "data", app.name);
+        view_setattr(&view, "text_description", "data", app.shortdescription);
 
     }
 
@@ -75,9 +74,9 @@ void view_app_setup(void)
 {
 
     widget_area_init(view_createwidget(&view), "area_title", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_title", TEXT_TYPE_TITLE, TEXT_ALIGN_CENTER, 0);
+    widget_text_init(view_createwidget(&view), "text_title", "area_title", TEXT_TYPE_TITLE, TEXT_ALIGN_CENTER, 0);
     widget_area_init(view_createwidget(&view), "area_description", WIDGET_IN_DEFAULT, 0, 1, 12, 4);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_description", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, 0);
+    widget_text_init(view_createwidget(&view), "text_description", "area_description", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, 0);
     widget_area_init(view_createwidget(&view), "area_run", WIDGET_IN_DEFAULT, 0, 7, 4, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_run", TEXT_TYPE_SELECT, TEXT_ALIGN_CENTER, "Start");
     widget_area_init(view_createwidget(&view), "area_uninstall", WIDGET_IN_DEFAULT, 4, 7, 4, 1);

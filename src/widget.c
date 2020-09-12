@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include "define.h"
 #include "box.h"
 #include "list.h"
@@ -46,6 +47,11 @@ void widget_area_render(struct widget *widget, unsigned int ticks)
 
 }
 
+void widget_area_set(struct widget *widget, char *key, char *value)
+{
+
+}
+
 void widget_area_init(struct widget *widget, char *id, char *in, int x, int y, int w, int h)
 {
 
@@ -82,6 +88,11 @@ void widget_icon_render(struct widget *widget, unsigned int ticks)
     box.h = widget->size.h - PADY * 2;
 
     backend_paint_icon(box.x, box.y, box.w, box.h, icon->type);
+
+}
+
+void widget_icon_set(struct widget *widget, char *key, char *value)
+{
 
 }
 
@@ -135,6 +146,20 @@ void widget_slider_render(struct widget *widget, unsigned int ticks)
 
 }
 
+void widget_slider_set(struct widget *widget, char *key, char *value)
+{
+
+    struct widget_slider *slider = &widget->payload.slider;
+
+    if (!strcmp(key, "value"))
+    {
+
+        slider->value = strtol(value, 0, 10);
+
+    }
+
+}
+
 void widget_slider_init(struct widget *widget, char *id, char *in, int min, int max, int value)
 {
 
@@ -170,18 +195,58 @@ void widget_text_render(struct widget *widget, unsigned int ticks)
     box.h = widget->size.h - PADY * 2;
 
     if (text->data)
-        text_render(&box, text->color, text->align, text->data);
+        text_render(&box, text->type, text->align, text->data);
 
 }
 
-void widget_text_init(struct widget *widget, char *id, char *in, unsigned int color, unsigned int align, char *data)
+void widget_text_set(struct widget *widget, char *key, char *value)
+{
+
+    struct widget_text *text = &widget->payload.text;
+
+    if (!strcmp(key, "type"))
+    {
+
+        if (!strcmp(value, "normal"))
+            text->type = TEXT_TYPE_NORMAL;
+        else if (!strcmp(value, "title"))
+            text->type = TEXT_TYPE_TITLE;
+        else if (!strcmp(value, "select"))
+            text->type = TEXT_TYPE_SELECT;
+        else if (!strcmp(value, "disable"))
+            text->type = TEXT_TYPE_DISABLE;
+
+    }
+
+    if (!strcmp(key, "align"))
+    {
+
+        if (!strcmp(value, "left"))
+            text->align = TEXT_ALIGN_LEFT;
+        else if (!strcmp(value, "right"))
+            text->align = TEXT_ALIGN_RIGHT;
+        else if (!strcmp(value, "center"))
+            text->align = TEXT_ALIGN_CENTER;
+
+    }
+
+    if (!strcmp(key, "data"))
+    {
+
+        text->data = value;
+
+    }
+
+}
+
+void widget_text_init(struct widget *widget, char *id, char *in, unsigned int type, unsigned int align, char *data)
 {
 
     struct widget_text *text = &widget->payload.text;
 
     widget_init(widget, WIDGET_TYPE_TEXT, id, in);
 
-    text->color = color;
+    text->type = type;
     text->align = align;
     text->data = data;
 
@@ -229,6 +294,27 @@ void widget_toggle_render(struct widget *widget, unsigned int ticks)
         text_render(&box, TEXT_TYPE_DISABLE, TEXT_ALIGN_RIGHT, "On");
 
         break;
+
+    }
+
+}
+
+void widget_toggle_set(struct widget *widget, char *key, char *value)
+{
+
+    struct widget_toggle *toggle = &widget->payload.toggle;
+
+    if (!strcmp(key, "state"))
+    {
+
+        if (!strcmp(value, "off"))
+            toggle->state = TOGGLE_OFF;
+        else if (!strcmp(value, "on"))
+            toggle->state = TOGGLE_ON;
+        else if (!strcmp(value, "off_disabled"))
+            toggle->state = TOGGLE_OFF_DISABLED;
+        else if (!strcmp(value, "on_disabled"))
+            toggle->state = TOGGLE_ON_DISABLED;
 
     }
 

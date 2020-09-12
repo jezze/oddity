@@ -125,6 +125,52 @@ static void renderwidgets(struct view *view, struct widget *parent, unsigned int
 
 }
 
+static void setwidget(struct widget *widget, char *key, char *value)
+{
+
+    if (!strcmp(key, "selectable"))
+    {
+
+        if (!strcmp(value, "true"))
+            widget->selectable = 1;
+        else if (strcmp(value, "false"))
+            widget->selectable = 0;
+
+    }
+
+    switch (widget->type)
+    {
+
+    case WIDGET_TYPE_AREA:
+        widget_area_set(widget, key, value);
+
+        break;
+
+    case WIDGET_TYPE_ICON:
+        widget_icon_set(widget, key, value);
+
+        break;
+
+    case WIDGET_TYPE_SLIDER:
+        widget_slider_set(widget, key, value);
+
+        break;
+
+    case WIDGET_TYPE_TEXT:
+        widget_text_set(widget, key, value);
+
+        break;
+
+    case WIDGET_TYPE_TOGGLE:
+        widget_toggle_set(widget, key, value);
+
+        break;
+
+    }
+
+}
+
+
 struct widget *view_findwidget(struct view *view, char *id)
 {
 
@@ -359,15 +405,7 @@ void view_setattr(struct view *view, char *id, char *key, char *value)
     if (!widget)
         return;
 
-    if (!strcmp(key, "selectable"))
-    {
-
-        if (!strcmp(value, "true"))
-            widget->selectable = 1;
-        else if (strcmp(value, "false"))
-            widget->selectable = 0;
-
-    }
+    setwidget(widget, key, value);
 
 }
 

@@ -22,24 +22,24 @@ static void autostart_ondata(unsigned int id, void *data, unsigned int count)
     if (!strncmp(data, "off", 3))
     {
 
-        view_findwidget(&view, "text_autostart")->payload.text.color = TEXT_TYPE_SELECT;
-        view_findwidget(&view, "toggle_autostart")->payload.toggle.state = TOGGLE_OFF;
+        view_setattr(&view, "text_autostart", "type", "select");
+        view_setattr(&view, "toggle_autostart", "state", "off");
 
     }
 
     else if (!strncmp(data, "on", 2))
     {
 
-        view_findwidget(&view, "text_autostart")->payload.text.color = TEXT_TYPE_SELECT;
-        view_findwidget(&view, "toggle_autostart")->payload.toggle.state = TOGGLE_ON;
+        view_setattr(&view, "text_autostart", "type", "select");
+        view_setattr(&view, "toggle_autostart", "state", "on");
 
     }
 
     else
     {
 
-        view_findwidget(&view, "text_autostart")->payload.text.color = TEXT_TYPE_DISABLE;
-        view_findwidget(&view, "toggle_autostart")->payload.toggle.state = TOGGLE_OFF_DISABLED;
+        view_setattr(&view, "text_autostart", "type", "select");
+        view_setattr(&view, "toggle_autostart", "state", "disabled");
 
     }
 
@@ -130,10 +130,8 @@ static void load(void)
     snprintf(language, 32, "English (US)");
     snprintf(timezone, 32, "-");
     snprintf(date, 32, "-");
-
-    view_findwidget(&view, "text_autostart")->payload.text.color = TEXT_TYPE_DISABLE;
-    view_findwidget(&view, "toggle_autostart")->payload.toggle.state = TOGGLE_OFF_DISABLED;
-
+    view_setattr(&view, "text_autostart", "type", "disable");
+    view_setattr(&view, "toggle_autostart", "state", "disabled");
     view_setattr(&view, "area_language", "selectable", "true");
     view_setattr(&view, "area_timezone", "selectable", "true");
     view_setattr(&view, "area_date", "selectable", "true");
@@ -141,11 +139,11 @@ static void load(void)
     view_setattr(&view, "area_autostart", "selectable", "true");
     view_setattr(&view, "area_upgrade", "selectable", "true");
     view_setattr(&view, "area_sysinfo", "selectable", "true");
+    view_reset(&view);
     helper_autostart_get(1, autostart_ondata, 0, 0);
     helper_date_get(1, date_ondata, 0, 0);
     helper_time_get(1, time_ondata, 0, 0);
     helper_timezone_get(1, timezone_ondata, 0, 0);
-    view_reset(&view);
 
 }
 
