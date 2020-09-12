@@ -53,7 +53,6 @@ struct widget
     char *in;
     unsigned int type;
     struct list_item item;
-    struct list_item selectionitem;
     struct box size;
     unsigned int selectable;
 

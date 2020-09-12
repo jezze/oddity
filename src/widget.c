@@ -22,7 +22,6 @@ static void widget_init(struct widget *widget, unsigned int type, char *id, char
     widget->in = in;
 
     list_inititem(&widget->item, widget);
-    list_inititem(&widget->selectionitem, widget);
 
 }
 
