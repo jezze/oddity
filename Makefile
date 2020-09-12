@@ -5,7 +5,7 @@ OBJ= \
     src/backend.o \
     src/box.o \
     src/db.o \
-    src/download.o \
+    src/helper.o \
     src/file.o \
     src/list.o \
     src/main.o \

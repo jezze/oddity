@@ -7,6 +7,7 @@
 #include "view.h"
 #include "main.h"
 #include "session.h"
+#include "helper.h"
 
 static struct view view;
 
@@ -57,20 +58,14 @@ static void button(unsigned int key)
             {
 
             case TOGGLE_OFF:
-                session_create("settings_autostart_install", 1, ondata, 0, 0);
-                session_setarg("settings_autostart_install", 1, 0, "./helper.sh");
-                session_setarg("settings_autostart_install", 1, 1, "autostart_install");
-                session_setarg("settings_autostart_install", 1, 2, 0);
-                session_run();
+                helper_autostart_install(1, ondata, 0, 0);
 
                 break;
 
             case TOGGLE_ON:
-                session_create("settings_autostart_uninstall", 1, ondata, 0, 0);
-                session_setarg("settings_autostart_uninstall", 1, 0, "./helper.sh");
-                session_setarg("settings_autostart_uninstall", 1, 1, "autostart_uninstall");
-                session_setarg("settings_autostart_uninstall", 1, 2, 0);
-                session_run();
+                helper_autostart_uninstall(1, ondata, 0, 0);
+
+                break;
 
             }
 
@@ -96,11 +91,7 @@ static void load(void)
     view_findwidget(&view, "area_sysinfo")->selectable = 1;
     view_findwidget(&view, "area_upgrade")->selectable = 1;
 
-    session_create("settings_autostart_get", 1, ondata, 0, 0);
-    session_setarg("settings_autostart_get", 1, 0, "./helper.sh");
-    session_setarg("settings_autostart_get", 1, 1, "autostart_get");
-    session_setarg("settings_autostart_get", 1, 2, 0);
-    session_run();
+    helper_autostart_get(1, ondata, 0, 0);
     view_reset(&view);
 
 }

@@ -55,6 +55,7 @@ static void run(void)
 
         frametime = backend_ticks();
 
+        session_run();
         session_poll();
         backend_pollevent(main_quit, current->button);
         backend_render(current, ticks);

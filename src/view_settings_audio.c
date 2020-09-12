@@ -6,6 +6,7 @@
 #include "widget.h"
 #include "view.h"
 #include "session.h"
+#include "helper.h"
 #include "main.h"
 
 static struct view view;
@@ -54,103 +55,31 @@ static void button(unsigned int key)
 
     case KEY_LEFT:
         if (view_isactive(&view, "area_volume_master"))
-        {
-
-            session_create("settings_volume_decrement", 1, ondata, 0, 0);
-            session_setarg("settings_volume_decrement", 1, 0, "./helper.sh");
-            session_setarg("settings_volume_decrement", 1, 1, "volume_decrement");
-            session_setarg("settings_volume_decrement", 1, 2, "Master");
-            session_setarg("settings_volume_decrement", 1, 3, 0);
-            session_run();
-
-        }
+            helper_volume_decrement(1, "Master", ondata, 0, 0);
 
         if (view_isactive(&view, "area_volume_pcm"))
-        {
-
-            session_create("settings_volume_decrement", 2, ondata, 0, 0);
-            session_setarg("settings_volume_decrement", 2, 0, "./helper.sh");
-            session_setarg("settings_volume_decrement", 2, 1, "volume_decrement");
-            session_setarg("settings_volume_decrement", 2, 2, "PCM");
-            session_setarg("settings_volume_decrement", 2, 3, 0);
-            session_run();
-
-        }
+            helper_volume_decrement(2, "PCM", ondata, 0, 0);
 
         if (view_isactive(&view, "area_volume_headphone"))
-        {
-
-            session_create("settings_volume_decrement", 3, ondata, 0, 0);
-            session_setarg("settings_volume_decrement", 3, 0, "./helper.sh");
-            session_setarg("settings_volume_decrement", 3, 1, "volume_decrement");
-            session_setarg("settings_volume_decrement", 3, 2, "Headphone");
-            session_setarg("settings_volume_decrement", 3, 3, 0);
-            session_run();
-
-        }
+            helper_volume_decrement(3, "Headphone", ondata, 0, 0);
 
         if (view_isactive(&view, "area_volume_headphones"))
-        {
-
-            session_create("settings_volume_decrement", 4, ondata, 0, 0);
-            session_setarg("settings_volume_decrement", 4, 0, "./helper.sh");
-            session_setarg("settings_volume_decrement", 4, 1, "volume_decrement");
-            session_setarg("settings_volume_decrement", 4, 2, "Headphones");
-            session_setarg("settings_volume_decrement", 4, 3, 0);
-            session_run();
-
-        }
+            helper_volume_decrement(4, "Headphones", ondata, 0, 0);
 
         break;
 
     case KEY_RIGHT:
         if (view_isactive(&view, "area_volume_master"))
-        {
-
-            session_create("settings_volume_increment", 1, ondata, 0, 0);
-            session_setarg("settings_volume_increment", 1, 0, "./helper.sh");
-            session_setarg("settings_volume_increment", 1, 1, "volume_increment");
-            session_setarg("settings_volume_increment", 1, 2, "Master");
-            session_setarg("settings_volume_increment", 1, 3, 0);
-            session_run();
-
-        }
+            helper_volume_increment(1, "Master", ondata, 0, 0);
 
         if (view_isactive(&view, "area_volume_pcm"))
-        {
-
-            session_create("settings_volume_increment", 2, ondata, 0, 0);
-            session_setarg("settings_volume_increment", 2, 0, "./helper.sh");
-            session_setarg("settings_volume_increment", 2, 1, "volume_increment");
-            session_setarg("settings_volume_increment", 2, 2, "PCM");
-            session_setarg("settings_volume_increment", 2, 3, 0);
-            session_run();
-
-        }
+            helper_volume_increment(2, "PCM", ondata, 0, 0);
 
         if (view_isactive(&view, "area_volume_headphone"))
-        {
-
-            session_create("settings_volume_increment", 3, ondata, 0, 0);
-            session_setarg("settings_volume_increment", 3, 0, "./helper.sh");
-            session_setarg("settings_volume_increment", 3, 1, "volume_increment");
-            session_setarg("settings_volume_increment", 3, 2, "Headphone");
-            session_setarg("settings_volume_increment", 3, 3, 0);
-            session_run();
-
-        }
+            helper_volume_increment(3, "Headphone", ondata, 0, 0);
 
         if (view_isactive(&view, "area_volume_headphones"))
-        {
-
-            session_create("settings_volume_increment", 4, ondata, 0, 0);
-            session_setarg("settings_volume_increment", 4, 0, "./helper.sh");
-            session_setarg("settings_volume_increment", 4, 1, "volume_increment");
-            session_setarg("settings_volume_increment", 4, 2, "Headphones");
-            session_setarg("settings_volume_increment", 4, 3, 0);
-            session_run();
-
-        }
+            helper_volume_increment(4, "Headphones", ondata, 0, 0);
 
         break;
 
@@ -176,27 +105,10 @@ static void load(void)
     view_findwidget(&view, "area_volume_headphone")->selectable = 1;
     view_findwidget(&view, "area_volume_headphones")->selectable = 1;
 
-    session_create("settings_volume_get", 1, ondata, 0, 0);
-    session_setarg("settings_volume_get", 1, 0, "./helper.sh");
-    session_setarg("settings_volume_get", 1, 1, "volume_get");
-    session_setarg("settings_volume_get", 1, 2, "Master");
-    session_setarg("settings_volume_get", 1, 3, 0);
-    session_create("settings_volume_get", 2, ondata, 0, 0);
-    session_setarg("settings_volume_get", 2, 0, "./helper.sh");
-    session_setarg("settings_volume_get", 2, 1, "volume_get");
-    session_setarg("settings_volume_get", 2, 2, "PCM");
-    session_setarg("settings_volume_get", 2, 3, 0);
-    session_create("settings_volume_get", 3, ondata, 0, 0);
-    session_setarg("settings_volume_get", 3, 0, "./helper.sh");
-    session_setarg("settings_volume_get", 3, 1, "volume_get");
-    session_setarg("settings_volume_get", 3, 2, "Headphone");
-    session_setarg("settings_volume_get", 3, 3, 0);
-    session_create("settings_volume_get", 4, ondata, 0, 0);
-    session_setarg("settings_volume_get", 4, 0, "./helper.sh");
-    session_setarg("settings_volume_get", 4, 1, "volume_get");
-    session_setarg("settings_volume_get", 4, 2, "Headphones");
-    session_setarg("settings_volume_get", 4, 3, 0);
-    session_run();
+    helper_volume_get(1, "Master", ondata, 0, 0);
+    helper_volume_get(2, "PCM", ondata, 0, 0);
+    helper_volume_get(3, "Headphone", ondata, 0, 0);
+    helper_volume_get(4, "Headphones", ondata, 0, 0);
     view_reset(&view);
 
 }

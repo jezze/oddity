@@ -8,24 +8,23 @@
 #include "view.h"
 #include "file.h"
 #include "db.h"
-#include "download.h"
+#include "session.h"
+#include "helper.h"
 #include "main.h"
 
 static struct view view;
-static struct download downloads[8];
 static struct db_remotelist remotelist;
+static struct helper_download download;
 static char text[128];
 
 static void ondata(unsigned int id, void *data, unsigned int count)
 {
 
-    struct download *download = &downloads[id];
+    memcpy(download.buffer + download.count, data, count);
 
-    memcpy(download->buffer + download->count, data, count);
+    download.count = helper_download_parse(&download, download.buffer, download.count + count);
 
-    download->count = download_parse(download, download->buffer, download->count + count);
-
-    snprintf(text, 128, "Downloading...\n\nProgress: %d%%\nTotal bytes: %dKB", download->percentage, download->totalbytes);
+    snprintf(text, 128, "Downloading...\n\nProgress: %d%%\nTotal bytes: %dKB", download.percentage, download.totalbytes);
 
 }
 
@@ -33,21 +32,18 @@ static void oncomplete(unsigned int id)
 {
 
     struct db_remote *remote = &remotelist.items[id];
-    struct download *download = &downloads[id];
 
     ondata(id, "\n", 1);
     db_sync(remote);
     file_removeremote(remote->id);
-    snprintf(text, 128, "Synchronization complete!\n\nProgress: %d%%\nTotal bytes: %dKB", download->percentage, download->totalbytes);
+    snprintf(text, 128, "Synchronization complete!\n\nProgress: %d%%\nTotal bytes: %dKB", download.percentage, download.totalbytes);
 
 }
 
 static void onfailure(unsigned int id)
 {
 
-    struct download *download = &downloads[id];
-
-    snprintf(text, 128, "Synchronization failed!\n\nProgress: %d%%\nTotal bytes: %dKB", download->percentage, download->totalbytes);
+    snprintf(text, 128, "Synchronization failed!\n\nProgress: %d%%\nTotal bytes: %dKB", download.percentage, download.totalbytes);
 
 }
 
@@ -74,14 +70,14 @@ static void load(void)
         char path[128];
 
         file_getlocalremotedatabasepath(path, 128, remotelist.items[i].id);
-        download_init(&downloads[i]);
-        download_create(&downloads[i], i, remotelist.items[i].urldatabase, path, ondata, oncomplete, onfailure);
+        helper_download_init(&download);
+        helper_download(i, remotelist.items[i].urldatabase, path, ondata, oncomplete, onfailure);
 
         break;
 
     }
 
-    download_run();
+    session_run();
     view_reset(&view);
 
 }
