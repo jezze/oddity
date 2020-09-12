@@ -25,7 +25,7 @@ void view_settings_setup(void);
 void view_settings_audio_setup(void);
 void view_settings_system_setup(void);
 void view_sync_setup(void);
-static struct view *current;
+static struct view *active;
 static unsigned int quit;
 static unsigned int ticks;
 static struct list views;
@@ -57,12 +57,12 @@ static void run(void)
 
         session_run();
         session_poll();
-        backend_pollevent(main_quit, current->button);
+        backend_pollevent(main_quit, active->button);
 
-        if (current->step)
-            current->step(ticks);
+        if (active->step)
+            active->step(ticks);
 
-        backend_render(current, ticks);
+        backend_render(active, ticks);
 
         if (backend_ticks() - frametime < TIMELIMIT)
             backend_delay(TIMELIMIT - (backend_ticks() - frametime));
@@ -144,7 +144,7 @@ void main_loadview(char *name, char *parentname)
     if (view->load)
         view->load();
 
-    current = view;
+    active = view;
 
 }
 
