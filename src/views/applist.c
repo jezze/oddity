@@ -112,6 +112,7 @@ static void config(char *key, void *value)
 void view_applist_setup(void)
 {
 
+    view_init(&view, "applist", load, 0, config, button);
     widget_area_init(view_createwidget(&view), "area0", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
     widget_area_init(view_createwidget(&view), "area1", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
     widget_area_init(view_createwidget(&view), "area2", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
@@ -138,7 +139,6 @@ void view_applist_setup(void)
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area7", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
     widget_area_init(view_createwidget(&view), "area_noitems", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_noitems", TEXT_TYPE_NORMAL, TEXT_ALIGN_CENTER, "No items found.");
-    view_init(&view, "applist", load, 0, config, button);
     main_registerview(&view);
 
 }

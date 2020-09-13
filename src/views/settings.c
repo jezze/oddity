@@ -25,6 +25,7 @@ static void load(void)
 void view_settings_setup(void)
 {
 
+    view_init(&view, "settings", load, 0, 0, button);
     widget_area_init(view_createwidget(&view), "area_audio", WIDGET_IN_DEFAULT, 0, 0, 4, 3);
     widget_area_init(view_createwidget(&view), "area_audio_icon", WIDGET_IN_DEFAULT, 0, 0, 4, 2);
     widget_icon_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_audio_icon", ICON_AUDIO);
@@ -40,7 +41,6 @@ void view_settings_setup(void)
     widget_icon_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_system_icon", ICON_SYSTEM);
     widget_area_init(view_createwidget(&view), "area_system_text", WIDGET_IN_DEFAULT, 4, 5, 4, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_system_text", TEXT_TYPE_SELECT, TEXT_ALIGN_CENTER, "System");
-    view_init(&view, "settings", load, 0, 0, button);
     main_registerview(&view);
 
 }

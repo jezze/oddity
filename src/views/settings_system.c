@@ -140,6 +140,7 @@ static void load(void)
 void view_settings_system_setup(void)
 {
 
+    view_init(&view, "settings_system", load, step, 0, button);
     widget_area_init(view_createwidget(&view), "area_language", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_language", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Language");
     widget_text_init(view_createwidget(&view), "text_language", "area_language", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, language);
@@ -160,7 +161,6 @@ void view_settings_system_setup(void)
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_upgrade", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, "V1.02");
     widget_area_init(view_createwidget(&view), "area_sysinfo", WIDGET_IN_DEFAULT, 0, 6, 12, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_sysinfo", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "System Information");
-    view_init(&view, "settings_system", load, step, 0, button);
     main_registerview(&view);
 
 }

@@ -106,6 +106,7 @@ static void load(void)
 void view_settings_audio_setup(void)
 {
 
+    view_init(&view, "settings_audio", load, 0, 0, button);
     widget_area_init(view_createwidget(&view), "area_volume", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_volume", TEXT_TYPE_TITLE, TEXT_ALIGN_CENTER, "Volume");
     widget_area_init(view_createwidget(&view), "area_volume_master", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
@@ -128,7 +129,6 @@ void view_settings_audio_setup(void)
     widget_area_init(view_createwidget(&view), "area_volume_headphones_slider", WIDGET_IN_DEFAULT, 8, 4, 4, 1);
     widget_text_init(view_createwidget(&view), "text_volume_headphones", "area_volume_headphones_text", TEXT_TYPE_DISABLE, TEXT_ALIGN_LEFT, "Headphones");
     widget_slider_init(view_createwidget(&view), "slider_volume_headphones", "area_volume_headphones_slider", 0, 100, -1);
-    view_init(&view, "settings_audio", load, 0, 0, button);
     main_registerview(&view);
 
 }

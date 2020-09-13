@@ -56,6 +56,7 @@ static void load(void)
 void view_repolist_setup(void)
 {
 
+    view_init(&view, "repolist", load, 0, 0, button);
     widget_area_init(view_createwidget(&view), "area_all", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
     widget_area_init(view_createwidget(&view), "area_installed", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
     widget_area_init(view_createwidget(&view), "area_new", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
@@ -70,7 +71,6 @@ void view_repolist_setup(void)
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_updated", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Updated");
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_updated", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, updated);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_synchronize", TEXT_TYPE_SELECT, TEXT_ALIGN_CENTER, "Synchronize");
-    view_init(&view, "repolist", load, 0, 0, button);
     main_registerview(&view);
 
 }
