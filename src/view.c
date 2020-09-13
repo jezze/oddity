@@ -8,7 +8,7 @@
 #include "backend.h"
 #include "main.h"
 
-static struct widget widgets[512];
+static struct widget widgets[MAXWIDGETS];
 static unsigned int nwidgets;
 
 static void placewidget(struct widget *widget, struct box *size)
