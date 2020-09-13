@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include "define.h"
 #include "box.h"
 #include "text.h"
 #include "list.h"
@@ -13,8 +14,6 @@
 #include "view.h"
 #include "backend.h"
 #include "main.h"
-
-#define TIMELIMIT                       (1000 / 60)
 
 void view_app_setup(void);
 void view_applist_setup(void);

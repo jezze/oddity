@@ -1,6 +1,7 @@
 #define SCREEN_WIDTH                    320
 #define SCREEN_HEIGHT                   240
 #define SCREEN_BPP                      32
+#define TIMELIMIT                       (1000 / 60)
 #define KEY_LEFT                        1
 #define KEY_RIGHT                       2
 #define KEY_UP                          3
