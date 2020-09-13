@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include <sys/poll.h>
 #include "file.h"
 
 static char *home;
