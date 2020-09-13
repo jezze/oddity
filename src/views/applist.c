@@ -1,12 +1,4 @@
-#include <stdlib.h>
-#include <string.h>
-#include "define.h"
-#include "box.h"
-#include "list.h"
-#include "widget.h"
-#include "view.h"
-#include "db.h"
-#include "main.h"
+#include "include.h"
 
 static struct view view;
 static struct db_applist applist;

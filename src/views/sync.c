@@ -1,16 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include "define.h"
-#include "box.h"
-#include "list.h"
-#include "widget.h"
-#include "view.h"
-#include "file.h"
-#include "db.h"
-#include "session.h"
-#include "helper.h"
-#include "main.h"
+#include "include.h"
 
 static struct view view;
 static struct db_remotelist remotelist;

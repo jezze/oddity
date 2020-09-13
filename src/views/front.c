@@ -1,10 +1,4 @@
-#include <stdlib.h>
-#include "define.h"
-#include "box.h"
-#include "list.h"
-#include "widget.h"
-#include "view.h"
-#include "main.h"
+#include "include.h"
 
 static struct view view;
 

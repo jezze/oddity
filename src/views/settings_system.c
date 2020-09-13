@@ -1,14 +1,4 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include "define.h"
-#include "box.h"
-#include "list.h"
-#include "widget.h"
-#include "view.h"
-#include "main.h"
-#include "session.h"
-#include "helper.h"
+#include "include.h"
 
 static struct view view;
 static char language[32];

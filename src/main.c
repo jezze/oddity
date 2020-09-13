@@ -1,12 +1,9 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
+#include <stdio.h>
 #include <unistd.h>
 #include "define.h"
 #include "box.h"
-#include "text.h"
 #include "list.h"
-#include "menu.h"
 #include "session.h"
 #include "file.h"
 #include "db.h"

@@ -5,7 +5,6 @@
 #include "list.h"
 #include "widget.h"
 #include "view.h"
-#include "text.h"
 #include "backend.h"
 
 static unsigned int wordstart(char *text, unsigned int count)
