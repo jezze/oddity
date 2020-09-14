@@ -22,7 +22,8 @@ struct font
 {
 
     char *name;
-    TTF_Font *ttf;
+    TTF_Font *face;
+    TTF_Font *shadow;
 
 };
 
@@ -43,8 +44,6 @@ static struct image images[8];
 static unsigned int nimages;
 static struct font fonts[8];
 static unsigned int nfonts;
-static struct font shadows[8];
-static unsigned int nshadows;
 static struct sample samples[8];
 static unsigned int nsamples;
 
@@ -296,25 +295,6 @@ static struct font *findfont(char *name)
 
 }
 
-static struct font *findshadow(char *name)
-{
-
-    unsigned int i;
-
-    for (i = 0; i < nshadows; i++)
-    {
-
-        struct font *shadow = &shadows[i];
-
-        if (!strcmp(shadow->name, name))
-            return shadow;
-
-    }
-
-    return 0;
-
-}
-
 static struct sample *findsample(char *name)
 {
 
@@ -339,7 +319,7 @@ int backend_font_getascent(char *name)
 
     struct font *font = findfont(name);
 
-    return TTF_FontAscent(font->ttf);
+    return TTF_FontAscent(font->face);
 
 }
 
@@ -349,7 +329,7 @@ void backend_font_getmetrics(char *name, char c, int *minx, int *maxx, int *miny
     struct font *font = findfont(name);
     int a;
 
-    TTF_GlyphMetrics(font->ttf, c, minx, maxx, miny, maxy, &a);
+    TTF_GlyphMetrics(font->face, c, minx, maxx, miny, maxy, &a);
 
     if (advance)
         *advance = a + 2;
@@ -360,7 +340,6 @@ void backend_paint_glyph(char *name, unsigned short c, unsigned int x, unsigned 
 {
 
     struct font *font = findfont(name);
-    struct font *shadow = findshadow(name);
 
     SDL_Surface *surface;
     SDL_Surface *osurface;
@@ -376,7 +355,7 @@ void backend_paint_glyph(char *name, unsigned short c, unsigned int x, unsigned 
     color.r = col >> 16;
     color.g = col >> 8;
     color.b = col >> 0;
-    surface = TTF_RenderGlyph_Solid(font->ttf, c, color);
+    surface = TTF_RenderGlyph_Solid(font->face, c, color);
     orect.x = rect.x - 1;
     orect.y = rect.y - 1;
     orect.w = rect.w;
@@ -384,7 +363,7 @@ void backend_paint_glyph(char *name, unsigned short c, unsigned int x, unsigned 
     ocolor.r = 10;
     ocolor.g = 10;
     ocolor.b = 10;
-    osurface = TTF_RenderGlyph_Solid(shadow->ttf, c, ocolor);
+    osurface = TTF_RenderGlyph_Solid(font->shadow, c, ocolor);
 
     SDL_BlitSurface(osurface, NULL, display, &orect);
     SDL_FreeSurface(osurface);
@@ -573,12 +552,12 @@ void backend_loadfont(char *name, unsigned int size, char *filename)
 {
 
     struct font *font = &fonts[nfonts++];
-    struct font *shadow = &shadows[nshadows++];
 
     font->name = name;
-    font->ttf = TTF_OpenFont(filename, size);
+    font->face = TTF_OpenFont(filename, size);
+    font->shadow = TTF_OpenFont(filename, size);
 
-    if (!font->ttf)
+    if (!font->face)
     {
 
         fprintf(stderr, "Unable to load font: %s\n", SDL_GetError());
@@ -586,10 +565,7 @@ void backend_loadfont(char *name, unsigned int size, char *filename)
 
     }
 
-    shadow->name = name;
-    shadow->ttf = TTF_OpenFont(filename, size);
-
-    if (!shadow->ttf)
+    if (!font->shadow)
     {
 
         fprintf(stderr, "Unable to load font: %s\n", SDL_GetError());
@@ -597,7 +573,7 @@ void backend_loadfont(char *name, unsigned int size, char *filename)
 
     }
 
-    TTF_SetFontOutline(shadow->ttf, 1);
+    TTF_SetFontOutline(font->shadow, 1);
 
 }
 
@@ -633,13 +609,14 @@ void backend_unloadfont(char *name)
 {
 
     struct font *font = findfont(name);
-    struct font *shadow = findshadow(name);
 
     if (font)
-        TTF_CloseFont(font->ttf);
+    {
 
-    if (shadow)
-        TTF_CloseFont(shadow->ttf);
+        TTF_CloseFont(font->face);
+        TTF_CloseFont(font->shadow);
+
+    }
 
 }
 
