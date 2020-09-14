@@ -43,6 +43,8 @@ static struct image images[8];
 static unsigned int nimages;
 static struct font fonts[8];
 static unsigned int nfonts;
+static struct font shadows[8];
+static unsigned int nshadows;
 static struct sample samples[8];
 static unsigned int nsamples;
 
@@ -294,6 +296,25 @@ static struct font *findfont(char *name)
 
 }
 
+static struct font *findshadow(char *name)
+{
+
+    unsigned int i;
+
+    for (i = 0; i < nshadows; i++)
+    {
+
+        struct font *shadow = &shadows[i];
+
+        if (!strcmp(shadow->name, name))
+            return shadow;
+
+    }
+
+    return 0;
+
+}
+
 static struct sample *findsample(char *name)
 {
 
@@ -339,7 +360,7 @@ void backend_paint_glyph(char *name, unsigned short c, unsigned int x, unsigned 
 {
 
     struct font *font = findfont(name);
-    struct font *shadow = font + 1;
+    struct font *shadow = findshadow(name);
 
     SDL_Surface *surface;
     SDL_Surface *osurface;
@@ -552,7 +573,7 @@ void backend_loadfont(char *name, unsigned int size, char *filename)
 {
 
     struct font *font = &fonts[nfonts++];
-    struct font *shadow = &fonts[nfonts++];
+    struct font *shadow = &shadows[nshadows++];
 
     font->name = name;
     font->ttf = TTF_OpenFont(filename, size);
@@ -612,7 +633,7 @@ void backend_unloadfont(char *name)
 {
 
     struct font *font = findfont(name);
-    struct font *shadow = font + 1;
+    struct font *shadow = findshadow(name);
 
     if (font)
         TTF_CloseFont(font->ttf);
