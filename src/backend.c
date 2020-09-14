@@ -614,8 +614,11 @@ void backend_unloadfont(char *name)
     struct font *font = findfont(name);
     struct font *shadow = font + 1;
 
-    TTF_CloseFont(font->ttf);
-    TTF_CloseFont(shadow->ttf);
+    if (font)
+        TTF_CloseFont(font->ttf);
+
+    if (shadow)
+        TTF_CloseFont(shadow->ttf);
 
 }
 
