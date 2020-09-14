@@ -560,7 +560,7 @@ void backend_loadfont(char *name, unsigned int size, char *filename)
     if (!font->face)
     {
 
-        fprintf(stderr, "Unable to load font: %s\n", SDL_GetError());
+        fprintf(stderr, "Unable to load font: %s\n", TTF_GetError());
         exit(EXIT_FAILURE);
 
     }
@@ -568,7 +568,7 @@ void backend_loadfont(char *name, unsigned int size, char *filename)
     if (!font->shadow)
     {
 
-        fprintf(stderr, "Unable to load font: %s\n", SDL_GetError());
+        fprintf(stderr, "Unable to load font: %s\n", TTF_GetError());
         exit(EXIT_FAILURE);
 
     }
