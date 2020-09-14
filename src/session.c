@@ -11,21 +11,6 @@
 #define STATE_READY 1
 #define STATE_RUNNING 2
 
-struct session
-{
-
-    unsigned int state;
-    unsigned int id;
-    int fd[2];
-    pid_t cpid;
-    char *name;
-    char *args[32];
-    void (*ondata)(unsigned int id, void *data, unsigned int count);
-    void (*oncomplete)(unsigned int id);
-    void (*onfailure)(unsigned int id);
-
-};
-
 static struct session sessions[SESSION_MAX];
 
 static struct session *findfree(void)
@@ -39,25 +24,6 @@ static struct session *findfree(void)
         struct session *session = &sessions[i];
 
         if (session->state == STATE_NONE)
-            return session;
-
-    }
-
-    return 0;
-
-}
-
-static struct session *findsession(char *name, unsigned int id)
-{
-
-    unsigned int i;
-
-    for (i = 0; i < SESSION_MAX; i++)
-    {
-
-        struct session *session = &sessions[i];
-
-        if (session->id == id && !strcmp(session->name, name))
             return session;
 
     }
@@ -185,7 +151,6 @@ void session_poll(void)
 
                 }
 
-                session->name = 0;
                 session->id = 0;
                 session->state = STATE_NONE;
 
@@ -223,7 +188,6 @@ void session_run(void)
         else
         {
 
-            session->name = 0;
             session->id = 0;
             session->state = STATE_NONE;
 
@@ -233,7 +197,7 @@ void session_run(void)
 
 }
 
-void session_create(char *name, unsigned int id, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
+struct session *session_create(unsigned int id, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
 {
 
     struct session *session = findfree();
@@ -242,7 +206,6 @@ void session_create(char *name, unsigned int id, void (*ondata)(unsigned int id,
     {
 
         session->state = STATE_READY;
-        session->name = name;
         session->id = id;
         session->ondata = ondata;
         session->oncomplete = oncomplete;
@@ -250,15 +213,14 @@ void session_create(char *name, unsigned int id, void (*ondata)(unsigned int id,
 
     }
 
+    return session;
+
 }
 
-void session_setarg(char *name, unsigned int id, unsigned int index, char *value)
+void session_setarg(struct session *session, unsigned int index, char *value)
 {
 
-    struct session *session = findsession(name, id);
-
-    if (session)
-        session->args[index] = value;
+    session->args[index] = value;
 
 }
 
