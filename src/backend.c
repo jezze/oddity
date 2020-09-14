@@ -483,35 +483,7 @@ void backend_play(char *name)
 
 }
 
-void backend_loadimage(char *name, char *path)
-{
-
-    struct image *image = &images[nimages++];
-
-    image->name = name;
-    image->surface = IMG_Load(path);
-
-    if (!image->surface)
-    {
-
-        fprintf(stderr, "Unable to load chunk: %s\n", IMG_GetError());
-        exit(EXIT_FAILURE);
-
-    }
-
-}
-
-void backend_unloadimage(char *name)
-{
-
-    struct image *image = findimage(name);
-
-    if (image)
-        SDL_FreeSurface(image->surface);
-
-}
-
-void backend_tilebackground(char *name)
+void backend_createbackground(char *name)
 {
 
     struct image *image = findimage(name);
@@ -550,18 +522,26 @@ void backend_tilebackground(char *name)
 
 }
 
-void backend_loadsample(char *name, char *path)
+void backend_destroybackground(void)
 {
 
-    struct sample *sample = &samples[nsamples++];
+    SDL_FreeSurface(background);
+    SDL_FreeSurface(fade);
 
-    sample->name = name;
-    sample->chunk = Mix_LoadWAV(path);
+}
 
-    if (!sample->chunk)
+void backend_loadimage(char *name, char *path)
+{
+
+    struct image *image = &images[nimages++];
+
+    image->name = name;
+    image->surface = IMG_Load(path);
+
+    if (!image->surface)
     {
 
-        fprintf(stderr, "Unable to load chunk: %s\n", Mix_GetError());
+        fprintf(stderr, "Unable to load chunk: %s\n", IMG_GetError());
         exit(EXIT_FAILURE);
 
     }
@@ -600,11 +580,31 @@ void backend_loadfont(char *name, unsigned int size, char *filename)
 
 }
 
-void backend_unloadbackground(void)
+void backend_loadsample(char *name, char *path)
 {
 
-    SDL_FreeSurface(background);
-    SDL_FreeSurface(fade);
+    struct sample *sample = &samples[nsamples++];
+
+    sample->name = name;
+    sample->chunk = Mix_LoadWAV(path);
+
+    if (!sample->chunk)
+    {
+
+        fprintf(stderr, "Unable to load chunk: %s\n", Mix_GetError());
+        exit(EXIT_FAILURE);
+
+    }
+
+}
+
+void backend_unloadimage(char *name)
+{
+
+    struct image *image = findimage(name);
+
+    if (image)
+        SDL_FreeSurface(image->surface);
 
 }
 

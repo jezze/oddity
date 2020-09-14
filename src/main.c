@@ -73,27 +73,28 @@ static void init(void)
 {
 
     backend_init();
-    backend_loadsample("select", "select.wav");
-    backend_loadsample("unselect", "unselect.wav");
-    backend_loadsample("click", "click.wav");
     backend_loadimage("background", "back.png");
+    backend_createbackground("background");
     backend_loadfont("default", 16, "habbo.ttf");
     backend_loadfont("icon", 16, "icofont.ttf");
     backend_loadfont("bigicon", 48, "icofont.ttf");
-    backend_tilebackground("background");
+    backend_loadsample("select", "select.wav");
+    backend_loadsample("unselect", "unselect.wav");
+    backend_loadsample("click", "click.wav");
 
 }
 
 static void destroy(void)
 {
 
-    backend_unloadimage("background");
-    backend_unloadfont("default");
-    backend_unloadfont("icon");
-    backend_unloadfont("bigicon");
     backend_unloadsample("select");
     backend_unloadsample("unselect");
     backend_unloadsample("click");
+    backend_unloadfont("default");
+    backend_unloadfont("icon");
+    backend_unloadfont("bigicon");
+    backend_destroybackground();
+    backend_unloadimage("background");
     backend_destroy();
 
 }
