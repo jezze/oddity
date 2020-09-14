@@ -15,6 +15,33 @@
 #define PADX 8
 #define PADY 6
 
+struct attribute
+{
+
+    const char *name;
+    unsigned int value;
+
+};
+
+static unsigned int findattribute(const struct attribute attributes[], unsigned int count, char *name)
+{
+
+    unsigned int i;
+
+    for (i = 0; i < count; i++)
+    {
+
+        const struct attribute *attribute = &attributes[i];
+
+        if (!strcmp(attribute->name, name))
+            return attribute->value;
+
+    }
+
+    return 0;
+
+}
+
 static void widget_init(struct widget *widget, unsigned int type, char *id, char *in)
 {
 
@@ -152,11 +179,7 @@ void widget_slider_set(struct widget *widget, char *key, char *value)
     struct widget_slider *slider = &widget->payload.slider;
 
     if (!strcmp(key, "value"))
-    {
-
         slider->value = strtol(value, 0, 10);
-
-    }
 
 }
 
@@ -199,43 +222,32 @@ void widget_text_render(struct widget *widget, unsigned int ticks)
 
 }
 
+static const struct attribute widget_text_type[] = {
+    {"normal", TEXT_TYPE_NORMAL},
+    {"title", TEXT_TYPE_TITLE},
+    {"select", TEXT_TYPE_SELECT},
+    {"disable", TEXT_TYPE_DISABLE}
+};
+
+static const struct attribute widget_text_align[] = {
+    {"left", TEXT_ALIGN_LEFT},
+    {"right", TEXT_ALIGN_RIGHT},
+    {"center", TEXT_ALIGN_CENTER}
+};
+
 void widget_text_set(struct widget *widget, char *key, char *value)
 {
 
     struct widget_text *text = &widget->payload.text;
 
     if (!strcmp(key, "type"))
-    {
-
-        if (!strcmp(value, "normal"))
-            text->type = TEXT_TYPE_NORMAL;
-        else if (!strcmp(value, "title"))
-            text->type = TEXT_TYPE_TITLE;
-        else if (!strcmp(value, "select"))
-            text->type = TEXT_TYPE_SELECT;
-        else if (!strcmp(value, "disable"))
-            text->type = TEXT_TYPE_DISABLE;
-
-    }
+        text->type = findattribute(widget_text_type, 4, value);
 
     if (!strcmp(key, "align"))
-    {
-
-        if (!strcmp(value, "left"))
-            text->align = TEXT_ALIGN_LEFT;
-        else if (!strcmp(value, "right"))
-            text->align = TEXT_ALIGN_RIGHT;
-        else if (!strcmp(value, "center"))
-            text->align = TEXT_ALIGN_CENTER;
-
-    }
+        text->align = findattribute(widget_text_align, 3, value);
 
     if (!strcmp(key, "data"))
-    {
-
         text->data = value;
-
-    }
 
 }
 
@@ -299,24 +311,20 @@ void widget_toggle_render(struct widget *widget, unsigned int ticks)
 
 }
 
+static const struct attribute widget_toggle_state[] = {
+    {"off", TOGGLE_OFF},
+    {"on", TOGGLE_ON},
+    {"off_disabled", TOGGLE_OFF_DISABLED},
+    {"on_disabled", TOGGLE_ON_DISABLED}
+};
+
 void widget_toggle_set(struct widget *widget, char *key, char *value)
 {
 
     struct widget_toggle *toggle = &widget->payload.toggle;
 
     if (!strcmp(key, "state"))
-    {
-
-        if (!strcmp(value, "off"))
-            toggle->state = TOGGLE_OFF;
-        else if (!strcmp(value, "on"))
-            toggle->state = TOGGLE_ON;
-        else if (!strcmp(value, "off_disabled"))
-            toggle->state = TOGGLE_OFF_DISABLED;
-        else if (!strcmp(value, "on_disabled"))
-            toggle->state = TOGGLE_ON_DISABLED;
-
-    }
+        toggle->state = findattribute(widget_toggle_state, 4, value);
 
 }
 
