@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
-#include "define.h"
+#include "config.h"
 #include "box.h"
 #include "list.h"
 #include "widget.h"

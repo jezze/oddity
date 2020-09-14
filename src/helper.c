@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include "config.h"
 #include "session.h"
 #include "helper.h"
 
@@ -18,7 +19,7 @@ struct download
 
 };
 
-static struct download downloads[8];
+static struct download downloads[MAXDOWNLOADS];
 
 static unsigned int downloadparse(struct download *download, char *buffer, unsigned int count)
 {

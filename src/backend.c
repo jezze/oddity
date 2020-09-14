@@ -3,7 +3,7 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_mixer.h>
 #include <SDL/SDL_ttf.h>
-#include "define.h"
+#include "config.h"
 #include "box.h"
 #include "list.h"
 #include "widget.h"

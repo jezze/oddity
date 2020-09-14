@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "define.h"
+#include "config.h"
 #include "box.h"
 #include "list.h"
 #include "session.h"

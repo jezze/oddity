@@ -4,21 +4,21 @@
 #include <string.h>
 #include <fcntl.h>
 #include <sys/wait.h>
+#include "config.h"
 #include "session.h"
 
-#define SESSION_MAX 32
 #define STATE_NONE 0
 #define STATE_READY 1
 #define STATE_RUNNING 2
 
-static struct session sessions[SESSION_MAX];
+static struct session sessions[MAXSESSIONS];
 
 static struct session *findfree(void)
 {
 
     unsigned int i;
 
-    for (i = 0; i < SESSION_MAX; i++)
+    for (i = 0; i < MAXSESSIONS; i++)
     {
 
         struct session *session = &sessions[i];
@@ -80,7 +80,7 @@ void session_poll(void)
 
     FD_ZERO(&rfds);
 
-    for (i = 0; i < SESSION_MAX; i++)
+    for (i = 0; i < MAXSESSIONS; i++)
     {
 
         struct session *session = &sessions[i];
@@ -100,7 +100,7 @@ void session_poll(void)
 
     select(maxfd + 1, &rfds, NULL, NULL, &val);
 
-    for (i = 0; i < SESSION_MAX; i++)
+    for (i = 0; i < MAXSESSIONS; i++)
     {
 
         struct session *session = &sessions[i];
@@ -167,7 +167,7 @@ void session_run(void)
 
     unsigned int i;
 
-    for (i = 0; i < SESSION_MAX; i++)
+    for (i = 0; i < MAXSESSIONS; i++)
     {
 
         struct session *session = &sessions[i];

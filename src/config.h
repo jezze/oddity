@@ -3,6 +3,8 @@
 #define SCREEN_BPP                      32
 #define TIMELIMIT                       (1000 / 60)
 #define MAXWIDGETS                      512
+#define MAXSESSIONS                     32
+#define MAXDOWNLOADS                    8
 #define KEY_LEFT                        1
 #define KEY_RIGHT                       2
 #define KEY_UP                          3
