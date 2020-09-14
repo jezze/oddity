@@ -3,11 +3,16 @@
 static struct view view;
 static struct db_remotelist remotelist;
 static char text[128];
+static unsigned int p;
+static unsigned int t;
 
 static void onprogress(unsigned int id, unsigned int percentage, unsigned int totalbytes)
 {
 
-    snprintf(text, 128, "Downloading...\n\nProgress: %d%%\nTotal bytes: %dKB", percentage, totalbytes);
+    p = percentage;
+    t = totalbytes;
+
+    snprintf(text, 128, "Downloading...\n\nProgress: %d%%\nTotal bytes: %dKB", p, t);
 
 }
 
@@ -18,14 +23,14 @@ static void oncomplete(unsigned int id)
 
     db_sync(remote);
     file_removeremote(remote->id);
-    snprintf(text, 128, "Synchronization complete!\n\nProgress: %d%%\nTotal bytes: %dKB", 100, 0);
+    snprintf(text, 128, "Synchronization complete!\n\nProgress: %d%%\nTotal bytes: %dKB", p, t);
 
 }
 
 static void onfailure(unsigned int id)
 {
 
-    snprintf(text, 128, "Synchronization failed!\n\nProgress: %d%%\nTotal bytes: %dKB", 0, 0);
+    snprintf(text, 128, "Synchronization failed!\n\nProgress: %d%%\nTotal bytes: %dKB", p, t);
 
 }
 
@@ -42,7 +47,7 @@ static void load(void)
 
     unsigned int i;
 
-    snprintf(text, 128, "Connecting...\n\nProgress: %d%%\nTotal bytes: %dKB", 0, 0);
+    snprintf(text, 128, "Connecting...\n\nProgress: %d%%\nTotal bytes: %dKB", p, t);
     db_freeremotes(&remotelist);
     db_loadremotes(&remotelist);
 
