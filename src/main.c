@@ -77,8 +77,9 @@ static void init(void)
     backend_loadsample("unselect", "unselect.wav");
     backend_loadsample("click", "click.wav");
     backend_loadimage("background", "back.png");
-    backend_loadfont("habbo.ttf");
-    backend_loadfont2("icofont.ttf");
+    backend_loadtextfont("habbo.ttf");
+    backend_loadsmalliconfont("icofont.ttf");
+    backend_loadlargeiconfont("icofont.ttf");
     backend_tilebackground("background");
 
 }
