@@ -3,7 +3,24 @@
 #include "session.h"
 #include "helper.h"
 
-unsigned int helper_download_parse(struct helper_download *download, char *buffer, unsigned int count)
+struct download
+{
+
+    char buffer[1024];
+    unsigned int count;
+    unsigned int totalbytes;
+    unsigned int percentage;
+    unsigned int timeremaining;
+    unsigned int id;
+    void (*onprogress)(unsigned int id, unsigned int percentage, unsigned int totalbytes);
+    void (*oncomplete)(unsigned int id);
+    void (*onfailure)(unsigned int id);
+
+};
+
+static struct download downloads[32];
+
+static unsigned int downloadparse(struct download *download, char *buffer, unsigned int count)
 {
 
     unsigned int offset = 0;
@@ -44,13 +61,36 @@ unsigned int helper_download_parse(struct helper_download *download, char *buffe
 
 }
 
-void helper_download_init(struct helper_download *download)
+static void downloadondata(unsigned int id, void *data, unsigned int count)
 {
 
-    download->count = 0;
-    download->totalbytes = 0;
-    download->percentage = 0;
-    download->timeremaining = 0;
+    struct download *download = &downloads[id];
+
+    memcpy(download->buffer + download->count, data, count);
+
+    download->count = downloadparse(download, download->buffer, download->count + count);
+
+    download->onprogress(download->id, download->percentage, download->totalbytes);
+
+}
+
+static void downloadoncomplete(unsigned int id)
+{
+
+    struct download *download = &downloads[id];
+
+    downloadondata(id, "\n", 1);
+
+    download->oncomplete(download->id);
+
+}
+
+static void downloadonfailure(unsigned int id)
+{
+
+    struct download *download = &downloads[id];
+
+    download->onfailure(download->id);
 
 }
 
@@ -91,6 +131,30 @@ void helper_date_get(unsigned int id, void (*ondata)(unsigned int id, void *data
     session_setarg("date_get", id, 0, "./helper.sh");
     session_setarg("date_get", id, 1, "date_get");
     session_setarg("date_get", id, 2, 0);
+
+}
+
+void helper_download(unsigned int id, char *url, char *path, void (*onprogress)(unsigned int id, unsigned int percentage, unsigned int totalbytes), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
+{
+
+    unsigned int index = 0; /* Allow multiple */
+    struct download *download = &downloads[index];
+
+    download->count = 0;
+    download->totalbytes = 0;
+    download->percentage = 0;
+    download->timeremaining = 0;
+    download->id = id;
+    download->onprogress = onprogress;
+    download->oncomplete = oncomplete;
+    download->onfailure = onfailure;
+
+    session_create("download", index, downloadondata, downloadoncomplete, downloadonfailure);
+    session_setarg("download", index, 0, "./helper.sh");
+    session_setarg("download", index, 1, "download");
+    session_setarg("download", index, 2, url);
+    session_setarg("download", index, 3, path);
+    session_setarg("download", index, 4, 0);
 
 }
 
@@ -144,18 +208,6 @@ void helper_volume_decrement(unsigned int id, char *channel, void (*ondata)(unsi
     session_setarg("volume_decrement", id, 1, "volume_decrement");
     session_setarg("volume_decrement", id, 2, channel);
     session_setarg("volume_decrement", id, 3, 0);
-
-}
-
-void helper_download(unsigned int id, char *url, char *path, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
-{
-
-    session_create("download", id, ondata, oncomplete, onfailure);
-    session_setarg("download", id, 0, "./helper.sh");
-    session_setarg("download", id, 1, "download");
-    session_setarg("download", id, 2, url);
-    session_setarg("download", id, 3, path);
-    session_setarg("download", id, 4, 0);
 
 }
 

@@ -2,17 +2,12 @@
 
 static struct view view;
 static struct db_remotelist remotelist;
-static struct helper_download download;
 static char text[128];
 
-static void ondata(unsigned int id, void *data, unsigned int count)
+static void onprogress(unsigned int id, unsigned int percentage, unsigned int totalbytes)
 {
 
-    memcpy(download.buffer + download.count, data, count);
-
-    download.count = helper_download_parse(&download, download.buffer, download.count + count);
-
-    snprintf(text, 128, "Downloading...\n\nProgress: %d%%\nTotal bytes: %dKB", download.percentage, download.totalbytes);
+    snprintf(text, 128, "Downloading...\n\nProgress: %d%%\nTotal bytes: %dKB", percentage, totalbytes);
 
 }
 
@@ -21,17 +16,16 @@ static void oncomplete(unsigned int id)
 
     struct db_remote *remote = &remotelist.items[id];
 
-    ondata(id, "\n", 1);
     db_sync(remote);
     file_removeremote(remote->id);
-    snprintf(text, 128, "Synchronization complete!\n\nProgress: %d%%\nTotal bytes: %dKB", download.percentage, download.totalbytes);
+    snprintf(text, 128, "Synchronization complete!\n\nProgress: %d%%\nTotal bytes: %dKB", 100, 0);
 
 }
 
 static void onfailure(unsigned int id)
 {
 
-    snprintf(text, 128, "Synchronization failed!\n\nProgress: %d%%\nTotal bytes: %dKB", download.percentage, download.totalbytes);
+    snprintf(text, 128, "Synchronization failed!\n\nProgress: %d%%\nTotal bytes: %dKB", 0, 0);
 
 }
 
@@ -58,8 +52,7 @@ static void load(void)
         char path[128];
 
         file_getlocalremotedatabasepath(path, 128, remotelist.items[i].id);
-        helper_download_init(&download);
-        helper_download(i, remotelist.items[i].urldatabase, path, ondata, oncomplete, onfailure);
+        helper_download(i, remotelist.items[i].urldatabase, path, onprogress, oncomplete, onfailure);
 
         break;
 
