@@ -109,12 +109,12 @@ void widget_icon_render(struct widget *widget, unsigned int ticks)
     struct widget_icon *icon = &widget->payload.icon;
     struct box box;
 
-    box.x = widget->size.x + PADX;
+    box.x = widget->size.x + widget->size.w / 2 - 24;
     box.y = widget->size.y + PADY;
     box.w = widget->size.w - PADX * 2;
     box.h = widget->size.h - PADY * 2;
 
-    backend_paint_icon(box.x, box.y, box.w, box.h, icon->type);
+    backend_paint_glyph("bigicon", icon->type, box.x, box.y, box.w, box.h, 0xFFA0C0C0);
 
 }
 

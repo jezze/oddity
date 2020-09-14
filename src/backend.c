@@ -18,6 +18,14 @@ struct image
 
 };
 
+struct font
+{
+
+    char *name;
+    TTF_Font *ttf;
+
+};
+
 struct sample
 {
 
@@ -29,18 +37,14 @@ struct sample
 static SDL_Surface *display;
 static SDL_Surface *background;
 static SDL_Surface *fade;
-static TTF_Font *textfont;
-static TTF_Font *textfontshadow;
-static TTF_Font *smalliconfont;
-static TTF_Font *smalliconfontshadow;
-static TTF_Font *largeiconfont;
-static TTF_Font *largeiconfontshadow;
 static unsigned int ssw;
 static unsigned int ssh;
-static struct sample samples[8];
-static unsigned int nsamples;
 static struct image images[8];
 static unsigned int nimages;
+static struct font fonts[8];
+static unsigned int nfonts;
+static struct sample samples[8];
+static unsigned int nsamples;
 
 static void dofillstripes(SDL_Surface *s, int w, int h, unsigned int color, unsigned int ticks)
 {
@@ -265,6 +269,24 @@ static struct image *findimage(char *name)
         if (!strcmp(image->name, name))
             return image;
 
+    }
+
+    return 0;
+
+}
+
+static struct font *findfont(char *name)
+{
+
+    unsigned int i;
+
+    for (i = 0; i < nfonts; i++)
+    {
+
+        struct font *font = &fonts[i];
+
+        if (!strcmp(font->name, name))
+            return font;
 
     }
 
@@ -285,34 +307,39 @@ static struct sample *findsample(char *name)
         if (!strcmp(sample->name, name))
             return sample;
 
-
     }
 
     return 0;
 
 }
 
-int backend_font_getascent(void)
+int backend_font_getascent(char *name)
 {
 
-    return TTF_FontAscent(textfont);
+    struct font *font = findfont(name);
+
+    return TTF_FontAscent(font->ttf);
 
 }
 
-void backend_font_getmetrics(char c, int *minx, int *maxx, int *miny, int *maxy, int *advance)
+void backend_font_getmetrics(char *name, char c, int *minx, int *maxx, int *miny, int *maxy, int *advance)
 {
 
+    struct font *font = findfont(name);
     int a;
 
-    TTF_GlyphMetrics(textfont, c, minx, maxx, miny, maxy, &a);
+    TTF_GlyphMetrics(font->ttf, c, minx, maxx, miny, maxy, &a);
 
     if (advance)
         *advance = a + 2;
 
 }
 
-void backend_paint_glyph(char c, unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int col)
+void backend_paint_glyph(char *name, unsigned short c, unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int col)
 {
+
+    struct font *font = findfont(name);
+    struct font *shadow = font + 1;
 
     SDL_Surface *surface;
     SDL_Surface *osurface;
@@ -328,7 +355,7 @@ void backend_paint_glyph(char c, unsigned int x, unsigned int y, unsigned int w,
     color.r = col >> 16;
     color.g = col >> 8;
     color.b = col >> 0;
-    surface = TTF_RenderGlyph_Solid(textfont, c, color);
+    surface = TTF_RenderGlyph_Solid(font->ttf, c, color);
     orect.x = rect.x - 1;
     orect.y = rect.y - 1;
     orect.w = rect.w;
@@ -336,41 +363,7 @@ void backend_paint_glyph(char c, unsigned int x, unsigned int y, unsigned int w,
     ocolor.r = 10;
     ocolor.g = 10;
     ocolor.b = 10;
-    osurface = TTF_RenderGlyph_Solid(textfontshadow, c, ocolor);
-
-    SDL_BlitSurface(osurface, NULL, display, &orect);
-    SDL_FreeSurface(osurface);
-    SDL_BlitSurface(surface, NULL, display, &rect);
-    SDL_FreeSurface(surface);
-
-}
-
-void backend_paint_icon(unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int type)
-{
-
-    SDL_Surface *surface;
-    SDL_Surface *osurface;
-    SDL_Rect rect;
-    SDL_Rect orect;
-    SDL_Color color;
-    SDL_Color ocolor;
-
-    rect.x = (x + w / 2) - 24;
-    rect.y = (y + h / 2) - 12;
-    rect.w = w;
-    rect.h = h;
-    color.r = 0xA0;
-    color.g = 0xC0;
-    color.b = 0xC0;
-    surface = TTF_RenderGlyph_Solid(largeiconfont, type, color);
-    orect.x = rect.x - 1;
-    orect.y = rect.y - 1;
-    orect.w = rect.w;
-    orect.h = rect.h;
-    ocolor.r = 10;
-    ocolor.g = 10;
-    ocolor.b = 10;
-    osurface = TTF_RenderGlyph_Solid(largeiconfontshadow, type, ocolor);
+    osurface = TTF_RenderGlyph_Solid(shadow->ttf, c, ocolor);
 
     SDL_BlitSurface(osurface, NULL, display, &orect);
     SDL_FreeSurface(osurface);
@@ -575,12 +568,16 @@ void backend_loadsample(char *name, char *path)
 
 }
 
-void backend_loadtextfont(char *name)
+void backend_loadfont(char *name, unsigned int size, char *filename)
 {
 
-    textfont = TTF_OpenFont(name, 16);
+    struct font *font = &fonts[nfonts++];
+    struct font *shadow = &fonts[nfonts++];
 
-    if (!textfont)
+    font->name = name;
+    font->ttf = TTF_OpenFont(filename, size);
+
+    if (!font->ttf)
     {
 
         fprintf(stderr, "Unable to load font: %s\n", SDL_GetError());
@@ -588,9 +585,10 @@ void backend_loadtextfont(char *name)
 
     }
 
-    textfontshadow = TTF_OpenFont(name, 16);
+    shadow->name = name;
+    shadow->ttf = TTF_OpenFont(filename, size);
 
-    if (!textfontshadow)
+    if (!shadow->ttf)
     {
 
         fprintf(stderr, "Unable to load font: %s\n", SDL_GetError());
@@ -598,61 +596,7 @@ void backend_loadtextfont(char *name)
 
     }
 
-    TTF_SetFontOutline(textfontshadow, 1);
-
-}
-
-void backend_loadsmalliconfont(char *name)
-{
-
-    smalliconfont = TTF_OpenFont(name, 16);
-
-    if (!smalliconfont)
-    {
-
-        fprintf(stderr, "Unable to load font: %s\n", SDL_GetError());
-        exit(EXIT_FAILURE);
-
-    }
-
-    smalliconfontshadow = TTF_OpenFont(name, 16);
-
-    if (!smalliconfontshadow)
-    {
-
-        fprintf(stderr, "Unable to load font: %s\n", SDL_GetError());
-        exit(EXIT_FAILURE);
-
-    }
-
-    TTF_SetFontOutline(smalliconfontshadow, 1);
-
-}
-
-void backend_loadlargeiconfont(char *name)
-{
-
-    largeiconfont = TTF_OpenFont(name, 48);
-
-    if (!largeiconfont)
-    {
-
-        fprintf(stderr, "Unable to load font: %s\n", SDL_GetError());
-        exit(EXIT_FAILURE);
-
-    }
-
-    largeiconfontshadow = TTF_OpenFont(name, 48);
-
-    if (!largeiconfontshadow)
-    {
-
-        fprintf(stderr, "Unable to load font: %s\n", SDL_GetError());
-        exit(EXIT_FAILURE);
-
-    }
-
-    TTF_SetFontOutline(largeiconfontshadow, 1);
+    TTF_SetFontOutline(shadow->ttf, 1);
 
 }
 
@@ -664,6 +608,17 @@ void backend_unloadbackground(void)
 
 }
 
+void backend_unloadfont(char *name)
+{
+
+    struct font *font = findfont(name);
+    struct font *shadow = font + 1;
+
+    TTF_CloseFont(font->ttf);
+    TTF_CloseFont(shadow->ttf);
+
+}
+
 void backend_unloadsample(char *name)
 {
 
@@ -671,16 +626,6 @@ void backend_unloadsample(char *name)
 
     if (sample)
         Mix_FreeChunk(sample->chunk);
-
-}
-
-void backend_unloadfonts(void)
-{
-
-    TTF_CloseFont(textfont);
-    TTF_CloseFont(textfontshadow);
-    TTF_CloseFont(largeiconfont);
-    TTF_CloseFont(largeiconfontshadow);
 
 }
 

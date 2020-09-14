@@ -35,7 +35,7 @@ static unsigned int textw(char *text, unsigned int count)
 
         int advance;
 
-        backend_font_getmetrics(text[i], NULL, NULL, NULL, NULL, &advance);
+        backend_font_getmetrics("default", text[i], NULL, NULL, NULL, NULL, &advance);
 
         total += advance;
 
@@ -59,7 +59,7 @@ static unsigned int maxfit(char *text, unsigned int count, unsigned int width)
         if (text[i] == '\n')
             break;
 
-        backend_font_getmetrics(text[i], NULL, NULL, NULL, NULL, &advance);
+        backend_font_getmetrics("default", text[i], NULL, NULL, NULL, NULL, &advance);
 
         total += advance;
 
@@ -86,8 +86,8 @@ static void renderline(char *text, unsigned int count, unsigned int x, unsigned 
         int maxy;
         int advance;
 
-        backend_font_getmetrics(text[i], &minx, &maxx, &miny, &maxy, &advance);
-        backend_paint_glyph(text[i], x + minx, y - maxy, maxx - minx, maxy - miny, color);
+        backend_font_getmetrics("default", text[i], &minx, &maxx, &miny, &maxy, &advance);
+        backend_paint_glyph("default", text[i], x + minx, y - maxy, maxx - minx, maxy - miny, color);
 
         x += advance;
 
@@ -100,7 +100,7 @@ void text_render(struct box *box, unsigned int color, unsigned int align, char *
 
     char *ptext = content;
     unsigned int pcount = strlen(content);
-    unsigned int liney = box->y + backend_font_getascent();
+    unsigned int liney = box->y + backend_font_getascent("default");
     unsigned int colors[] = {
         0x00000000,
         0xFFA0C0C0,
