@@ -18,7 +18,7 @@ struct download
 
 };
 
-static struct download downloads[32];
+static struct download downloads[8];
 
 static unsigned int downloadparse(struct download *download, char *buffer, unsigned int count)
 {
