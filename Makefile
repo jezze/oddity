@@ -21,6 +21,7 @@ OBJ= \
     src/views/settings.o \
     src/views/settings_audio.o \
     src/views/settings_date.o \
+    src/views/settings_datetime.o \
     src/views/settings_system.o \
     src/views/sync.o \
 
