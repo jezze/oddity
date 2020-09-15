@@ -121,6 +121,7 @@ void view_applist_setup(void)
     widget_area_init(view_createwidget(&view), "area5", WIDGET_IN_DEFAULT, 0, 5, 12, 1);
     widget_area_init(view_createwidget(&view), "area6", WIDGET_IN_DEFAULT, 0, 6, 12, 1);
     widget_area_init(view_createwidget(&view), "area7", WIDGET_IN_DEFAULT, 0, 7, 12, 1);
+    widget_area_init(view_createwidget(&view), "area_noitems", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area0", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[0]);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area0", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area1", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[1]);
@@ -137,7 +138,6 @@ void view_applist_setup(void)
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area6", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area7", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[7]);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area7", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_area_init(view_createwidget(&view), "area_noitems", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
     widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_noitems", TEXT_TYPE_NORMAL, TEXT_ALIGN_CENTER, "No items found.");
     main_registerview(&view);
 
