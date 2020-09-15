@@ -109,8 +109,8 @@ void widget_icon_render(struct widget *widget, unsigned int ticks)
     struct widget_icon *icon = &widget->payload.icon;
     struct box box;
 
-    box.x = widget->size.x + widget->size.w / 2 - 24;
-    box.y = widget->size.y + PADY;
+    box.x = widget->size.x + widget->size.w / 2 - 20;
+    box.y = widget->size.y + PADY + 8;
     box.w = widget->size.w - PADX * 2;
     box.h = widget->size.h - PADY * 2;
 
