@@ -134,6 +134,49 @@ void widget_icon_init(struct widget *widget, char *id, char *in, unsigned int ty
 
 }
 
+void widget_select_place(struct widget *widget, struct box *box)
+{
+
+    widget->size.x = box->x;
+    widget->size.y = box->y;
+    widget->size.w = box->w;
+    widget->size.h = box->h;
+
+}
+
+void widget_select_render(struct widget *widget, unsigned int ticks)
+{
+
+    struct box box;
+
+    box.x = widget->size.x + PADX;
+    box.y = widget->size.y + PADY;
+    box.w = widget->size.w - PADX * 2;
+    box.h = widget->size.h - PADY * 2;
+
+    text_render("default", &box, TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "<");
+    text_render("default", &box, TEXT_TYPE_SELECT, TEXT_ALIGN_RIGHT, ">");
+
+    box.x += 16;
+    box.w -= 32;
+
+    /* Scan for options */
+    text_render("default", &box, TEXT_TYPE_NORMAL, TEXT_ALIGN_CENTER, "none");
+
+}
+
+void widget_select_set(struct widget *widget, char *key, char *value)
+{
+
+}
+
+void widget_select_init(struct widget *widget, char *id, char *in)
+{
+
+    widget_init(widget, WIDGET_TYPE_SELECT, id, in);
+
+}
+
 void widget_slider_place(struct widget *widget, struct box *box)
 {
 
@@ -154,6 +197,12 @@ void widget_slider_render(struct widget *widget, unsigned int ticks)
     box.y = widget->size.y + PADY;
     box.w = widget->size.w - PADX * 2;
     box.h = widget->size.h - PADY * 2;
+
+    text_render("default", &box, TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "<");
+    text_render("default", &box, TEXT_TYPE_SELECT, TEXT_ALIGN_RIGHT, ">");
+
+    box.x += 16;
+    box.w -= 32;
 
     if (slider->value >= 0)
     {
@@ -218,7 +267,7 @@ void widget_text_render(struct widget *widget, unsigned int ticks)
     box.h = widget->size.h - PADY * 2;
 
     if (text->data)
-        text_render(&box, text->type, text->align, text->data);
+        text_render("default", &box, text->type, text->align, text->data);
 
 }
 
@@ -289,21 +338,21 @@ void widget_toggle_render(struct widget *widget, unsigned int ticks)
     {
 
     case TOGGLE_OFF:
-        text_render(&box, TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, "Off");
+        text_render("default", &box, TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, "Off");
 
         break;
     case TOGGLE_ON:
-        text_render(&box, TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, "On");
+        text_render("default", &box, TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, "On");
 
         break;
 
     case TOGGLE_OFF_DISABLED:
-        text_render(&box, TEXT_TYPE_DISABLE, TEXT_ALIGN_RIGHT, "Off");
+        text_render("default", &box, TEXT_TYPE_DISABLE, TEXT_ALIGN_RIGHT, "Off");
 
         break;
 
     case TOGGLE_ON_DISABLED:
-        text_render(&box, TEXT_TYPE_DISABLE, TEXT_ALIGN_RIGHT, "On");
+        text_render("default", &box, TEXT_TYPE_DISABLE, TEXT_ALIGN_RIGHT, "On");
 
         break;
 

@@ -27,6 +27,11 @@ static void placewidget(struct widget *widget, struct box *size)
 
         break;
 
+    case WIDGET_TYPE_SELECT:
+        widget_select_place(widget, size);
+
+        break;
+
     case WIDGET_TYPE_SLIDER:
         widget_slider_place(widget, size);
 
@@ -81,6 +86,11 @@ static void renderwidget(struct widget *widget, unsigned int ticks)
 
     case WIDGET_TYPE_ICON:
         widget_icon_render(widget, ticks);
+
+        break;
+
+    case WIDGET_TYPE_SELECT:
+        widget_select_render(widget, ticks);
 
         break;
 

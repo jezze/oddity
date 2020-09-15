@@ -72,7 +72,7 @@ static unsigned int maxfit(char *text, unsigned int count, unsigned int width)
 
 }
 
-static void renderline(char *text, unsigned int count, unsigned int x, unsigned int y, unsigned int color)
+static void renderline(char *id, char *text, unsigned int count, unsigned int x, unsigned int y, unsigned int color)
 {
 
     unsigned int i;
@@ -86,8 +86,8 @@ static void renderline(char *text, unsigned int count, unsigned int x, unsigned 
         int maxy;
         int advance;
 
-        backend_font_getmetrics("default", text[i], &minx, &maxx, &miny, &maxy, &advance);
-        backend_paint_glyph("default", text[i], x + minx, y - maxy, maxx - minx, maxy - miny, color);
+        backend_font_getmetrics(id, text[i], &minx, &maxx, &miny, &maxy, &advance);
+        backend_paint_glyph(id, text[i], x + minx, y - maxy, maxx - minx, maxy - miny, color);
 
         x += advance;
 
@@ -95,7 +95,7 @@ static void renderline(char *text, unsigned int count, unsigned int x, unsigned 
 
 }
 
-void text_render(struct box *box, unsigned int color, unsigned int align, char *content)
+void text_render(char *id, struct box *box, unsigned int color, unsigned int align, char *content)
 {
 
     char *ptext = content;
@@ -135,7 +135,7 @@ void text_render(struct box *box, unsigned int color, unsigned int align, char *
 
         }
 
-        renderline(ptext, linecount, linex, liney, colors[color]);
+        renderline(id, ptext, linecount, linex, liney, colors[color]);
 
         liney += TEXT_ROWHEIGHT;
         ptext += linecount;

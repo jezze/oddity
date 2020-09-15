@@ -1,9 +1,10 @@
 #define WIDGET_TYPE_NONE                0
 #define WIDGET_TYPE_AREA                1
 #define WIDGET_TYPE_ICON                2
-#define WIDGET_TYPE_SLIDER              3
-#define WIDGET_TYPE_TEXT                4
-#define WIDGET_TYPE_TOGGLE              5
+#define WIDGET_TYPE_SELECT              3
+#define WIDGET_TYPE_SLIDER              4
+#define WIDGET_TYPE_TEXT                5
+#define WIDGET_TYPE_TOGGLE              6
 #define WIDGET_ID_DEFAULT               ""
 #define WIDGET_IN_DEFAULT               "main"
 
@@ -21,6 +22,13 @@ struct widget_icon
 {
 
     unsigned int type;
+
+};
+
+struct widget_select
+{
+
+    char *current;
 
 };
 
@@ -64,6 +72,7 @@ struct widget
 
         struct widget_area area;
         struct widget_icon icon;
+        struct widget_select select;
         struct widget_slider slider;
         struct widget_text text;
         struct widget_toggle toggle;
@@ -80,6 +89,10 @@ void widget_icon_place(struct widget *widget, struct box *box);
 void widget_icon_render(struct widget *widget, unsigned int ticks);
 void widget_icon_set(struct widget *widget, char *key, char *value);
 void widget_icon_init(struct widget *widget, char *id, char *in, unsigned int type);
+void widget_select_place(struct widget *widget, struct box *box);
+void widget_select_render(struct widget *widget, unsigned int ticks);
+void widget_select_set(struct widget *widget, char *key, char *value);
+void widget_select_init(struct widget *widget, char *id, char *in);
 void widget_slider_place(struct widget *widget, struct box *box);
 void widget_slider_render(struct widget *widget, unsigned int ticks);
 void widget_slider_set(struct widget *widget, char *key, char *value);
