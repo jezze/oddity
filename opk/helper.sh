@@ -3,19 +3,19 @@
 cmd_sysinfo_get() {
     . /etc/os-release
 
+    PROCESSOR=`cat /proc/cpuinfo | head -1 | sed 's/^.*: //' `
+    MEMORY=`cat /proc/meminfo | head -1 | sed 's/^MemTotal: \+//' `
     ROOTFS_VERSION=`echo $VERSION | sed -e 's/.*-g/g/'`
     ROOTFS_DATE=`date -r /etc/os-release '+%a %b %d %Y' `
     KERNEL_VERSION=`uname -r`
     KERNEL_DATE=`uname -v | cut -d ' ' -f 3-5,8`
-    PROCESSOR=`cat /proc/cpuinfo | head -1 | sed 's/^.*: //' `
-    MEMORY=`cat /proc/meminfo | head -1 | sed 's/^MemTotal: \+//' `
 
+    echo "Processor: $PROCESSOR"
+    echo "Memory: $MEMORY"
     echo "Kernel version: $KERNEL_VERSION"
     echo "Kernel date: $KERNEL_DATE"
     echo "Root FS version: $ROOTFS_VERSION"
     echo "Root FS date: $ROOTFS_DATE"
-    echo "Processor: $PROCESSOR"
-    echo "Memory: $MEMORY"
 }
 
 cmd_date_get() {
