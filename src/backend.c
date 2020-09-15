@@ -58,10 +58,12 @@ static void dofillstripes(SDL_Surface *s, int w, int h, unsigned int color, unsi
     for (y = 0; y < h; y++)
     {
 
+        unsigned int offset = (ticks - y) % 16;
+
         for (x = 0; x < w; x++)
         {
 
-            if (((i + ticks) % 10) > 5)
+            if ((x + offset) % 16 > 8)
                 p[i] = color;
 
             i++;
