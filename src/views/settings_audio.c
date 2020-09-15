@@ -2,7 +2,7 @@
 
 static struct view view;
 
-void ondata(unsigned int id, void *data, unsigned int count)
+static void ondata(unsigned int id, void *data, unsigned int count)
 {
 
     switch (id)

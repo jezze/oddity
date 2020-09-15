@@ -36,6 +36,7 @@ static void button(unsigned int key)
 {
 
     view_moveselection(&view, key);
+    view_select(&view, key, "area_sysinfo", view.name, "sysinfo");
 
     switch (key)
     {

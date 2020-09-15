@@ -164,6 +164,17 @@ void helper_download(unsigned int id, char *url, char *path, void (*onprogress)(
 
 }
 
+void helper_sysinfo_get(unsigned int id, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
+{
+
+    struct session *session = session_create(id, ondata, oncomplete, onfailure);
+
+    session_setarg(session, 0, "./helper.sh");
+    session_setarg(session, 1, "sysinfo_get");
+    session_setarg(session, 2, 0);
+
+}
+
 void helper_time_get(unsigned int id, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
 {
 
