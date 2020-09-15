@@ -79,6 +79,7 @@ static void button(unsigned int key)
 {
 
     view_moveselection(&view, key);
+    view_select(&view, key, "area_date", view.name, "settings_date");
 
     switch (key)
     {
