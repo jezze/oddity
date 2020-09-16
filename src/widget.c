@@ -214,6 +214,11 @@ void widget_select_render(struct widget *widget, unsigned int ticks)
 void widget_select_set(struct widget *widget, char *key, char *value)
 {
 
+    struct widget_select *select = &widget->payload.select;
+
+    if (!strcmp(key, "value"))
+        select->value = value;
+
 }
 
 void widget_select_init(struct widget *widget, char *id, char *in)

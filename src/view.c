@@ -189,6 +189,11 @@ static void setwidget(struct widget *widget, char *key, char *value)
 
         break;
 
+    case WIDGET_TYPE_SELECT:
+        widget_select_set(widget, key, value);
+
+        break;
+
     case WIDGET_TYPE_SLIDER:
         widget_slider_set(widget, key, value);
 
@@ -207,7 +212,6 @@ static void setwidget(struct widget *widget, char *key, char *value)
     }
 
 }
-
 
 struct widget *view_findwidget(struct view *view, char *id)
 {

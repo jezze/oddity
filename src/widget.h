@@ -37,7 +37,7 @@ struct widget_option
 struct widget_select
 {
 
-    char *current;
+    char *value;
 
 };
 
