@@ -134,6 +134,58 @@ void widget_icon_init(struct widget *widget, char *id, char *in, unsigned int ty
 
 }
 
+void widget_option_place(struct widget *widget, struct box *box)
+{
+
+    widget->size.x = box->x;
+    widget->size.y = box->y;
+    widget->size.w = box->w;
+    widget->size.h = box->h;
+
+}
+
+void widget_option_render(struct widget *widget, unsigned int ticks)
+{
+
+    struct widget_option *option = &widget->payload.option;
+    struct box box;
+
+    box.x = widget->size.x + PADX;
+    box.y = widget->size.y + PADY;
+    box.w = widget->size.w - PADX * 2;
+    box.h = widget->size.h - PADY * 2;
+
+    if (option->value)
+        text_render("default", &box, TEXT_TYPE_NORMAL, TEXT_ALIGN_CENTER, option->value);
+
+}
+
+void widget_option_set(struct widget *widget, char *key, char *value)
+{
+
+    struct widget_option *option = &widget->payload.option;
+
+    if (!strcmp(key, "name"))
+        option->name = value;
+
+    if (!strcmp(key, "value"))
+        option->value = value;
+
+}
+
+void widget_option_init(struct widget *widget, char *id, char *in, char *name, char *value)
+{
+
+    struct widget_option *option = &widget->payload.option;
+
+    widget_init(widget, WIDGET_TYPE_OPTION, id, in);
+
+    widget->hidden = 1;
+    option->name = name;
+    option->value = value;
+
+}
+
 void widget_select_place(struct widget *widget, struct box *box)
 {
 
@@ -156,12 +208,6 @@ void widget_select_render(struct widget *widget, unsigned int ticks)
 
     text_render("default", &box, TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "<");
     text_render("default", &box, TEXT_TYPE_SELECT, TEXT_ALIGN_RIGHT, ">");
-
-    box.x += 16;
-    box.w -= 32;
-
-    /* Scan for options */
-    text_render("default", &box, TEXT_TYPE_NORMAL, TEXT_ALIGN_CENTER, "none");
 
 }
 

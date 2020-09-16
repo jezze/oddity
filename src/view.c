@@ -27,6 +27,11 @@ static void placewidget(struct widget *widget, struct box *size)
 
         break;
 
+    case WIDGET_TYPE_OPTION:
+        widget_option_place(widget, size);
+
+        break;
+
     case WIDGET_TYPE_SELECT:
         widget_select_place(widget, size);
 
@@ -89,6 +94,11 @@ static void renderwidget(struct widget *widget, unsigned int ticks)
 
         break;
 
+    case WIDGET_TYPE_OPTION:
+        widget_option_render(widget, ticks);
+
+        break;
+
     case WIDGET_TYPE_SELECT:
         widget_select_render(widget, ticks);
 
@@ -126,6 +136,9 @@ static void renderwidgets(struct view *view, struct widget *parent, unsigned int
         if (strlen(parent->id) && !strcmp(widget->in, parent->id))
         {
 
+            if (widget->hidden)
+                continue;
+
             renderwidget(widget, ticks);
             renderwidgets(view, widget, ticks);
 
@@ -137,6 +150,16 @@ static void renderwidgets(struct view *view, struct widget *parent, unsigned int
 
 static void setwidget(struct widget *widget, char *key, char *value)
 {
+
+    if (!strcmp(key, "hidden"))
+    {
+
+        if (!strcmp(value, "true"))
+            widget->hidden = 1;
+        else if (strcmp(value, "false"))
+            widget->hidden = 0;
+
+    }
 
     if (!strcmp(key, "selectable"))
     {
@@ -158,6 +181,11 @@ static void setwidget(struct widget *widget, char *key, char *value)
 
     case WIDGET_TYPE_ICON:
         widget_icon_set(widget, key, value);
+
+        break;
+
+    case WIDGET_TYPE_OPTION:
+        widget_option_set(widget, key, value);
 
         break;
 
@@ -416,6 +444,53 @@ void view_setattr(struct view *view, char *id, char *key, char *value)
         return;
 
     setwidget(widget, key, value);
+
+}
+
+static struct widget *prevwidget(struct list *list, struct widget *widget)
+{
+
+    struct list_item *current = (widget) ? widget->item.prev : list->tail;
+
+    return (current) ? current->data : 0;
+
+}
+
+static struct widget *nextwidget(struct list *list, struct widget *widget)
+{
+
+    struct list_item *current = (widget) ? widget->item.next : list->head;
+
+    return (current) ? current->data : 0;
+
+}
+
+struct widget *view_widget_prev(struct view *view, struct widget *widget)
+{
+
+    return prevwidget(&view->widgets, widget);
+
+}
+
+struct widget *view_widget_next(struct view *view, struct widget *widget)
+{
+
+    return nextwidget(&view->widgets, widget);
+
+}
+
+struct widget *view_widget_nextchild(struct view *view, struct widget *widget, struct widget *parent)
+{
+
+    while ((widget = view_widget_next(view, widget)))
+    {
+
+        if (view_findwidget(view, widget->in) == parent)
+            return widget;
+
+    }
+
+    return 0;
 
 }
 

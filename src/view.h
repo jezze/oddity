@@ -24,4 +24,7 @@ void view_select(struct view *view, unsigned int key, char *match, char *from, c
 void view_unselect(struct view *view, unsigned int key, char *from);
 void view_reset(struct view *view);
 void view_setattr(struct view *view, char *id, char *key, char *value);
+struct widget *view_widget_prev(struct view *view, struct widget *widget);
+struct widget *view_widget_next(struct view *view, struct widget *widget);
+struct widget *view_widget_nextchild(struct view *view, struct widget *widget, struct widget *parent);
 void view_init(struct view *view, char *name, void (*load)(void), void (*step)(unsigned int ticks), void (*config)(char *key, void *value), void (*button)(unsigned int key));
