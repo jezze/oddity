@@ -156,7 +156,7 @@ static void setwidget(struct widget *widget, char *key, char *value)
 
         if (!strcmp(value, "true"))
             widget->hidden = 1;
-        else if (strcmp(value, "false"))
+        else if (!strcmp(value, "false"))
             widget->hidden = 0;
 
     }
@@ -166,7 +166,7 @@ static void setwidget(struct widget *widget, char *key, char *value)
 
         if (!strcmp(value, "true"))
             widget->selectable = 1;
-        else if (strcmp(value, "false"))
+        else if (!strcmp(value, "false"))
             widget->selectable = 0;
 
     }
