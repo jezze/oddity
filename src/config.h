@@ -19,6 +19,8 @@
 #define KEY_START                       12
 #define KEY_LOCKDOWN                    13
 #define KEY_LOCKUP                      14
+#define VIEW_LOADTYPE_INIT              1
+#define VIEW_LOADTYPE_RESTORE           2
 #define TEXT_TYPE_NORMAL                1
 #define TEXT_TYPE_TITLE                 2
 #define TEXT_TYPE_SELECT                3

@@ -4,7 +4,7 @@ struct view
     char *name;
     char *parentname;
     struct list_item item;
-    void (*load)(void);
+    void (*load)(unsigned int type);
     void (*step)(unsigned int ticks);
     void (*config)(char *key, void *value);
     void (*button)(unsigned int key);
@@ -27,4 +27,4 @@ void view_setattr(struct view *view, char *id, char *key, char *value);
 struct widget *view_widget_prev(struct view *view, struct widget *widget);
 struct widget *view_widget_next(struct view *view, struct widget *widget);
 struct widget *view_widget_nextchild(struct view *view, struct widget *widget, struct widget *parent);
-void view_init(struct view *view, char *name, void (*load)(void), void (*step)(unsigned int ticks), void (*config)(char *key, void *value), void (*button)(unsigned int key));
+void view_init(struct view *view, char *name, void (*load)(unsigned int type), void (*step)(unsigned int ticks), void (*config)(char *key, void *value), void (*button)(unsigned int key));

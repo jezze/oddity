@@ -398,7 +398,7 @@ void view_select(struct view *view, unsigned int key, char *match, char *from, c
     if (strcmp(view->selected->id, match))
         return;
 
-    main_loadview(to, from);
+    main_initview(to, from);
     backend_play("select");
 
 }
@@ -409,7 +409,7 @@ void view_unselect(struct view *view, unsigned int key, char *from)
     if (key != KEY_B)
         return;
 
-    main_quitview(from);
+    main_destroyview(from);
     backend_play("unselect");
 
 }
@@ -498,7 +498,7 @@ struct widget *view_widget_nextchild(struct view *view, struct widget *widget, s
 
 }
 
-void view_init(struct view *view, char *name, void (*load)(void), void (*step)(unsigned int ticks), void (*config)(char *key, void *value), void (*button)(unsigned int key))
+void view_init(struct view *view, char *name, void (*load)(unsigned int type), void (*step)(unsigned int ticks), void (*config)(char *key, void *value), void (*button)(unsigned int key))
 {
 
     view->name = name;

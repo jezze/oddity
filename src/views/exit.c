@@ -2,7 +2,7 @@
 
 static struct view view;
 
-static void load(void)
+static void load(unsigned int type)
 {
 
     main_quit();

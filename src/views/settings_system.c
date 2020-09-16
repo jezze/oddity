@@ -72,7 +72,7 @@ static void button(unsigned int key)
 
 }
 
-static void load(void)
+static void load(unsigned int type)
 {
 
     snprintf(language, 32, "English (US)");

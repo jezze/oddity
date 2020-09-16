@@ -42,7 +42,7 @@ static void button(unsigned int key)
 
 }
 
-static void load(void)
+static void load(unsigned int type)
 {
 
     view_setattr(&view, "area_year", "selectable", "true");
