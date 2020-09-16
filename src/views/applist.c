@@ -78,8 +78,6 @@ static void load(unsigned int type)
 
     }
 
-    view_reset(&view);
-
 }
 
 static void config(char *key, void *value)

@@ -51,7 +51,6 @@ static void load(unsigned int type)
     view_setattr(&view, "select_year", "value", "2020");
     view_setattr(&view, "select_month", "value", "01");
     view_setattr(&view, "select_day", "value", "01");
-    view_reset(&view);
 
 }
 

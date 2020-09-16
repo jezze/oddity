@@ -95,7 +95,6 @@ static void load(unsigned int type)
     view_setattr(&view, "slider_volume_pcm", "value", "-1");
     view_setattr(&view, "slider_volume_headphone", "value", "-1");
     view_setattr(&view, "slider_volume_headphones", "value", "-1");
-    view_reset(&view);
     helper_volume_get(1, "Master", ondata, 0, 0);
     helper_volume_get(2, "PCM", ondata, 0, 0);
     helper_volume_get(3, "Headphone", ondata, 0, 0);

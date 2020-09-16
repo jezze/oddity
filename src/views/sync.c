@@ -64,7 +64,6 @@ static void load(unsigned int type)
     }
 
     session_run();
-    view_reset(&view);
 
 }
 

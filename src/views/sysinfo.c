@@ -22,7 +22,6 @@ static void button(unsigned int key)
 static void load(unsigned int type)
 {
 
-    view_reset(&view);
     helper_sysinfo_get(1, ondata, 0, 0);
 
 }

@@ -20,7 +20,6 @@ static void load(unsigned int type)
     view_setattr(&view, "area_clock", "selectable", "true");
     view_setattr(&view, "area_network", "selectable", "true");
     view_setattr(&view, "area_system", "selectable", "true");
-    view_reset(&view);
 
 }
 

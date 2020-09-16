@@ -82,7 +82,6 @@ static void load(unsigned int type)
     view_setattr(&view, "area_autostart", "selectable", "true");
     view_setattr(&view, "area_upgrade", "selectable", "true");
     view_setattr(&view, "area_sysinfo", "selectable", "true");
-    view_reset(&view);
     helper_autostart_get(1, autostart_ondata, 0, 0);
 
 }

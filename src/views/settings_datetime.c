@@ -63,7 +63,6 @@ static void load(unsigned int type)
     view_setattr(&view, "area_timezone", "selectable", "true");
     view_setattr(&view, "area_date", "selectable", "true");
     view_setattr(&view, "area_time", "selectable", "true");
-    view_reset(&view);
     helper_timezone_get(1, timezone_ondata, 0, 0);
     helper_date_get(1, date_ondata, 0, 0);
     helper_time_get(1, time_ondata, 0, 0);

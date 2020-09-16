@@ -49,7 +49,6 @@ static void load(unsigned int type)
     view_setattr(&view, "area_new", "selectable", "true");
     view_setattr(&view, "area_updated", "selectable", "true");
     view_setattr(&view, "area_synchronize", "selectable", "true");
-    view_reset(&view);
 
 }
 

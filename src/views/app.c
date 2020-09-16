@@ -43,7 +43,6 @@ static void load(unsigned int type)
 
     view_setattr(&view, "area_run", "selectable", "true");
     view_setattr(&view, "area_uninstall", "selectable", "true");
-    view_reset(&view);
 
 }
 

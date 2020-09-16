@@ -137,13 +137,8 @@ void main_configview(char *name, char *key, void *value)
 
 }
 
-static void loadview(char *name, char *parentname, unsigned int type)
+static void loadview(struct view *view, char *parentname, unsigned int type)
 {
-
-    struct view *view = findview(name);
-
-    if (!view)
-        return;
 
     view->parentname = parentname;
 
@@ -157,7 +152,13 @@ static void loadview(char *name, char *parentname, unsigned int type)
 void main_initview(char *name, char *parentname)
 {
 
-    loadview(name, parentname, VIEW_LOADTYPE_INIT);
+    struct view *view = findview(name);
+
+    if (!view)
+        return;
+
+    loadview(view, parentname, VIEW_LOADTYPE_INIT);
+    view_reset(view);
 
 }
 
@@ -177,7 +178,7 @@ void main_destroyview(char *name)
         if (!parent)
             return;
 
-        loadview(view->parentname, parent->parentname, VIEW_LOADTYPE_RESTORE);
+        loadview(parent, parent->parentname, VIEW_LOADTYPE_RESTORE);
 
     }
 

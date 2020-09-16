@@ -18,7 +18,6 @@ static void load(unsigned int type)
     view_setattr(&view, "area_library", "selectable", "true");
     view_setattr(&view, "area_settings", "selectable", "true");
     view_setattr(&view, "area_exit", "selectable", "true");
-    view_reset(&view);
 
 }
 
