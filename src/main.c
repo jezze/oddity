@@ -60,6 +60,7 @@ static void run(void)
         session_run();
         session_poll();
         backend_pollevent(main_quit, active->button);
+        view_precheck(active);
 
         if (active->step)
             active->step(ticks);

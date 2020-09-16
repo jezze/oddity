@@ -498,6 +498,36 @@ struct widget *view_widget_nextchild(struct view *view, struct widget *widget, s
 
 }
 
+void view_precheck(struct view *view)
+{
+
+    struct widget *child = 0;
+
+    while ((child = view_widget_next(view, child)))
+    {
+
+        if (child->type == WIDGET_TYPE_OPTION)
+        {
+
+            struct widget *parent = view_findwidget(view, child->in);
+
+            if (!parent)
+                continue;
+
+            if (parent->type != WIDGET_TYPE_SELECT)
+                continue;
+
+            if (strcmp(child->payload.option.value, parent->payload.select.value))
+                child->hidden = 1;
+            else
+                child->hidden = 0;
+
+        }
+
+    }
+
+}
+
 void view_init(struct view *view, char *name, void (*load)(unsigned int type), void (*step)(unsigned int ticks), void (*config)(char *key, void *value), void (*button)(unsigned int key))
 {
 
