@@ -48,6 +48,8 @@ static void widget_init(struct widget *widget, unsigned int type, char *id, char
     widget->type = type;
     widget->id = id;
     widget->in = in;
+    widget->hidden = 0;
+    widget->selectable = 0;
 
     list_inititem(&widget->item, widget);
 
