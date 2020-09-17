@@ -55,7 +55,7 @@ cmd_autostart_get() {
 }
 
 cmd_autostart_install() {
-    local opk="/media/data/apps/ztore.opk"
+    local opk="/media/data/apps/oddity.opk"
 
     test -e $opk && echo -e "#!/bin/sh\n\nopkrun $opk" > ~/.autostart && chmod +x ~/.autostart
 

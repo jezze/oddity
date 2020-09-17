@@ -13,7 +13,7 @@ void file_init(void)
 
     home = getenv("HOME");
 
-    snprintf(command, 128, "mkdir -p %s/.ztore", home);
+    snprintf(command, 128, "mkdir -p %s/.oddity", home);
     system(command);
 
 }
@@ -21,14 +21,14 @@ void file_init(void)
 void file_getlocaldatabasepath(char *path, unsigned int count)
 {
 
-    snprintf(path, count, "%s/.ztore/local.db", home);
+    snprintf(path, count, "%s/.oddity/local.db", home);
 
 }
 
 void file_getlocalremotedatabasepath(char *path, unsigned int count, unsigned int id)
 {
 
-    snprintf(path, count, "%s/.ztore/remote_%u.db", home, id);
+    snprintf(path, count, "%s/.oddity/remote_%u.db", home, id);
 
 }
 

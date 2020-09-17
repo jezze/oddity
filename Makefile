@@ -1,6 +1,6 @@
 ARCH=host
-BIN=opk/ztore
-PKG=ztore.opk
+BIN=opk/oddity
+PKG=oddity.opk
 OBJ= \
     src/backend.o \
     src/box.o \
@@ -45,7 +45,7 @@ clean:
 	rm -f $(PKG) $(BIN) $(OBJ)
 
 run: $(PKG)
-	(cd opk && ./ztore)
+	(cd opk && ./oddity)
 
 upload:
 	scp $(PKG) od@10.1.1.2:/media/data/apps/$(PKG)

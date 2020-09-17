@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=Ztore
-Comment=Marketplace
-Exec=ztore
+Name=Oddity
+Comment=OpenDingux Desktop Utility
+Exec=oddity
 Terminal=false
 Type=Application
 StartupNotify=true
