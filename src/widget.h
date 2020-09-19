@@ -107,7 +107,7 @@ void widget_option_init(struct widget *widget, char *id, char *in, char *name, c
 void widget_select_place(struct widget *widget, struct box *box);
 void widget_select_render(struct widget *widget, unsigned int ticks);
 void widget_select_set(struct widget *widget, char *key, char *value);
-void widget_select_init(struct widget *widget, char *id, char *in);
+void widget_select_init(struct widget *widget, char *id, char *in, char *value);
 void widget_slider_place(struct widget *widget, struct box *box);
 void widget_slider_render(struct widget *widget, unsigned int ticks);
 void widget_slider_set(struct widget *widget, char *key, char *value);

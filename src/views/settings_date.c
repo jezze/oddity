@@ -48,9 +48,6 @@ static void onload(unsigned int type)
     view_setattr(&view, "area_year", "selectable", "true");
     view_setattr(&view, "area_month", "selectable", "true");
     view_setattr(&view, "area_day", "selectable", "true");
-    view_setattr(&view, "select_year", "value", "2020");
-    view_setattr(&view, "select_month", "value", "01");
-    view_setattr(&view, "select_day", "value", "01");
 
 }
 
@@ -72,9 +69,9 @@ void view_settings_date_setup(void)
     pool_create_text(&view, "text_year", "area_year_text", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, "Year");
     pool_create_text(&view, "text_month", "area_month_text", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, "Month");
     pool_create_text(&view, "text_day", "area_day_text", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, "Day");
-    pool_create_select(&view, "select_year", "area_year_select");
-    pool_create_select(&view, "select_month", "area_month_select");
-    pool_create_select(&view, "select_day", "area_day_select");
+    pool_create_select(&view, "select_year", "area_year_select", "2020");
+    pool_create_select(&view, "select_month", "area_month_select", "01");
+    pool_create_select(&view, "select_day", "area_day_select", "01");
     pool_create_option(&view, WIDGET_ID_DEFAULT, "select_year", "1970", "1970");
     pool_create_option(&view, WIDGET_ID_DEFAULT, "select_year", "1971", "1971");
     pool_create_option(&view, WIDGET_ID_DEFAULT, "select_year", "1972", "1972");

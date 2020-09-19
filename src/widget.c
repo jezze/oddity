@@ -210,10 +210,14 @@ void widget_select_set(struct widget *widget, char *key, char *value)
 
 }
 
-void widget_select_init(struct widget *widget, char *id, char *in)
+void widget_select_init(struct widget *widget, char *id, char *in, char *value)
 {
 
+    struct widget_select *select = &widget->payload.select;
+
     widget_init(widget, WIDGET_TYPE_SELECT, id, in);
+
+    select->value = value;
 
 }
 

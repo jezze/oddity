@@ -45,12 +45,12 @@ void pool_create_option(struct view *view, char *id, char *in, char *name, char 
 
 }
 
-void pool_create_select(struct view *view, char *id, char *in)
+void pool_create_select(struct view *view, char *id, char *in, char *value)
 {
 
     struct widget *widget = createwidget(view);
 
-    widget_select_init(widget, id, in);
+    widget_select_init(widget, id, in, value);
 
 }
 
