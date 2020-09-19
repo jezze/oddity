@@ -3,8 +3,8 @@ void backend_font_getmetrics(char *name, char c, int *minx, int *maxx, int *miny
 void backend_paint_glyph(char *name, unsigned short c, unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int col);
 void backend_paint_slider(int x, int y, int w, int h, int ws, unsigned int ticks);
 void backend_paint_selection(int x, int y, int w, int h);
-void backend_pollevent(void (*quit)(void), void (*button)(unsigned int key));
-void backend_waitevent(void (*quit)(void), void (*button)(unsigned int key));
+void backend_pollevent(void (*onquit)(void), void (*onbutton)(unsigned int key));
+void backend_waitevent(void (*onquit)(void), void (*onbutton)(unsigned int key));
 void backend_render(struct view *view, unsigned int ticks);
 unsigned int backend_ticks(void);
 void backend_delay(unsigned int ms);
