@@ -10,6 +10,17 @@ static void onbutton(unsigned int key)
     switch (key)
     {
 
+    case KEY_A:
+        if (view_isactive(&view, "area_save"))
+        {
+
+            /* Call helper here */
+            view_unselect(&view, KEY_B);
+
+        }
+
+        break;
+
     case KEY_LEFT:
         if (view_isactive(&view, "area_year"))
             view_goprev(&view, key, "select_year");
@@ -46,6 +57,9 @@ static void onload(unsigned int type)
     view_setattr(&view, "area_year", "selectable", "true");
     view_setattr(&view, "area_month", "selectable", "true");
     view_setattr(&view, "area_day", "selectable", "true");
+    view_setattr(&view, "area_save", "selectable", "true");
+
+    /* Read date helper here */
 
 }
 
@@ -63,10 +77,12 @@ void view_settings_date_setup(void)
     pool_create_area(&view, "area_day", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
     pool_create_area(&view, "area_day_text", WIDGET_IN_DEFAULT, 0, 3, 6, 1);
     pool_create_area(&view, "area_day_select", WIDGET_IN_DEFAULT, 8, 3, 4, 1);
+    pool_create_area(&view, "area_save", WIDGET_IN_DEFAULT, 0, 7, 12, 1);
     pool_create_text(&view, WIDGET_ID_DEFAULT, "area_date", TEXT_TYPE_TITLE, TEXT_ALIGN_CENTER, "Date");
-    pool_create_text(&view, "text_year", "area_year_text", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, "Year");
-    pool_create_text(&view, "text_month", "area_month_text", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, "Month");
-    pool_create_text(&view, "text_day", "area_day_text", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, "Day");
+    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_year_text", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, "Year");
+    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_month_text", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, "Month");
+    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_day_text", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, "Day");
+    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_save", TEXT_TYPE_SELECT, TEXT_ALIGN_CENTER, "Save");
     pool_create_select(&view, "select_year", "area_year_select", "2020");
     pool_create_select(&view, "select_month", "area_month_select", "01");
     pool_create_select(&view, "select_day", "area_day_select", "01");

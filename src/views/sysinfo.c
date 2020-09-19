@@ -24,6 +24,8 @@ static void onbutton(unsigned int key)
 static void onload(unsigned int type)
 {
 
+    offset = 0;
+
     helper_sysinfo_get(1, ondata, 0, 0);
 
 }
