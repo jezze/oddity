@@ -400,6 +400,74 @@ void view_unselect(struct view *view, unsigned int key)
 
 }
 
+void view_goprev(struct view *view, unsigned int key, char *id)
+{
+
+    struct widget *widget;
+    struct widget *child = 0;
+
+    if (key != KEY_LEFT)
+        return;
+
+    widget = view_findwidget(view, id);
+
+    if (!widget)
+        return;
+
+    while ((child = view_widget_nextchild(view, child, widget)))
+    {
+
+        if (widget->payload.select.value == child->payload.option.value)
+            break;
+
+    }
+
+    if (child)
+    {
+
+        child = view_widget_prevchild(view, child, widget);
+
+        if (child)
+            widget->payload.select.value = child->payload.option.value;
+
+    }
+
+}
+
+void view_gonext(struct view *view, unsigned int key, char *id)
+{
+
+    struct widget *widget;
+    struct widget *child = 0;
+
+    if (key != KEY_RIGHT)
+        return;
+
+    widget = view_findwidget(view, id);
+
+    if (!widget)
+        return;
+
+    while ((child = view_widget_nextchild(view, child, widget)))
+    {
+
+        if (widget->payload.select.value == child->payload.option.value)
+            break;
+
+    }
+
+    if (child)
+    {
+
+        child = view_widget_nextchild(view, child, widget);
+
+        if (child)
+            widget->payload.select.value = child->payload.option.value;
+
+    }
+
+}
+
 void view_reset(struct view *view)
 {
 
@@ -466,6 +534,21 @@ struct widget *view_widget_next(struct view *view, struct widget *widget)
 {
 
     return nextwidget(&view->widgets, widget);
+
+}
+
+struct widget *view_widget_prevchild(struct view *view, struct widget *widget, struct widget *parent)
+{
+
+    while ((widget = view_widget_prev(view, widget)))
+    {
+
+        if (view_findwidget(view, widget->in) == parent)
+            return widget;
+
+    }
+
+    return 0;
 
 }
 

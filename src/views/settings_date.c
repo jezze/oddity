@@ -10,31 +10,29 @@ static void onbutton(unsigned int key)
     switch (key)
     {
 
-/*
     case KEY_LEFT:
         if (view_isactive(&view, "area_year"))
-            view_goprev(&view, "select_year");
+            view_goprev(&view, key, "select_year");
 
         if (view_isactive(&view, "area_month"))
-            view_goprev(&view, "select_month");
+            view_goprev(&view, key, "select_month");
 
         if (view_isactive(&view, "area_day"))
-            view_goprev(&view, "select_day");
+            view_goprev(&view, key, "select_day");
 
         break;
 
     case KEY_RIGHT:
         if (view_isactive(&view, "area_year"))
-            view_gonext(&view, "select_year");
+            view_gonext(&view, key, "select_year");
 
         if (view_isactive(&view, "area_month"))
-            view_gonext(&view, "select_month");
+            view_gonext(&view, key, "select_month");
 
         if (view_isactive(&view, "area_day"))
-            view_gonext(&view, "select_day");
+            view_gonext(&view, key, "select_day");
 
         break;
-*/
 
     }
 
