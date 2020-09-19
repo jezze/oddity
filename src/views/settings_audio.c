@@ -106,20 +106,18 @@ void view_settings_audio_setup(void)
 {
 
     view_init(&view, "settings_audio", onload, 0, 0, onbutton);
-    pool_create_area(&view, "area_volume", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
-    pool_create_area(&view, "area_volume_master", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
-    pool_create_area(&view, "area_volume_master_text", WIDGET_IN_DEFAULT, 0, 1, 6, 1);
-    pool_create_area(&view, "area_volume_master_slider", WIDGET_IN_DEFAULT, 6, 1, 6, 1);
-    pool_create_area(&view, "area_volume_pcm", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
-    pool_create_area(&view, "area_volume_pcm_text", WIDGET_IN_DEFAULT, 0, 2, 6, 1);
-    pool_create_area(&view, "area_volume_pcm_slider", WIDGET_IN_DEFAULT, 6, 2, 6, 1);
-    pool_create_area(&view, "area_volume_headphone", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
-    pool_create_area(&view, "area_volume_headphone_text", WIDGET_IN_DEFAULT, 0, 3, 6, 1);
-    pool_create_area(&view, "area_volume_headphone_slider", WIDGET_IN_DEFAULT, 6, 3, 6, 1);
-    pool_create_area(&view, "area_volume_headphones", WIDGET_IN_DEFAULT, 0, 4, 12, 1);
-    pool_create_area(&view, "area_volume_headphones_text", WIDGET_IN_DEFAULT, 0, 4, 6, 1);
-    pool_create_area(&view, "area_volume_headphones_slider", WIDGET_IN_DEFAULT, 6, 4, 6, 1);
-    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_volume", TEXT_TYPE_TITLE, TEXT_ALIGN_CENTER, "Volume");
+    pool_create_area(&view, "area_volume_master", WIDGET_IN_DEFAULT, 1, 1, 10, 1);
+    pool_create_area(&view, "area_volume_master_text", WIDGET_IN_DEFAULT, 1, 1, 5, 1);
+    pool_create_area(&view, "area_volume_master_slider", WIDGET_IN_DEFAULT, 6, 1, 5, 1);
+    pool_create_area(&view, "area_volume_pcm", WIDGET_IN_DEFAULT, 1, 2, 10, 1);
+    pool_create_area(&view, "area_volume_pcm_text", WIDGET_IN_DEFAULT, 1, 2, 5, 1);
+    pool_create_area(&view, "area_volume_pcm_slider", WIDGET_IN_DEFAULT, 6, 2, 5, 1);
+    pool_create_area(&view, "area_volume_headphone", WIDGET_IN_DEFAULT, 1, 3, 10, 1);
+    pool_create_area(&view, "area_volume_headphone_text", WIDGET_IN_DEFAULT, 1, 3, 5, 1);
+    pool_create_area(&view, "area_volume_headphone_slider", WIDGET_IN_DEFAULT, 6, 3, 5, 1);
+    pool_create_area(&view, "area_volume_headphones", WIDGET_IN_DEFAULT, 1, 4, 10, 1);
+    pool_create_area(&view, "area_volume_headphones_text", WIDGET_IN_DEFAULT, 1, 4, 5, 1);
+    pool_create_area(&view, "area_volume_headphones_slider", WIDGET_IN_DEFAULT, 6, 4, 5, 1);
     pool_create_text(&view, "text_volume_master", "area_volume_master_text", TEXT_TYPE_DISABLE, TEXT_ALIGN_LEFT, "Master");
     pool_create_text(&view, "text_volume_pcm", "area_volume_pcm_text", TEXT_TYPE_DISABLE, TEXT_ALIGN_LEFT, "PCM");
     pool_create_text(&view, "text_volume_headphone", "area_volume_headphone_text", TEXT_TYPE_DISABLE, TEXT_ALIGN_LEFT, "Headphone");
