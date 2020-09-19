@@ -50,6 +50,7 @@ static void onbutton(unsigned int key)
 
     view_moveselection(&view, key);
     view_select(&view, key, "area_date", "settings_date");
+    view_select(&view, key, "area_time", "settings_time");
     view_unselect(&view, key);
 
 }

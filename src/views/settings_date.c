@@ -2,8 +2,8 @@
 
 static struct view view;
 static char year[8];
-static char day[8];
 static char month[8];
+static char day[8];
 
 static void date_ondata(unsigned int id, void *data, unsigned int count)
 {
