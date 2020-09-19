@@ -59,11 +59,11 @@ static void run(void)
 
         session_run();
         session_poll();
-        backend_pollevent(main_quit, active->button);
+        backend_pollevent(main_quit, active->onbutton);
         view_precheck(active);
 
-        if (active->step)
-            active->step(ticks);
+        if (active->onstep)
+            active->onstep(ticks);
 
         backend_render(active, ticks);
 
@@ -133,8 +133,8 @@ void main_configview(char *name, char *key, void *value)
     if (!view)
         return;
 
-    if (view->config)
-        view->config(key, value);
+    if (view->onconfig)
+        view->onconfig(key, value);
 
 }
 
@@ -143,8 +143,8 @@ static void loadview(struct view *view, char *parentname, unsigned int type)
 
     view->parentname = parentname;
 
-    if (view->load)
-        view->load(type);
+    if (view->onload)
+        view->onload(type);
 
     active = view;
 

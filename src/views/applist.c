@@ -5,7 +5,7 @@ static struct db_applist applist;
 static unsigned int page;
 static char *names[8];
 
-static void button(unsigned int key)
+static void onbutton(unsigned int key)
 {
 
     unsigned int offset = page * 8;
@@ -57,7 +57,7 @@ static void button(unsigned int key)
 
 }
 
-static void load(unsigned int type)
+static void onload(unsigned int type)
 {
 
     unsigned int i;
@@ -80,7 +80,7 @@ static void load(unsigned int type)
 
 }
 
-static void config(char *key, void *value)
+static void onconfig(char *key, void *value)
 {
 
     if (!strcmp(key, "list"))
@@ -110,7 +110,7 @@ static void config(char *key, void *value)
 void view_applist_setup(void)
 {
 
-    view_init(&view, "applist", load, 0, config, button);
+    view_init(&view, "applist", onload, 0, onconfig, onbutton);
     pool_area_create(&view, "area0", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
     pool_area_create(&view, "area1", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
     pool_area_create(&view, "area2", WIDGET_IN_DEFAULT, 0, 2, 12, 1);

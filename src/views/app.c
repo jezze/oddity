@@ -3,7 +3,7 @@
 static struct view view;
 static struct db_app app;
 
-static void button(unsigned int key)
+static void onbutton(unsigned int key)
 {
 
     view_moveselection(&view, key);
@@ -38,7 +38,7 @@ static void button(unsigned int key)
 
 }
 
-static void load(unsigned int type)
+static void onload(unsigned int type)
 {
 
     view_setattr(&view, "area_run", "selectable", "true");
@@ -46,7 +46,7 @@ static void load(unsigned int type)
 
 }
 
-static void config(char *key, void *value)
+static void onconfig(char *key, void *value)
 {
 
     if (!strcmp(key, "id"))
@@ -64,7 +64,7 @@ static void config(char *key, void *value)
 void view_app_setup(void)
 {
 
-    view_init(&view, "app", load, 0, config, button);
+    view_init(&view, "app", onload, 0, onconfig, onbutton);
     pool_area_create(&view, "area_title", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
     pool_area_create(&view, "area_description", WIDGET_IN_DEFAULT, 0, 1, 12, 4);
     pool_area_create(&view, "area_run", WIDGET_IN_DEFAULT, 0, 7, 4, 1);

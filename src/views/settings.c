@@ -2,7 +2,7 @@
 
 static struct view view;
 
-static void button(unsigned int key)
+static void onbutton(unsigned int key)
 {
 
     view_moveselection(&view, key);
@@ -13,7 +13,7 @@ static void button(unsigned int key)
 
 }
 
-static void load(unsigned int type)
+static void onload(unsigned int type)
 {
 
     view_setattr(&view, "area_audio", "selectable", "true");
@@ -26,7 +26,7 @@ static void load(unsigned int type)
 void view_settings_setup(void)
 {
 
-    view_init(&view, "settings", load, 0, 0, button);
+    view_init(&view, "settings", onload, 0, 0, onbutton);
     pool_area_create(&view, "area_audio", WIDGET_IN_DEFAULT, 0, 0, 4, 3);
     pool_area_create(&view, "area_audio_icon", WIDGET_IN_DEFAULT, 0, 0, 4, 2);
     pool_area_create(&view, "area_audio_text", WIDGET_IN_DEFAULT, 0, 2, 4, 1);

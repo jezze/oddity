@@ -32,7 +32,7 @@ static void time_ondata(unsigned int id, void *data, unsigned int count)
 
 }
 
-static void step(unsigned int ticks)
+static void onstep(unsigned int ticks)
 {
 
     if (ticks % 60 == 0)
@@ -45,7 +45,7 @@ static void step(unsigned int ticks)
 
 }
 
-static void button(unsigned int key)
+static void onbutton(unsigned int key)
 {
 
     view_moveselection(&view, key);
@@ -54,7 +54,7 @@ static void button(unsigned int key)
 
 }
 
-static void load(unsigned int type)
+static void onload(unsigned int type)
 {
 
     snprintf(timezone, 32, "-");
@@ -72,7 +72,7 @@ static void load(unsigned int type)
 void view_settings_datetime_setup(void)
 {
 
-    view_init(&view, "settings_datetime", load, step, 0, button);
+    view_init(&view, "settings_datetime", onload, onstep, 0, onbutton);
     pool_area_create(&view, "area_timezone", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
     pool_area_create(&view, "area_date", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
     pool_area_create(&view, "area_time", WIDGET_IN_DEFAULT, 0, 2, 12, 1);

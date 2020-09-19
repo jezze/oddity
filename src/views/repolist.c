@@ -6,7 +6,7 @@ static char new[16];
 static char updated[16];
 static char installed[16];
 
-static void button(unsigned int key)
+static void onbutton(unsigned int key)
 {
 
     view_moveselection(&view, key);
@@ -37,7 +37,7 @@ static void button(unsigned int key)
 
 }
 
-static void load(unsigned int type)
+static void onload(unsigned int type)
 {
 
     snprintf(all, 16, "%u items", db_countapps());
@@ -55,7 +55,7 @@ static void load(unsigned int type)
 void view_repolist_setup(void)
 {
 
-    view_init(&view, "repolist", load, 0, 0, button);
+    view_init(&view, "repolist", onload, 0, 0, onbutton);
     pool_area_create(&view, "area_all", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
     pool_area_create(&view, "area_installed", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
     pool_area_create(&view, "area_new", WIDGET_IN_DEFAULT, 0, 2, 12, 1);

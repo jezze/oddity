@@ -32,7 +32,7 @@ static void autostart_ondata(unsigned int id, void *data, unsigned int count)
 
 }
 
-static void button(unsigned int key)
+static void onbutton(unsigned int key)
 {
 
     view_moveselection(&view, key);
@@ -72,7 +72,7 @@ static void button(unsigned int key)
 
 }
 
-static void load(unsigned int type)
+static void onload(unsigned int type)
 {
 
     snprintf(language, 32, "English (US)");
@@ -89,7 +89,7 @@ static void load(unsigned int type)
 void view_settings_system_setup(void)
 {
 
-    view_init(&view, "settings_system", load, 0, 0, button);
+    view_init(&view, "settings_system", onload, 0, 0, onbutton);
     pool_area_create(&view, "area_language", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
     pool_area_create(&view, "area_autostart", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
     pool_area_create(&view, "area_upgrade", WIDGET_IN_DEFAULT, 0, 2, 12, 1);

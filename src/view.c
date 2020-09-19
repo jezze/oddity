@@ -514,14 +514,14 @@ void view_precheck(struct view *view)
 
 }
 
-void view_init(struct view *view, char *name, void (*load)(unsigned int type), void (*step)(unsigned int ticks), void (*config)(char *key, void *value), void (*button)(unsigned int key))
+void view_init(struct view *view, char *name, void (*onload)(unsigned int type), void (*onstep)(unsigned int ticks), void (*onconfig)(char *key, void *value), void (*onbutton)(unsigned int key))
 {
 
     view->name = name;
-    view->load = load;
-    view->step = step;
-    view->config = config;
-    view->button = button;
+    view->onload = onload;
+    view->onstep = onstep;
+    view->onconfig = onconfig;
+    view->onbutton = onbutton;
 
     list_inititem(&view->item, view);
     widget_area_init(&view->main, "main", "", 0, 0, 8, 8);

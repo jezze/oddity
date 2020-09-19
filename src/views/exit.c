@@ -2,7 +2,7 @@
 
 static struct view view;
 
-static void load(unsigned int type)
+static void onload(unsigned int type)
 {
 
     main_quit();
@@ -12,7 +12,7 @@ static void load(unsigned int type)
 void view_exit_setup(void)
 {
 
-    view_init(&view, "exit", load, 0, 0, 0);
+    view_init(&view, "exit", onload, 0, 0, 0);
     main_registerview(&view);
 
 }

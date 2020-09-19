@@ -2,7 +2,7 @@
 
 static struct view view;
 
-static void button(unsigned int key)
+static void onbutton(unsigned int key)
 {
 
     view_moveselection(&view, key);
@@ -42,7 +42,7 @@ static void button(unsigned int key)
 
 }
 
-static void load(unsigned int type)
+static void onload(unsigned int type)
 {
 
     view_setattr(&view, "area_year", "selectable", "true");
@@ -57,7 +57,7 @@ static void load(unsigned int type)
 void view_settings_date_setup(void)
 {
 
-    view_init(&view, "settings_date", load, 0, 0, button);
+    view_init(&view, "settings_date", onload, 0, 0, onbutton);
     pool_area_create(&view, "area_date", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
     pool_area_create(&view, "area_year", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
     pool_area_create(&view, "area_year_text", WIDGET_IN_DEFAULT, 0, 1, 6, 1);
