@@ -56,20 +56,20 @@ void view_repolist_setup(void)
 {
 
     view_init(&view, "repolist", onload, 0, 0, onbutton);
-    pool_area_create(&view, "area_all", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
-    pool_area_create(&view, "area_installed", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
-    pool_area_create(&view, "area_new", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
-    pool_area_create(&view, "area_updated", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
-    pool_area_create(&view, "area_synchronize", WIDGET_IN_DEFAULT, 0, 7, 12, 1);
-    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_all", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "All");
-    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_all", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, all);
-    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_installed", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Installed");
-    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_installed", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, installed);
-    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_new", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "New");
-    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_new", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, new);
-    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_updated", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Updated");
-    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_updated", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, updated);
-    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_synchronize", TEXT_TYPE_SELECT, TEXT_ALIGN_CENTER, "Synchronize");
+    pool_create_area(&view, "area_all", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
+    pool_create_area(&view, "area_installed", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
+    pool_create_area(&view, "area_new", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
+    pool_create_area(&view, "area_updated", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
+    pool_create_area(&view, "area_synchronize", WIDGET_IN_DEFAULT, 0, 7, 12, 1);
+    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_all", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "All");
+    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_all", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, all);
+    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_installed", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Installed");
+    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_installed", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, installed);
+    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_new", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "New");
+    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_new", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, new);
+    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_updated", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Updated");
+    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_updated", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, updated);
+    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_synchronize", TEXT_TYPE_SELECT, TEXT_ALIGN_CENTER, "Synchronize");
     main_registerview(&view);
 
 }

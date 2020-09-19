@@ -65,14 +65,14 @@ void view_app_setup(void)
 {
 
     view_init(&view, "app", onload, 0, onconfig, onbutton);
-    pool_area_create(&view, "area_title", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
-    pool_area_create(&view, "area_description", WIDGET_IN_DEFAULT, 0, 1, 12, 4);
-    pool_area_create(&view, "area_run", WIDGET_IN_DEFAULT, 0, 7, 4, 1);
-    pool_area_create(&view, "area_uninstall", WIDGET_IN_DEFAULT, 4, 7, 4, 1);
-    pool_text_create(&view, "text_title", "area_title", TEXT_TYPE_TITLE, TEXT_ALIGN_CENTER, 0);
-    pool_text_create(&view, "text_description", "area_description", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, 0);
-    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_run", TEXT_TYPE_SELECT, TEXT_ALIGN_CENTER, "Start");
-    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_uninstall", TEXT_TYPE_DISABLE, TEXT_ALIGN_CENTER, "Uninstall");
+    pool_create_area(&view, "area_title", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
+    pool_create_area(&view, "area_description", WIDGET_IN_DEFAULT, 0, 1, 12, 4);
+    pool_create_area(&view, "area_run", WIDGET_IN_DEFAULT, 0, 7, 4, 1);
+    pool_create_area(&view, "area_uninstall", WIDGET_IN_DEFAULT, 4, 7, 4, 1);
+    pool_create_text(&view, "text_title", "area_title", TEXT_TYPE_TITLE, TEXT_ALIGN_CENTER, 0);
+    pool_create_text(&view, "text_description", "area_description", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, 0);
+    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_run", TEXT_TYPE_SELECT, TEXT_ALIGN_CENTER, "Start");
+    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_uninstall", TEXT_TYPE_DISABLE, TEXT_ALIGN_CENTER, "Uninstall");
     main_registerview(&view);
 
 }

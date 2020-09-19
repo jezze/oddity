@@ -32,8 +32,8 @@ void view_sysinfo_setup(void)
 {
 
     view_init(&view, "sysinfo", onload, 0, 0, onbutton);
-    pool_area_create(&view, "area_sysinfo", WIDGET_IN_DEFAULT, 0, 0, 12, 6);
-    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_sysinfo", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, text);
+    pool_create_area(&view, "area_sysinfo", WIDGET_IN_DEFAULT, 0, 0, 12, 6);
+    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_sysinfo", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, text);
     main_registerview(&view);
 
 }
