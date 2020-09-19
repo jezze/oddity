@@ -85,18 +85,16 @@ void view_settings_time_setup(void)
 {
 
     view_init(&view, "settings_time", onload, 0, 0, onbutton);
-    pool_create_area(&view, "area_time", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
-    pool_create_area(&view, "area_hour", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
-    pool_create_area(&view, "area_hour_text", WIDGET_IN_DEFAULT, 0, 1, 6, 1);
-    pool_create_area(&view, "area_hour_select", WIDGET_IN_DEFAULT, 8, 1, 4, 1);
-    pool_create_area(&view, "area_minute", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
-    pool_create_area(&view, "area_minute_text", WIDGET_IN_DEFAULT, 0, 2, 6, 1);
-    pool_create_area(&view, "area_minute_select", WIDGET_IN_DEFAULT, 8, 2, 4, 1);
-    pool_create_area(&view, "area_second", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
-    pool_create_area(&view, "area_second_text", WIDGET_IN_DEFAULT, 0, 3, 6, 1);
-    pool_create_area(&view, "area_second_select", WIDGET_IN_DEFAULT, 8, 3, 4, 1);
-    pool_create_area(&view, "area_save", WIDGET_IN_DEFAULT, 0, 7, 12, 1);
-    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_time", TEXT_TYPE_TITLE, TEXT_ALIGN_CENTER, "Time");
+    pool_create_area(&view, "area_hour", WIDGET_IN_DEFAULT, 2, 2, 8, 1);
+    pool_create_area(&view, "area_hour_text", WIDGET_IN_DEFAULT, 2, 2, 4, 1);
+    pool_create_area(&view, "area_hour_select", WIDGET_IN_DEFAULT, 6, 2, 4, 1);
+    pool_create_area(&view, "area_minute", WIDGET_IN_DEFAULT, 2, 3, 8, 1);
+    pool_create_area(&view, "area_minute_text", WIDGET_IN_DEFAULT, 2, 3, 4, 1);
+    pool_create_area(&view, "area_minute_select", WIDGET_IN_DEFAULT, 6, 3, 4, 1);
+    pool_create_area(&view, "area_second", WIDGET_IN_DEFAULT, 2, 4, 8, 1);
+    pool_create_area(&view, "area_second_text", WIDGET_IN_DEFAULT, 2, 4, 4, 1);
+    pool_create_area(&view, "area_second_select", WIDGET_IN_DEFAULT, 6, 4, 4, 1);
+    pool_create_area(&view, "area_save", WIDGET_IN_DEFAULT, 2, 6, 8, 1);
     pool_create_text(&view, WIDGET_ID_DEFAULT, "area_hour_text", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, "Hour");
     pool_create_text(&view, WIDGET_ID_DEFAULT, "area_minute_text", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, "Minute");
     pool_create_text(&view, WIDGET_ID_DEFAULT, "area_second_text", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, "Second");

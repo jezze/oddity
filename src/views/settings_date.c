@@ -85,18 +85,16 @@ void view_settings_date_setup(void)
 {
 
     view_init(&view, "settings_date", onload, 0, 0, onbutton);
-    pool_create_area(&view, "area_date", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
-    pool_create_area(&view, "area_year", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
-    pool_create_area(&view, "area_year_text", WIDGET_IN_DEFAULT, 0, 1, 6, 1);
-    pool_create_area(&view, "area_year_select", WIDGET_IN_DEFAULT, 8, 1, 4, 1);
-    pool_create_area(&view, "area_month", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
-    pool_create_area(&view, "area_month_text", WIDGET_IN_DEFAULT, 0, 2, 6, 1);
-    pool_create_area(&view, "area_month_select", WIDGET_IN_DEFAULT, 8, 2, 4, 1);
-    pool_create_area(&view, "area_day", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
-    pool_create_area(&view, "area_day_text", WIDGET_IN_DEFAULT, 0, 3, 6, 1);
-    pool_create_area(&view, "area_day_select", WIDGET_IN_DEFAULT, 8, 3, 4, 1);
-    pool_create_area(&view, "area_save", WIDGET_IN_DEFAULT, 0, 7, 12, 1);
-    pool_create_text(&view, WIDGET_ID_DEFAULT, "area_date", TEXT_TYPE_TITLE, TEXT_ALIGN_CENTER, "Date");
+    pool_create_area(&view, "area_year", WIDGET_IN_DEFAULT, 2, 2, 8, 1);
+    pool_create_area(&view, "area_year_text", WIDGET_IN_DEFAULT, 2, 2, 4, 1);
+    pool_create_area(&view, "area_year_select", WIDGET_IN_DEFAULT, 6, 2, 4, 1);
+    pool_create_area(&view, "area_month", WIDGET_IN_DEFAULT, 2, 3, 8, 1);
+    pool_create_area(&view, "area_month_text", WIDGET_IN_DEFAULT, 2, 3, 4, 1);
+    pool_create_area(&view, "area_month_select", WIDGET_IN_DEFAULT, 6, 3, 4, 1);
+    pool_create_area(&view, "area_day", WIDGET_IN_DEFAULT, 2, 4, 8, 1);
+    pool_create_area(&view, "area_day_text", WIDGET_IN_DEFAULT, 2, 4, 4, 1);
+    pool_create_area(&view, "area_day_select", WIDGET_IN_DEFAULT, 6, 4, 4, 1);
+    pool_create_area(&view, "area_save", WIDGET_IN_DEFAULT, 2, 6, 8, 1);
     pool_create_text(&view, WIDGET_ID_DEFAULT, "area_year_text", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, "Year");
     pool_create_text(&view, WIDGET_ID_DEFAULT, "area_month_text", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, "Month");
     pool_create_text(&view, WIDGET_ID_DEFAULT, "area_day_text", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, "Day");
