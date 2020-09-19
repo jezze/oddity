@@ -1,6 +1,25 @@
 #include "include.h"
 
 static struct view view;
+static char year[8];
+static char day[8];
+static char month[8];
+
+static void date_ondata(unsigned int id, void *data, unsigned int count)
+{
+
+    if (count >= 10)
+    {
+
+        char *s = data;
+
+        memcpy(year, s, 4);
+        memcpy(month, s + 5, 2);
+        memcpy(day, s + 8, 2);
+
+    }
+
+}
 
 static void onbutton(unsigned int key)
 {
@@ -58,8 +77,7 @@ static void onload(unsigned int type)
     view_setattr(&view, "area_month", "selectable", "true");
     view_setattr(&view, "area_day", "selectable", "true");
     view_setattr(&view, "area_save", "selectable", "true");
-
-    /* Read date helper here */
+    helper_date_get(1, date_ondata, 0, 0);
 
 }
 
@@ -83,9 +101,9 @@ void view_settings_date_setup(void)
     pool_create_text(&view, WIDGET_ID_DEFAULT, "area_month_text", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, "Month");
     pool_create_text(&view, WIDGET_ID_DEFAULT, "area_day_text", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, "Day");
     pool_create_text(&view, WIDGET_ID_DEFAULT, "area_save", TEXT_TYPE_SELECT, TEXT_ALIGN_CENTER, "Save");
-    pool_create_select(&view, "select_year", "area_year_select", "2020");
-    pool_create_select(&view, "select_month", "area_month_select", "01");
-    pool_create_select(&view, "select_day", "area_day_select", "01");
+    pool_create_select(&view, "select_year", "area_year_select", year);
+    pool_create_select(&view, "select_month", "area_month_select", month);
+    pool_create_select(&view, "select_day", "area_day_select", day);
     pool_create_option(&view, WIDGET_ID_DEFAULT, "select_year", "1970", "1970");
     pool_create_option(&view, WIDGET_ID_DEFAULT, "select_year", "1971", "1971");
     pool_create_option(&view, WIDGET_ID_DEFAULT, "select_year", "1972", "1972");
