@@ -90,17 +90,17 @@ void view_settings_system_setup(void)
 {
 
     view_init(&view, "settings_system", load, 0, 0, button);
-    widget_area_init(view_createwidget(&view), "area_language", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
-    widget_area_init(view_createwidget(&view), "area_autostart", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
-    widget_area_init(view_createwidget(&view), "area_upgrade", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
-    widget_area_init(view_createwidget(&view), "area_sysinfo", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_language", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Language");
-    widget_text_init(view_createwidget(&view), "text_language", "area_language", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, language);
-    widget_text_init(view_createwidget(&view), "text_autostart", "area_autostart", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Autostart");
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_upgrade", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Upgrade");
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_upgrade", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, "V1.02");
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_sysinfo", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "System Information");
-    widget_toggle_init(view_createwidget(&view), "toggle_autostart", "area_autostart", TOGGLE_OFF_DISABLED);
+    pool_area_create(&view, "area_language", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
+    pool_area_create(&view, "area_autostart", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
+    pool_area_create(&view, "area_upgrade", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
+    pool_area_create(&view, "area_sysinfo", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_language", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Language");
+    pool_text_create(&view, "text_language", "area_language", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, language);
+    pool_text_create(&view, "text_autostart", "area_autostart", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Autostart");
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_upgrade", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Upgrade");
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_upgrade", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, "V1.02");
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_sysinfo", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "System Information");
+    pool_toggle_create(&view, "toggle_autostart", "area_autostart", TOGGLE_OFF_DISABLED);
     main_registerview(&view);
 
 }

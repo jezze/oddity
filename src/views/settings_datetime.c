@@ -73,15 +73,15 @@ void view_settings_datetime_setup(void)
 {
 
     view_init(&view, "settings_datetime", load, step, 0, button);
-    widget_area_init(view_createwidget(&view), "area_timezone", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
-    widget_area_init(view_createwidget(&view), "area_date", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
-    widget_area_init(view_createwidget(&view), "area_time", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_timezone", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Timezone");
-    widget_text_init(view_createwidget(&view), "text_timezone", "area_timezone", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, timezone);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_date", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Date");
-    widget_text_init(view_createwidget(&view), "text_date", "area_date", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, date);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_time", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Time");
-    widget_text_init(view_createwidget(&view), "text_time", "area_time", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, time);
+    pool_area_create(&view, "area_timezone", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
+    pool_area_create(&view, "area_date", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
+    pool_area_create(&view, "area_time", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_timezone", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Timezone");
+    pool_text_create(&view, "text_timezone", "area_timezone", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, timezone);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_date", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Date");
+    pool_text_create(&view, "text_date", "area_date", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, date);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_time", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, "Time");
+    pool_text_create(&view, "text_time", "area_time", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, time);
     main_registerview(&view);
 
 }

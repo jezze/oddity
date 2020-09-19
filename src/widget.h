@@ -120,3 +120,4 @@ void widget_toggle_place(struct widget *widget, struct box *box);
 void widget_toggle_render(struct widget *widget, unsigned int ticks);
 void widget_toggle_set(struct widget *widget, char *key, char *value);
 void widget_toggle_init(struct widget *widget, char *id, char *in, unsigned int state);
+void widget_init(struct widget *widget, unsigned int type, char *id, char *in);

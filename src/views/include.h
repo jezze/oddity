@@ -8,6 +8,7 @@
 #include "../db.h"
 #include "../widget.h"
 #include "../view.h"
+#include "../pool.h"
 #include "../main.h"
 #include "../session.h"
 #include "../helper.h"

@@ -111,32 +111,32 @@ void view_applist_setup(void)
 {
 
     view_init(&view, "applist", load, 0, config, button);
-    widget_area_init(view_createwidget(&view), "area0", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
-    widget_area_init(view_createwidget(&view), "area1", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
-    widget_area_init(view_createwidget(&view), "area2", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
-    widget_area_init(view_createwidget(&view), "area3", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
-    widget_area_init(view_createwidget(&view), "area4", WIDGET_IN_DEFAULT, 0, 4, 12, 1);
-    widget_area_init(view_createwidget(&view), "area5", WIDGET_IN_DEFAULT, 0, 5, 12, 1);
-    widget_area_init(view_createwidget(&view), "area6", WIDGET_IN_DEFAULT, 0, 6, 12, 1);
-    widget_area_init(view_createwidget(&view), "area7", WIDGET_IN_DEFAULT, 0, 7, 12, 1);
-    widget_area_init(view_createwidget(&view), "area_noitems", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area0", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[0]);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area0", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area1", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[1]);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area1", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area2", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[2]);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area2", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area3", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[3]);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area3", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area4", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[4]);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area4", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area5", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[5]);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area5", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area6", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[6]);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area6", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area7", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[7]);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area7", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_noitems", TEXT_TYPE_NORMAL, TEXT_ALIGN_CENTER, "No items found.");
+    pool_area_create(&view, "area0", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
+    pool_area_create(&view, "area1", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
+    pool_area_create(&view, "area2", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
+    pool_area_create(&view, "area3", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
+    pool_area_create(&view, "area4", WIDGET_IN_DEFAULT, 0, 4, 12, 1);
+    pool_area_create(&view, "area5", WIDGET_IN_DEFAULT, 0, 5, 12, 1);
+    pool_area_create(&view, "area6", WIDGET_IN_DEFAULT, 0, 6, 12, 1);
+    pool_area_create(&view, "area7", WIDGET_IN_DEFAULT, 0, 7, 12, 1);
+    pool_area_create(&view, "area_noitems", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area0", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[0]);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area0", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area1", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[1]);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area1", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area2", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[2]);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area2", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area3", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[3]);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area3", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area4", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[4]);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area4", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area5", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[5]);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area5", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area6", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[6]);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area6", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area7", TEXT_TYPE_SELECT, TEXT_ALIGN_LEFT, names[7]);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area7", TEXT_TYPE_NORMAL, TEXT_ALIGN_RIGHT, 0);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_noitems", TEXT_TYPE_NORMAL, TEXT_ALIGN_CENTER, "No items found.");
     main_registerview(&view);
 
 }

@@ -106,28 +106,28 @@ void view_settings_audio_setup(void)
 {
 
     view_init(&view, "settings_audio", load, 0, 0, button);
-    widget_area_init(view_createwidget(&view), "area_volume", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_master", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_master_text", WIDGET_IN_DEFAULT, 0, 1, 6, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_master_slider", WIDGET_IN_DEFAULT, 6, 1, 6, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_pcm", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_pcm_text", WIDGET_IN_DEFAULT, 0, 2, 6, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_pcm_slider", WIDGET_IN_DEFAULT, 6, 2, 6, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_headphone", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_headphone_text", WIDGET_IN_DEFAULT, 0, 3, 6, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_headphone_slider", WIDGET_IN_DEFAULT, 6, 3, 6, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_headphones", WIDGET_IN_DEFAULT, 0, 4, 12, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_headphones_text", WIDGET_IN_DEFAULT, 0, 4, 6, 1);
-    widget_area_init(view_createwidget(&view), "area_volume_headphones_slider", WIDGET_IN_DEFAULT, 6, 4, 6, 1);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_volume", TEXT_TYPE_TITLE, TEXT_ALIGN_CENTER, "Volume");
-    widget_text_init(view_createwidget(&view), "text_volume_master", "area_volume_master_text", TEXT_TYPE_DISABLE, TEXT_ALIGN_LEFT, "Master");
-    widget_text_init(view_createwidget(&view), "text_volume_pcm", "area_volume_pcm_text", TEXT_TYPE_DISABLE, TEXT_ALIGN_LEFT, "PCM");
-    widget_text_init(view_createwidget(&view), "text_volume_headphone", "area_volume_headphone_text", TEXT_TYPE_DISABLE, TEXT_ALIGN_LEFT, "Headphone");
-    widget_text_init(view_createwidget(&view), "text_volume_headphones", "area_volume_headphones_text", TEXT_TYPE_DISABLE, TEXT_ALIGN_LEFT, "Headphones");
-    widget_slider_init(view_createwidget(&view), "slider_volume_master", "area_volume_master_slider", 0, 100, -1);
-    widget_slider_init(view_createwidget(&view), "slider_volume_pcm", "area_volume_pcm_slider", 0, 100, -1);
-    widget_slider_init(view_createwidget(&view), "slider_volume_headphone", "area_volume_headphone_slider", 0, 100, -1);
-    widget_slider_init(view_createwidget(&view), "slider_volume_headphones", "area_volume_headphones_slider", 0, 100, -1);
+    pool_area_create(&view, "area_volume", WIDGET_IN_DEFAULT, 0, 0, 12, 1);
+    pool_area_create(&view, "area_volume_master", WIDGET_IN_DEFAULT, 0, 1, 12, 1);
+    pool_area_create(&view, "area_volume_master_text", WIDGET_IN_DEFAULT, 0, 1, 6, 1);
+    pool_area_create(&view, "area_volume_master_slider", WIDGET_IN_DEFAULT, 6, 1, 6, 1);
+    pool_area_create(&view, "area_volume_pcm", WIDGET_IN_DEFAULT, 0, 2, 12, 1);
+    pool_area_create(&view, "area_volume_pcm_text", WIDGET_IN_DEFAULT, 0, 2, 6, 1);
+    pool_area_create(&view, "area_volume_pcm_slider", WIDGET_IN_DEFAULT, 6, 2, 6, 1);
+    pool_area_create(&view, "area_volume_headphone", WIDGET_IN_DEFAULT, 0, 3, 12, 1);
+    pool_area_create(&view, "area_volume_headphone_text", WIDGET_IN_DEFAULT, 0, 3, 6, 1);
+    pool_area_create(&view, "area_volume_headphone_slider", WIDGET_IN_DEFAULT, 6, 3, 6, 1);
+    pool_area_create(&view, "area_volume_headphones", WIDGET_IN_DEFAULT, 0, 4, 12, 1);
+    pool_area_create(&view, "area_volume_headphones_text", WIDGET_IN_DEFAULT, 0, 4, 6, 1);
+    pool_area_create(&view, "area_volume_headphones_slider", WIDGET_IN_DEFAULT, 6, 4, 6, 1);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_volume", TEXT_TYPE_TITLE, TEXT_ALIGN_CENTER, "Volume");
+    pool_text_create(&view, "text_volume_master", "area_volume_master_text", TEXT_TYPE_DISABLE, TEXT_ALIGN_LEFT, "Master");
+    pool_text_create(&view, "text_volume_pcm", "area_volume_pcm_text", TEXT_TYPE_DISABLE, TEXT_ALIGN_LEFT, "PCM");
+    pool_text_create(&view, "text_volume_headphone", "area_volume_headphone_text", TEXT_TYPE_DISABLE, TEXT_ALIGN_LEFT, "Headphone");
+    pool_text_create(&view, "text_volume_headphones", "area_volume_headphones_text", TEXT_TYPE_DISABLE, TEXT_ALIGN_LEFT, "Headphones");
+    pool_slider_create(&view, "slider_volume_master", "area_volume_master_slider", 0, 100, -1);
+    pool_slider_create(&view, "slider_volume_pcm", "area_volume_pcm_slider", 0, 100, -1);
+    pool_slider_create(&view, "slider_volume_headphone", "area_volume_headphone_slider", 0, 100, -1);
+    pool_slider_create(&view, "slider_volume_headphones", "area_volume_headphones_slider", 0, 100, -1);
     main_registerview(&view);
 
 }

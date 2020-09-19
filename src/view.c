@@ -8,9 +8,6 @@
 #include "backend.h"
 #include "main.h"
 
-static struct widget widgets[MAXWIDGETS];
-static unsigned int nwidgets;
-
 static void placewidget(struct widget *widget, struct box *size)
 {
 
@@ -229,17 +226,6 @@ struct widget *view_findwidget(struct view *view, char *id)
     }
 
     return 0;
-
-}
-
-struct widget *view_createwidget(struct view *view)
-{
-
-    struct widget *widget = &widgets[nwidgets++];
-
-    list_add(&view->widgets, &widget->item);
-
-    return widget;
 
 }
 

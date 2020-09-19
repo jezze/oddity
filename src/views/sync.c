@@ -71,8 +71,8 @@ void view_sync_setup(void)
 {
 
     view_init(&view, "sync", load, 0, 0, button);
-    widget_area_init(view_createwidget(&view), "area_status", WIDGET_IN_DEFAULT, 0, 0, 12, 6);
-    widget_text_init(view_createwidget(&view), WIDGET_ID_DEFAULT, "area_status", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, text);
+    pool_area_create(&view, "area_status", WIDGET_IN_DEFAULT, 0, 0, 12, 6);
+    pool_text_create(&view, WIDGET_ID_DEFAULT, "area_status", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, text);
     main_registerview(&view);
 
 }

@@ -42,19 +42,6 @@ static unsigned int findattribute(const struct attribute attributes[], unsigned 
 
 }
 
-static void widget_init(struct widget *widget, unsigned int type, char *id, char *in)
-{
-
-    widget->type = type;
-    widget->id = id;
-    widget->in = in;
-    widget->hidden = 0;
-    widget->selectable = 0;
-
-    list_inititem(&widget->item, widget);
-
-}
-
 void widget_area_place(struct widget *widget, struct box *box)
 {
 
@@ -438,6 +425,19 @@ void widget_toggle_init(struct widget *widget, char *id, char *in, unsigned int 
     widget_init(widget, WIDGET_TYPE_TOGGLE, id, in);
 
     toggle->state = state;
+
+}
+
+void widget_init(struct widget *widget, unsigned int type, char *id, char *in)
+{
+
+    widget->type = type;
+    widget->id = id;
+    widget->in = in;
+    widget->hidden = 0;
+    widget->selectable = 0;
+
+    list_inititem(&widget->item, widget);
 
 }
 
