@@ -128,6 +128,7 @@ void view_settings_time_setup(void)
     pool_create_option(&view, WIDGET_ID_DEFAULT, "select_hour", "21", "21");
     pool_create_option(&view, WIDGET_ID_DEFAULT, "select_hour", "22", "22");
     pool_create_option(&view, WIDGET_ID_DEFAULT, "select_hour", "23", "23");
+    pool_create_option(&view, WIDGET_ID_DEFAULT, "select_minute", "00", "00");
     pool_create_option(&view, WIDGET_ID_DEFAULT, "select_minute", "01", "01");
     pool_create_option(&view, WIDGET_ID_DEFAULT, "select_minute", "02", "02");
     pool_create_option(&view, WIDGET_ID_DEFAULT, "select_minute", "03", "03");
