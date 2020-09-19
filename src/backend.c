@@ -127,7 +127,7 @@ static void doborderrectangle(SDL_Surface *s, int w, int h, unsigned int color)
 
 }
 
-static void handleevent(SDL_Event *event, void (*quit)(void), void (*button)(unsigned int key))
+static void handleevent(SDL_Event *event, void (*onquit)(void), void (*onbutton)(unsigned int key))
 {
 
     switch (event->type)
@@ -138,72 +138,72 @@ static void handleevent(SDL_Event *event, void (*quit)(void), void (*button)(uns
         {
 
         case SDLK_LEFT:
-            button(KEY_LEFT);
+            onbutton(KEY_LEFT);
 
             break;
 
         case SDLK_RIGHT:
-            button(KEY_RIGHT);
+            onbutton(KEY_RIGHT);
 
             break;
 
         case SDLK_UP:
-            button(KEY_UP);
+            onbutton(KEY_UP);
 
             break;
 
         case SDLK_DOWN:
-            button(KEY_DOWN);
+            onbutton(KEY_DOWN);
 
             break;
 
         case SDLK_LCTRL:
-            button(KEY_A);
+            onbutton(KEY_A);
 
             break;
 
         case SDLK_LALT:
-            button(KEY_B);
+            onbutton(KEY_B);
 
             break;
 
         case SDLK_LSHIFT:
-            button(KEY_X);
+            onbutton(KEY_X);
 
             break;
 
         case SDLK_SPACE:
-            button(KEY_Y);
+            onbutton(KEY_Y);
 
             break;
 
         case SDLK_TAB:
-            button(KEY_L);
+            onbutton(KEY_L);
 
             break;
 
         case SDLK_BACKSPACE:
-            button(KEY_R);
+            onbutton(KEY_R);
 
             break;
 
         case SDLK_ESCAPE:
-            button(KEY_SELECT);
+            onbutton(KEY_SELECT);
 
             break;
 
         case SDLK_RETURN:
-            button(KEY_START);
+            onbutton(KEY_START);
 
             break;
 
         case SDLK_PAUSE:
-            button(KEY_LOCKDOWN);
+            onbutton(KEY_LOCKDOWN);
 
             break;
 
         case SDLK_HOME:
-            button(KEY_LOCKUP);
+            onbutton(KEY_LOCKUP);
 
             break;
 
@@ -215,7 +215,7 @@ static void handleevent(SDL_Event *event, void (*quit)(void), void (*button)(uns
         break;
 
     case SDL_QUIT:
-        quit();
+        onquit();
 
         break;
 
@@ -425,23 +425,23 @@ void backend_paint_selection(int x, int y, int w, int h)
 
 }
 
-void backend_pollevent(void (*quit)(void), void (*button)(unsigned int key))
+void backend_pollevent(void (*onquit)(void), void (*onbutton)(unsigned int key))
 {
 
     SDL_Event event;
 
     while (SDL_PollEvent(&event))
-        handleevent(&event, quit, button);
+        handleevent(&event, onquit, onbutton);
 
 }
 
-void backend_waitevent(void (*quit)(void), void (*button)(unsigned int key))
+void backend_waitevent(void (*onquit)(void), void (*onbutton)(unsigned int key))
 {
 
     SDL_Event event;
 
     SDL_WaitEvent(&event);
-    handleevent(&event, quit, button);
+    handleevent(&event, onquit, onbutton);
 
 }
 
