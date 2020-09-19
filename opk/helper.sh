@@ -19,11 +19,37 @@ cmd_sysinfo_get() {
 }
 
 cmd_date_get() {
+    date +"%Y-%m-%d"
+}
+
+cmd_date_get_localized() {
     date +"%x"
 }
 
+cmd_date_set() {
+    y=$1
+    m=$2
+    d=$3
+    time=`cmd_time_get`
+
+    date -s "$y-$m-$d $time"
+}
+
 cmd_time_get() {
+    date +"%H:%M:%S"
+}
+
+cmd_time_get_localized() {
     date +"%X"
+}
+
+cmd_time_set() {
+    h=$1
+    m=$2
+    s=$3
+    date=`cmd_date_get`
+
+    date -s "$date $h:$m:$s"
 }
 
 cmd_timezone_get() {
