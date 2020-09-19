@@ -6,9 +6,9 @@ static void button(unsigned int key)
 {
 
     view_moveselection(&view, key);
-    view_select(&view, key, "area_library", view.name, "repolist");
-    view_select(&view, key, "area_settings", view.name, "settings");
-    view_select(&view, key, "area_exit", view.name, "exit");
+    view_select(&view, key, "area_library", "repolist");
+    view_select(&view, key, "area_settings", "settings");
+    view_select(&view, key, "area_exit", "exit");
 
 }
 

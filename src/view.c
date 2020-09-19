@@ -369,7 +369,7 @@ void view_moveselection(struct view *view, unsigned int key)
 
 }
 
-void view_select(struct view *view, unsigned int key, char *match, char *from, char *to)
+void view_select(struct view *view, unsigned int key, char *match, char *to)
 {
 
     if (key != KEY_A)
@@ -384,18 +384,18 @@ void view_select(struct view *view, unsigned int key, char *match, char *from, c
     if (strcmp(view->selected->id, match))
         return;
 
-    main_initview(to, from);
+    main_initview(to, view->name);
     backend_play("select");
 
 }
 
-void view_unselect(struct view *view, unsigned int key, char *from)
+void view_unselect(struct view *view, unsigned int key)
 {
 
     if (key != KEY_B)
         return;
 
-    main_destroyview(from);
+    main_destroyview(view->name);
     backend_play("unselect");
 
 }

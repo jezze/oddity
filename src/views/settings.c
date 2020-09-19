@@ -6,10 +6,10 @@ static void button(unsigned int key)
 {
 
     view_moveselection(&view, key);
-    view_select(&view, key, "area_audio", view.name, "settings_audio");
-    view_select(&view, key, "area_clock", view.name, "settings_datetime");
-    view_select(&view, key, "area_system", view.name, "settings_system");
-    view_unselect(&view, key, view.name);
+    view_select(&view, key, "area_audio", "settings_audio");
+    view_select(&view, key, "area_clock", "settings_datetime");
+    view_select(&view, key, "area_system", "settings_system");
+    view_unselect(&view, key);
 
 }
 

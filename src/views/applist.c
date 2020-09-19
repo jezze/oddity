@@ -27,7 +27,7 @@ static void button(unsigned int key)
             {
 
                 main_configview("app", "id", app->id);
-                view_select(&view, key, areas[k].id, view.name, "app");
+                view_select(&view, key, areas[k].id, "app");
 
             }
 */
@@ -36,7 +36,7 @@ static void button(unsigned int key)
 
     }
 
-    view_unselect(&view, key, view.name);
+    view_unselect(&view, key);
 
     switch (key)
     {

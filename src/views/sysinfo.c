@@ -15,7 +15,7 @@ static void button(unsigned int key)
 {
 
     view_moveselection(&view, key);
-    view_unselect(&view, key, view.name);
+    view_unselect(&view, key);
 
 }
 

@@ -28,12 +28,12 @@ static void button(unsigned int key)
 
     }
 
-    view_select(&view, key, "area_all", view.name, "applist");
-    view_select(&view, key, "area_installed", view.name, "applist");
-    view_select(&view, key, "area_new", view.name, "applist");
-    view_select(&view, key, "area_updated", view.name, "applist");
-    view_select(&view, key, "area_synchronize", view.name, "sync");
-    view_unselect(&view, key, view.name);
+    view_select(&view, key, "area_all", "applist");
+    view_select(&view, key, "area_installed", "applist");
+    view_select(&view, key, "area_new", "applist");
+    view_select(&view, key, "area_updated", "applist");
+    view_select(&view, key, "area_synchronize", "sync");
+    view_unselect(&view, key);
 
 }
 
