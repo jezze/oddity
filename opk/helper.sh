@@ -56,6 +56,14 @@ cmd_timezone_get() {
     date +"%Z"
 }
 
+cmd_timezone_getcountries() {
+    cat /usr/share/zoneinfo/zone.tab | grep -v "^#" | cut -d $'\t' -f3 | grep "^$1" | sort | uniq
+}
+
+cmd_timezone_getcontinents() {
+    cat /usr/share/zoneinfo/zone.tab | grep -v "^#" | cut -d $'\t' -f3 | cut -d '/' -f 1 | sort | uniq
+}
+
 cmd_volume_get() {
     amixer sget $1 | awk -F"[][]" '/dB/ { print $2 }' | head -n 1
 
