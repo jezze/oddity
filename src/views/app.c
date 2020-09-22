@@ -22,7 +22,7 @@ static void onbutton(unsigned int key)
             for (i = 0; i < packagelist.count; i++)
             {
 
-                main_exec(packagelist.items[i].sha1);
+                main_exec(app.id, packagelist.items[i].sha1);
 
                 break;
 

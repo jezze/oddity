@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <ctype.h>
 #include "config.h"
 #include "box.h"
 #include "list.h"
@@ -194,20 +195,31 @@ void main_registerview(struct view *view)
 
 }
 
-void main_exec(char *sha1)
+void main_exec(char id[6], char *sha1)
 {
 
-    char *opkrun = "opkrun";
+    char name[14];
     char opk[64];
     char *argv[3];
+    unsigned int i;
+    unsigned int k = 0;
+
+    for (i = 0; i < 6; i++)
+        name[k++] = tolower(id[i]);
+
+    name[k++] = '.';
+
+    for (i = 0; i < 7; i++)
+        name[k++] = sha1[i];
+
+    snprintf(opk, 64, "/media/data/apps/%s.opk", name);
 
     argv[0] = "opkrun";
     argv[1] = opk;
     argv[2] = 0;
 
-    snprintf(opk, 64, "/media/data/apps/%s.opk", sha1);
     destroy();
-    execvp(opkrun, argv);
+    execvp(argv[0], argv);
 
 }
 
