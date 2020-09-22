@@ -205,7 +205,7 @@ void main_exec(char *sha1)
     argv[1] = opk;
     argv[2] = 0;
 
-    snprintf(opk, 64, "/media/data/apps/%s", sha1);
+    snprintf(opk, 64, "/media/data/apps/%s.opk", sha1);
     destroy();
     execvp(opkrun, argv);
 
