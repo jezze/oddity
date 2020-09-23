@@ -80,52 +80,38 @@ static void onload(unsigned int type)
 {
 
     char *names[8];
+    unsigned int offset = 0;
+    unsigned int i;
 
-    names[0] = applist.items[0].name;
-    names[1] = applist.items[1].name;
-    names[2] = 0;
-    names[3] = 0;
-    names[4] = 0;
-    names[5] = 0;
-    names[6] = 0;
-    names[7] = 0;
-
-    if (names[0])
+    for (i = 0; i < 8; i++)
     {
 
-        view_setattr(&view, "area0", "selectable", "true");
-        view_setattr(&view, "text_name0", "data", names[0]);
+        unsigned int k = offset + i;
+
+        if (k < applist.count)
+            names[i] = applist.items[k].name;
+        else
+            names[i] = 0;
 
     }
 
-    else
-    {
-
-        view_setattr(&view, "area0", "selectable", "false");
-        view_setattr(&view, "text_name0", "data", 0);
-
-    }
-
-    if (names[1])
-    {
-
-        view_setattr(&view, "area1", "selectable", "true");
-        view_setattr(&view, "text_name1", "data", names[1]);
-
-    }
-
-    else
-    {
-
-        view_setattr(&view, "area1", "selectable", "false");
-        view_setattr(&view, "text_name1", "data", 0);
-
-    }
-
-    if (applist.count)
-        view_setattr(&view, "text_noitems", "hidden", "true");
-    else
-        view_setattr(&view, "text_noitems", "hidden", "false");
+    view_setattr(&view, "text_name0", "data", names[0]);
+    view_setattr(&view, "text_name1", "data", names[1]);
+    view_setattr(&view, "text_name2", "data", names[2]);
+    view_setattr(&view, "text_name3", "data", names[3]);
+    view_setattr(&view, "text_name4", "data", names[4]);
+    view_setattr(&view, "text_name5", "data", names[5]);
+    view_setattr(&view, "text_name6", "data", names[6]);
+    view_setattr(&view, "text_name7", "data", names[7]);
+    view_setattr(&view, "area0", "selectable", names[0] ? "true" : "false");
+    view_setattr(&view, "area1", "selectable", names[1] ? "true" : "false");
+    view_setattr(&view, "area2", "selectable", names[2] ? "true" : "false");
+    view_setattr(&view, "area3", "selectable", names[3] ? "true" : "false");
+    view_setattr(&view, "area4", "selectable", names[4] ? "true" : "false");
+    view_setattr(&view, "area5", "selectable", names[5] ? "true" : "false");
+    view_setattr(&view, "area6", "selectable", names[6] ? "true" : "false");
+    view_setattr(&view, "area7", "selectable", names[7] ? "true" : "false");
+    view_setattr(&view, "text_noitems", "hidden", applist.count ? "true" : "false");
 
 }
 
