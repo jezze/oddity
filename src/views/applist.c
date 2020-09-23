@@ -2,6 +2,7 @@
 
 static struct view view;
 static struct db_applist applist;
+static struct db_app *apps[8];
 
 static void onbutton(unsigned int key)
 {
@@ -11,7 +12,7 @@ static void onbutton(unsigned int key)
     if (view_isactive(&view, "area0"))
     {
 
-        main_configview("app", "id", applist.items[0].id);
+        main_configview("app", "id", apps[0]->id);
         view_select(&view, key, "area0", "app");
 
     }
@@ -19,7 +20,7 @@ static void onbutton(unsigned int key)
     if (view_isactive(&view, "area1"))
     {
 
-        main_configview("app", "id", applist.items[1].id);
+        main_configview("app", "id", apps[1]->id);
         view_select(&view, key, "area1", "app");
 
     }
@@ -27,7 +28,7 @@ static void onbutton(unsigned int key)
     if (view_isactive(&view, "area2"))
     {
 
-        main_configview("app", "id", applist.items[2].id);
+        main_configview("app", "id", apps[2]->id);
         view_select(&view, key, "area2", "app");
 
     }
@@ -35,7 +36,7 @@ static void onbutton(unsigned int key)
     if (view_isactive(&view, "area3"))
     {
 
-        main_configview("app", "id", applist.items[3].id);
+        main_configview("app", "id", apps[3]->id);
         view_select(&view, key, "area3", "app");
 
     }
@@ -43,7 +44,7 @@ static void onbutton(unsigned int key)
     if (view_isactive(&view, "area4"))
     {
 
-        main_configview("app", "id", applist.items[4].id);
+        main_configview("app", "id", apps[4]->id);
         view_select(&view, key, "area4", "app");
 
     }
@@ -51,7 +52,7 @@ static void onbutton(unsigned int key)
     if (view_isactive(&view, "area5"))
     {
 
-        main_configview("app", "id", applist.items[5].id);
+        main_configview("app", "id", apps[5]->id);
         view_select(&view, key, "area5", "app");
 
     }
@@ -59,7 +60,7 @@ static void onbutton(unsigned int key)
     if (view_isactive(&view, "area6"))
     {
 
-        main_configview("app", "id", applist.items[6].id);
+        main_configview("app", "id", apps[6]->id);
         view_select(&view, key, "area6", "app");
 
     }
@@ -67,7 +68,7 @@ static void onbutton(unsigned int key)
     if (view_isactive(&view, "area7"))
     {
 
-        main_configview("app", "id", applist.items[7].id);
+        main_configview("app", "id", apps[7]->id);
         view_select(&view, key, "area7", "app");
 
     }
@@ -79,7 +80,6 @@ static void onbutton(unsigned int key)
 static void onload(unsigned int type)
 {
 
-    char *names[8];
     unsigned int offset = 0;
     unsigned int i;
 
@@ -89,28 +89,28 @@ static void onload(unsigned int type)
         unsigned int k = offset + i;
 
         if (k < applist.count)
-            names[i] = applist.items[k].name;
+            apps[i] = &applist.items[k];
         else
-            names[i] = 0;
+            apps[i] = 0;
 
     }
 
-    view_setattr(&view, "text_name0", "data", names[0]);
-    view_setattr(&view, "text_name1", "data", names[1]);
-    view_setattr(&view, "text_name2", "data", names[2]);
-    view_setattr(&view, "text_name3", "data", names[3]);
-    view_setattr(&view, "text_name4", "data", names[4]);
-    view_setattr(&view, "text_name5", "data", names[5]);
-    view_setattr(&view, "text_name6", "data", names[6]);
-    view_setattr(&view, "text_name7", "data", names[7]);
-    view_setattr(&view, "area0", "selectable", names[0] ? "true" : "false");
-    view_setattr(&view, "area1", "selectable", names[1] ? "true" : "false");
-    view_setattr(&view, "area2", "selectable", names[2] ? "true" : "false");
-    view_setattr(&view, "area3", "selectable", names[3] ? "true" : "false");
-    view_setattr(&view, "area4", "selectable", names[4] ? "true" : "false");
-    view_setattr(&view, "area5", "selectable", names[5] ? "true" : "false");
-    view_setattr(&view, "area6", "selectable", names[6] ? "true" : "false");
-    view_setattr(&view, "area7", "selectable", names[7] ? "true" : "false");
+    view_setattr(&view, "text_name0", "data", (apps[0]) ? apps[0]->name : 0);
+    view_setattr(&view, "text_name1", "data", (apps[1]) ? apps[1]->name : 0);
+    view_setattr(&view, "text_name2", "data", (apps[2]) ? apps[2]->name : 0);
+    view_setattr(&view, "text_name3", "data", (apps[3]) ? apps[3]->name : 0);
+    view_setattr(&view, "text_name4", "data", (apps[4]) ? apps[4]->name : 0);
+    view_setattr(&view, "text_name5", "data", (apps[5]) ? apps[5]->name : 0);
+    view_setattr(&view, "text_name6", "data", (apps[6]) ? apps[6]->name : 0);
+    view_setattr(&view, "text_name7", "data", (apps[7]) ? apps[7]->name : 0);
+    view_setattr(&view, "area0", "selectable", apps[0] ? "true" : "false");
+    view_setattr(&view, "area1", "selectable", apps[1] ? "true" : "false");
+    view_setattr(&view, "area2", "selectable", apps[2] ? "true" : "false");
+    view_setattr(&view, "area3", "selectable", apps[3] ? "true" : "false");
+    view_setattr(&view, "area4", "selectable", apps[4] ? "true" : "false");
+    view_setattr(&view, "area5", "selectable", apps[5] ? "true" : "false");
+    view_setattr(&view, "area6", "selectable", apps[6] ? "true" : "false");
+    view_setattr(&view, "area7", "selectable", apps[7] ? "true" : "false");
     view_setattr(&view, "text_noitems", "hidden", applist.count ? "true" : "false");
 
 }
