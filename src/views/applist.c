@@ -95,14 +95,14 @@ static void onload(unsigned int type)
 
     }
 
-    view_setattr(&view, "text_name0", "data", (apps[0]) ? apps[0]->name : 0);
-    view_setattr(&view, "text_name1", "data", (apps[1]) ? apps[1]->name : 0);
-    view_setattr(&view, "text_name2", "data", (apps[2]) ? apps[2]->name : 0);
-    view_setattr(&view, "text_name3", "data", (apps[3]) ? apps[3]->name : 0);
-    view_setattr(&view, "text_name4", "data", (apps[4]) ? apps[4]->name : 0);
-    view_setattr(&view, "text_name5", "data", (apps[5]) ? apps[5]->name : 0);
-    view_setattr(&view, "text_name6", "data", (apps[6]) ? apps[6]->name : 0);
-    view_setattr(&view, "text_name7", "data", (apps[7]) ? apps[7]->name : 0);
+    view_setattr(&view, "text_name0", "data", apps[0] ? apps[0]->name : 0);
+    view_setattr(&view, "text_name1", "data", apps[1] ? apps[1]->name : 0);
+    view_setattr(&view, "text_name2", "data", apps[2] ? apps[2]->name : 0);
+    view_setattr(&view, "text_name3", "data", apps[3] ? apps[3]->name : 0);
+    view_setattr(&view, "text_name4", "data", apps[4] ? apps[4]->name : 0);
+    view_setattr(&view, "text_name5", "data", apps[5] ? apps[5]->name : 0);
+    view_setattr(&view, "text_name6", "data", apps[6] ? apps[6]->name : 0);
+    view_setattr(&view, "text_name7", "data", apps[7] ? apps[7]->name : 0);
     view_setattr(&view, "area0", "selectable", apps[0] ? "true" : "false");
     view_setattr(&view, "area1", "selectable", apps[1] ? "true" : "false");
     view_setattr(&view, "area2", "selectable", apps[2] ? "true" : "false");
