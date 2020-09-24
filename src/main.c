@@ -94,7 +94,7 @@ static void run(void)
 
         session_run();
         session_poll();
-        backend_poll();
+        backend_poll(ticks);
         precheck(active);
 
         if (active->onstep)

@@ -128,102 +128,6 @@ static void doborderrectangle(SDL_Surface *s, int w, int h, unsigned int color)
 
 }
 
-static void handleevent(SDL_Event *event)
-{
-
-    switch (event->type)
-    {
-
-    case SDL_KEYDOWN:
-        switch (event->key.keysym.sym)
-        {
-
-        case SDLK_LEFT:
-            main_button(BUTTON_LEFT);
-
-            break;
-
-        case SDLK_RIGHT:
-            main_button(BUTTON_RIGHT);
-
-            break;
-
-        case SDLK_UP:
-            main_button(BUTTON_UP);
-
-            break;
-
-        case SDLK_DOWN:
-            main_button(BUTTON_DOWN);
-
-            break;
-
-        case SDLK_LCTRL:
-            main_button(BUTTON_A);
-
-            break;
-
-        case SDLK_LALT:
-            main_button(BUTTON_B);
-
-            break;
-
-        case SDLK_LSHIFT:
-            main_button(BUTTON_X);
-
-            break;
-
-        case SDLK_SPACE:
-            main_button(BUTTON_Y);
-
-            break;
-
-        case SDLK_TAB:
-            main_button(BUTTON_L);
-
-            break;
-
-        case SDLK_BACKSPACE:
-            main_button(BUTTON_R);
-
-            break;
-
-        case SDLK_ESCAPE:
-            main_button(BUTTON_SELECT);
-
-            break;
-
-        case SDLK_RETURN:
-            main_button(BUTTON_START);
-
-            break;
-
-        case SDLK_PAUSE:
-            main_button(BUTTON_LOCKDOWN);
-
-            break;
-
-        case SDLK_HOME:
-            main_button(BUTTON_LOCKUP);
-
-            break;
-
-        default:
-            break;
-
-        }
-
-        break;
-
-    case SDL_QUIT:
-        main_quit();
-
-        break;
-
-    }
-
-}
-
 static void renderbackground(unsigned int ticks)
 {
 
@@ -426,13 +330,107 @@ void backend_paint_selection(int x, int y, int w, int h)
 
 }
 
-void backend_poll(void)
+void backend_poll(unsigned int ticks)
 {
 
     SDL_Event event;
 
     while (SDL_PollEvent(&event))
-        handleevent(&event);
+    {
+
+        switch (event.type)
+        {
+
+        case SDL_KEYDOWN:
+            switch (event.key.keysym.sym)
+            {
+
+            case SDLK_LEFT:
+                main_button(BUTTON_LEFT);
+
+                break;
+
+            case SDLK_RIGHT:
+                main_button(BUTTON_RIGHT);
+
+                break;
+
+            case SDLK_UP:
+                main_button(BUTTON_UP);
+
+                break;
+
+            case SDLK_DOWN:
+                main_button(BUTTON_DOWN);
+
+                break;
+
+            case SDLK_LCTRL:
+                main_button(BUTTON_A);
+
+                break;
+
+            case SDLK_LALT:
+                main_button(BUTTON_B);
+
+                break;
+
+            case SDLK_LSHIFT:
+                main_button(BUTTON_X);
+
+                break;
+
+            case SDLK_SPACE:
+                main_button(BUTTON_Y);
+
+                break;
+
+            case SDLK_TAB:
+                main_button(BUTTON_L);
+
+                break;
+
+            case SDLK_BACKSPACE:
+                main_button(BUTTON_R);
+
+                break;
+
+            case SDLK_ESCAPE:
+                main_button(BUTTON_SELECT);
+
+                break;
+
+            case SDLK_RETURN:
+                main_button(BUTTON_START);
+
+                break;
+
+            case SDLK_PAUSE:
+                main_button(BUTTON_LOCKDOWN);
+
+                break;
+
+            case SDLK_HOME:
+                main_button(BUTTON_LOCKUP);
+
+                break;
+
+            default:
+                break;
+
+            }
+
+            break;
+
+        case SDL_QUIT:
+            main_quit();
+
+            break;
+
+        }
+
+
+    }
 
 }
 
