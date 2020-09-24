@@ -224,11 +224,8 @@ void main_exec(char id[6], char *sha1)
 
 }
 
-void main_select(struct view *view, unsigned int button, char *match, char *to)
+void main_select(struct view *view, char *match, char *to)
 {
-
-    if (button != BUTTON_A)
-        return;
 
     if (!view->selected)
         return;
@@ -244,11 +241,8 @@ void main_select(struct view *view, unsigned int button, char *match, char *to)
 
 }
 
-void main_unselect(struct view *view, unsigned int button)
+void main_unselect(struct view *view)
 {
-
-    if (button != BUTTON_B)
-        return;
 
     if (!view->parentname)
         return;
@@ -437,7 +431,9 @@ void main_button(unsigned int button)
 {
 
     moveselection(active, button);
-    main_unselect(active, button);
+
+    if (button == BUTTON_B)
+        main_unselect(active);
 
     if (active->onbutton)
         active->onbutton(button);

@@ -24,13 +24,13 @@ static void onbutton(unsigned int button)
         if (view_isactive(&view, "area_updated"))
             main_configview("applist", "list", "updated");
 
-    }
+        main_select(&view, "area_all", "applist");
+        main_select(&view, "area_installed", "applist");
+        main_select(&view, "area_new", "applist");
+        main_select(&view, "area_updated", "applist");
+        main_select(&view, "area_synchronize", "sync");
 
-    main_select(&view, button, "area_all", "applist");
-    main_select(&view, button, "area_installed", "applist");
-    main_select(&view, button, "area_new", "applist");
-    main_select(&view, button, "area_updated", "applist");
-    main_select(&view, button, "area_synchronize", "sync");
+    }
 
 }
 

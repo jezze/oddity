@@ -7,67 +7,72 @@ static struct db_app *apps[8];
 static void onbutton(unsigned int button)
 {
 
-    if (view_isactive(&view, "area0"))
+    if (button == BUTTON_A)
     {
 
-        main_configview("app", "id", apps[0]->id);
-        main_select(&view, button, "area0", "app");
+        if (view_isactive(&view, "area0"))
+        {
 
-    }
+            main_configview("app", "id", apps[0]->id);
+            main_select(&view, "area0", "app");
 
-    if (view_isactive(&view, "area1"))
-    {
+        }
 
-        main_configview("app", "id", apps[1]->id);
-        main_select(&view, button, "area1", "app");
+        if (view_isactive(&view, "area1"))
+        {
 
-    }
+            main_configview("app", "id", apps[1]->id);
+            main_select(&view, "area1", "app");
 
-    if (view_isactive(&view, "area2"))
-    {
+        }
 
-        main_configview("app", "id", apps[2]->id);
-        main_select(&view, button, "area2", "app");
+        if (view_isactive(&view, "area2"))
+        {
 
-    }
+            main_configview("app", "id", apps[2]->id);
+            main_select(&view, "area2", "app");
 
-    if (view_isactive(&view, "area3"))
-    {
+        }
 
-        main_configview("app", "id", apps[3]->id);
-        main_select(&view, button, "area3", "app");
+        if (view_isactive(&view, "area3"))
+        {
 
-    }
+            main_configview("app", "id", apps[3]->id);
+            main_select(&view, "area3", "app");
 
-    if (view_isactive(&view, "area4"))
-    {
+        }
 
-        main_configview("app", "id", apps[4]->id);
-        main_select(&view, button, "area4", "app");
+        if (view_isactive(&view, "area4"))
+        {
 
-    }
+            main_configview("app", "id", apps[4]->id);
+            main_select(&view, "area4", "app");
 
-    if (view_isactive(&view, "area5"))
-    {
+        }
 
-        main_configview("app", "id", apps[5]->id);
-        main_select(&view, button, "area5", "app");
+        if (view_isactive(&view, "area5"))
+        {
 
-    }
+            main_configview("app", "id", apps[5]->id);
+            main_select(&view, "area5", "app");
 
-    if (view_isactive(&view, "area6"))
-    {
+        }
 
-        main_configview("app", "id", apps[6]->id);
-        main_select(&view, button, "area6", "app");
+        if (view_isactive(&view, "area6"))
+        {
 
-    }
+            main_configview("app", "id", apps[6]->id);
+            main_select(&view, "area6", "app");
 
-    if (view_isactive(&view, "area7"))
-    {
+        }
 
-        main_configview("app", "id", apps[7]->id);
-        main_select(&view, button, "area7", "app");
+        if (view_isactive(&view, "area7"))
+        {
+
+            main_configview("app", "id", apps[7]->id);
+            main_select(&view, "area7", "app");
+
+        }
 
     }
 

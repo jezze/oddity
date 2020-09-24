@@ -5,9 +5,14 @@ static struct view view;
 static void onbutton(unsigned int button)
 {
 
-    main_select(&view, button, "area_audio", "settings_audio");
-    main_select(&view, button, "area_clock", "settings_datetime");
-    main_select(&view, button, "area_system", "settings_system");
+    if (button == BUTTON_A)
+    {
+
+        main_select(&view, "area_audio", "settings_audio");
+        main_select(&view, "area_clock", "settings_datetime");
+        main_select(&view, "area_system", "settings_system");
+
+    }
 
 }
 
