@@ -6,12 +6,10 @@ static char new[16];
 static char updated[16];
 static char installed[16];
 
-static void onbutton(unsigned int key)
+static void onbutton(unsigned int button)
 {
 
-    view_moveselection(&view, key);
-
-    if (key == KEY_A)
+    if (button == BUTTON_A)
     {
 
         if (view_isactive(&view, "area_all"))
@@ -28,12 +26,11 @@ static void onbutton(unsigned int key)
 
     }
 
-    view_select(&view, key, "area_all", "applist");
-    view_select(&view, key, "area_installed", "applist");
-    view_select(&view, key, "area_new", "applist");
-    view_select(&view, key, "area_updated", "applist");
-    view_select(&view, key, "area_synchronize", "sync");
-    view_unselect(&view, key);
+    view_select(&view, button, "area_all", "applist");
+    view_select(&view, button, "area_installed", "applist");
+    view_select(&view, button, "area_new", "applist");
+    view_select(&view, button, "area_updated", "applist");
+    view_select(&view, button, "area_synchronize", "sync");
 
 }
 

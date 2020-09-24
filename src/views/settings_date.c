@@ -21,52 +21,47 @@ static void date_ondata(unsigned int id, void *data, unsigned int count)
 
 }
 
-static void onbutton(unsigned int key)
+static void onbutton(unsigned int button)
 {
 
-    view_moveselection(&view, key);
-
-    switch (key)
+    switch (button)
     {
 
-    case KEY_A:
+    case BUTTON_A:
         if (view_isactive(&view, "area_save"))
         {
 
             /* Call helper here */
-            view_unselect(&view, KEY_B);
 
         }
 
         break;
 
-    case KEY_LEFT:
+    case BUTTON_LEFT:
         if (view_isactive(&view, "area_year"))
-            view_goprev(&view, key, "select_year");
+            view_goprev(&view, button, "select_year");
 
         if (view_isactive(&view, "area_month"))
-            view_goprev(&view, key, "select_month");
+            view_goprev(&view, button, "select_month");
 
         if (view_isactive(&view, "area_day"))
-            view_goprev(&view, key, "select_day");
+            view_goprev(&view, button, "select_day");
 
         break;
 
-    case KEY_RIGHT:
+    case BUTTON_RIGHT:
         if (view_isactive(&view, "area_year"))
-            view_gonext(&view, key, "select_year");
+            view_gonext(&view, button, "select_year");
 
         if (view_isactive(&view, "area_month"))
-            view_gonext(&view, key, "select_month");
+            view_gonext(&view, button, "select_month");
 
         if (view_isactive(&view, "area_day"))
-            view_gonext(&view, key, "select_day");
+            view_gonext(&view, button, "select_day");
 
         break;
 
     }
-
-    view_unselect(&view, key);
 
 }
 

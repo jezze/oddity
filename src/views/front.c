@@ -2,13 +2,12 @@
 
 static struct view view;
 
-static void onbutton(unsigned int key)
+static void onbutton(unsigned int button)
 {
 
-    view_moveselection(&view, key);
-    view_select(&view, key, "area_library", "repolist");
-    view_select(&view, key, "area_settings", "settings");
-    view_select(&view, key, "area_exit", "exit");
+    view_select(&view, button, "area_library", "repolist");
+    view_select(&view, button, "area_settings", "settings");
+    view_select(&view, button, "area_exit", "exit");
 
 }
 

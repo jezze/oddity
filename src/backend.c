@@ -8,6 +8,7 @@
 #include "list.h"
 #include "widget.h"
 #include "view.h"
+#include "main.h"
 #include "backend.h"
 
 struct image
@@ -127,7 +128,7 @@ static void doborderrectangle(SDL_Surface *s, int w, int h, unsigned int color)
 
 }
 
-static void handleevent(SDL_Event *event, void (*onquit)(void), void (*onbutton)(unsigned int key))
+static void handleevent(SDL_Event *event)
 {
 
     switch (event->type)
@@ -138,72 +139,72 @@ static void handleevent(SDL_Event *event, void (*onquit)(void), void (*onbutton)
         {
 
         case SDLK_LEFT:
-            onbutton(KEY_LEFT);
+            main_button(BUTTON_LEFT);
 
             break;
 
         case SDLK_RIGHT:
-            onbutton(KEY_RIGHT);
+            main_button(BUTTON_RIGHT);
 
             break;
 
         case SDLK_UP:
-            onbutton(KEY_UP);
+            main_button(BUTTON_UP);
 
             break;
 
         case SDLK_DOWN:
-            onbutton(KEY_DOWN);
+            main_button(BUTTON_DOWN);
 
             break;
 
         case SDLK_LCTRL:
-            onbutton(KEY_A);
+            main_button(BUTTON_A);
 
             break;
 
         case SDLK_LALT:
-            onbutton(KEY_B);
+            main_button(BUTTON_B);
 
             break;
 
         case SDLK_LSHIFT:
-            onbutton(KEY_X);
+            main_button(BUTTON_X);
 
             break;
 
         case SDLK_SPACE:
-            onbutton(KEY_Y);
+            main_button(BUTTON_Y);
 
             break;
 
         case SDLK_TAB:
-            onbutton(KEY_L);
+            main_button(BUTTON_L);
 
             break;
 
         case SDLK_BACKSPACE:
-            onbutton(KEY_R);
+            main_button(BUTTON_R);
 
             break;
 
         case SDLK_ESCAPE:
-            onbutton(KEY_SELECT);
+            main_button(BUTTON_SELECT);
 
             break;
 
         case SDLK_RETURN:
-            onbutton(KEY_START);
+            main_button(BUTTON_START);
 
             break;
 
         case SDLK_PAUSE:
-            onbutton(KEY_LOCKDOWN);
+            main_button(BUTTON_LOCKDOWN);
 
             break;
 
         case SDLK_HOME:
-            onbutton(KEY_LOCKUP);
+            main_button(BUTTON_LOCKUP);
 
             break;
 
@@ -215,7 +216,7 @@ static void handleevent(SDL_Event *event, void (*onquit)(void), void (*onbutton)
         break;
 
     case SDL_QUIT:
-        onquit();
+        main_quit();
 
         break;
 
@@ -425,23 +426,23 @@ void backend_paint_selection(int x, int y, int w, int h)
 
 }
 
-void backend_pollevent(void (*onquit)(void), void (*onbutton)(unsigned int key))
+void backend_pollevent(void)
 {
 
     SDL_Event event;
 
     while (SDL_PollEvent(&event))
-        handleevent(&event, onquit, onbutton);
+        handleevent(&event);
 
 }
 
-void backend_waitevent(void (*onquit)(void), void (*onbutton)(unsigned int key))
+void backend_waitevent(void)
 {
 
     SDL_Event event;
 
     SDL_WaitEvent(&event);
-    handleevent(&event, onquit, onbutton);
+    handleevent(&event);
 
 }
 

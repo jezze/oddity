@@ -34,14 +34,6 @@ static void onfailure(unsigned int id)
 
 }
 
-static void onbutton(unsigned int key)
-{
-
-    view_moveselection(&view, key);
-    view_unselect(&view, key);
-
-}
-
 static void onload(unsigned int type)
 {
 
@@ -70,7 +62,7 @@ static void onload(unsigned int type)
 void view_sync_setup(void)
 {
 
-    view_init(&view, "sync", onload, 0, 0, onbutton);
+    view_init(&view, "sync", onload, 0, 0, 0);
     pool_create_area(&view, "area_status", WIDGET_IN_DEFAULT, 0, 0, 12, 6);
     pool_create_text(&view, WIDGET_ID_DEFAULT, "area_status", TEXT_TYPE_NORMAL, TEXT_ALIGN_LEFT, text);
     main_registerview(&view);

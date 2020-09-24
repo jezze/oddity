@@ -4,16 +4,14 @@ static struct view view;
 static struct db_applist applist;
 static struct db_app *apps[8];
 
-static void onbutton(unsigned int key)
+static void onbutton(unsigned int button)
 {
-
-    view_moveselection(&view, key);
 
     if (view_isactive(&view, "area0"))
     {
 
         main_configview("app", "id", apps[0]->id);
-        view_select(&view, key, "area0", "app");
+        view_select(&view, button, "area0", "app");
 
     }
 
@@ -21,7 +19,7 @@ static void onbutton(unsigned int key)
     {
 
         main_configview("app", "id", apps[1]->id);
-        view_select(&view, key, "area1", "app");
+        view_select(&view, button, "area1", "app");
 
     }
 
@@ -29,7 +27,7 @@ static void onbutton(unsigned int key)
     {
 
         main_configview("app", "id", apps[2]->id);
-        view_select(&view, key, "area2", "app");
+        view_select(&view, button, "area2", "app");
 
     }
 
@@ -37,7 +35,7 @@ static void onbutton(unsigned int key)
     {
 
         main_configview("app", "id", apps[3]->id);
-        view_select(&view, key, "area3", "app");
+        view_select(&view, button, "area3", "app");
 
     }
 
@@ -45,7 +43,7 @@ static void onbutton(unsigned int key)
     {
 
         main_configview("app", "id", apps[4]->id);
-        view_select(&view, key, "area4", "app");
+        view_select(&view, button, "area4", "app");
 
     }
 
@@ -53,7 +51,7 @@ static void onbutton(unsigned int key)
     {
 
         main_configview("app", "id", apps[5]->id);
-        view_select(&view, key, "area5", "app");
+        view_select(&view, button, "area5", "app");
 
     }
 
@@ -61,7 +59,7 @@ static void onbutton(unsigned int key)
     {
 
         main_configview("app", "id", apps[6]->id);
-        view_select(&view, key, "area6", "app");
+        view_select(&view, button, "area6", "app");
 
     }
 
@@ -69,11 +67,9 @@ static void onbutton(unsigned int key)
     {
 
         main_configview("app", "id", apps[7]->id);
-        view_select(&view, key, "area7", "app");
+        view_select(&view, button, "area7", "app");
 
     }
-
-    view_unselect(&view, key);
 
 }
 

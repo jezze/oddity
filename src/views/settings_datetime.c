@@ -45,13 +45,11 @@ static void onstep(unsigned int ticks)
 
 }
 
-static void onbutton(unsigned int key)
+static void onbutton(unsigned int button)
 {
 
-    view_moveselection(&view, key);
-    view_select(&view, key, "area_date", "settings_date");
-    view_select(&view, key, "area_time", "settings_time");
-    view_unselect(&view, key);
+    view_select(&view, button, "area_date", "settings_date");
+    view_select(&view, button, "area_time", "settings_time");
 
 }
 

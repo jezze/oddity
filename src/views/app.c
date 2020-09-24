@@ -3,12 +3,10 @@
 static struct view view;
 static struct db_app app;
 
-static void onbutton(unsigned int key)
+static void onbutton(unsigned int button)
 {
 
-    view_moveselection(&view, key);
-
-    if (key == KEY_A)
+    if (button == BUTTON_A)
     {
 
         if (view_isactive(&view, "area_run"))
@@ -34,8 +32,6 @@ static void onbutton(unsigned int key)
 
     }
 
-    view_unselect(&view, key);
-
 }
 
 static void onload(unsigned int type)
@@ -46,10 +42,10 @@ static void onload(unsigned int type)
 
 }
 
-static void onconfig(char *key, void *value)
+static void onconfig(char *button, void *value)
 {
 
-    if (!strcmp(key, "id"))
+    if (!strcmp(button, "id"))
     {
 
         db_freeapp(&app);

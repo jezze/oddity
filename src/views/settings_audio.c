@@ -36,15 +36,13 @@ static void ondata(unsigned int id, void *data, unsigned int count)
 
 }
 
-static void onbutton(unsigned int key)
+static void onbutton(unsigned int button)
 {
 
-    view_moveselection(&view, key);
-
-    switch (key)
+    switch (button)
     {
 
-    case KEY_LEFT:
+    case BUTTON_LEFT:
         if (view_isactive(&view, "area_volume_master"))
             helper_volume_decrement(1, "Master", ondata, 0, 0);
 
@@ -59,7 +57,7 @@ static void onbutton(unsigned int key)
 
         break;
 
-    case KEY_RIGHT:
+    case BUTTON_RIGHT:
         if (view_isactive(&view, "area_volume_master"))
             helper_volume_increment(1, "Master", ondata, 0, 0);
 
@@ -75,8 +73,6 @@ static void onbutton(unsigned int key)
         break;
 
     }
-
-    view_unselect(&view, key);
 
 }
 

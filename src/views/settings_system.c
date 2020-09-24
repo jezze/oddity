@@ -32,16 +32,15 @@ static void autostart_ondata(unsigned int id, void *data, unsigned int count)
 
 }
 
-static void onbutton(unsigned int key)
+static void onbutton(unsigned int button)
 {
 
-    view_moveselection(&view, key);
-    view_select(&view, key, "area_sysinfo", "sysinfo");
+    view_select(&view, button, "area_sysinfo", "sysinfo");
 
-    switch (key)
+    switch (button)
     {
 
-    case KEY_A:
+    case BUTTON_A:
         if (view_isactive(&view, "area_autostart"))
         {
 
@@ -67,8 +66,6 @@ static void onbutton(unsigned int key)
         break;
 
     }
-
-    view_unselect(&view, key);
 
 }
 

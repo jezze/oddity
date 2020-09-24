@@ -21,52 +21,47 @@ static void time_ondata(unsigned int id, void *data, unsigned int count)
 
 }
 
-static void onbutton(unsigned int key)
+static void onbutton(unsigned int button)
 {
 
-    view_moveselection(&view, key);
-
-    switch (key)
+    switch (button)
     {
 
-    case KEY_A:
+    case BUTTON_A:
         if (view_isactive(&view, "area_save"))
         {
 
             /* Call helper here */
-            view_unselect(&view, KEY_B);
 
         }
 
         break;
 
-    case KEY_LEFT:
+    case BUTTON_LEFT:
         if (view_isactive(&view, "area_hour"))
-            view_goprev(&view, key, "select_hour");
+            view_goprev(&view, button, "select_hour");
 
         if (view_isactive(&view, "area_minute"))
-            view_goprev(&view, key, "select_minute");
+            view_goprev(&view, button, "select_minute");
 
         if (view_isactive(&view, "area_second"))
-            view_goprev(&view, key, "select_second");
+            view_goprev(&view, button, "select_second");
 
         break;
 
-    case KEY_RIGHT:
+    case BUTTON_RIGHT:
         if (view_isactive(&view, "area_hour"))
-            view_gonext(&view, key, "select_hour");
+            view_gonext(&view, button, "select_hour");
 
         if (view_isactive(&view, "area_minute"))
-            view_gonext(&view, key, "select_minute");
+            view_gonext(&view, button, "select_minute");
 
         if (view_isactive(&view, "area_second"))
-            view_gonext(&view, key, "select_second");
+            view_gonext(&view, button, "select_second");
 
         break;
 
     }
-
-    view_unselect(&view, key);
 
 }
 

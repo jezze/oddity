@@ -62,7 +62,7 @@ static void run(void)
 
         session_run();
         session_poll();
-        backend_pollevent(main_quit, active->onbutton);
+        backend_pollevent();
         view_precheck(active);
 
         if (active->onstep)
@@ -220,6 +220,17 @@ void main_exec(char id[6], char *sha1)
 
     destroy();
     execvp(argv[0], argv);
+
+}
+
+void main_button(unsigned int button)
+{
+
+    view_moveselection(active, button);
+    view_unselect(active, button);
+
+    if (active->onbutton)
+        active->onbutton(button);
 
 }
 

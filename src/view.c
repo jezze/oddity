@@ -262,7 +262,7 @@ unsigned int view_isactive(struct view *view, char *id)
 
 }
 
-void view_moveselection(struct view *view, unsigned int key)
+void view_moveselection(struct view *view, unsigned int button)
 {
 
     struct list_item *current;
@@ -272,7 +272,7 @@ void view_moveselection(struct view *view, unsigned int key)
     int mx;
     int my;
 
-    if (!(key == KEY_LEFT || key == KEY_RIGHT || key == KEY_UP || key == KEY_DOWN))
+    if (!(button == BUTTON_LEFT || button == BUTTON_RIGHT || button == BUTTON_UP || button == BUTTON_DOWN))
         return;
 
     if (!view->selected)
@@ -291,10 +291,10 @@ void view_moveselection(struct view *view, unsigned int key)
         if (!widget->selectable)
             continue;
 
-        switch (key)
+        switch (button)
         {
 
-        case KEY_LEFT:
+        case BUTTON_LEFT:
             if (widget->size.x + widget->size.w >= mx)
                 continue;
 
@@ -309,7 +309,7 @@ void view_moveselection(struct view *view, unsigned int key)
 
             break;
 
-        case KEY_RIGHT:
+        case BUTTON_RIGHT:
             if (widget->size.x < mx)
                 continue;
 
@@ -324,7 +324,7 @@ void view_moveselection(struct view *view, unsigned int key)
 
             break;
 
-        case KEY_UP:
+        case BUTTON_UP:
             if (widget->size.y + widget->size.h >= my)
                 continue;
 
@@ -339,7 +339,7 @@ void view_moveselection(struct view *view, unsigned int key)
 
             break;
 
-        case KEY_DOWN:
+        case BUTTON_DOWN:
             if (widget->size.y < my)
                 continue;
 
@@ -369,10 +369,10 @@ void view_moveselection(struct view *view, unsigned int key)
 
 }
 
-void view_select(struct view *view, unsigned int key, char *match, char *to)
+void view_select(struct view *view, unsigned int button, char *match, char *to)
 {
 
-    if (key != KEY_A)
+    if (button != BUTTON_A)
         return;
 
     if (!view->selected)
@@ -389,10 +389,13 @@ void view_select(struct view *view, unsigned int key, char *match, char *to)
 
 }
 
-void view_unselect(struct view *view, unsigned int key)
+void view_unselect(struct view *view, unsigned int button)
 {
 
-    if (key != KEY_B)
+    if (button != BUTTON_B)
+        return;
+
+    if (!view->parentname)
         return;
 
     main_destroyview(view->name);
@@ -400,13 +403,13 @@ void view_unselect(struct view *view, unsigned int key)
 
 }
 
-void view_goprev(struct view *view, unsigned int key, char *id)
+void view_goprev(struct view *view, unsigned int button, char *id)
 {
 
     struct widget *widget;
     struct widget *child = 0;
 
-    if (key != KEY_LEFT)
+    if (button != BUTTON_LEFT)
         return;
 
     widget = view_findwidget(view, id);
@@ -434,13 +437,13 @@ void view_goprev(struct view *view, unsigned int key, char *id)
 
 }
 
-void view_gonext(struct view *view, unsigned int key, char *id)
+void view_gonext(struct view *view, unsigned int button, char *id)
 {
 
     struct widget *widget;
     struct widget *child = 0;
 
-    if (key != KEY_RIGHT)
+    if (button != BUTTON_RIGHT)
         return;
 
     widget = view_findwidget(view, id);
@@ -597,7 +600,7 @@ void view_precheck(struct view *view)
 
 }
 
-void view_init(struct view *view, char *name, void (*onload)(unsigned int type), void (*onstep)(unsigned int ticks), void (*onconfig)(char *key, void *value), void (*onbutton)(unsigned int key))
+void view_init(struct view *view, char *name, void (*onload)(unsigned int type), void (*onstep)(unsigned int ticks), void (*onconfig)(char *key, void *value), void (*onbutton)(unsigned int button))
 {
 
     view->name = name;

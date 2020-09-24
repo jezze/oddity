@@ -3,4 +3,5 @@ void main_initview(char *name, char *parentname);
 void main_destroyview(char *name);
 void main_registerview(struct view *view);
 void main_exec(char id[6], char *sha1);
+void main_button(unsigned int button);
 void main_quit(void);
