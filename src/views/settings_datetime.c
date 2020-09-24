@@ -48,8 +48,8 @@ static void onstep(unsigned int ticks)
 static void onbutton(unsigned int button)
 {
 
-    view_select(&view, button, "area_date", "settings_date");
-    view_select(&view, button, "area_time", "settings_time");
+    main_select(&view, button, "area_date", "settings_date");
+    main_select(&view, button, "area_time", "settings_time");
 
 }
 

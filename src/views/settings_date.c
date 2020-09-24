@@ -39,25 +39,25 @@ static void onbutton(unsigned int button)
 
     case BUTTON_LEFT:
         if (view_isactive(&view, "area_year"))
-            view_goprev(&view, button, "select_year");
+            main_goprev(&view, button, "select_year");
 
         if (view_isactive(&view, "area_month"))
-            view_goprev(&view, button, "select_month");
+            main_goprev(&view, button, "select_month");
 
         if (view_isactive(&view, "area_day"))
-            view_goprev(&view, button, "select_day");
+            main_goprev(&view, button, "select_day");
 
         break;
 
     case BUTTON_RIGHT:
         if (view_isactive(&view, "area_year"))
-            view_gonext(&view, button, "select_year");
+            main_gonext(&view, button, "select_year");
 
         if (view_isactive(&view, "area_month"))
-            view_gonext(&view, button, "select_month");
+            main_gonext(&view, button, "select_month");
 
         if (view_isactive(&view, "area_day"))
-            view_gonext(&view, button, "select_day");
+            main_gonext(&view, button, "select_day");
 
         break;
 

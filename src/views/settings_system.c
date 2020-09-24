@@ -35,7 +35,7 @@ static void autostart_ondata(unsigned int id, void *data, unsigned int count)
 static void onbutton(unsigned int button)
 {
 
-    view_select(&view, button, "area_sysinfo", "sysinfo");
+    main_select(&view, button, "area_sysinfo", "sysinfo");
 
     switch (button)
     {

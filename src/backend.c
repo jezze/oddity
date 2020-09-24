@@ -426,23 +426,13 @@ void backend_paint_selection(int x, int y, int w, int h)
 
 }
 
-void backend_pollevent(void)
+void backend_poll(void)
 {
 
     SDL_Event event;
 
     while (SDL_PollEvent(&event))
         handleevent(&event);
-
-}
-
-void backend_waitevent(void)
-{
-
-    SDL_Event event;
-
-    SDL_WaitEvent(&event);
-    handleevent(&event);
 
 }
 

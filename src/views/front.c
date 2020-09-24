@@ -5,9 +5,9 @@ static struct view view;
 static void onbutton(unsigned int button)
 {
 
-    view_select(&view, button, "area_library", "repolist");
-    view_select(&view, button, "area_settings", "settings");
-    view_select(&view, button, "area_exit", "exit");
+    main_select(&view, button, "area_library", "repolist");
+    main_select(&view, button, "area_settings", "settings");
+    main_select(&view, button, "area_exit", "exit");
 
 }
 

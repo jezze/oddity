@@ -11,7 +11,7 @@ static void onbutton(unsigned int button)
     {
 
         main_configview("app", "id", apps[0]->id);
-        view_select(&view, button, "area0", "app");
+        main_select(&view, button, "area0", "app");
 
     }
 
@@ -19,7 +19,7 @@ static void onbutton(unsigned int button)
     {
 
         main_configview("app", "id", apps[1]->id);
-        view_select(&view, button, "area1", "app");
+        main_select(&view, button, "area1", "app");
 
     }
 
@@ -27,7 +27,7 @@ static void onbutton(unsigned int button)
     {
 
         main_configview("app", "id", apps[2]->id);
-        view_select(&view, button, "area2", "app");
+        main_select(&view, button, "area2", "app");
 
     }
 
@@ -35,7 +35,7 @@ static void onbutton(unsigned int button)
     {
 
         main_configview("app", "id", apps[3]->id);
-        view_select(&view, button, "area3", "app");
+        main_select(&view, button, "area3", "app");
 
     }
 
@@ -43,7 +43,7 @@ static void onbutton(unsigned int button)
     {
 
         main_configview("app", "id", apps[4]->id);
-        view_select(&view, button, "area4", "app");
+        main_select(&view, button, "area4", "app");
 
     }
 
@@ -51,7 +51,7 @@ static void onbutton(unsigned int button)
     {
 
         main_configview("app", "id", apps[5]->id);
-        view_select(&view, button, "area5", "app");
+        main_select(&view, button, "area5", "app");
 
     }
 
@@ -59,7 +59,7 @@ static void onbutton(unsigned int button)
     {
 
         main_configview("app", "id", apps[6]->id);
-        view_select(&view, button, "area6", "app");
+        main_select(&view, button, "area6", "app");
 
     }
 
@@ -67,7 +67,7 @@ static void onbutton(unsigned int button)
     {
 
         main_configview("app", "id", apps[7]->id);
-        view_select(&view, button, "area7", "app");
+        main_select(&view, button, "area7", "app");
 
     }
 

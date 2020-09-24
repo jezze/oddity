@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -62,7 +63,7 @@ static void run(void)
 
         session_run();
         session_poll();
-        backend_pollevent();
+        backend_poll();
         view_precheck(active);
 
         if (active->onstep)
@@ -223,11 +224,220 @@ void main_exec(char id[6], char *sha1)
 
 }
 
+void main_select(struct view *view, unsigned int button, char *match, char *to)
+{
+
+    if (button != BUTTON_A)
+        return;
+
+    if (!view->selected)
+        return;
+
+    if (!strlen(view->selected->id))
+        return;
+
+    if (strcmp(view->selected->id, match))
+        return;
+
+    main_initview(to, view->name);
+    backend_play("select");
+
+}
+
+void main_unselect(struct view *view, unsigned int button)
+{
+
+    if (button != BUTTON_B)
+        return;
+
+    if (!view->parentname)
+        return;
+
+    main_destroyview(view->name);
+    backend_play("unselect");
+
+}
+
+static void moveselection(struct view *view, unsigned int button)
+{
+
+    struct list_item *current;
+    struct widget *best = 0;
+    int bestdx = 5000;
+    int bestdy = 5000;
+    int mx;
+    int my;
+
+    if (!(button == BUTTON_LEFT || button == BUTTON_RIGHT || button == BUTTON_UP || button == BUTTON_DOWN))
+        return;
+
+    if (!view->selected)
+        return;
+
+    mx = view->selected->size.x + view->selected->size.w / 2;
+    my = view->selected->size.y + view->selected->size.h / 2;
+
+    for (current = view->widgets.head; current; current = current->next)
+    {
+
+        struct widget *widget = current->data;
+        int dx = abs(widget->size.x - view->selected->size.x);
+        int dy = abs(widget->size.y - view->selected->size.y);
+
+        if (!widget->selectable)
+            continue;
+
+        switch (button)
+        {
+
+        case BUTTON_LEFT:
+            if (widget->size.x + widget->size.w >= mx)
+                continue;
+
+            if (dy <= bestdy && dx <= bestdx)
+            {
+
+                best = widget;
+                bestdx = dx;
+                bestdy = dy;
+
+            }
+
+            break;
+
+        case BUTTON_RIGHT:
+            if (widget->size.x < mx)
+                continue;
+
+            if (dy <= bestdy && dx <= bestdx)
+            {
+
+                best = widget;
+                bestdx = dx;
+                bestdy = dy;
+
+            }
+
+            break;
+
+        case BUTTON_UP:
+            if (widget->size.y + widget->size.h >= my)
+                continue;
+
+            if (dx <= bestdx && dy <= bestdy)
+            {
+
+                best = widget;
+                bestdx = dx;
+                bestdy = dy;
+
+            }
+
+            break;
+
+        case BUTTON_DOWN:
+            if (widget->size.y < my)
+                continue;
+
+            if (dx <= bestdx && dy <= bestdy)
+            {
+
+                best = widget;
+                bestdx = dx;
+                bestdy = dy;
+
+            }
+
+            break;
+
+        }
+
+    }
+
+    if (best)
+    {
+
+        view->selected = best;
+
+        backend_play("click");
+
+    }
+
+}
+
+void main_goprev(struct view *view, unsigned int button, char *id)
+{
+
+    struct widget *widget;
+    struct widget *child = 0;
+
+    if (button != BUTTON_LEFT)
+        return;
+
+    widget = view_findwidget(view, id);
+
+    if (!widget)
+        return;
+
+    while ((child = view_widget_nextchild(view, child, widget)))
+    {
+
+        if (widget->payload.select.value == child->payload.option.value)
+            break;
+
+    }
+
+    if (child)
+    {
+
+        child = view_widget_prevchild(view, child, widget);
+
+        if (child)
+            widget->payload.select.value = child->payload.option.value;
+
+    }
+
+}
+
+void main_gonext(struct view *view, unsigned int button, char *id)
+{
+
+    struct widget *widget;
+    struct widget *child = 0;
+
+    if (button != BUTTON_RIGHT)
+        return;
+
+    widget = view_findwidget(view, id);
+
+    if (!widget)
+        return;
+
+    while ((child = view_widget_nextchild(view, child, widget)))
+    {
+
+        if (widget->payload.select.value == child->payload.option.value)
+            break;
+
+    }
+
+    if (child)
+    {
+
+        child = view_widget_nextchild(view, child, widget);
+
+        if (child)
+            widget->payload.select.value = child->payload.option.value;
+
+    }
+
+}
+
 void main_button(unsigned int button)
 {
 
-    view_moveselection(active, button);
-    view_unselect(active, button);
+    moveselection(active, button);
+    main_unselect(active, button);
 
     if (active->onbutton)
         active->onbutton(button);
