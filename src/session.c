@@ -5,6 +5,7 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 #include "config.h"
+#include "list.h"
 #include "session.h"
 
 #define STATE_NONE 0
@@ -12,25 +13,9 @@
 #define STATE_RUNNING 2
 
 static struct session sessions[MAXSESSIONS];
-
-static struct session *findfree(void)
-{
-
-    unsigned int i;
-
-    for (i = 0; i < MAXSESSIONS; i++)
-    {
-
-        struct session *session = &sessions[i];
-
-        if (session->state == STATE_NONE)
-            return session;
-
-    }
-
-    return 0;
-
-}
+static struct list frees;
+static struct list ready;
+static struct list running;
 
 static int spawn(struct session *session)
 {
@@ -70,91 +55,91 @@ static int spawn(struct session *session)
 void session_poll(void)
 {
 
+    struct list_item *item = list_pickhead(&running);
+    struct session *session;
     struct timeval val;
-    unsigned int i;
     int maxfd = 0;
     fd_set rfds;
+
+    if (!item)
+        return;
 
     val.tv_sec = 0;
     val.tv_usec = 1;
 
     FD_ZERO(&rfds);
 
-    for (i = 0; i < MAXSESSIONS; i++)
+    session = item->data;
+
+    FD_SET(session->fd[0], &rfds);
+
+    if (session->fd[0] > maxfd)
+        maxfd = session->fd[0];
+
+    if (maxfd == 0)
     {
 
-        struct session *session = &sessions[i];
+        list_add(&running, item);
 
-        if (session->state != STATE_RUNNING)
-            continue;
-
-        FD_SET(session->fd[0], &rfds);
-
-        if (session->fd[0] > maxfd)
-            maxfd = session->fd[0];
+        return;
 
     }
 
-    if (maxfd == 0)
-        return;
-
     select(maxfd + 1, &rfds, NULL, NULL, &val);
 
-    for (i = 0; i < MAXSESSIONS; i++)
+    char buffer[1024];
+    int count;
+
+    if (!FD_ISSET(session->fd[0], &rfds))
     {
 
-        struct session *session = &sessions[i];
-        char buffer[1024];
-        int count;
+        list_add(&running, item);
 
-        if (session->state != STATE_RUNNING)
-            continue;
+        return;
 
-        if (!FD_ISSET(session->fd[0], &rfds))
-            continue;
+    }
 
-        count = read(session->fd[0], buffer, 1024);
+    count = read(session->fd[0], buffer, 1024);
 
-        if (count > 0)
+    if (count > 0)
+    {
+
+        if (session->ondata)
+            session->ondata(session->id, buffer, count);
+
+        list_add(&running, item);
+
+    }
+
+    else
+    {
+
+        int status;
+
+        waitpid(session->cpid, &status, WNOHANG);
+
+        if (WIFEXITED(status))
         {
 
-            if (session->ondata)
-                session->ondata(session->id, buffer, count);
+            close(session->fd[0]);
 
-        }
-
-        else
-        {
-
-            int status;
-
-            waitpid(session->cpid, &status, WNOHANG);
-
-            if (WIFEXITED(status))
+            if (WEXITSTATUS(status) == 0)
             {
 
-                close(session->fd[0]);
-
-                if (WEXITSTATUS(status) == 0)
-                {
-
-                    if (session->oncomplete)
-                        session->oncomplete(session->id);
-
-                }
-
-                else
-                {
-
-                    if (session->onfailure)
-                        session->onfailure(session->id);
-
-                }
-
-                session->id = 0;
-                session->state = STATE_NONE;
+                if (session->oncomplete)
+                    session->oncomplete(session->id);
 
             }
+
+            else
+            {
+
+                if (session->onfailure)
+                    session->onfailure(session->id);
+
+            }
+
+            list_add(&frees, item);
 
         }
 
@@ -165,35 +150,18 @@ void session_poll(void)
 void session_run(void)
 {
 
-    unsigned int i;
+    struct list_item *item = list_pickhead(&ready);
+    struct session *session;
 
-    for (i = 0; i < MAXSESSIONS; i++)
+    if (item)
     {
 
-        struct session *session = &sessions[i];
-        int rc;
+        session = item->data;
 
-        if (session->state != STATE_READY)
-            continue;
-
-        rc = spawn(session);
-
-        if (rc == 0)
-        {
-
-            session->state = STATE_RUNNING;
-
-        }
-
+        if (spawn(session) == 0)
+            list_add(&running, item);
         else
-        {
-
-            session->id = 0;
-            session->state = STATE_NONE;
-
-        }
-
-        break;
+            list_add(&frees, item);
 
     }
 
@@ -202,16 +170,19 @@ void session_run(void)
 struct session *session_create(unsigned int id, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
 {
 
-    struct session *session = findfree();
+    struct list_item *item = list_pickhead(&frees);
+    struct session *session = 0;
 
-    if (session)
+    if (item)
     {
 
-        session->state = STATE_READY;
+        session = item->data;
         session->id = id;
         session->ondata = ondata;
         session->oncomplete = oncomplete;
         session->onfailure = onfailure;
+
+        list_add(&ready, item);
 
     }
 
@@ -223,6 +194,21 @@ void session_setarg(struct session *session, unsigned int index, char *value)
 {
 
     session->args[index] = value;
+
+}
+
+void session_setup(void)
+{
+
+    unsigned int i;
+
+    for (i = 0; i < MAXSESSIONS; i++)
+    {
+
+        list_inititem(&sessions[i].item, &sessions[i]);
+        list_add(&frees, &sessions[i].item);
+
+    }
 
 }
 

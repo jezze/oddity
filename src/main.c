@@ -123,6 +123,7 @@ static void init(void)
     backend_loadsample("select", "select.wav");
     backend_loadsample("unselect", "unselect.wav");
     backend_loadsample("click", "click.wav");
+    session_setup();
 
 }
 
