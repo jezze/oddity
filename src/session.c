@@ -13,7 +13,7 @@
 #define STATE_RUNNING 2
 
 static struct session sessions[MAXSESSIONS];
-static struct list frees;
+static struct list avail;
 static struct list ready;
 static struct list running;
 
@@ -58,7 +58,9 @@ void session_poll(void)
     struct list_item *item = list_pickhead(&running);
     struct session *session;
     struct timeval val;
+    char buffer[1024];
     int maxfd = 0;
+    int count;
     fd_set rfds;
 
     if (!item)
@@ -86,9 +88,6 @@ void session_poll(void)
     }
 
     select(maxfd + 1, &rfds, NULL, NULL, &val);
-
-    char buffer[1024];
-    int count;
 
     if (!FD_ISSET(session->fd[0], &rfds))
     {
@@ -139,7 +138,7 @@ void session_poll(void)
 
             }
 
-            list_add(&frees, item);
+            list_add(&avail, item);
 
         }
 
@@ -161,7 +160,7 @@ void session_run(void)
         if (spawn(session) == 0)
             list_add(&running, item);
         else
-            list_add(&frees, item);
+            list_add(&avail, item);
 
     }
 
@@ -170,7 +169,7 @@ void session_run(void)
 struct session *session_create(unsigned int id, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
 {
 
-    struct list_item *item = list_pickhead(&frees);
+    struct list_item *item = list_pickhead(&avail);
     struct session *session = 0;
 
     if (item)
@@ -206,7 +205,7 @@ void session_setup(void)
     {
 
         list_inititem(&sessions[i].item, &sessions[i]);
-        list_add(&frees, &sessions[i].item);
+        list_add(&avail, &sessions[i].item);
 
     }
 
