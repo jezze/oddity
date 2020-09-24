@@ -8,9 +8,14 @@ static void onbutton(unsigned int button)
     if (button == BUTTON_A)
     {
 
-        main_select(&view, "area_library", "repolist");
-        main_select(&view, "area_settings", "settings");
-        main_select(&view, "area_exit", "exit");
+        if (view_isactive(&view, "area_library"))
+            main_loadview(&view, "area_library", "repolist");
+
+        if (view_isactive(&view, "area_settings"))
+            main_loadview(&view, "area_settings", "settings");
+
+        if (view_isactive(&view, "area_exit"))
+            main_loadview(&view, "area_exit", "exit");
 
     }
 

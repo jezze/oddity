@@ -8,9 +8,14 @@ static void onbutton(unsigned int button)
     if (button == BUTTON_A)
     {
 
-        main_select(&view, "area_audio", "settings_audio");
-        main_select(&view, "area_clock", "settings_datetime");
-        main_select(&view, "area_system", "settings_system");
+        if (view_isactive(&view, "area_audio"))
+            main_loadview(&view, "area_audio", "settings_audio");
+
+        if (view_isactive(&view, "area_clock"))
+            main_loadview(&view, "area_clock", "settings_datetime");
+
+        if (view_isactive(&view, "area_system"))
+            main_loadview(&view, "area_system", "settings_system");
 
     }
 

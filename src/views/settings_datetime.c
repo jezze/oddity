@@ -51,8 +51,11 @@ static void onbutton(unsigned int button)
     if (button == BUTTON_A)
     {
 
-        main_select(&view, "area_date", "settings_date");
-        main_select(&view, "area_time", "settings_time");
+        if (view_isactive(&view, "area_date"))
+            main_loadview(&view, "area_date", "settings_date");
+
+        if (view_isactive(&view, "area_time"))
+            main_loadview(&view, "area_time", "settings_time");
 
     }
 

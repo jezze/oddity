@@ -18,6 +18,68 @@ static struct widget *createwidget(struct view *view)
 
 }
 
+static struct widget *prevwidget(struct list *list, struct widget *widget)
+{
+
+    struct list_item *current = (widget) ? widget->item.prev : list->tail;
+
+    return (current) ? current->data : 0;
+
+}
+
+static struct widget *nextwidget(struct list *list, struct widget *widget)
+{
+
+    struct list_item *current = (widget) ? widget->item.next : list->head;
+
+    return (current) ? current->data : 0;
+
+}
+
+struct widget *pool_widget_prev(struct view *view, struct widget *widget)
+{
+
+    return prevwidget(&view->widgets, widget);
+
+}
+
+struct widget *pool_widget_next(struct view *view, struct widget *widget)
+{
+
+    return nextwidget(&view->widgets, widget);
+
+}
+
+struct widget *pool_widget_prevchild(struct view *view, struct widget *widget, struct widget *parent)
+{
+
+    while ((widget = pool_widget_prev(view, widget)))
+    {
+
+        if (view_findwidget(view, widget->in) == parent)
+            return widget;
+
+    }
+
+    return 0;
+
+}
+
+struct widget *pool_widget_nextchild(struct view *view, struct widget *widget, struct widget *parent)
+{
+
+    while ((widget = pool_widget_next(view, widget)))
+    {
+
+        if (view_findwidget(view, widget->in) == parent)
+            return widget;
+
+    }
+
+    return 0;
+
+}
+
 void pool_create_area(struct view *view, char *id, char *in, int x, int y, int w, int h)
 {
 

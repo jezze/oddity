@@ -1,3 +1,7 @@
+struct widget *pool_widget_prev(struct view *view, struct widget *widget);
+struct widget *pool_widget_next(struct view *view, struct widget *widget);
+struct widget *pool_widget_prevchild(struct view *view, struct widget *widget, struct widget *parent);
+struct widget *pool_widget_nextchild(struct view *view, struct widget *widget, struct widget *parent);
 void pool_create_area(struct view *view, char *id, char *in, int x, int y, int w, int h);
 void pool_create_icon(struct view *view, char *id, char *in, unsigned int type);
 void pool_create_option(struct view *view, char *id, char *in, char *name, char *value);

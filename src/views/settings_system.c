@@ -38,7 +38,8 @@ static void onbutton(unsigned int button)
     if (button == BUTTON_A)
     {
 
-        main_select(&view, "area_sysinfo", "sysinfo");
+        if (view_isactive(&view, "area_sysinfo"))
+            main_loadview(&view, "area_sysinfo", "sysinfo");
 
         if (view_isactive(&view, "area_autostart"))
         {

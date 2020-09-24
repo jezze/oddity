@@ -11,6 +11,7 @@
 #include "db.h"
 #include "widget.h"
 #include "view.h"
+#include "pool.h"
 #include "backend.h"
 #include "main.h"
 
@@ -51,6 +52,36 @@ static void setup(void)
 
 }
 
+static void precheck(struct view *view)
+{
+
+    struct widget *child = 0;
+
+    while ((child = pool_widget_next(view, child)))
+    {
+
+        if (child->type == WIDGET_TYPE_OPTION)
+        {
+
+            struct widget *parent = view_findwidget(view, child->in);
+
+            if (!parent)
+                continue;
+
+            if (parent->type != WIDGET_TYPE_SELECT)
+                continue;
+
+            if (strcmp(child->payload.option.value, parent->payload.select.value))
+                child->hidden = 1;
+            else
+                child->hidden = 0;
+
+        }
+
+    }
+
+}
+
 static void run(void)
 {
 
@@ -64,7 +95,7 @@ static void run(void)
         session_run();
         session_poll();
         backend_poll();
-        view_precheck(active);
+        precheck(active);
 
         if (active->onstep)
             active->onstep(ticks);
@@ -154,7 +185,7 @@ static void loadview(struct view *view, char *parentname, unsigned int type)
 
 }
 
-void main_initview(char *name, char *parentname)
+static void initview(char *name, char *parentname)
 {
 
     struct view *view = findview(name);
@@ -167,7 +198,7 @@ void main_initview(char *name, char *parentname)
 
 }
 
-void main_destroyview(char *name)
+static void destroyview(char *name)
 {
 
     struct view *view = findview(name);
@@ -224,7 +255,7 @@ void main_exec(char id[6], char *sha1)
 
 }
 
-void main_select(struct view *view, char *match, char *to)
+void main_loadview(struct view *view, char *match, char *to)
 {
 
     if (!view->selected)
@@ -236,18 +267,18 @@ void main_select(struct view *view, char *match, char *to)
     if (strcmp(view->selected->id, match))
         return;
 
-    main_initview(to, view->name);
+    initview(to, view->name);
     backend_play("select");
 
 }
 
-void main_unselect(struct view *view)
+void main_unloadview(struct view *view)
 {
 
     if (!view->parentname)
         return;
 
-    main_destroyview(view->name);
+    destroyview(view->name);
     backend_play("unselect");
 
 }
@@ -368,7 +399,7 @@ void main_goprev(struct view *view, char *id)
     if (!widget)
         return;
 
-    while ((child = view_widget_nextchild(view, child, widget)))
+    while ((child = pool_widget_nextchild(view, child, widget)))
     {
 
         if (widget->payload.select.value == child->payload.option.value)
@@ -379,7 +410,7 @@ void main_goprev(struct view *view, char *id)
     if (child)
     {
 
-        child = view_widget_prevchild(view, child, widget);
+        child = pool_widget_prevchild(view, child, widget);
 
         if (child)
             widget->payload.select.value = child->payload.option.value;
@@ -397,7 +428,7 @@ void main_gonext(struct view *view, char *id)
     if (!widget)
         return;
 
-    while ((child = view_widget_nextchild(view, child, widget)))
+    while ((child = pool_widget_nextchild(view, child, widget)))
     {
 
         if (widget->payload.select.value == child->payload.option.value)
@@ -408,7 +439,7 @@ void main_gonext(struct view *view, char *id)
     if (child)
     {
 
-        child = view_widget_nextchild(view, child, widget);
+        child = pool_widget_nextchild(view, child, widget);
 
         if (child)
             widget->payload.select.value = child->payload.option.value;
@@ -423,7 +454,7 @@ void main_button(unsigned int button)
     moveselection(active, button);
 
     if (button == BUTTON_B)
-        main_unselect(active);
+        main_unloadview(active);
 
     if (active->onbutton)
         active->onbutton(button);
@@ -444,9 +475,9 @@ int main(int argc, char **argv)
     setup();
     file_init();
     db_init();
-    main_initview("front", 0);
+    initview("front", 0);
     run();
-    main_destroyview("front");
+    destroyview("front");
     destroy();
 
     return 0;

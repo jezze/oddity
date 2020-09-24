@@ -13,22 +13,43 @@ static void onbutton(unsigned int button)
     {
 
         if (view_isactive(&view, "area_all"))
+        {
+
             main_configview("applist", "list", "all");
+            main_loadview(&view, "area_all", "applist");
+
+        }
 
         if (view_isactive(&view, "area_installed"))
+        {
+
             main_configview("applist", "list", "installed");
+            main_loadview(&view, "area_installed", "applist");
+
+        }
 
         if (view_isactive(&view, "area_new"))
+        {
+
             main_configview("applist", "list", "new");
+            main_loadview(&view, "area_new", "applist");
+
+        }
 
         if (view_isactive(&view, "area_updated"))
-            main_configview("applist", "list", "updated");
+        {
 
-        main_select(&view, "area_all", "applist");
-        main_select(&view, "area_installed", "applist");
-        main_select(&view, "area_new", "applist");
-        main_select(&view, "area_updated", "applist");
-        main_select(&view, "area_synchronize", "sync");
+            main_configview("applist", "list", "updated");
+            main_loadview(&view, "area_updated", "applist");
+
+        }
+
+        if (view_isactive(&view, "area_synchronize"))
+        {
+
+            main_loadview(&view, "area_synchronize", "sync");
+
+        }
 
     }
 
