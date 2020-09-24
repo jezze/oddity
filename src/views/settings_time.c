@@ -39,25 +39,25 @@ static void onbutton(unsigned int button)
 
     case BUTTON_LEFT:
         if (view_isactive(&view, "area_hour"))
-            main_goprev(&view, button, "select_hour");
+            main_goprev(&view, "select_hour");
 
         if (view_isactive(&view, "area_minute"))
-            main_goprev(&view, button, "select_minute");
+            main_goprev(&view, "select_minute");
 
         if (view_isactive(&view, "area_second"))
-            main_goprev(&view, button, "select_second");
+            main_goprev(&view, "select_second");
 
         break;
 
     case BUTTON_RIGHT:
         if (view_isactive(&view, "area_hour"))
-            main_gonext(&view, button, "select_hour");
+            main_gonext(&view, "select_hour");
 
         if (view_isactive(&view, "area_minute"))
-            main_gonext(&view, button, "select_minute");
+            main_gonext(&view, "select_minute");
 
         if (view_isactive(&view, "area_second"))
-            main_gonext(&view, button, "select_second");
+            main_gonext(&view, "select_second");
 
         break;
 

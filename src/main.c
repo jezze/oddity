@@ -359,16 +359,11 @@ static void moveselection(struct view *view, unsigned int button)
 
 }
 
-void main_goprev(struct view *view, unsigned int button, char *id)
+void main_goprev(struct view *view, char *id)
 {
 
-    struct widget *widget;
+    struct widget *widget = view_findwidget(view, id);
     struct widget *child = 0;
-
-    if (button != BUTTON_LEFT)
-        return;
-
-    widget = view_findwidget(view, id);
 
     if (!widget)
         return;
@@ -393,16 +388,11 @@ void main_goprev(struct view *view, unsigned int button, char *id)
 
 }
 
-void main_gonext(struct view *view, unsigned int button, char *id)
+void main_gonext(struct view *view, char *id)
 {
 
-    struct widget *widget;
+    struct widget *widget = view_findwidget(view, id);
     struct widget *child = 0;
-
-    if (button != BUTTON_RIGHT)
-        return;
-
-    widget = view_findwidget(view, id);
 
     if (!widget)
         return;
