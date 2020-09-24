@@ -330,6 +330,10 @@ void backend_paint_selection(int x, int y, int w, int h)
 
 }
 
+static unsigned int keyrepeatticks;
+static unsigned int keyrepeatsym;
+static unsigned int keyrepeatdelay;
+
 void backend_poll(unsigned int ticks)
 {
 
@@ -341,7 +345,16 @@ void backend_poll(unsigned int ticks)
         switch (event.type)
         {
 
+        case SDL_KEYUP:
+            keyrepeatticks = 0;
+
+            break;
+
         case SDL_KEYDOWN:
+            keyrepeatticks = ticks;
+            keyrepeatsym = event.key.keysym.sym;
+            keyrepeatdelay = REPEAT_FIRST;
+
             switch (event.key.keysym.sym)
             {
 
@@ -429,6 +442,46 @@ void backend_poll(unsigned int ticks)
 
         }
 
+    }
+
+    if (keyrepeatticks)
+    {
+
+        unsigned int delay = ticks - keyrepeatticks;
+
+        if (delay > keyrepeatdelay)
+        {
+
+            keyrepeatdelay = REPEAT_SECOND;
+
+            switch (keyrepeatsym)
+            {
+
+            case SDLK_LEFT:
+                main_button(BUTTON_LEFT);
+
+                break;
+
+            case SDLK_RIGHT:
+                main_button(BUTTON_RIGHT);
+
+                break;
+
+            case SDLK_UP:
+                main_button(BUTTON_UP);
+
+                break;
+
+            case SDLK_DOWN:
+                main_button(BUTTON_DOWN);
+
+                break;
+
+            }
+
+            keyrepeatticks = ticks;
+
+        }
 
     }
 

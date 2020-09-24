@@ -5,6 +5,8 @@
 #define MAXWIDGETS                      2000
 #define MAXSESSIONS                     32
 #define MAXDOWNLOADS                    8
+#define REPEAT_FIRST                    32
+#define REPEAT_SECOND                   4
 #define BUTTON_LEFT                     1
 #define BUTTON_RIGHT                    2
 #define BUTTON_UP                       3
