@@ -8,10 +8,6 @@
 #include "list.h"
 #include "session.h"
 
-#define STATE_NONE 0
-#define STATE_READY 1
-#define STATE_RUNNING 2
-
 static struct session sessions[MAXSESSIONS];
 static struct list avail;
 static struct list ready;
