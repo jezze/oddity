@@ -101,9 +101,9 @@ void helper_autostart_get(unsigned int id, void (*ondata)(unsigned int id, void 
 
     struct session *session = session_create(id, ondata, oncomplete, onfailure);
 
-    session_setarg(session, 0, "./helper.sh");
-    session_setarg(session, 1, "autostart_get");
-    session_setarg(session, 2, 0);
+    session->args[0] = "./helper.sh";
+    session->args[1] = "autostart_get";
+    session->args[2] = 0;
 
 }
 
@@ -112,9 +112,9 @@ void helper_autostart_install(unsigned int id, void (*ondata)(unsigned int id, v
 
     struct session *session = session_create(id, ondata, oncomplete, onfailure);
 
-    session_setarg(session, 0, "./helper.sh");
-    session_setarg(session, 1, "autostart_install");
-    session_setarg(session, 2, 0);
+    session->args[0] = "./helper.sh";
+    session->args[1] = "autostart_install";
+    session->args[2] = 0;
 
 }
 
@@ -123,9 +123,9 @@ void helper_autostart_uninstall(unsigned int id, void (*ondata)(unsigned int id,
 
     struct session *session = session_create(id, ondata, oncomplete, onfailure);
 
-    session_setarg(session, 0, "./helper.sh");
-    session_setarg(session, 1, "autostart_uninstall");
-    session_setarg(session, 2, 0);
+    session->args[0] = "./helper.sh";
+    session->args[1] = "autostart_uninstall";
+    session->args[2] = 0;
 
 }
 
@@ -134,9 +134,9 @@ void helper_date_get(unsigned int id, void (*ondata)(unsigned int id, void *data
 
     struct session *session = session_create(id, ondata, oncomplete, onfailure);
 
-    session_setarg(session, 0, "./helper.sh");
-    session_setarg(session, 1, "date_get");
-    session_setarg(session, 2, 0);
+    session->args[0] = "./helper.sh";
+    session->args[1] = "date_get";
+    session->args[2] = 0;
 
 }
 
@@ -145,6 +145,7 @@ void helper_download(unsigned int id, char *url, char *path, void (*onprogress)(
 
     unsigned int index = 0; /* Allow multiple */
     struct download *download = &downloads[index];
+    struct session *session = session_create(index, downloadondata, downloadoncomplete, downloadonfailure);
 
     download->count = 0;
     download->totalbytes = 0;
@@ -155,13 +156,11 @@ void helper_download(unsigned int id, char *url, char *path, void (*onprogress)(
     download->oncomplete = oncomplete;
     download->onfailure = onfailure;
 
-    struct session *session = session_create(index, downloadondata, downloadoncomplete, downloadonfailure);
-
-    session_setarg(session, 0, "./helper.sh");
-    session_setarg(session, 1, "download");
-    session_setarg(session, 2, url);
-    session_setarg(session, 3, path);
-    session_setarg(session, 4, 0);
+    session->args[0] = "./helper.sh";
+    session->args[1] = "download";
+    session->args[2] = url;
+    session->args[3] = path;
+    session->args[4] = 0;
 
 }
 
@@ -170,9 +169,9 @@ void helper_sysinfo_get(unsigned int id, void (*ondata)(unsigned int id, void *d
 
     struct session *session = session_create(id, ondata, oncomplete, onfailure);
 
-    session_setarg(session, 0, "./helper.sh");
-    session_setarg(session, 1, "sysinfo_get");
-    session_setarg(session, 2, 0);
+    session->args[0] = "./helper.sh";
+    session->args[1] = "sysinfo_get";
+    session->args[2] = 0;
 
 }
 
@@ -181,9 +180,9 @@ void helper_time_get(unsigned int id, void (*ondata)(unsigned int id, void *data
 
     struct session *session = session_create(id, ondata, oncomplete, onfailure);
 
-    session_setarg(session, 0, "./helper.sh");
-    session_setarg(session, 1, "time_get");
-    session_setarg(session, 2, 0);
+    session->args[0] = "./helper.sh";
+    session->args[1] = "time_get";
+    session->args[2] = 0;
 
 }
 
@@ -192,9 +191,9 @@ void helper_timezone_get(unsigned int id, void (*ondata)(unsigned int id, void *
 
     struct session *session = session_create(id, ondata, oncomplete, onfailure);
 
-    session_setarg(session, 0, "./helper.sh");
-    session_setarg(session, 1, "timezone_get");
-    session_setarg(session, 2, 0);
+    session->args[0] = "./helper.sh";
+    session->args[1] = "timezone_get";
+    session->args[2] = 0;
 
 }
 
@@ -203,10 +202,10 @@ void helper_volume_get(unsigned int id, char *channel, void (*ondata)(unsigned i
 
     struct session *session = session_create(id, ondata, oncomplete, onfailure);
 
-    session_setarg(session, 0, "./helper.sh");
-    session_setarg(session, 1, "volume_get");
-    session_setarg(session, 2, channel);
-    session_setarg(session, 3, 0);
+    session->args[0] = "./helper.sh";
+    session->args[1] = "volume_get";
+    session->args[2] = channel;
+    session->args[3] = 0;
 
 }
 
@@ -215,10 +214,10 @@ void helper_volume_increment(unsigned int id, char *channel, void (*ondata)(unsi
 
     struct session *session = session_create(id, ondata, oncomplete, onfailure);
 
-    session_setarg(session, 0, "./helper.sh");
-    session_setarg(session, 1, "volume_increment");
-    session_setarg(session, 2, channel);
-    session_setarg(session, 3, 0);
+    session->args[0] = "./helper.sh";
+    session->args[1] = "volume_increment";
+    session->args[2] = channel;
+    session->args[3] = 0;
 
 }
 
@@ -227,10 +226,10 @@ void helper_volume_decrement(unsigned int id, char *channel, void (*ondata)(unsi
 
     struct session *session = session_create(id, ondata, oncomplete, onfailure);
 
-    session_setarg(session, 0, "./helper.sh");
-    session_setarg(session, 1, "volume_decrement");
-    session_setarg(session, 2, channel);
-    session_setarg(session, 3, 0);
+    session->args[0] = "./helper.sh";
+    session->args[1] = "volume_decrement";
+    session->args[2] = channel;
+    session->args[3] = 0;
 
 }
 

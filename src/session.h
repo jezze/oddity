@@ -15,5 +15,4 @@ struct session
 void session_poll(void);
 void session_run(void);
 struct session *session_create(unsigned int id, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id));
-void session_setarg(struct session *session, unsigned int index, char *value);
 void session_setup(void);

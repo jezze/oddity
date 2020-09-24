@@ -185,13 +185,6 @@ struct session *session_create(unsigned int id, void (*ondata)(unsigned int id, 
 
 }
 
-void session_setarg(struct session *session, unsigned int index, char *value)
-{
-
-    session->args[index] = value;
-
-}
-
 void session_setup(void)
 {
 
