@@ -18,7 +18,7 @@ static struct widget *createwidget(struct view *view)
 
 }
 
-static struct widget *prevwidget(struct list *list, struct widget *widget)
+static struct widget *prevwidget(const struct list *list, const struct widget *widget)
 {
 
     struct list_item *current = (widget) ? widget->item.prev : list->tail;
@@ -27,7 +27,7 @@ static struct widget *prevwidget(struct list *list, struct widget *widget)
 
 }
 
-static struct widget *nextwidget(struct list *list, struct widget *widget)
+static struct widget *nextwidget(const struct list *list, const struct widget *widget)
 {
 
     struct list_item *current = (widget) ? widget->item.next : list->head;
@@ -36,21 +36,21 @@ static struct widget *nextwidget(struct list *list, struct widget *widget)
 
 }
 
-struct widget *pool_widget_prev(struct view *view, struct widget *widget)
+struct widget *pool_widget_prev(const struct view *view, const struct widget *widget)
 {
 
     return prevwidget(&view->widgets, widget);
 
 }
 
-struct widget *pool_widget_next(struct view *view, struct widget *widget)
+struct widget *pool_widget_next(const struct view *view, const struct widget *widget)
 {
 
     return nextwidget(&view->widgets, widget);
 
 }
 
-struct widget *pool_widget_prevchild(struct view *view, struct widget *widget, struct widget *parent)
+const struct widget *pool_widget_prevchild(const struct view *view, const struct widget *widget, const struct widget *parent)
 {
 
     while ((widget = pool_widget_prev(view, widget)))
@@ -65,7 +65,7 @@ struct widget *pool_widget_prevchild(struct view *view, struct widget *widget, s
 
 }
 
-struct widget *pool_widget_nextchild(struct view *view, struct widget *widget, struct widget *parent)
+const struct widget *pool_widget_nextchild(const struct view *view, const struct widget *widget, const struct widget *parent)
 {
 
     while ((widget = pool_widget_next(view, widget)))

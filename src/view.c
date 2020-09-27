@@ -210,7 +210,7 @@ static void setwidget(struct widget *widget, char *key, char *value)
 
 }
 
-struct widget *view_findwidget(struct view *view, char *id)
+struct widget *view_findwidget(const struct view *view, const char *id)
 {
 
     struct list_item *current;

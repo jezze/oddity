@@ -14,7 +14,7 @@ struct view
 
 };
 
-struct widget *view_findwidget(struct view *view, char *id);
+struct widget *view_findwidget(const struct view *view, const char *id);
 void view_place(struct view *view);
 void view_render(struct view *view, unsigned int ticks);
 unsigned int view_isactive(struct view *view, char *id);
