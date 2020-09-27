@@ -403,7 +403,7 @@ void main_goprev(struct view *view, char *id)
     while ((child = pool_widget_nextchild(view, child, widget)))
     {
 
-        if (widget->payload.select.value == child->payload.option.value)
+        if (!strcmp(widget->payload.select.value, child->payload.option.value))
             break;
 
     }
@@ -414,7 +414,7 @@ void main_goprev(struct view *view, char *id)
         child = pool_widget_prevchild(view, child, widget);
 
         if (child)
-            widget->payload.select.value = child->payload.option.value;
+            view_setattr(view, id, "value", child->payload.option.value);
 
     }
 
@@ -432,7 +432,7 @@ void main_gonext(struct view *view, char *id)
     while ((child = pool_widget_nextchild(view, child, widget)))
     {
 
-        if (widget->payload.select.value == child->payload.option.value)
+        if (!strcmp(widget->payload.select.value, child->payload.option.value))
             break;
 
     }
@@ -443,7 +443,7 @@ void main_gonext(struct view *view, char *id)
         child = pool_widget_nextchild(view, child, widget);
 
         if (child)
-            widget->payload.select.value = child->payload.option.value;
+            view_setattr(view, id, "value", child->payload.option.value);
 
     }
 
