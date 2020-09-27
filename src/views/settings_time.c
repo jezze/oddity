@@ -16,6 +16,9 @@ static void time_ondata(unsigned int id, void *data, unsigned int count)
         memcpy(hour, s, 2);
         memcpy(minute, s + 3, 2);
         memcpy(second, s + 6, 2);
+        view_setattr(&view, "select_hour", "value", hour);
+        view_setattr(&view, "select_minute", "value", minute);
+        view_setattr(&view, "select_second", "value", second);
 
     }
 

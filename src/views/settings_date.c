@@ -16,6 +16,9 @@ static void date_ondata(unsigned int id, void *data, unsigned int count)
         memcpy(year, s, 4);
         memcpy(month, s + 5, 2);
         memcpy(day, s + 8, 2);
+        view_setattr(&view, "select_year", "value", year);
+        view_setattr(&view, "select_month", "value", month);
+        view_setattr(&view, "select_day", "value", day);
 
     }
 
