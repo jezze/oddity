@@ -14,7 +14,7 @@
 struct image
 {
 
-    char *name;
+    const char *name;
     SDL_Surface *surface;
 
 };
@@ -22,7 +22,7 @@ struct image
 struct font
 {
 
-    char *name;
+    const char *name;
     TTF_Font *face;
     TTF_Font *shadow;
 
@@ -31,7 +31,7 @@ struct font
 struct sample
 {
 
-    char *name;
+    const char *name;
     Mix_Chunk *chunk;
 
 };
@@ -76,7 +76,6 @@ static void dofillstripes(SDL_Surface *s, int w, int h, unsigned int color, unsi
     }
 
 }
-
 
 static void dofillrectangle(SDL_Surface *s, int w, int h, unsigned int color)
 {
@@ -164,7 +163,7 @@ static void renderfade(unsigned int ticks)
 
 }
 
-static struct image *findimage(char *name)
+static struct image *findimage(const char *name)
 {
 
     unsigned int i;
@@ -183,7 +182,7 @@ static struct image *findimage(char *name)
 
 }
 
-static struct font *findfont(char *name)
+static struct font *findfont(const char *name)
 {
 
     unsigned int i;
@@ -202,7 +201,7 @@ static struct font *findfont(char *name)
 
 }
 
-static struct sample *findsample(char *name)
+static struct sample *findsample(const char *name)
 {
 
     unsigned int i;
@@ -221,7 +220,7 @@ static struct sample *findsample(char *name)
 
 }
 
-int backend_font_getascent(char *name)
+int backend_font_getascent(const char *name)
 {
 
     struct font *font = findfont(name);
@@ -230,7 +229,7 @@ int backend_font_getascent(char *name)
 
 }
 
-void backend_font_getmetrics(char *name, char c, int *minx, int *maxx, int *miny, int *maxy, int *advance)
+void backend_font_getmetrics(const char *name, char c, int *minx, int *maxx, int *miny, int *maxy, int *advance)
 {
 
     struct font *font = findfont(name);
@@ -243,7 +242,7 @@ void backend_font_getmetrics(char *name, char c, int *minx, int *maxx, int *miny
 
 }
 
-void backend_paint_glyph(char *name, unsigned short c, unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int col)
+void backend_paint_glyph(const char *name, unsigned short c, unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int col)
 {
 
     struct font *font = findfont(name);
@@ -517,7 +516,7 @@ void backend_delay(unsigned int ms)
 
 }
 
-void backend_play(char *name)
+void backend_play(const char *name)
 {
 
     struct sample *sample = findsample(name);
@@ -527,7 +526,7 @@ void backend_play(char *name)
 
 }
 
-void backend_createbackground(char *name)
+void backend_createbackground(const char *name)
 {
 
     struct image *image = findimage(name);
@@ -574,7 +573,7 @@ void backend_destroybackground(void)
 
 }
 
-void backend_loadimage(char *name, char *path)
+void backend_loadimage(const char *name, const char *path)
 {
 
     struct image *image = &images[nimages++];
@@ -592,14 +591,14 @@ void backend_loadimage(char *name, char *path)
 
 }
 
-void backend_loadfont(char *name, unsigned int size, char *filename)
+void backend_loadfont(const char *name, const char *path, unsigned int size)
 {
 
     struct font *font = &fonts[nfonts++];
 
     font->name = name;
-    font->face = TTF_OpenFont(filename, size);
-    font->shadow = TTF_OpenFont(filename, size);
+    font->face = TTF_OpenFont(path, size);
+    font->shadow = TTF_OpenFont(path, size);
 
     if (!font->face)
     {
@@ -621,7 +620,7 @@ void backend_loadfont(char *name, unsigned int size, char *filename)
 
 }
 
-void backend_loadsample(char *name, char *path)
+void backend_loadsample(const char *name, const char *path)
 {
 
     struct sample *sample = &samples[nsamples++];
@@ -639,7 +638,7 @@ void backend_loadsample(char *name, char *path)
 
 }
 
-void backend_unloadimage(char *name)
+void backend_unloadimage(const char *name)
 {
 
     struct image *image = findimage(name);
@@ -649,7 +648,7 @@ void backend_unloadimage(char *name)
 
 }
 
-void backend_unloadfont(char *name)
+void backend_unloadfont(const char *name)
 {
 
     struct font *font = findfont(name);
@@ -664,7 +663,7 @@ void backend_unloadfont(char *name)
 
 }
 
-void backend_unloadsample(char *name)
+void backend_unloadsample(const char *name)
 {
 
     struct sample *sample = findsample(name);
