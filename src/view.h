@@ -18,6 +18,6 @@ struct widget *view_findwidget(const struct view *view, const char *id);
 void view_place(struct view *view);
 void view_render(const struct view *view, unsigned int ticks);
 unsigned int view_isactive(const struct view *view, const char *id);
-void view_reset(struct view *view);
+struct widget *view_getselectable(struct view *view);
 void view_setattr(const struct view *view, const char *id, const char *key, char *value);
 void view_init(struct view *view, char *name, void (*onload)(unsigned int type), void (*onstep)(unsigned int ticks), void (*onconfig)(const char *key, const void *value), void (*onbutton)(unsigned int button));

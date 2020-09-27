@@ -25,6 +25,7 @@ OBJ= \
     src/views/settings_datetime.o \
     src/views/settings_system.o \
     src/views/settings_time.o \
+    src/views/settings_timezone.o \
     src/views/sync.o \
     src/views/sysinfo.o \
 

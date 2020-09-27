@@ -51,6 +51,9 @@ static void onbutton(unsigned int button)
     if (button == BUTTON_A)
     {
 
+        if (view_isactive(&view, "area_timezone"))
+            main_loadview(&view, "area_timezone", "settings_timezone");
+
         if (view_isactive(&view, "area_date"))
             main_loadview(&view, "area_date", "settings_date");
 

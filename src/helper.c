@@ -197,6 +197,29 @@ void helper_timezone_get(unsigned int id, void (*ondata)(unsigned int id, void *
 
 }
 
+void helper_timezone_getcontinents(unsigned int id, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
+{
+
+    struct session *session = session_create(id, ondata, oncomplete, onfailure);
+
+    session->args[0] = "./helper.sh";
+    session->args[1] = "timezone_getcontinents";
+    session->args[2] = 0;
+
+}
+
+void helper_timezone_getcountries(unsigned int id, char *continent, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
+{
+
+    struct session *session = session_create(id, ondata, oncomplete, onfailure);
+
+    session->args[0] = "./helper.sh";
+    session->args[1] = "timezone_getcountries";
+    session->args[2] = continent;
+    session->args[3] = 0;
+
+}
+
 void helper_volume_get(unsigned int id, char *channel, void (*ondata)(unsigned int id, void *data, unsigned int count), void (*oncomplete)(unsigned int id), void (*onfailure)(unsigned int id))
 {
 

@@ -26,6 +26,7 @@ void view_settings_date_setup(void);
 void view_settings_datetime_setup(void);
 void view_settings_system_setup(void);
 void view_settings_time_setup(void);
+void view_settings_timezone_setup(void);
 void view_sync_setup(void);
 void view_sysinfo_setup(void);
 static struct view *active;
@@ -47,6 +48,7 @@ static void setup(void)
     view_settings_datetime_setup();
     view_settings_system_setup();
     view_settings_time_setup();
+    view_settings_timezone_setup();
     view_sync_setup();
     view_sysinfo_setup();
 
@@ -79,6 +81,9 @@ static void precheck(struct view *view)
         }
 
     }
+
+    if (!view->selected)
+        view->selected = view_getselectable(view);
 
 }
 
@@ -195,7 +200,8 @@ static void initview(const char *name, char *parentname)
         return;
 
     loadview(view, parentname, VIEW_LOADTYPE_INIT);
-    view_reset(view);
+
+    view->selected = view_getselectable(view);
 
 }
 

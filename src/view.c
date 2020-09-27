@@ -239,14 +239,10 @@ void view_place(struct view *view)
 void view_render(const struct view *view, unsigned int ticks)
 {
 
-    if (view->selected)
-    {
+    struct widget *selected = view->selected;
 
-        struct widget *widget = view->selected;
-
-        backend_paint_selection(widget->size.x, widget->size.y, widget->size.w, widget->size.h);
-
-    }
+    if (selected)
+        backend_paint_selection(selected->size.x, selected->size.y, selected->size.w, selected->size.h);
 
     renderwidgets(view, &view->main, ticks);
 
@@ -262,12 +258,10 @@ unsigned int view_isactive(const struct view *view, const char *id)
 
 }
 
-void view_reset(struct view *view)
+struct widget *view_getselectable(struct view *view)
 {
 
     struct list_item *current;
-
-    view->selected = 0;
 
     for (current = view->widgets.head; current; current = current->next)
     {
@@ -275,15 +269,11 @@ void view_reset(struct view *view)
         struct widget *widget = current->data;
 
         if (widget->selectable)
-        {
-
-            view->selected = widget;
-
-            return;
-
-        }
+            return widget;
 
     }
+
+    return 0;
 
 }
 
