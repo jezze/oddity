@@ -39,6 +39,7 @@ static void continents_oncomplete(unsigned int id)
         if (text[i] == '\n')
         {
 
+            text[i] = '\0';
             continents[ncontinents].name = start;
             continents[ncontinents].active = 1;
 
@@ -94,7 +95,8 @@ static void countries_oncomplete(unsigned int id)
         if (text[i] == '\n')
         {
 
-            countries[ncountries].name = start;
+            text[i] = '\0';
+            countries[ncountries].name = start + 7;
             countries[ncountries].active = 1;
 
             start = text + i + 1;
