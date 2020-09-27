@@ -67,6 +67,7 @@ static void continents_oncomplete(unsigned int id)
 
                 view_setattr(&view, c->area, "selectable", "true");
                 view_setattr(&view, c->text, "data", c->name);
+                view_setattr(&view, c->text, "hidden", "false");
 
             }
 
@@ -123,6 +124,7 @@ static void countries_oncomplete(unsigned int id)
 
                 view_setattr(&view, c->area, "selectable", "true");
                 view_setattr(&view, c->text, "data", c->name);
+                view_setattr(&view, c->text, "hidden", "false");
 
             }
 
@@ -141,6 +143,8 @@ static void countries_oncomplete(unsigned int id)
 
 static void onload(unsigned int type)
 {
+
+    unsigned int i;
 
     offset = 0;
     ncontinents = 0;
@@ -198,6 +202,12 @@ static void onload(unsigned int type)
     countries[13].text = "text_country13";
     countries[14].text = "text_country14";
     countries[15].text = "text_country15";
+
+    for (i = 0; i < 10; i++)
+        view_setattr(&view, continents[i].text, "hidden", "true");
+
+    for (i = 0; i < 16; i++)
+        view_setattr(&view, countries[i].text, "hidden", "true");
 
     view_setattr(&view, "text_noitems", "hidden", "true");
 
