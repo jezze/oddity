@@ -32,21 +32,21 @@ void file_getlocalremotedatabasepath(char *path, unsigned int count, unsigned in
 
 }
 
-void file_getlocalpackagepath(char *path, unsigned int count, char *sha1)
+void file_getlocalpackagepath(char *path, unsigned int count, const char *sha1)
 {
 
     snprintf(path, count, "/media/data/apps/%s.opk", sha1);
 
 }
 
-unsigned int file_exist(char *path)
+unsigned int file_exist(const char *path)
 {
 
     return access(path, F_OK) != -1;
 
 }
 
-unsigned int file_copy(char *from, char *to)
+unsigned int file_copy(const char *from, const char *to)
 {
 
     char command[128];
@@ -57,7 +57,7 @@ unsigned int file_copy(char *from, char *to)
 
 }
 
-unsigned int file_remove(char *name)
+unsigned int file_remove(const char *name)
 {
 
     char command[128];
@@ -79,7 +79,7 @@ unsigned int file_removeremote(unsigned int id)
 
 }
 
-unsigned int file_removepackage(char *name)
+unsigned int file_removepackage(const char *name)
 {
 
     char remotedatapath[128];
@@ -90,7 +90,7 @@ unsigned int file_removepackage(char *name)
 
 }
 
-unsigned int file_matchsha1(char *path, char *sha1)
+unsigned int file_matchsha1(const char *path, const char *sha1)
 {
 
     FILE *file;

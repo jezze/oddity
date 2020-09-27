@@ -116,13 +116,13 @@ static void onload(unsigned int type)
 
 }
 
-static void onconfig(char *key, void *value)
+static void onconfig(const char *key, const void *value)
 {
 
     if (!strcmp(key, "list"))
     {
 
-        char *category = value;
+        const char *category = value;
 
         if (applist.count)
             db_freeapps(&applist);

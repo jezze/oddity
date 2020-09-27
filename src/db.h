@@ -59,7 +59,7 @@ int db_loadremotes(struct db_remotelist *list);
 void db_createapp(struct db_app *app, char id[6], char *name, char *shortdescription);
 void db_freeapp(struct db_app *app);
 void db_freeapps(struct db_applist *list);
-int db_loadapp(struct db_app *app, char id[6]);
+int db_loadapp(struct db_app *app, const char id[6]);
 unsigned int db_countapps(void);
 int db_loadapps(struct db_applist *list);
 int db_loadappsfromremote(struct db_applist *list, struct db_remote *remote);

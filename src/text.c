@@ -7,7 +7,7 @@
 #include "view.h"
 #include "backend.h"
 
-static unsigned int wordstart(char *text, unsigned int count)
+static unsigned int wordstart(const char *text, unsigned int count)
 {
 
     unsigned int i;
@@ -24,7 +24,7 @@ static unsigned int wordstart(char *text, unsigned int count)
 
 }
 
-static unsigned int textw(char *text, unsigned int count)
+static unsigned int textw(const char *text, unsigned int count)
 {
 
     unsigned int total = 0;
@@ -45,7 +45,7 @@ static unsigned int textw(char *text, unsigned int count)
 
 }
 
-static unsigned int maxfit(char *text, unsigned int count, unsigned int width)
+static unsigned int maxfit(const char *text, unsigned int count, unsigned int width)
 {
 
     unsigned int total = 0;
@@ -72,7 +72,7 @@ static unsigned int maxfit(char *text, unsigned int count, unsigned int width)
 
 }
 
-static void renderline(char *id, char *text, unsigned int count, unsigned int x, unsigned int y, unsigned int color)
+static void renderline(const char *id, const char *text, unsigned int count, unsigned int x, unsigned int y, unsigned int color)
 {
 
     unsigned int i;
@@ -95,10 +95,10 @@ static void renderline(char *id, char *text, unsigned int count, unsigned int x,
 
 }
 
-void text_render(char *id, struct box *box, unsigned int color, unsigned int align, char *content)
+void text_render(const char *id, const struct box *box, unsigned int color, unsigned int align, const char *content)
 {
 
-    char *ptext = content;
+    const char *ptext = content;
     unsigned int pcount = strlen(content);
     unsigned int liney = box->y + backend_font_getascent("default");
     unsigned int colors[] = {

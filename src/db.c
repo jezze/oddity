@@ -263,7 +263,7 @@ void db_freeapps(struct db_applist *list)
 
 }
 
-int db_loadapp(struct db_app *app, char id[6])
+int db_loadapp(struct db_app *app, const char id[6])
 {
 
     sqlite3 *db;

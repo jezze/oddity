@@ -42,7 +42,7 @@ static unsigned int findattribute(const struct attribute attributes[], unsigned 
 
 }
 
-void widget_area_place(struct widget *widget, struct box *box)
+void widget_area_place(struct widget *widget, const struct box *box)
 {
 
     struct widget_area *area = &widget->payload.area;
@@ -58,12 +58,12 @@ void widget_area_place(struct widget *widget, struct box *box)
 
 }
 
-void widget_area_render(struct widget *widget, unsigned int ticks)
+void widget_area_render(const struct widget *widget, unsigned int ticks)
 {
 
 }
 
-void widget_area_set(struct widget *widget, char *key, char *value)
+void widget_area_set(struct widget *widget, const char *key, char *value)
 {
 
 }
@@ -82,7 +82,7 @@ void widget_area_init(struct widget *widget, char *id, char *in, int x, int y, i
 
 }
 
-void widget_icon_place(struct widget *widget, struct box *box)
+void widget_icon_place(struct widget *widget, const struct box *box)
 {
 
     widget->size.x = box->x;
@@ -92,10 +92,10 @@ void widget_icon_place(struct widget *widget, struct box *box)
 
 }
 
-void widget_icon_render(struct widget *widget, unsigned int ticks)
+void widget_icon_render(const struct widget *widget, unsigned int ticks)
 {
 
-    struct widget_icon *icon = &widget->payload.icon;
+    const struct widget_icon *icon = &widget->payload.icon;
     struct box box;
 
     box.x = widget->size.x + widget->size.w / 2 - 20;
@@ -107,7 +107,7 @@ void widget_icon_render(struct widget *widget, unsigned int ticks)
 
 }
 
-void widget_icon_set(struct widget *widget, char *key, char *value)
+void widget_icon_set(struct widget *widget, const char *key, char *value)
 {
 
 }
@@ -123,7 +123,7 @@ void widget_icon_init(struct widget *widget, char *id, char *in, unsigned int ty
 
 }
 
-void widget_option_place(struct widget *widget, struct box *box)
+void widget_option_place(struct widget *widget, const struct box *box)
 {
 
     widget->size.x = box->x;
@@ -133,10 +133,10 @@ void widget_option_place(struct widget *widget, struct box *box)
 
 }
 
-void widget_option_render(struct widget *widget, unsigned int ticks)
+void widget_option_render(const struct widget *widget, unsigned int ticks)
 {
 
-    struct widget_option *option = &widget->payload.option;
+    const struct widget_option *option = &widget->payload.option;
     struct box box;
 
     box.x = widget->size.x + PADX;
@@ -149,7 +149,7 @@ void widget_option_render(struct widget *widget, unsigned int ticks)
 
 }
 
-void widget_option_set(struct widget *widget, char *key, char *value)
+void widget_option_set(struct widget *widget, const char *key, char *value)
 {
 
     struct widget_option *option = &widget->payload.option;
@@ -175,7 +175,7 @@ void widget_option_init(struct widget *widget, char *id, char *in, char *name, c
 
 }
 
-void widget_select_place(struct widget *widget, struct box *box)
+void widget_select_place(struct widget *widget, const struct box *box)
 {
 
     widget->size.x = box->x;
@@ -185,7 +185,7 @@ void widget_select_place(struct widget *widget, struct box *box)
 
 }
 
-void widget_select_render(struct widget *widget, unsigned int ticks)
+void widget_select_render(const struct widget *widget, unsigned int ticks)
 {
 
     struct box box;
@@ -200,7 +200,7 @@ void widget_select_render(struct widget *widget, unsigned int ticks)
 
 }
 
-void widget_select_set(struct widget *widget, char *key, char *value)
+void widget_select_set(struct widget *widget, const char *key, char *value)
 {
 
     struct widget_select *select = &widget->payload.select;
@@ -221,7 +221,7 @@ void widget_select_init(struct widget *widget, char *id, char *in, char *value)
 
 }
 
-void widget_slider_place(struct widget *widget, struct box *box)
+void widget_slider_place(struct widget *widget, const struct box *box)
 {
 
     widget->size.x = box->x;
@@ -231,10 +231,10 @@ void widget_slider_place(struct widget *widget, struct box *box)
 
 }
 
-void widget_slider_render(struct widget *widget, unsigned int ticks)
+void widget_slider_render(const struct widget *widget, unsigned int ticks)
 {
 
-    struct widget_slider *slider = &widget->payload.slider;
+    const struct widget_slider *slider = &widget->payload.slider;
     struct box box;
 
     box.x = widget->size.x + PADX;
@@ -266,7 +266,7 @@ void widget_slider_render(struct widget *widget, unsigned int ticks)
 
 }
 
-void widget_slider_set(struct widget *widget, char *key, char *value)
+void widget_slider_set(struct widget *widget, const char *key, char *value)
 {
 
     struct widget_slider *slider = &widget->payload.slider;
@@ -289,7 +289,7 @@ void widget_slider_init(struct widget *widget, char *id, char *in, int min, int 
 
 }
 
-void widget_text_place(struct widget *widget, struct box *box)
+void widget_text_place(struct widget *widget, const struct box *box)
 {
 
     widget->size.x = box->x;
@@ -299,10 +299,10 @@ void widget_text_place(struct widget *widget, struct box *box)
 
 }
 
-void widget_text_render(struct widget *widget, unsigned int ticks)
+void widget_text_render(const struct widget *widget, unsigned int ticks)
 {
 
-    struct widget_text *text = &widget->payload.text;
+    const struct widget_text *text = &widget->payload.text;
     struct box box;
 
     box.x = widget->size.x + PADX;
@@ -328,7 +328,7 @@ static const struct attribute widget_text_align[] = {
     {"center", TEXT_ALIGN_CENTER}
 };
 
-void widget_text_set(struct widget *widget, char *key, char *value)
+void widget_text_set(struct widget *widget, const char *key, char *value)
 {
 
     struct widget_text *text = &widget->payload.text;
@@ -357,7 +357,7 @@ void widget_text_init(struct widget *widget, char *id, char *in, unsigned int ty
 
 }
 
-void widget_toggle_place(struct widget *widget, struct box *box)
+void widget_toggle_place(struct widget *widget, const struct box *box)
 {
 
     widget->size.x = box->x;
@@ -367,10 +367,10 @@ void widget_toggle_place(struct widget *widget, struct box *box)
 
 }
 
-void widget_toggle_render(struct widget *widget, unsigned int ticks)
+void widget_toggle_render(const struct widget *widget, unsigned int ticks)
 {
 
-    struct widget_toggle *toggle = &widget->payload.toggle;
+    const struct widget_toggle *toggle = &widget->payload.toggle;
     struct box box;
 
     box.x = widget->size.x + PADX;
@@ -411,7 +411,7 @@ static const struct attribute widget_toggle_state[] = {
     {"on_disabled", TOGGLE_ON_DISABLED}
 };
 
-void widget_toggle_set(struct widget *widget, char *key, char *value)
+void widget_toggle_set(struct widget *widget, const char *key, char *value)
 {
 
     struct widget_toggle *toggle = &widget->payload.toggle;

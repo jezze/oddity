@@ -142,7 +142,7 @@ static void destroy(void)
 
 }
 
-static struct view *findview(char *name)
+static struct view *findview(const char *name)
 {
 
     struct list_item *current;
@@ -161,7 +161,7 @@ static struct view *findview(char *name)
 
 }
 
-void main_configview(char *name, char *key, void *value)
+void main_configview(const char *name, const char *key, const void *value)
 {
 
     struct view *view = findview(name);
@@ -186,7 +186,7 @@ static void loadview(struct view *view, char *parentname, unsigned int type)
 
 }
 
-static void initview(char *name, char *parentname)
+static void initview(const char *name, char *parentname)
 {
 
     struct view *view = findview(name);
@@ -199,7 +199,7 @@ static void initview(char *name, char *parentname)
 
 }
 
-static void destroyview(char *name)
+static void destroyview(const char *name)
 {
 
     struct view *view = findview(name);
@@ -228,7 +228,7 @@ void main_registerview(struct view *view)
 
 }
 
-void main_exec(char id[6], char *sha1)
+void main_exec(const char id[6], const char *sha1)
 {
 
     char name[14];
@@ -256,7 +256,7 @@ void main_exec(char id[6], char *sha1)
 
 }
 
-void main_loadview(struct view *view, char *match, char *to)
+void main_loadview(struct view *view, const char *match, const char *to)
 {
 
     if (!view->selected)
@@ -391,7 +391,7 @@ static void moveselection(struct view *view, unsigned int button)
 
 }
 
-void main_goprev(struct view *view, char *id)
+void main_goprev(const struct view *view, const char *id)
 {
 
     struct widget *widget = view_findwidget(view, id);
@@ -420,7 +420,7 @@ void main_goprev(struct view *view, char *id)
 
 }
 
-void main_gonext(struct view *view, char *id)
+void main_gonext(const struct view *view, const char *id)
 {
 
     struct widget *widget = view_findwidget(view, id);

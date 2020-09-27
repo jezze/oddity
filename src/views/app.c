@@ -42,10 +42,10 @@ static void onload(unsigned int type)
 
 }
 
-static void onconfig(char *button, void *value)
+static void onconfig(const char *key, const void *value)
 {
 
-    if (!strcmp(button, "id"))
+    if (!strcmp(key, "id"))
     {
 
         db_freeapp(&app);

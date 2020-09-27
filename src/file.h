@@ -1,10 +1,10 @@
 void file_init(void);
 void file_getlocaldatabasepath(char *path, unsigned int count);
 void file_getlocalremotedatabasepath(char *path, unsigned int count, unsigned int id);
-void file_getlocalpackagepath(char *path, unsigned int count, char *name);
-unsigned int file_exist(char *path);
-unsigned int file_copy(char *from, char *to);
-unsigned int file_remove(char *name);
+void file_getlocalpackagepath(char *path, unsigned int count, const char *name);
+unsigned int file_exist(const char *path);
+unsigned int file_copy(const char *from, const char *to);
+unsigned int file_remove(const char *name);
 unsigned int file_removeremote(unsigned int id);
-unsigned int file_removepackage(char *name);
-unsigned int file_matchsha1(char *path, char *checksum);
+unsigned int file_removepackage(const char *name);
+unsigned int file_matchsha1(const char *path, const char *checksum);

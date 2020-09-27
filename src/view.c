@@ -75,7 +75,7 @@ static void placewidgets(struct view *view, struct widget *parent)
 
 }
 
-static void renderwidget(struct widget *widget, unsigned int ticks)
+static void renderwidget(const struct widget *widget, unsigned int ticks)
 {
 
     switch (widget->type)
@@ -120,7 +120,7 @@ static void renderwidget(struct widget *widget, unsigned int ticks)
 
 }
 
-static void renderwidgets(struct view *view, struct widget *parent, unsigned int ticks)
+static void renderwidgets(const struct view *view, const struct widget *parent, unsigned int ticks)
 {
 
     struct list_item *current;
@@ -145,7 +145,7 @@ static void renderwidgets(struct view *view, struct widget *parent, unsigned int
 
 }
 
-static void setwidget(struct widget *widget, char *key, char *value)
+static void setwidget(struct widget *widget, const char *key, char *value)
 {
 
     if (!strcmp(key, "hidden"))
@@ -236,7 +236,7 @@ void view_place(struct view *view)
 
 }
 
-void view_render(struct view *view, unsigned int ticks)
+void view_render(const struct view *view, unsigned int ticks)
 {
 
     if (view->selected)
@@ -252,7 +252,7 @@ void view_render(struct view *view, unsigned int ticks)
 
 }
 
-unsigned int view_isactive(struct view *view, char *id)
+unsigned int view_isactive(const struct view *view, const char *id)
 {
 
     if (!view->selected)
@@ -287,7 +287,7 @@ void view_reset(struct view *view)
 
 }
 
-void view_setattr(struct view *view, char *id, char *key, char *value)
+void view_setattr(const struct view *view, const char *id, const char *key, char *value)
 {
 
     struct widget *widget = view_findwidget(view, id);
@@ -299,7 +299,7 @@ void view_setattr(struct view *view, char *id, char *key, char *value)
 
 }
 
-void view_init(struct view *view, char *name, void (*onload)(unsigned int type), void (*onstep)(unsigned int ticks), void (*onconfig)(char *key, void *value), void (*onbutton)(unsigned int button))
+void view_init(struct view *view, char *name, void (*onload)(unsigned int type), void (*onstep)(unsigned int ticks), void (*onconfig)(const char *key, const void *value), void (*onbutton)(unsigned int button))
 {
 
     view->name = name;
