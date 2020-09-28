@@ -1,3 +1,4 @@
+#include <string.h>
 #include "config.h"
 #include "box.h"
 #include "list.h"
@@ -56,7 +57,7 @@ const struct widget *pool_widget_prevchild(const struct view *view, const struct
     while ((widget = pool_widget_prev(view, widget)))
     {
 
-        if (view_findwidget(view, widget->in) == parent)
+        if (!strcmp(widget->in, parent->id))
             return widget;
 
     }
@@ -71,7 +72,7 @@ const struct widget *pool_widget_nextchild(const struct view *view, const struct
     while ((widget = pool_widget_next(view, widget)))
     {
 
-        if (view_findwidget(view, widget->in) == parent)
+        if (!strcmp(widget->in, parent->id))
             return widget;
 
     }
