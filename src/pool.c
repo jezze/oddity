@@ -54,7 +54,7 @@ struct widget *pool_widget_next(const struct view *view, const struct widget *wi
 const struct widget *pool_widget_prevchild(const struct view *view, const struct widget *widget, const struct widget *parent)
 {
 
-    while ((widget = pool_widget_prev(view, widget)))
+    while ((widget = prevwidget(&view->widgets, widget)))
     {
 
         if (!strcmp(widget->in, parent->id))
@@ -69,7 +69,7 @@ const struct widget *pool_widget_prevchild(const struct view *view, const struct
 const struct widget *pool_widget_nextchild(const struct view *view, const struct widget *widget, const struct widget *parent)
 {
 
-    while ((widget = pool_widget_next(view, widget)))
+    while ((widget = nextwidget(&view->widgets, widget)))
     {
 
         if (!strcmp(widget->in, parent->id))

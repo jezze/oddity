@@ -401,7 +401,7 @@ void main_goprev(const struct view *view, const char *id)
 {
 
     struct widget *widget = view_findwidget(view, id);
-    struct widget *child = 0;
+    const struct widget *child = 0;
 
     if (!widget)
         return;
@@ -430,7 +430,7 @@ void main_gonext(const struct view *view, const char *id)
 {
 
     struct widget *widget = view_findwidget(view, id);
-    struct widget *child = 0;
+    const struct widget *child = 0;
 
     if (!widget)
         return;
