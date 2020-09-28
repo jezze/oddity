@@ -406,7 +406,7 @@ void main_goprev(const struct view *view, const char *id)
     if (!widget)
         return;
 
-    while ((child = pool_widget_nextchild(view, child, widget)))
+    while ((child = pool_widget_prevchild(view, child, widget)))
     {
 
         if (!strcmp(widget->payload.select.value, child->payload.option.value))
