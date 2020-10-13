@@ -102,11 +102,11 @@ void text_render(const char *id, const struct box *box, unsigned int color, unsi
     unsigned int pcount = strlen(content);
     unsigned int liney = box->y + backend_font_getascent("default");
     unsigned int colors[] = {
-        0x00000000,
-        0xFFA0C0C0,
-        0xFFE0E0E0,
-        0xFFE06020,
-        0xFF406060
+        COLOR_SHADOW,
+        COLOR_NORMAL,
+        COLOR_TITLE,
+        COLOR_SELECT,
+        COLOR_DISABLE
     };
 
     while (pcount)

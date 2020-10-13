@@ -39,3 +39,8 @@
 #define ICON_CLOCK                      0xF022
 #define ICON_NETWORK                    0xF02B
 #define ICON_SYSTEM                     0xEA4D
+#define COLOR_SHADOW                    0xFF000000
+#define COLOR_NORMAL                    0xFFA0A0A0
+#define COLOR_TITLE                     0xFFE0E0E0
+#define COLOR_SELECT                    0xFFE060C0
+#define COLOR_DISABLE                   0xFF404040

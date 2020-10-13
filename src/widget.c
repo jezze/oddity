@@ -103,7 +103,7 @@ void widget_icon_render(const struct widget *widget, unsigned int ticks)
     box.w = widget->size.w - PADX * 2;
     box.h = widget->size.h - PADY * 2;
 
-    backend_paint_glyph("bigicon", icon->type, box.x, box.y, box.w, box.h, 0xFFA0C0C0);
+    backend_paint_glyph("bigicon", icon->type, box.x, box.y, box.w, box.h, COLOR_TITLE);
 
 }
 
@@ -145,7 +145,7 @@ void widget_option_render(const struct widget *widget, unsigned int ticks)
     box.h = widget->size.h - PADY * 2;
 
     if (option->value)
-        text_render("default", &box, TEXT_TYPE_NORMAL, TEXT_ALIGN_CENTER, option->value);
+        text_render("default", &box, TEXT_TYPE_TITLE, TEXT_ALIGN_CENTER, option->value);
 
 }
 
